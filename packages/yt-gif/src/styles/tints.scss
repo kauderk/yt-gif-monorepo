@@ -1,0 +1,13 @@
+$color: #80d144;
+$tiles: 10;
+
+@function tint($color, $percentage) {
+	@return mix(#fff, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+	@return mix(#000, $color, $percentage);
+}
+
+// lighten($color, $percentage)
+//  darken($color, $percentage)

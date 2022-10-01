@@ -1,0 +1,80 @@
+:root {
+  --dropdown-main-btn-bg-h: rgb(171 195 212);
+  --dropdown-shadow: rgb(105 119 131);
+  --dropdown-c: black;
+
+  --yt-gif-icon-bg: #5c7080;
+
+  --drop-menu-btn-h: var(--dropdown-main-btn-bg-h);
+  --drop-menu-btn-f: #8093a3;
+  --dropdown--bg: #fff;
+
+  --submenu-message-bg: #93b1c9;
+
+  --submenu-styles-item-bg-h: #a2c2df;
+  --submenu-styles-content-bg: #e3e5e7;
+
+  --submenu-info-btn-bg: #2e7d32;
+  --submenu-info-btn-bg-h: #4caf50;
+
+  --submenu-info-item-bg-h: rgb(87 184 144 / 45%);
+
+  --deployment-extreme-bg: blue;
+  --deployment-mid-bg: red;
+
+  --deployment-forbidden-extreme-bg: var(--dropdown--bg);
+  --deployment-forbidden-mid-bg: #eb5034;
+
+  --deployment-allright-mid-bg: #21aa81;
+
+  --submenu-message-bg-high: rgb(29 149 243 / 48%);
+
+  --p-sh: rgb(132 166 192 / 75%);
+  --awaiting-player-pulse-anim-box-shadow-start: var(--p-sh);
+  --awaiting-player-pulse-anim-box-shadow-mid: rgb(152 181 204 / 99%);
+  --awaiting-player-pulse-anim-box-shadow-end: var(--p-sh);
+
+  --awaiting-player-bg: rgba(85, 85, 185, 0.561);
+  --awaiting-player-box-shadow: rgb(79 94 107);
+
+  --awaiting-player-pulse-anim-box-shadow-start: rgb(183 222 253 / 80%);
+  --awaiting-player-pulse-anim-box-shadow-mid: rgb(183 222 253 / 100%);
+  --awaiting-player-pulse-anim-box-shadow-end: rgb(183 222 253 / 80%);
+
+  --ddm-tooltip-c: #202b33;
+  --ddm-tooltip-bg: #76a1c3;
+
+  --tut-awaiting-input-contour: #0bb9a963;
+  --info-ms-focus-contour: #37b4c5;
+
+  --updt-pulse-anim-shadows: rgb(97 255 103);
+  --updt-pulse-anim-shadows-mid: rgb(0 255 10 / 25%);
+
+  --yt-gif-icon-focus-contour: #42a5f5;
+
+  --dropdown--bg-secondary: #e4f2ff;
+
+  --url-btn-bg: #e4e9ed;
+  --url-btn-bg-h: #bee0fc;
+
+  --ddm-not-allowed-bg: rgb(129 97 0 / 90%);
+  --ddm-not-allowed-bg-h: rgba(255, 193, 7, 0.62);
+  --ddm-updt-h: #02665d;
+
+  --sel-bg: #b7cbdb;
+  --sel-sel: #a1c9e9;
+  --sel-disabled-bg: #889aa9;
+  --sel-disabled-c: #5c7080;
+
+  --sel-item-c: #889bac;
+  --sel-item-c-sel: black;
+
+  --sel-btn-sel: black;
+  --sel-btn-c: #adadad;
+  --sel-btn-sel-c: #454545;
+
+  --sel-h: rgb(40 120 184 / 30%);
+
+  --tm-start-bg: #308d9f;
+  --tm-end-bg: #30649f;
+}

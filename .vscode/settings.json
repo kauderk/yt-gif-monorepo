@@ -1,0 +1,22 @@
+{
+	"files.exclude": {
+		"**/.git": true,
+		"**/.gitignore": true,
+		//
+		"**/.svelte-kit": true,
+		"**/node_modules": true,
+		"**/.npm*": true,
+		"**/.husky": true,
+		"**/.templates": true,
+		"**/.changeset": true,
+		//
+		"**/.prettier*": true,
+		"**/.*lint*": true,
+		"**/plopfile.mjs": true,
+		//
+		"**/*.config.*": true,
+		"**/tsconfig.json": true,
+		"**/*-lock.*": true
+	},
+	"cSpell.words": ["Btns", "Cmpt", "Congif", "gifs", "iframes", "unrendered", "YTGIF"]
+}

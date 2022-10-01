@@ -1,0 +1,66 @@
+// Put in whatever color here, the generator will use it as the 500 value of the palette!
+$primary: white;
+$secondary: #5c7080;
+
+@function tetrad($color) {
+	$hue: hue($color);
+	$saturation: saturation($color);
+	$lightness: lightness($color);
+	$tetrad: [ hsl($hue, $saturation, $lightness),
+		hsl($hue + 90 % 360, $saturation, $lightness),
+		hsl($hue + 180 % 360, $saturation, $lightness),
+		hsl($hue + 270 % 360, $saturation, $lightness), ];
+	@return $tetrad;
+}
+@function multiply($fore, $back) {
+	$red: calc(red($back) * red($fore) / 255);
+	$green: calc(green($back) * green($fore) / 255);
+	$blue: calc(blue($back) * blue($fore) / 255);
+	@return rgb($red, $green, $blue);
+}
+@function makeColorPalette($color) {
+	$light: black;
+	$dark: multiply($color, $color);
+	$tetrad: tetrad($color);
+	$palette: (
+		50: mix($light, $color, 88%),
+		100: mix($light, $color, 70%),
+		200: mix($light, $color, 50%),
+		300: mix($light, $color, 30%),
+		400: mix($light, $color, 15%),
+		500: mix($light, $color, 0%),
+		600: mix($dark, $color, 13%),
+		700: mix($dark, $color, 30%),
+		800: mix($dark, $color, 46%),
+		900: mix($dark, $color, 75%),
+		A100: lighten(saturate(mix($dark, $color, 15%), 80%), 45.6%),
+		A200: lighten(saturate(mix($dark, $color, 15%), 80%), 35.6%),
+		A400: lighten(saturate(mix($dark, $color, 15%), 100%), 25.6%),
+		A700: lighten(saturate(mix($dark, $color, 15%), 100%), 20.5%),
+	);
+	@return $palette;
+}
+:root {
+	@each $shade, $color in makeColorPalette($secondary) {
+		--ddm-s-#{$shade}: #{$color};
+	}
+	@each $shade, $color in makeColorPalette($primary) {
+		--ddm-#{$shade}: #{$color};
+	}
+}
+// :root {
+// 	--ddm-50: #e7e7e7;
+// 	--ddm-100: #c2c2c2;
+// 	--ddm-200: #999999;
+// 	--ddm-300: #707070;
+// 	--ddm-400: #525252;
+// 	--ddm-500: #333333;
+// 	--ddm-600: #2e2e2e;
+// 	--ddm-700: #272727;
+// 	--ddm-800: #202020;
+// 	--ddm-900: #141414;
+// 	--ddm-A100: #ec5656;
+// 	--ddm-A200: #e72828;
+// 	--ddm-A400: #dd0000;
+// 	--ddm-A700: #c30000;
+// }

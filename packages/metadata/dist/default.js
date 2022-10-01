@@ -1,0 +1,10 @@
+export const SITE_URL = ''
+export const SITE_NAME = ''
+export const SITE_TITLE = 'Sveltekit + Turborepo + Tailwind'
+export const SITE_AUTHOR = 'Scrum Team'
+export const SITE_SEPARATOR = ''
+export const SITE_DESCRIPTION = 'A badass starter project'
+// export const FB_ID = '902427283166466';
+// export const FB_ADMINS = '1271441153';
+// export const DISCORD_HANDLE = 'oneezy';
+// export const TWITTER_HANDLE = 'oneeezy';

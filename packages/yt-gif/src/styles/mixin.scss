@@ -1,0 +1,36 @@
+.text-color-400 {
+	color: var(--ddm-s-400);
+	&:hover {
+		color: var(--ddm-s-300);
+	}
+	&:active {
+		color: var(--ddm-s-200);
+	}
+}
+.text-color-300 {
+	color: var(--ddm-300) !important;
+	&:hover {
+		color: var(--ddm-200) !important;
+	}
+	&:active {
+		color: var(--ddm-100) !important;
+	}
+}
+.text-color-200 {
+	color: var(--ddm-200) !important;
+	&:hover {
+		color: var(--ddm-100) !important;
+	}
+	&:active {
+		color: var(--ddm-50) !important;
+	}
+}
+.text-color-100 {
+	color: var(--ddm-100) !important;
+	&:hover {
+		color: var(--ddm-50) !important;
+	}
+	&:active {
+		color: var(--ddm-100) !important;
+	}
+}

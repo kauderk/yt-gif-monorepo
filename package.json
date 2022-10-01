@@ -1,0 +1,53 @@
+{
+	"name": "yt-gif-monorepo",
+	"description": "Svelte and Typescript based applications.",
+	"version": "0.2.1",
+	"author": "Scrum Team",
+	"keywords": [
+		"Svelte",
+		"Sveltekit",
+		"Turborepo",
+		"PNPM",
+		"Monorepo",
+		"Component Library"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kauderk/yt-gif-monorepo.git"
+	},
+	"main": "index.js",
+	"license": "MIT",
+	"workspaces": [
+		"apps/*",
+		"packages/**"
+	],
+	"scripts": {
+		"preinstall": "pnpm exec inherit -u",
+		"build": "turbo run build",
+		"dev": "turbo run dev --parallel",
+		"preview": "turbo run preview",
+		"lint": "turbo run lint",
+		"test": "turbo run test",
+		"prepare": "husky install",
+		"plop": "plop",
+		"clean": "git clean -fXd"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.23.1",
+		"@commitlint/cli": "^17.0.2",
+		"@commitlint/config-conventional": "^17.0.2",
+		"@packages/inherit": "workspace:^0.2.0",
+		"@packages/minify": "workspace:^0.2.0",
+		"autoprefixer": "^10.4.7",
+		"husky": "^8.0.1",
+		"lint-staged": "^12.5.0",
+		"plop": "^3.1.0",
+		"prettier": "^2.7.0",
+		"turbo": "latest",
+		"vite": "^3.1.0-beta.1"
+	},
+	"type": "module",
+	"dependencies": {
+		"svelte-preprocess": "^4.10.6"
+	}
+}

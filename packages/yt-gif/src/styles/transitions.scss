@@ -1,0 +1,10 @@
+.fade {
+	transition: all 0.5s;
+	background: transparent;
+	color: transparent;
+	border-color: transparent;
+	&:hover {
+		background: inherit;
+		color: inherit;
+	}
+}

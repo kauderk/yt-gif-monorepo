@@ -1,0 +1,6 @@
+export const root = 'roam-app'
+export const top_icon = 'bp3-button bp3-minimal'
+export const ddm_shadow = 'bp3-popover'
+export const ddm_bg = 'bp3-popover bp3-menu'
+export const ddm_item = 'bp3-menu-item'
+export const ddm_arrow = 'bp3-popover bp3-popover-arrow-fill'

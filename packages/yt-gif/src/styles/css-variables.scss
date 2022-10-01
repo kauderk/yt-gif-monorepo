@@ -1,0 +1,47 @@
+@use 'sass:list';
+@import './variables.scss';
+
+// I NEED THIS: https://blog.jim-nielsen.com/2021/css-relative-colors/
+//converting scss variable into css variable
+[data-theme-ytgif='light'] {
+	@each $name, $color in $colors {
+		--h-#{$name}: #{list.nth($color, 1)};
+		--s-#{$name}: #{list.nth($color, 2)};
+		--l-#{$name}: #{list.nth($color, 3)};
+
+		@if (list.length($color) == 4) {
+			--a-#{$name}: #{list.nth($color, 4)};
+		} @else {
+			--a-#{$name}: 1;
+		}
+
+		--hsla-#{$name}: hsla(
+			#{list.nth($color, 1)},
+			#{list.nth($color, 2)},
+			#{list.nth($color, 3)},
+			var(--a-#{$name})
+		);
+	}
+	--theme: 'light';
+}
+[data-theme-ytgif='dark'] {
+	@each $name, $color in $colors-dark {
+		--h-#{$name}: #{list.nth($color, 1)};
+		--s-#{$name}: #{list.nth($color, 2)};
+		--l-#{$name}: #{list.nth($color, 3)};
+
+		@if (list.length($color) == 4) {
+			--a-#{$name}: #{list.nth($color, 4)};
+		} @else {
+			--a-#{$name}: 1;
+		}
+
+		--hsla-#{$name}: hsla(
+			#{list.nth($color, 1)},
+			#{list.nth($color, 2)},
+			#{list.nth($color, 3)},
+			var(--a-#{$name})
+		);
+	}
+	--theme: 'dark';
+}

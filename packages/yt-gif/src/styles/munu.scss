@@ -1,0 +1,24 @@
+.edge {
+	margin: 1rem;
+	padding: 10px;
+	border-radius: 10px;
+}
+.center {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	list-style: none;
+	width: 300px;
+}
+.bg {
+	background-color: var(--dropdown-menu-background);
+}
+.left {
+	align-self: flex-end;
+}
+.ddm {
+	@extend .edge;
+	@extend .bg;
+	@extend .left;
+	@extend .center;
+}
