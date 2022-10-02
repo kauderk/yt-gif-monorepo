@@ -1,7 +1,9 @@
-const postcssConfig = require('@packages/config/postcssConfig');
+const postcssConfig = require('@packages/config/postcssConfig')
 
 const config = {
-    ...postcssConfig
-};
+	...postcssConfig
+}
 
-module.exports = config;
+console.log(config)
+
+module.exports = config

@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap');
+
+body {
+  background-image: url("../images/web_bg.jpg") !important;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.badge {
+  font-weight: 600 !important;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter Tight', sans-serif !important;
+}
+
+div .border-bottom, .nav-tabs {
+  border-color: rgb(112, 113, 126) !important;
+}
+
+
+.container{
+  max-width: 3000px !important;
+  width: 92% !important;
+  height: 94%;
+  background-color: rgb(47, 49, 55);
+  border-radius: 20px;  
+}
+
+.slidecontainer{
+  width: 80%;
+  
+}
+
+.slidecontainer p{
+  font-size: 16px;
+}
+
+.slider{
+  -webkit-appearance: none;
+  width: 70%;
+  height: 25px;
+  background: #b3b3b4;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 2s;
+}
+
+.left-sidebar{
+  color: #fff !important;
+}
+
+.tabs-container{
+}
+
+
+.colorletra{
+  color: #fff;
+}
+
+button.nav-link:hover {
+  font-weight: 600;
+  border: 0px;
+  color: white !important;
+}
+
+button.nav-link.active {
+  background-color: #aa1533  !important;
+  color: #fff !important;
+}
+
+button.nav-color {
+  background-color: #1d1e1f  !important;
+  color: rgb(177, 177, 177) !important;
+  margin: 1px 0px;
+  text-transform: uppercase;
+  font-size: 12.2px;
+  font-weight: 700;
+}
+
+#updatesVidstyle{
+  margin-left: 30px;
+  width: 320px;
+  height: 240px;
+}
+
+.tab-pane{
+  width: 100% !important;
+  font-size: 13px;
+  margin-top: 32px !important;
+}
+
+.tab-pane .row {
+  color:rgb(231, 231, 231);
+}
+
+.tab-pane .row label {
+  width: 50%;
+}
+
+.option-value{
+  width: 50%;  
+}
+
+.option-value select{
+  width: 100%;
+  border: 1px red !important;
+  background: var(--ddm-500) !important;
+  color: var(--ddm-50) !important;
+  padding: 0px 5px;
+}
+
+.button-option {
+  width: 47%;
+  margin: 3px;
+}
+
+.s-CDqR_jtnJEMH div{
+  margin-bottom: 18px !important;
+}
+
+.s-CDqR_jtnJEMH span, .svlt-grid-resizer {
+  color: rgb(156, 156, 156) !important;
+}
+
+yt-gif-graph .wrapper{
+  background-color: transparent !important;
+}
+
+.svlt-grid-container{  
+  background-color: #2f3137 !important;
+  border: 1px solid #828282;
+  border-radius: 15px;
+}
+
+input[type='checkbox'] {
+    accent-color: #1a1a1a !important;
+}
+
+.text-holder h1{
+    margin-bottom: 10px !important;
+}
+.scrollable textarea{
+    margin-top: 17px !important;
+}
