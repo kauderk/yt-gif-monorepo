@@ -1,6 +1,7 @@
 <!--  Svelte port of React example: https://github.com/fireship-io/229-multi-level-dropdown -->
 <script lang="ts">
 	import DropdownMenu from './DropdownMenu.svelte'
+
 	import Sub from '$v3/components/Sub/index.svelte'
 	import Icon from '$v3/components/Icon.svelte'
 
@@ -8,7 +9,7 @@
 		on: 'collection-play-fill',
 		off: 'collection-play',
 		tooltip: 'YT GIF Extension',
-		placement: 'left',
+		placement: 'left'
 	}
 	function inject(target: HTMLElement) {
 		// let top = document.querySelectorAll(
@@ -26,7 +27,7 @@
 		return {
 			destroy() {
 				target.remove()
-			},
+			}
 		}
 	}
 </script>

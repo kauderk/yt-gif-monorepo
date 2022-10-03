@@ -1,0 +1,39 @@
+---
+import Experience from "@/components/astro/App/Experience.astro";
+import Info from "@/components/astro/App/Info.astro";
+import Miscellaneous from "@/components/astro/App/Miscellaneous.astro";
+import Observer from "@/components/astro/App/Observer.astro";
+import PlayerSettings from "@/components/astro/App/PlayerSettings.astro";
+import Settings from "@/components/astro/App/Settings.astro";
+import Timestamps from "@/components/astro/App/Timestamps.astro";
+import Updates from "@/components/astro/App/Updates.astro";
+import TabHeaders from "@/components/astro/App/TabHeaders.astro";
+
+---
+
+<div class="wrapper pl-2 pr-4 py-2 left-sidebar overflow-auto">
+  <div class="flex justify-between border-bottom mb-2">
+    <h5 class="font-weight-bold mb-2 pb-2">Opciones</h5>          
+    <div>
+      <a href="/posts/week-4" class="badge badge-info">Go To Info</a>
+    </div>
+  </div>          
+  <TabHeaders></TabHeaders>
+  
+  <div class="tab-content" id="myTabContent">
+    <Timestamps />
+    <Observer />
+    <Experience />
+    <PlayerSettings />
+    <Miscellaneous />
+    <Updates />
+    <Info />
+    <Settings />
+  </div>
+</div>
+
+<style>
+  .flex.justify-between .badge-info{
+    background-color: var(--ddm-300);
+  }
+</style>

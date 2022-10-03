@@ -1,0 +1,32 @@
+---
+export interface Props {
+	id: string
+	name?: string
+	selected?: boolean
+}
+let { id, name, selected } = Astro.props
+name = name ?? id
+selected = selected ?? false
+---
+
+<li class="nav-item" role="presentation">
+	<button
+		class="nav-link active"
+		id={id + '-tab'}
+		data-toggle="tab"
+		data-target={'#' + id}
+		type="button"
+		role="tab"
+		aria-controls={id}
+		aria-selected={selected}
+		>{name}
+	</button>
+</li>
+
+<style>
+	.active {
+		text-transform: capitalize;
+		background: var(--ddm-400) !important;
+		color: var(--ddm-100) !important;
+	}
+</style>

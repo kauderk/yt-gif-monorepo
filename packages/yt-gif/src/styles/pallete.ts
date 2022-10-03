@@ -14,7 +14,7 @@ export function saveCssShadeStyleVariables(c: s, s: s, opposite: s) {
 	}
 }
 // @ts-ignore
-window.colors = saveCssShadeStyleVariables
+//window.colors = saveCssShadeStyleVariables
 
 // https://gist.github.com/jedfoster/7939513
 const mix = function (color_1: s, color_2: s, weight: n) {
@@ -92,13 +92,13 @@ function computeColors(c: string, opposite: string) {
 		_(tinycolor(c).lighten(50).saturate(30), 'A100'),
 		_(tinycolor(c).lighten(30).saturate(30), 'A200'),
 		_(tinycolor(c).lighten(10).saturate(15), 'A400'),
-		_(tinycolor(c).lighten(5).saturate(5), 'A700'),
+		_(tinycolor(c).lighten(5).saturate(5), 'A700')
 	]
 }
 
 function _(value: unknown, name: s) {
 	return {
 		value: <s>value,
-		name,
+		name
 	}
 }

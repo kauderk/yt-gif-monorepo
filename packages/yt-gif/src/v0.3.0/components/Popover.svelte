@@ -26,7 +26,7 @@
 <script lang="ts">
 	// @ts-ignore
 	// https://www.npmjs.com/package/svelte-inject
-	import inject from 'svelte-inject'
+	import { inject } from '@packages/utils'
 
 	// Popper requires you do replace the process.env.NODE_ENV variable. I think this is
 	// unnecessary to handle: https://github.com/popperjs/popper-core/issues/933

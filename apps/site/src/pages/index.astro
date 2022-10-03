@@ -1,0 +1,49 @@
+---
+import LeftSidebar from "@/components/astro/LeftSidebar.astro";
+import NodeGraph from "@/components/svelte/NodeGraph.svelte";
+---
+
+
+<html>
+  <head>    
+    <title>YT GIF GRAPH</title>
+    <meta name="description" content="YTGIF GRAPH MVP #3" />
+    <meta
+      name="scrum"
+      content="svelte,example,gif,youtube,yt,astro,react,scrum,isil" />
+    <meta name="author" content="ScrumTeam" />
+
+    <link rel="stylesheet"  href="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/Graph.css" />
+    <script src="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/dependencies.js" defer></script>
+    <script src="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/Graph.js" defer></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <script is:inline src='js/jquery.min.js'></script>
+    <script is:inline src='js/bootstrap.min.js'></script>
+    <script is:inline src='js/nodes.js'></script>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css" >
+    <link rel="stylesheet" href="css/materialdesignicons.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="css/owl.carousel.css"/> 
+    <link rel="stylesheet" href="css/owl.theme.css"/> 
+    <link rel="stylesheet" href="css/owl.transitions.css"/>
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="stylesheet" href="css/Nodes.css" type="text/css">
+  </head>
+  <body class="d-flex justify-content-center align-items-center">
+    <div class="d-flex container m-0 flex-row justify-content-center p-4" style="">
+        <LeftSidebar></LeftSidebar>
+        <div class="col-9 flex-column p-3" style="font-size: 30px;">
+          <NodeGraph client:load ></NodeGraph>
+        </div>
+    </div>
+  </body>
+</html>
+
+
+<style>
+  body{  
+		background-image: linear-gradient(90deg, var(--ddm-400),var(--ddm-600));	
+  }
+</style>

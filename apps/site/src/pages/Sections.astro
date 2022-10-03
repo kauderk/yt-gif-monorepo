@@ -1,0 +1,32 @@
+---
+import PageLayout from '@/components/svelte/PageLayout.svelte'
+import NodeGraph from '@/components/svelte/NodeGraph.svelte'
+import LeftSidebar from '@/components/astro/LeftSidebar.astro'
+import WebResources from '@/components/astro/Lib/WebResources.astro'
+---
+
+<WebResources />
+
+<PageLayout>
+	<!-- MAIN CONTENT -->
+	<NodeGraph client:load slot="main-graph" />
+	<!-- TOP LEFT SIDE BAR -->
+	<div class="links" slot="left-nav">
+		<a href="/Borial">Go to Borial</a>
+		<a href="/SWA">Go to SWA</a>
+		<a href="/Nodes">Go to Nodes</a>
+	</div>
+	<!-- Middle LEFT SIDE BAR -->
+	<LeftSidebar slot="left-content" />
+</PageLayout>
+
+<style>
+	:global(html, body) {
+		background-image: linear-gradient(90deg, #414850, #131720);
+		color: var(--text-color);
+		overflow: hidden;
+	}
+	.links * {
+		color: var(--ddm-200);
+	}
+</style>

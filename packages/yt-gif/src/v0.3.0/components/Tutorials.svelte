@@ -14,7 +14,7 @@
 	const icons = <const>{
 		on: 'menu-button-wide-fill',
 		off: 'menu-button',
-		tooltip: 'Video Tutorials',
+		tooltip: 'Video Tutorials'
 	}
 	export let options: TOptions
 	export let id = 'experience_tut'
@@ -51,7 +51,8 @@
 	<div
 		class="mid top-label"
 		on:mouseenter={() => tryOpen(true)}
-		on:mouseleave={() => tryOpen(false)}>
+		on:mouseleave={() => tryOpen(false)}
+	>
 		<span class="btn-icon-main">
 			<Icon {...icons} type="disabled" bind:this={i} />
 		</span>
@@ -68,7 +69,8 @@
 			tabindex="-1"
 			on:mouseenter={() => setFocus(true)}
 			on:blur={() => setFocus(false)}
-			class:ddmFocus={focus}>
+			class:ddmFocus={focus}
+		>
 			<Tutorial />
 		</div>
 	{/if}

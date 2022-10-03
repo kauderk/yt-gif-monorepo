@@ -3,7 +3,7 @@
 
 	import Content from './Content.svelte'
 	// @ts-ignore
-	import inject from 'svelte-inject'
+	import {inject} from '@packages/utils'
 	import Overlay from './Overlay.svelte'
 
 	export let props: any

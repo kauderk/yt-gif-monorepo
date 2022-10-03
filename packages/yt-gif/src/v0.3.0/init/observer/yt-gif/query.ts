@@ -10,7 +10,7 @@ export function Local(targetClass: s) {
 				PlayerOnIntersection({
 					wrapper,
 					message: 'valid entries MutationObserver',
-					targetClass,
+					targetClass
 				})
 			)
 		},
@@ -19,7 +19,7 @@ export function Local(targetClass: s) {
 			return document
 				.queryAllasArr('.' + targetClass)
 				.filter(el => isNotZoomPath(el)) as HTMLElement[]
-		},
+		}
 	}
 }
 export function DeployPlayer({ wrapper, targetClass, message }: IReadyInput) {
@@ -27,7 +27,7 @@ export function DeployPlayer({ wrapper, targetClass, message }: IReadyInput) {
 		wrapper: wrapper as HTMLElement,
 		targetClass,
 		dataCreation: wrapper.getAttribute(attrInfo.creation.name)!,
-		message: message || 'YScrollerObserver',
+		message: message || 'YScrollerObserver'
 	})
 }
 export function PlayerOnIntersection(input: IReadyInput) {
@@ -43,7 +43,7 @@ export function PlayerOnIntersection(input: IReadyInput) {
 				}
 		},
 		{
-			threshold: [0],
+			threshold: [0]
 		}
 	)
 

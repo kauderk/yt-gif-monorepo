@@ -1,0 +1,22 @@
+---
+export interface Props {
+	id: string
+	name?: string
+	selected?: boolean
+}
+let { id, name, selected } = Astro.props
+name = name ?? id
+selected = selected ?? false
+---
+
+<div class="col mb-2">
+	<div class="row">
+		<label class="col-6 m-0 p-0">Seek To</label>
+		<div class="col-4">
+			<select id="" name="">
+				<option>Boundary</option>
+				<option>Current time</option>
+			</select>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,9 @@
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/main.css"
+	/>
+	<script
+		src="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/main.js"
+		defer></script>
+</svelte:head>
