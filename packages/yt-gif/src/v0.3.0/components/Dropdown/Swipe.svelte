@@ -22,3 +22,10 @@
 	out:fly={closing()}>
 	<slot />
 </div>
+
+<style>
+	/* tailwind seems to override something else... */
+	.absolute {
+		position: absolute !important;
+	}
+</style>

@@ -8,13 +8,13 @@
 		'I2ziPw1SlH4',
 		'XNpqNXN8KL8',
 		'kYdOljz7NPg',
-		'B7ecyNfJOwo'
+		'B7ecyNfJOwo',
 	]
 </script>
 
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import parse from '$v3/api-ready/parse'
+	//import parse from '$v3/api-ready/parse'
 	//import { Deploy } from '$v3/api-ready/query'
 	//import { load } from '$v3/api-ready/setup/load-yt-iframe'
 
@@ -59,8 +59,7 @@
 		if (player?.matches(':hover')) {
 			handler?.()
 		}
-	}}
-/>
+	}} />
 
 <style lang="scss">
 	.outter > .wrapper {

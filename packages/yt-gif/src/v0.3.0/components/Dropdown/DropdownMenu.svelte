@@ -19,8 +19,7 @@
 		class="relative"
 		transition:slide={{ duration: 300 }}
 		on:introstart={() => (v = false)}
-		on:introend={() => (v = true)}
-	>
+		on:introend={() => (v = true)}>
 		<!-- switch between percentage and pixel in height -->
 		<div class={'expandable ' + ddm_bg} style="height: {height}">
 			<!-- swipe left to right: menu items  -->
@@ -31,8 +30,7 @@
 							{visit}
 							go={() => leaveOthers(key) || go(key)}
 							leftIcon={icon}
-							rightIcon={mdiChevronRight}>{key}</MenuItem
-						>
+							rightIcon={mdiChevronRight}>{key}</MenuItem>
 					{/each}
 				</Swipe>
 			{/if}
@@ -41,7 +39,8 @@
 				{#if active == key}
 					<Swipe bind:offsetHeight {v} clazz="{type}-ddm">
 						<div class="self-center">
-							<MenuItem {go} leftIcon={mdiArrowLeft}>Back</MenuItem>
+							<MenuItem {go} leftIcon={mdiArrowLeft}
+								>Back</MenuItem>
 						</div>
 						<svelte:component this={Sub} />
 					</Swipe>

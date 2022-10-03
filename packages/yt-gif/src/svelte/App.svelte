@@ -1,6 +1,23 @@
 <script lang="ts">
 	import App from '$v3/components/Dropdown/App.svelte'
 	import Styles from 'src/styles/Styles.svelte'
+
+	import {
+		themeStore,
+		useDmmVars,
+		UpdateCssVars,
+		useDdmVars,
+	} from '$v3/App/Footer/ThemeStore'
+	import { onMount } from 'svelte'
+
+	onMount(() => {
+		themeStore.useLocalStorage()
+		useDmmVars.useLocalStorage()
+
+		UpdateCssVars($themeStore.theme)
+
+		useDdmVars(null, $useDmmVars)
+	})
 </script>
 
 <App />

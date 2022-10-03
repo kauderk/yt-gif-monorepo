@@ -3,7 +3,8 @@
 	"tabWidth": 4,
 	"semi": false,
 	"singleQuote": true,
-	"trailingComma": "none",
+	"trailingComma": "es5",
 	"arrowParens": "avoid",
-	"printWidth": 100
+	"brace_style": "collapse,preserve-inline",
+	"svelteBracketNewLine": false
 }
