@@ -9,6 +9,7 @@
 		useDdmVars,
 	} from '$v3/App/Footer/ThemeStore'
 	import { onMount } from 'svelte'
+	import Player from '$v3/components/ytgif/Player.svelte'
 
 	onMount(() => {
 		themeStore.useLocalStorage()
@@ -22,6 +23,7 @@
 
 <App />
 <Styles />
+<Player width="100%" />
 
 <style global lang="scss">
 	@import './../styles/css-variables.scss';

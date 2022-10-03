@@ -9,51 +9,69 @@ const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
 /** @type {import('vite').UserConfig} */
 const config = {
 	build: {
-		target: ['es2020']
+		target: ['es2020'],
 	},
 	resolve: {
 		preserveSymlinks: false,
 		build: {
-			sourcemap: true
-		}
+			sourcemap: true,
+		},
 	},
 	ssr: {
 		noExternal: [
 			...Object.keys(pkg.dependencies || {}),
 			'@popperjs/core',
 			'dayjs',
-			'@popperjs+core'
-		]
+			'@popperjs+core',
+			'svelte-popover',
+		],
 	},
 	server: {
-		open: '/'
+		open: '/',
 	},
 	optimizeDeps: {
-		include: ['svelvet']
+		include: ['svelvet'],
 	},
 
 	plugins: [
 		alias({
 			//resolve: ['.js', '.ts', '.svelte'],
 			entries: [
-				{ find: 'src', replacement: resolve('../../packages/yt-gif/src') },
+				{
+					find: 'src',
+					replacement: resolve('../../packages/yt-gif/src'),
+				},
 				{
 					find: '$chm',
-					replacement: resolve('../../packages/yt-gif/src/chrome_extension')
+					replacement: resolve(
+						'../../packages/yt-gif/src/chrome_extension'
+					),
 				},
 				{ find: '$static', replacement: 'static' },
-				{ find: '$v2', replacement: resolve('../../packages/yt-gif/src/yt-gif/v0.2.0/js') },
-				{ find: '$v3', replacement: resolve('../../packages/yt-gif/src/v0.3.0') },
-				{ find: '$lib', replacement: resolve('../../packages/yt-gif/src/lib') }
-			]
+				{
+					find: '$v2',
+					replacement: resolve(
+						'../../packages/yt-gif/src/yt-gif/v0.2.0/js'
+					),
+				},
+				{
+					find: '$v3',
+					replacement: resolve('../../packages/yt-gif/src/v0.3.0'),
+				},
+				{
+					find: '$lib',
+					replacement: resolve('../../packages/yt-gif/src/lib'),
+				},
+			],
 		}),
 
 		/* Vitebook Fix: https://github.com/vitebook/vitebook/issues/89
 		 *********************************************************************/
-		sveltekit()
-	]
+		sveltekit(),
+	],
 }
 
-if (process.env.NODE_ENV === 'production') config.resolve.preserveSymlinks = true
+if (process.env.NODE_ENV === 'production')
+	config.resolve.preserveSymlinks = true
 
 export default config

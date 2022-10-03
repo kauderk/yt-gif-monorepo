@@ -48,7 +48,7 @@
 				<div {id} />
 			{/key}
 		</div>
-		<div class="controls" style:display="none">
+		<div class="controls">
 			<slot />
 		</div>
 	</div>
