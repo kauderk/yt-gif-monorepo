@@ -46,15 +46,8 @@
 		"turbo": "latest",
 		"vite": "^3.1.0-beta.1"
 	},
-	"pnpm": {
-		"patchedDependencies": {
-			"@popperjs/core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
-			"@popperjs+core@2.11.6": "patches/@popperjs+core+2.11.6.patch"
-		}
-	},
 	"type": "module",
 	"dependencies": {
-		"svelte-preprocess": "^4.10.6",
-		"@popperjs/core": "2.11.6"
+		"svelte-preprocess": "^4.10.6"
 	}
 }
