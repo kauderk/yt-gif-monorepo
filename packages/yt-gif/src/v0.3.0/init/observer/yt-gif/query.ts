@@ -1,4 +1,5 @@
-import { isNotZoomPath } from '$lib/utils'
+declare function isNotZoomPath (els: El): b
+
 import { attrInfo } from '../../config/paths'
 import { onYouTubePlayerAPIReady } from '$v3/api-ready'
 

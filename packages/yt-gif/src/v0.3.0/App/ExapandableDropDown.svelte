@@ -1,6 +1,6 @@
 <script lang="ts">
 	// @ts-ignore
-	import inject from 'svelte-inject'
+	import {inject} from '@packages/utils'
 	import { onMount } from 'svelte'
 	import { Icon } from 'sveltestrap'
 

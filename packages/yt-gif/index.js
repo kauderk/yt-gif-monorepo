@@ -1,2 +1,2 @@
-export { default as Button } from './lib/Button/Button.svelte'
 export { default as Graph } from './lib/Graph.svelte'
+export { default as DDM } from './lib/DDM.svelte'

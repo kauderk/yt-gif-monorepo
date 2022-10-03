@@ -1,4 +1,4 @@
-import { inViewportElsHard } from '$lib/utils'
+declare function inViewportElsHard (els: HTMLElement[]): HTMLElement[]
 import { Mutation_cb_raw_rm_cmpts } from '../../../lib/backend-frontend/mutation'
 import { Local, DeployPlayer, PlayerOnIntersection } from './query'
 
