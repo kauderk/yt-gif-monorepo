@@ -9,6 +9,9 @@ export default defineConfig({
 			$components: path.resolve('./src/components')
 		}
 	},
+	ssr: {
+		noExternal: ['@popperjs/core', 'dayjs', '@popperjs+core']
+	},
 	server: {
 		fs: {
 			allow: ['.']

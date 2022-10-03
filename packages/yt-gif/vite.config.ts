@@ -11,20 +11,23 @@ export default defineConfig({
 			output: {
 				entryFileNames: `[name].js`,
 				chunkFileNames: `[name].js`,
-				assetFileNames: `[name].[ext]`,
-			},
-		},
+				assetFileNames: `[name].[ext]`
+			}
+		}
+	},
+	ssr: {
+		noExternal: ['@popperjs/core', 'dayjs', '@popperjs+core']
 	},
 	optimizeDeps: {
-		include: ['svelvet'],
+		include: ['svelvet']
 	},
 	plugins: [
 		svelte({
 			//compilerOptions: { customElement: true },
 			preprocess: preprocess({
-				postcss: true,
-			}),
-		}),
+				postcss: true
+			})
+		})
 	],
 	root: 'src/svelte',
 	resolve: {
@@ -34,7 +37,7 @@ export default defineConfig({
 			$static: resolve('static'),
 			$v2: resolve('src/yt-gif/v0.2.0/js'),
 			$v3: resolve('src/v0.3.0'),
-			$lib: resolve('src/lib'),
-		},
-	},
+			$lib: resolve('src/lib')
+		}
+	}
 })

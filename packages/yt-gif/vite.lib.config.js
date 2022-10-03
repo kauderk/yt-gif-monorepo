@@ -6,14 +6,17 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: './src/lib/index.ts',
-			name: 'MyLibrary',
-		},
+			name: 'MyLibrary'
+		}
+	},
+	ssr: {
+		noExternal: ['@popperjs/core', 'dayjs', '@popperjs+core']
 	},
 	plugins: [
 		svelte({
 			compilerOptions: {
-				customElement: true,
-			},
-		}),
-	],
+				customElement: true
+			}
+		})
+	]
 })

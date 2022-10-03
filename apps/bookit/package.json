@@ -21,7 +21,8 @@
 		"@packages/metadata": "workspace:^0.2.0",
 		"@packages/components": "workspace:^0.2.0",
 		"@packages/config": "workspace:^0.2.0",
-		"@packages/yt-gif": "workspace:^0.2.0"
+		"@packages/yt-gif": "workspace:^0.2.0",
+		"@popperjs/core": "2.11.6"
 	},
 	"devDependencies": {
 		"@leveluptuts/svelte-side-menu": "1.0.5",
@@ -45,6 +46,12 @@
 		"prettier-plugin-svelte": "^2.7.0",
 		"prettier-plugin-tailwindcss": "^0.1.10",
 		"vite": "^3.1.0-beta.1"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"@popperjs/core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
+			"@popperjs+core@2.11.6": "patches/@popperjs+core+2.11.6.patch"
+		}
 	},
 	"type": "module"
 }
