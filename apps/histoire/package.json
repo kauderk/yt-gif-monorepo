@@ -7,11 +7,11 @@
 		"@packages/dependencies/package.packages.json"
 	],
 	"scripts": {
-		"dev": "vite dev",
-		"story:dev": "histoire dev",
-		"story:build": "histoire build",
+		"dev": "histoire dev --port 5002",
+		"preview": "histoire preview --port 5002",
+		"vite:dev": "vite dev --port 3002",
+		"vite:build": "vite build --port 3002",
 		"build": "vite build",
-		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"postinstall": "patch-package"
