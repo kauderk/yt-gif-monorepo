@@ -9,13 +9,10 @@
 	"scripts": {
 		"dev": "histoire dev --port 5002",
 		"preview": "histoire preview --port 5002",
-		"vite:dev": "vite dev --port 3002",
-		"vite:build": "vite build --port 3002",
-		"build": "vite build",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"build": "histoire build",
 		"postinstall": "patch-package"
 	},
+	"type": "module",
 	"dependencies": {
 		"@packages/metadata": "workspace:^0.2.0",
 		"@packages/components": "workspace:^0.2.0",
@@ -24,42 +21,14 @@
 		"@popperjs/core": "2.11.6"
 	},
 	"devDependencies": {
-		"@histoire/plugin-svelte": "^0.10.7",
-		"histoire": "^0.10.7",
-		"mdsvex": "^0.10.6",
-		"rehype-autolink-headings": "^6.1.1",
-		"rehype-slug": "^5.0.1",
-		"remark-abbr": "^1.4.1",
-		"remark-github": "^11.2.4",
-		"typescript": "^4.7.4",
-		"@leveluptuts/svelte-side-menu": "1.0.5",
-		"@leveluptuts/svelte-toy": "2.0.3",
-		"just-safe-set": "^4.1.1",
-		"svelte-splitpanes": "^0.7.3",
-		"@sveltejs/adapter-auto": "next",
-		"autoprefixer": "^10.4.7",
-		"eslint": "^7.32.0",
-		"eslint-plugin-svelte3": "^3.4.1",
-		"postcss": "^8.4.13",
-		"postcss-load-config": "^3.1.4",
-		"svelte-check": "^2.7.1",
-		"tailwindcss": "^3.0.24",
-		"@tailwindcss/typography": "^0.5.2",
-		"eslint-config-prettier": "^8.5.0",
-		"prettier": "^2.6.2",
-		"prettier-plugin-svelte": "^2.7.0",
-		"prettier-plugin-tailwindcss": "^0.1.10",
-		"patch-package": "^6.4.7",
-		"@sveltejs/kit": "next",
-		"svelte": "^3.44.0",
+		"svelte": "^3.49.0",
+		"@popperjs/core": "2.11.6",
+		"@histoire/plugin-svelte": "^0.11.0",
+		"@sveltejs/vite-plugin-svelte": "^1.0.1",
+		"histoire": "^0.11.0",
 		"svelte-preprocess": "^4.10.7",
-		"vite": "^3.1.0"
-	},
-	"pnpm": {
-		"patchedDependencies": {
-			"@popperjs/core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
-			"@popperjs+core@2.11.6": "patches/@popperjs+core+2.11.6.patch"
-		}
-	},
-	"type": "module"
+		"typescript": "^4.7.4",
+		"vite": "^3.0.0",
+		"patch-package": "^6.4.7"
+	}
 }
