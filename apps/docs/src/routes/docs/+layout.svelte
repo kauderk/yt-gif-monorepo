@@ -20,6 +20,15 @@
 			],
 		},
 		{
+			title: 'Como se usa',
+			links: [
+				{
+					href: 'joakin-copy',
+					text: 'Copy',
+				},
+			],
+		},
+		{
 			title: 'Preguntas Frecuentes',
 			links: [
 				{
@@ -29,11 +38,11 @@
 			],
 		},
 		{
-			title: 'Timestamps',
+			title: 'MI pestaña',
 			links: [
 				{
-					href: 'timestamps',
-					text: 'Timestamps',
+					href: 'joakin',
+					text: 'Mi Seccion JK',
 				},
 			],
 		},
