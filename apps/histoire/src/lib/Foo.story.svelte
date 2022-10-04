@@ -1,7 +1,5 @@
 <script>
-  export let Hst
+	export let Hst
 </script>
 
-<Hst.Story title="🐱 Meow">
-  🐱
-</Hst.Story>
+<Hst.Story title="🐱 Meow">🐱 gato</Hst.Story>

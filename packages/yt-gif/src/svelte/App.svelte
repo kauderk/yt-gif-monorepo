@@ -22,8 +22,8 @@
 </script>
 
 <App />
-<Styles />
 <Player width="100%" />
+<Styles />
 
 <style global lang="scss">
 	@import './../styles/css-variables.scss';
