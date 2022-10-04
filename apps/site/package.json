@@ -10,7 +10,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "astro dev --port 5001",
-		"preview": "astro preview --port 5001",
 		"start": "astro dev",
 		"build": "astro build",
 		"clean": "rimraf dist",

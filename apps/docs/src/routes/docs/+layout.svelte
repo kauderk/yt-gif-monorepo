@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/stores'
 
 	interface Page {
-		title?: string;
-		links: { href: string; text: string }[];
+		title?: string
+		links: { href: string; text: string }[]
 	}
 
 	const pages: Array<Page> = [
@@ -11,29 +11,47 @@
 			links: [
 				{
 					href: '',
-					text: 'Home'
+					text: 'Home',
 				},
 				{
 					href: 'markdown',
-					text: 'Markdown Tips'
-				}
-			]
+					text: 'Markdown Tips',
+				},
+			],
+		},
+		{
+			title: 'Preguntas Frecuentes',
+			links: [
+				{
+					href: 'roam-research',
+					text: 'Roam Research',
+				},
+			],
+		},
+		{
+			title: 'Timestamps',
+			links: [
+				{
+					href: 'timestamps',
+					text: 'Timestamps',
+				},
+			],
 		},
 		{
 			title: 'Components',
 			links: [
 				{
 					href: 'button',
-					text: 'Button'
-				}
-			]
-		}
-	];
+					text: 'Button',
+				},
+			],
+		},
+	]
 
 	$: active = (href: string): boolean => {
-		const path = $page.url.pathname.split('/')[2];
-		return path === href || (!href && !path);
-	};
+		const path = $page.url.pathname.split('/')[2]
+		return path === href || (!href && !path)
+	}
 </script>
 
 <div

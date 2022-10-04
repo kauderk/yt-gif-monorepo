@@ -2,7 +2,7 @@
 	"name": "@apps/docs",
 	"description": "A skeleton documentation site powered by MdSvex & Svelte!",
 	"author": "",
-	"version": "1.0.0",
+	"version": "0.2.0",
 	"inherits": [
 		"@packages/dependencies/package.svelte.json",
 		"@packages/dependencies/package.packages.json"

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap');
 
 body {
-  background-image: url("../images/web_bg.jpg") !important;
+  // background-image: url("../images/web_bg.jpg") !important;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

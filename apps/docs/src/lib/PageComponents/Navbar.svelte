@@ -1,34 +1,39 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { version } from '../../../package.json';
-	import '../../app.css';
-	export let dark;
+	import { page } from '$app/stores'
+	import { version } from '../../../package.json'
+	import '../../app.css'
+	export let dark
 
-	$: path = $page.url.pathname.split('/')[1];
+	$: path = $page.url.pathname.split('/')[1]
 
 	function toggleTheme() {
-		dark = !dark;
+		dark = !dark
 		if (dark === false) {
-			document.documentElement.classList.remove('dark');
+			document.documentElement.classList.remove('dark')
 		} else {
-			document.documentElement.classList.add('dark');
+			document.documentElement.classList.add('dark')
 		}
 	}
 </script>
 
 <header
-	class="fixed top-0 left-0 w-full z-20 h-20 flex items-center {dark ? 'bg-[#282C31]' : 'bg-white'}"
+	class="fixed top-0 left-0 w-full z-20 h-20 flex items-center {dark
+		? 'bg-[#282C31]'
+		: 'bg-white'}"
 >
 	<nav class="max-w-screen-xl h-full w-full mx-auto px-5">
-		<div class="flex items-center justify-between h-full border-b border-gray-800">
+		<div
+			class="flex items-center justify-between h-full border-b border-gray-800"
+		>
 			<a href="/" class="text-gray-200 text-2xl font-black">
-				Title
+				yt-gif
 				<span class="text-sm text-gray-600">v{version}</span>
 			</a>
 			<div class="flex items-center gap-4">
 				<a
 					href="/changelog"
-					class="text-sm font-medium py-2 px-3 rounded {path === 'changelog'
+					class="text-sm font-medium py-2 px-3 rounded {path ===
+					'changelog'
 						? 'text-white bg-orange-500'
 						: 'hover:bg-gray-800 hover:text-white'}"
 				>
@@ -36,7 +41,8 @@
 				</a>
 				<button
 					class="hover:bg-gray-800 hover:text-white text-sm font-medium py-2 px-3 rounded"
-					on:click={toggleTheme}>{dark ? 'Dark' : 'Light'} Mode</button
+					on:click={toggleTheme}
+					>{dark ? 'Dark' : 'Light'} Mode</button
 				>
 				<a
 					href="https://github.com/user/repository"

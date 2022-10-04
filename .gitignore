@@ -74,6 +74,7 @@ pnpm-lock.yaml
 .DS_Store
 *.pem
 static/resources
+**/static/local
 /turbosvelte-cli
 package
 /package
