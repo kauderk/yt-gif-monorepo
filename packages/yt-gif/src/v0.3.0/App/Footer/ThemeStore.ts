@@ -46,6 +46,8 @@ type Tm = 'dark' | 'light'
 export const UpdateCssVars = (theme: Tm) => {
 	const value = get(themeStore).pallet[theme].color
 	const opposite = get(themeStore).pallet[theme].opposite
+	// FIXME:
+	document?.documentElement.classList.toggle('dark-props', theme=='dark')
 	saveCssShadeStyleVariables(value, '--ddm-', opposite)
 }
 

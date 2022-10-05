@@ -134,7 +134,7 @@
 	// ----------------------
 	// initialize_yt_gif_on_mouseenter feature
 	[data-anim*='input'] {
-		background: var(--surface4-light);
+		background: var(--surface4);
 		border-radius: var(--radius-2);
 	}
 	[data-anim*='thumbnail'] {
@@ -153,13 +153,13 @@
 	}
 	@keyframes pulse {
 		0% {
-			box-shadow: inset 0 0 2px 1px var(--surface3-light);
+			box-shadow: inset 0 0 2px 1px var(--surface3);
 		}
 		50% {
-			box-shadow: inset 0 0 8px 4px var(--surface3-light);
+			box-shadow: inset 0 0 8px 4px var(--surface3);
 		}
 		100% {
-			box-shadow: inset 0 0 2px 1px var(--surface3-light);
+			box-shadow: inset 0 0 2px 1px var(--surface3);
 		}
 	}
 </style>
