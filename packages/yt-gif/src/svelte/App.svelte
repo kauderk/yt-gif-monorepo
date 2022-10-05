@@ -26,15 +26,29 @@
 <Styles />
 
 <style global lang="scss">
+	@import 'https://unpkg.com/open-props';
 	@import './../styles/css-variables.scss';
 	@import './../styles/shades.scss';
 	@import './../styles/mixin.scss';
 
+	.roam-app {
+		--brand1-light: var(--orange-6);
+		--brand2-light: var(--orange-8);
+		--brand3-light: var(--orange-9);
+		--text1-light: var(--gray-8);
+		--text2-light: var(--gray-7);
+		--surface1-light: var(--gray-0);
+		--surface2-light: var(--gray-1);
+		--surface3-light: var(--gray-2);
+		--surface4-light: var(--gray-3);
+		--surface5-light: var(--gray-4);
+	}
+
 	.hover-bg:hover {
-		background-color: var(--ddm-300);
+		background-color: var(--surface5-light);
 	}
 	.sub:hover {
-		background-color: rgba(74, 190, 195, 0.3);
+		background-color: var(--surface4-light);
 	}
 	.hidden {
 		display: none !important;
@@ -46,51 +60,51 @@
 		}
 	}
 	.ddmFocus {
-		border-color: var(--ddm-s-700) !important;
+		border-color: var(--surface4-light) !important;
 	}
 	.use-ddm-vars {
 		.bp3-menu {
-			background-color: var(--ddm-500);
+			background-color: var(--surface3-light);
 		}
 		.body-inject .bp3-popover-arrow-fill {
-			fill: var(--ddm-500);
+			fill: var(--surface3-light);
 		}
 
 		.btn-icon-inline span.bp3-button {
-			color: var(--ddm-A200);
+			color: var(--brand1-light);
 			&:hover {
-				color: var(--ddm-A100);
+				color: var(--brand2-light);
 			}
 			&:active {
-				color: var(--ddm-A400);
+				color: var(--brand3-light);
 			}
 		}
 		.btn-icon-main span.bp3-button {
-			color: var(--ddm-s-A200);
+			color: var(--brand1-light);
 			&:hover {
-				color: var(--ddm-s-A100);
+				color: var(--brand2-light);
 			}
 			&:active {
-				color: var(--ddm-s-A400);
+				color: var(--brand3-light);
 			}
 		}
 
 		.text-color-SA00 {
-			color: var(--ddm-s-A200);
+			color: var(--brand1-light);
 			&:hover {
-				color: var(--ddm-s-A100);
+				color: var(--brand2-light);
 			}
 			&:active {
-				color: var(--ddm-s-A400);
+				color: var(--brand3-light);
 			}
 		}
 		.text-color-A00 {
-			color: var(--ddm-A200);
+			color: var(--brand1-light);
 			&:hover {
-				color: var(--ddm-A100);
+				color: var(--brand2-light);
 			}
 			&:active {
-				color: var(--ddm-A400);
+				color: var(--brand3-light);
 			}
 		}
 	}
