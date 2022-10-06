@@ -1,7 +1,4 @@
-<script lang="ts">
-	import App from '$v3/components/Dropdown/App.svelte'
-	import Styles from 'src/styles/Styles.svelte'
-
+<script>
 	import {
 		themeStore,
 		useDmmVars,
@@ -9,7 +6,7 @@
 		useDdmVars,
 	} from '$v3/App/Footer/ThemeStore'
 	import { onMount } from 'svelte'
-	import Player from '$v3/components/ytgif/Player.svelte'
+	import Graph from './components/drawflow/Graph.svelte'
 
 	onMount(() => {
 		themeStore.useLocalStorage()
@@ -21,84 +18,46 @@
 	})
 </script>
 
-<App />
-<Player width="100%" />
-<Styles />
+<Graph />
+
+<svelte:head>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+		integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
+		crossorigin="anonymous"></script>
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+		integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+		crossorigin="anonymous" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+		rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+</svelte:head>
 
 <style global lang="scss">
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+
 	@import './open-props.scss';
-	@import './../styles/css-variables.scss';
-	@import './../styles/shades.scss';
-	@import './../styles/mixin.scss';
+	@import './components/drawflow/styles/beautiful.css';
+	/* https://jerosoler.github.io/drawflow-theme-generator/ */
+	@import './components/drawflow/styles/min.css';
+	@import './components/drawflow/styles/gray.css';
+	/* https://github.com/p34eu/selectables */
+	@import './components/drawflow/plugins/selectables/index.css';
 
-	body {
-		background-color: var(--surface3);
+	html,
+	body,
+	#app {
+		height: 100%;
+		width: 100%;
+		margin: 0;
 	}
-
-	.hover-bg:hover {
-		background-color: var(--surface5);
-	}
-	.sub:hover {
-		background-color: var(--surface4);
-	}
-	.hidden {
-		display: none !important;
-	}
-	.iddle {
-		opacity: 0;
-		&:hover {
-			opacity: 1;
-		}
-	}
-	.ddmFocus {
-		border-color: var(--surface4) !important;
-	}
-	.use-ddm-vars {
-		// FIXME: style: migrar app y player a css open props 3a0fbbc26a12b2c6923e25b80ba9e8cd15bbfda2
-		// &:hover and &:active should respect previous "accent colors" var(--ddm-s-A
-		.bp3-menu {
-			background-color: var(--surface3);
-		}
-		.body-inject .bp3-popover-arrow-fill {
-			fill: var(--surface3);
-		}
-
-		.btn-icon-inline span.bp3-button {
-			color: var(--brand1);
-			&:hover {
-				color: var(--brand2);
-			}
-			&:active {
-				color: var(--brand3);
-			}
-		}
-		.btn-icon-main span.bp3-button {
-			color: var(--brand1);
-			&:hover {
-				color: var(--brand2);
-			}
-			&:active {
-				color: var(--brand3);
-			}
-		}
-
-		.text-color-SA00 {
-			color: var(--brand1);
-			&:hover {
-				color: var(--brand2);
-			}
-			&:active {
-				color: var(--brand3);
-			}
-		}
-		.text-color-A00 {
-			color: var(--brand1);
-			&:hover {
-				color: var(--brand2);
-			}
-			&:active {
-				color: var(--brand3);
-			}
-		}
+	.wrapper {
+		background: var(--surface3);
 	}
 </style>
