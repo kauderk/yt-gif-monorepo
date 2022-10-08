@@ -17,11 +17,14 @@
     "dashboard-widget-document-list",
     "dashboard-widget-netlify",
     "@sanity/code-input",
-    "asset-source-unsplash"
+    "asset-source-unsplash",
+    "dark-mode"
   ],
   "env": {
     "development": {
-      "plugins": ["@sanity/vision"]
+      "plugins": [
+        "@sanity/vision"
+      ]
     }
   },
   "parts": [

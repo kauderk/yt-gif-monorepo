@@ -1,10 +1,13 @@
-import {getPostsQuery} from '$lib/queries'
-import {client} from '$lib/sanityClient'
+import { getPostsQuery } from '$lib/queries'
+import { client } from '$lib/sanityClient'
 
 // Gets a specific author from its slug.current value
-export async function load({params: {slug}}) {
-  const author =
-    await client.fetch(/* groq */ `*[_type == "author" && slug.current == "${slug}"][0]{
+/** @type {import('./$types').PageServerLoad} */
+export async function load({ slug }) {
+	const author = await client.fetch(/* groq */ `*[
+		_type == "author" &&
+		defined(slug.current) &&
+		 slug.current == "${slug}"][0]{
     ...,
 		"posts": ${getPostsQuery(`
 			// Get every post that includes the current document _id in its authors[]
@@ -12,14 +15,16 @@ export async function load({params: {slug}}) {
 		`)}
   }`)
 
-  if (author) {
-    return {
-  author
-}
-  }
+	if (author) {
+		return {
+			author,
+		}
+	}
 
-  throw new Error("@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292699)");
-  return {
-    status: 404
-  }
+	throw new Error(
+		'@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292699)'
+	)
+	return {
+		status: 404,
+	}
 }

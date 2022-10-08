@@ -1,7 +1,0 @@
----
-
----
-### Can't they be like `{{[[video]]}}` components and it's features?
-- I believe Roam Research does not expose their components; thus YT GIFs have to be their own separate extension, and for that matter they work exclusively with Youtube videos.
-- What is the difference between `{{[[video]]}}` and `{{[[yt-gif]]}}` components?
-    - `{{[[video]]}}` is a native component by Roam Research that supports multiple video types, and `{{[[yt-gif]]}}` is a component made by me that supports only Youtube videos (urls).

@@ -9040,6 +9040,11 @@ sanity-plugin-asset-source-unsplash@^0.1.5:
     react-infinite-scroll-component "^6.1.0"
     react-photo-gallery "^8.0.0"
 
+sanity-plugin-dark-mode@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.npmjs.org/sanity-plugin-dark-mode/-/sanity-plugin-dark-mode-0.0.33.tgz#ab5b2a09ba5cf9fe300f7c58111b7c46bebef583"
+  integrity sha512-WGptmz++WvBJ9Tjl9701x6k+zR4ppuKlZ8yEVQHt4OoVrQepdryCNZo8z+xdiREYCLZaLQyEuPnIc1CPt2lHoQ==
+
 sanity-plugin-dashboard-widget-document-list@^0.0.13:
   version "0.0.13"
   resolved "https://registry.npmjs.org/sanity-plugin-dashboard-widget-document-list/-/sanity-plugin-dashboard-widget-document-list-0.0.13.tgz#a2839d82d3ce3ee3d08735877cc13f3ad890de7a"
