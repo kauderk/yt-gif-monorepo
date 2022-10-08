@@ -16,12 +16,26 @@
 		</h2>
 		<div class="mt-16 w-full flex flex-col gap-4 md:flex-row">
 			<a class={primary} href="/doc/home">Ir a las Documentación</a>
-			<a class={secondary} href="/sprint/home"
+			<a class={secondary} data-secondary href="/sprint/home"
 				>Ir a los Blog de Desarrollo</a>
 			<a
 				class={secondary}
+				data-secondary
 				href="https://github.com/kauderk/yt-gif-monorepo"
 				>Ir al Codigo Fuente</a>
 		</div>
 	</section>
 </main>
+
+<style>
+	div > a:first-child {
+		--link-visited: var(--gray-3);
+	}
+	h2,
+	h1 {
+		color: var(--gray-5);
+	}
+	[data-secondary] {
+		background-color: var(--gray-7);
+	}
+</style>

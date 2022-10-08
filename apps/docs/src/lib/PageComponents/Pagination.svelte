@@ -9,6 +9,8 @@
 <nav>
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<a href="/" class:current={$page.url.pathname == '/'}>/inicio</a>
+	<a href="/example" class:current={$page.url.pathname == '/example'}
+		>/examples</a>
 	{#each roots as href}
 		<a href="/{href}/home" class:current={current(href)}>/{href}</a>
 	{/each}
@@ -16,11 +18,20 @@
 
 <style lang="scss">
 	@import 'https://unpkg.com/open-props';
+	nav {
+		--_link-bg: var(--orange-0);
+		--_link-text: var(--orange-6);
+		--indigo-0: var(--orange-2);
+		--indigo-2: var(--orange-4);
+	}
+	:global(html.dark) nav {
+		--_link-bg: var(--gray-7);
+		--_link-text: var(--gray-3);
+		--indigo-2: var(--gray-6);
+		--indigo-0: var(--indigo-1);
+	}
 
 	nav {
-		--_link-bg: white;
-		--_link-text: var(--gray-7);
-
 		display: flex;
 		gap: var(--size-2);
 

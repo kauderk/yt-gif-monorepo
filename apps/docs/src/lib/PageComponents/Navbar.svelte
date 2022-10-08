@@ -4,6 +4,8 @@
 	import { version } from '../../../package.json'
 	import '../../app.css'
 	import Pagination from './Pagination.svelte'
+	import { theme } from '$lib/store'
+
 	export let dark
 
 	$: path = $page.url.pathname.split('/')[1]
@@ -15,6 +17,7 @@
 		} else {
 			document.documentElement.classList.add('dark')
 		}
+		$theme = dark
 	}
 </script>
 
@@ -26,9 +29,9 @@
 		<div
 			class="flex items-center justify-between h-full border-b border-gray-800">
 			<div class="flex items-center gap-4">
-				<a href="/" class="text-gray-200 text-2xl font-black">
+				<a href="/" class="yt-gif-logo text-2xl font-black">
 					yt-gif
-					<span class="text-sm text-gray-600">v{version}</span>
+					<span class="">v{version}</span>
 				</a>
 				<Pagination />
 				<div>
@@ -41,8 +44,8 @@
 					href="/page/changelog"
 					class="text-sm font-medium py-2 px-3 rounded {path ===
 					'page'
-						? 'text-white bg-orange-500'
-						: 'hover:bg-gray-800 hover:text-white'}">
+						? 'text-white bg-orange-500 dark:text-black'
+						: 'hover:bg-gray-800 hover:text-white '}">
 					Changelog
 				</a>
 				<button
@@ -61,3 +64,30 @@
 		</div>
 	</nav>
 </header>
+
+<style lang="scss">
+	.yt-gif-logo {
+		color: var(--orange-6);
+		background-color: var(--orange-0);
+		border: 1px solid var(--gray-4);
+		text-shadow: 0 1px 0 var(--gray-8);
+		border-radius: var(--radius-conditional-3);
+
+		span {
+			font-size: var(--font-size-1);
+			color: var(--gray-5);
+			text-shadow: 0 1px 0 var(--gray-8);
+
+			&:hover {
+				color: var(--gray-6);
+			}
+		}
+
+		&:hover {
+			background-color: var(--orange-1);
+		}
+	}
+	:global(html.dark) .yt-gif-logo {
+		background-color: var(--gray-7);
+	}
+</style>

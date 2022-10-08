@@ -6,6 +6,8 @@
 		links: { href: string; text: string }[]
 	}>
 	export let path: string
+
+	import { theme } from '$lib/store'
 </script>
 
 <div
@@ -26,7 +28,7 @@
 							class="px-3 py-2 rounded block -mx-3 text-sm font-medium select-none hover:bg-gray-800 {$active(
 								href
 							)
-								? 'text-orange-400 bg-orange-400/10 hover:bg-orange-400/10'
+								? 'bg-orange-400/10 hover:bg-orange-400/10'
 								: ''}">
 							{text}
 						</a>
@@ -36,7 +38,8 @@
 		{/each}
 	</aside>
 	<main
-		class="max-w-full prose prose-invert prose-hr:border-gray-800 prose-a:text-brand hover:prose-a:text-brand-dark prose-tr:flex prose-th:flex-1 prose-td:flex-1 prose-blockquote:text-sm prose-blockquote:text-gray-500 prose-blockquote:border-gray-700">
+		class:prose-invert={$theme}
+		class="max-w-full prose  prose-hr:border-gray-800 prose-a:text-brand hover:prose-a:text-brand-dark prose-tr:flex prose-th:flex-1 prose-td:flex-1 prose-blockquote:text-sm prose-blockquote:text-gray-500 prose-blockquote:border-gray-700">
 		<slot />
 	</main>
 </div>
