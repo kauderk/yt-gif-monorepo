@@ -1,0 +1,19 @@
+/* https://github.com/jerosoler/Drawflow/issues/322#issuecomment-1133036432 */
+#drawflow {
+	position: relative;
+	text-align: initial;
+	width: 100%;
+	height: 800px;
+	border: 1px solid red;
+}
+.drawflow svg {
+	z-index: 1;
+}
+.drawflow .drawflow-node.GROUP {
+	width: 500px;
+	height: 500px;
+	z-index: 0;
+}
+.drawflow .drawflow-node.GROUP.hover-drop {
+	background: pink;
+}

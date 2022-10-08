@@ -62,6 +62,21 @@
 	}} />
 
 <style lang="scss">
+	@import 'https://unpkg.com/open-props';
+
+	.outter {
+		--brand1-light: var(--orange-6);
+		--brand2-light: var(--orange-7);
+		--brand3-light: var(--orange-8);
+		--text1-light: var(--gray-8);
+		--text2-light: var(--gray-7);
+		--surface1-light: var(--gray-0);
+		--surface2-light: var(--gray-1);
+		--surface3-light: var(--gray-2);
+		--surface4-light: var(--gray-3);
+		--surface5-light: var(--gray-4);
+	}
+
 	.outter > .wrapper {
 		display: flex;
 		align-items: center;
@@ -76,10 +91,8 @@
 	.controls {
 		height: fit-content;
 		width: 100%;
-
 		display: flex;
-		gap: 10px;
-
+		gap: var(--size-3);
 		position: absolute;
 		bottom: 20%; // Y axis
 		//transform: translateY(15px);
@@ -89,7 +102,7 @@
 
 		cursor: initial;
 
-		z-index: 4;
+		z-index: var(--layer-4);
 	}
 	// ---------------------------------------------
 	.wrapper,
@@ -102,28 +115,27 @@
 	.wrapper,
 	.iframe-wrapper {
 		height: 100%;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: var(--ratio-widescreen);
 	}
 	// Hmmm yes go on
 	.wrapper {
 		// multiple videos are annoying and too bright
 		filter: brightness(0.75);
 		position: relative;
-
 		// &.dont-focus-block {
 		// 	margin: 2px;
 		// }
 	}
 	.outter {
 		height: 100%;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: var(--ratio-widescreen);
 		cursor: initial;
 	}
 	// ----------------------
 	// initialize_yt_gif_on_mouseenter feature
 	[data-anim*='input'] {
-		background: var(--ddm-600);
-		border-radius: 10px;
+		background: var(--surface4);
+		border-radius: var(--radius-2);
 	}
 	[data-anim*='thumbnail'] {
 		background-image: url();
@@ -141,13 +153,13 @@
 	}
 	@keyframes pulse {
 		0% {
-			box-shadow: inset 0 0 2px 1px var(--ddm-500);
+			box-shadow: inset 0 0 2px 1px var(--surface3);
 		}
 		50% {
-			box-shadow: inset 0 0 8px 4px var(--ddm-500);
+			box-shadow: inset 0 0 8px 4px var(--surface3);
 		}
 		100% {
-			box-shadow: inset 0 0 2px 1px var(--ddm-500);
+			box-shadow: inset 0 0 2px 1px var(--surface3);
 		}
 	}
 </style>

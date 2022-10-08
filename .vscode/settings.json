@@ -1,4 +1,24 @@
 {
+	"files.exclude": {
+		"**/.git": true,
+		"**/.github": true,
+		"**/.gitignore": true,
+		//
+		"**/.svelte-kit": true,
+		"**/node_modules": true,
+		"**/.npm*": true,
+		"**/.husky": true,
+		"**/.templates": true,
+		"**/.changeset": true,
+		//
+		"**/.prettier*": true,
+		"**/.*lint*": true,
+		"**/plopfile.mjs": true,
+		//
+		"**/*.config.*": true,
+		"**/tsconfig.json": true,
+		"**/*-lock.*": true
+	},
 	"editor.tabSize": 4,
 	"editor.detectIndentation": false,
 	"search.exclude": {
@@ -44,6 +64,7 @@
 		"Btns",
 		"Cmpt",
 		"Congif",
+		"devlog",
 		"gifs",
 		"iframes",
 		"unrendered",

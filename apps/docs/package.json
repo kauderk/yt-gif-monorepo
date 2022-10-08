@@ -1,8 +1,8 @@
 {
 	"name": "@apps/docs",
-	"description": "A skeleton documentation site powered by MdSvex & Svelte!",
+	"description": "A documentation site powered by MdSvex, Svelte and Sanity!",
 	"author": "",
-	"version": "1.0.0",
+	"version": "0.2.0",
 	"inherits": [
 		"@packages/dependencies/package.svelte.json",
 		"@packages/dependencies/package.packages.json"
@@ -11,6 +11,9 @@
 		"dev": "vite dev --port 5003",
 		"preview": "vite preview --port 5003",
 		"build": "rimraf .netlify && vite build",
+		"dev:sanity": "cd studio && npm run start",
+		"build:sanity": "cd studio && npm run build",
+		"install:sanity": "cd studio && npm run i:sanity",
 		"package": "svelte-kit package",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check",
@@ -19,6 +22,7 @@
 		"preinstall": "pnpm exec inherit -u"
 	},
 	"devDependencies": {
+		"@portabletext/svelte": "^1.0.0-next.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-netlify": "1.0.0-next.78",
 		"@sveltejs/adapter-vercel": "next",
@@ -51,7 +55,9 @@
 		"@packages/components": "workspace:^0.2.0",
 		"@packages/config": "workspace:^0.2.0",
 		"@packages/metadata": "workspace:^0.2.0",
-		"@packages/yt-gif": "workspace:^0.2.0"
+		"@packages/yt-gif": "workspace:^0.2.0",
+		"@sanity/client": "^3.3.0",
+		"@sanity/image-url": "^1.0.1"
 	},
 	"type": "module"
 }

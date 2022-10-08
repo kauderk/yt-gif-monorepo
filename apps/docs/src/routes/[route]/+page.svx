@@ -1,0 +1,6 @@
+<script>
+	import { page } from '$app/stores'
+	$: path = $page.url.pathname.split('/')[1]
+</script>
+
+# [Layout Pages]

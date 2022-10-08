@@ -9,7 +9,7 @@
 		useDdmVars,
 	} from '$v3/App/Footer/ThemeStore'
 	import { onMount } from 'svelte'
-	import Player from '$v3/components/ytgif/Player.svelte'
+	import Graph from './components/drawflow/Graph.svelte'
 
 	onMount(() => {
 		themeStore.useLocalStorage()
@@ -25,73 +25,44 @@
 <Styles />
 <Player width="100%" />
 
+<svelte:head>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"
+		integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs="
+		crossorigin="anonymous"></script>
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+		integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+		crossorigin="anonymous" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+		rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+</svelte:head>
+
 <style global lang="scss">
-	@import './../styles/css-variables.scss';
-	@import './../styles/shades.scss';
-	@import './../styles/mixin.scss';
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
 
-	.hover-bg:hover {
-		background-color: var(--ddm-300);
-	}
-	.sub:hover {
-		background-color: rgba(74, 190, 195, 0.3);
-	}
-	.hidden {
-		display: none !important;
-	}
-	.iddle {
-		opacity: 0;
-		&:hover {
-			opacity: 1;
-		}
-	}
-	.ddmFocus {
-		border-color: var(--ddm-s-700) !important;
-	}
-	.use-ddm-vars {
-		.bp3-menu {
-			background-color: var(--ddm-500);
-		}
-		.body-inject .bp3-popover-arrow-fill {
-			fill: var(--ddm-500);
-		}
+	@import './open-props.scss';
+	@import './components/drawflow/styles/beautiful.css';
+	/* https://jerosoler.github.io/drawflow-theme-generator/ */
+	@import './components/drawflow/styles/min.css';
+	@import './components/drawflow/styles/gray.css';
+	/* https://github.com/p34eu/selectables */
+	@import './components/drawflow/plugins/selectables/index.css';
 
-		.btn-icon-inline span.bp3-button {
-			color: var(--ddm-A200);
-			&:hover {
-				color: var(--ddm-A100);
-			}
-			&:active {
-				color: var(--ddm-A400);
-			}
-		}
-		.btn-icon-main span.bp3-button {
-			color: var(--ddm-s-A200);
-			&:hover {
-				color: var(--ddm-s-A100);
-			}
-			&:active {
-				color: var(--ddm-s-A400);
-			}
-		}
-
-		.text-color-SA00 {
-			color: var(--ddm-s-A200);
-			&:hover {
-				color: var(--ddm-s-A100);
-			}
-			&:active {
-				color: var(--ddm-s-A400);
-			}
-		}
-		.text-color-A00 {
-			color: var(--ddm-A200);
-			&:hover {
-				color: var(--ddm-A100);
-			}
-			&:active {
-				color: var(--ddm-A400);
-			}
-		}
+	html,
+	body,
+	#app {
+		height: 100%;
+		width: 100%;
+		margin: 0;
+	}
+	.wrapper {
+		background: var(--surface3);
 	}
 </style>

@@ -1,13 +1,13 @@
-/// <reference types="histoire" />
-
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { sveltekit } from '@sveltejs/kit/vite'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
 import { cwd } from 'process'
 import alias from '@rollup/plugin-alias'
 
-export default defineConfig({
+const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
+
+/** @type {import('vite').UserConfig} */
+const config = {
 	build: {
 		target: ['es2020'],
 	},
@@ -17,8 +17,23 @@ export default defineConfig({
 			sourcemap: true,
 		},
 	},
+	ssr: {
+		noExternal: [
+			...Object.keys(pkg.dependencies || {}),
+			'@popperjs/core',
+			'dayjs',
+			'@popperjs+core',
+			'svelte-popover',
+		],
+	},
+	server: {
+		open: '/',
+	},
+	optimizeDeps: {
+		include: ['svelvet'],
+	},
+
 	plugins: [
-		svelte(),
 		alias({
 			//resolve: ['.js', '.ts', '.svelte'],
 			entries: [
@@ -49,42 +64,14 @@ export default defineConfig({
 				},
 			],
 		}),
+
+		/* Vitebook Fix: https://github.com/vitebook/vitebook/issues/89
+		 *********************************************************************/
+		sveltekit(),
 	],
-	histoire: {
-		// Histoire config can also go here
-		plugins: [
-			alias({
-				//resolve: ['.js', '.ts', '.svelte'],
-				entries: [
-					{
-						find: 'src',
-						replacement: resolve('../../packages/yt-gif/src'),
-					},
-					{
-						find: '$chm',
-						replacement: resolve(
-							'../../packages/yt-gif/src/chrome_extension'
-						),
-					},
-					{ find: '$static', replacement: 'static' },
-					{
-						find: '$v2',
-						replacement: resolve(
-							'../../packages/yt-gif/src/yt-gif/v0.2.0/js'
-						),
-					},
-					{
-						find: '$v3',
-						replacement: resolve(
-							'../../packages/yt-gif/src/v0.3.0'
-						),
-					},
-					{
-						find: '$lib',
-						replacement: resolve('../../packages/yt-gif/src/lib'),
-					},
-				],
-			}),
-		],
-	},
-})
+}
+
+if (process.env.NODE_ENV === 'production')
+	config.resolve.preserveSymlinks = true
+
+export default config

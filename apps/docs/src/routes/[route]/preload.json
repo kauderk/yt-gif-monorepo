@@ -1,0 +1,9 @@
+{
+	"title": "Home",
+	"categories": ["MPV"],
+	"routes": ["doc", "sprint", "post", "devlog", "faq"],
+	"routesAliases": {
+		"s": ["doc", "sprint", "post"],
+		"faq": "F.A.Q."
+	}
+}

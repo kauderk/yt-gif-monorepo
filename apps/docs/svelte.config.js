@@ -1,8 +1,8 @@
-import { mdsvex } from 'mdsvex';
-import path from 'path';
-import adapter from '@sveltejs/adapter-netlify';
-import preprocess from 'svelte-preprocess';
-import slug from 'rehype-slug';
+import { mdsvex } from 'mdsvex'
+import path from 'path'
+import adapter from '@sveltejs/adapter-netlify'
+import preprocess from 'svelte-preprocess'
+import slug from 'rehype-slug'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -12,17 +12,17 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		preprocess({
-			postcss: true
+			postcss: true,
 		}),
 		mdsvex({
 			extensions: ['.svx', '.md'],
-			rehypePlugins: [slug]
-		})
+			rehypePlugins: [slug],
+		}),
 	],
 
 	kit: {
-		adapter: adapter()
-	}
-};
+		adapter: adapter(),
+	},
+}
 
-export default config;
+export default config
