@@ -1,7 +1,7 @@
 import { Dashboard } from '@sanity/icons'
 
 export default {
-	name: 'docs',
+	name: 'doc',
 	type: 'document',
 	title: 'Documentation',
 	icon: Dashboard,

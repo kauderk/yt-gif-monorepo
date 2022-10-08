@@ -1,7 +1,7 @@
 import { BookIcon } from '@sanity/icons'
 
 export default {
-	name: 'sprint',
+	name: 'sprints',
 	type: 'document',
 	title: 'Weekly Sprint',
 	icon: BookIcon,

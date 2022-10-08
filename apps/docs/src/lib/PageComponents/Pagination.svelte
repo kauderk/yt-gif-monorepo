@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	export let roots = ['docs', 'sprints', 'posts', 'dev', 'F.A.Q']
+	import preload from '../../routes/[route]/preload.json'
+	export let roots: string[] = preload.routes
 
 	$: current = (href: string) => $page.url.pathname.startsWith(`/${href}`)
 </script>

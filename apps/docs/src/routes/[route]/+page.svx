@@ -1,4 +1,9 @@
-# Home
+<script>
+	import { page } from '$app/stores'
+	$: path = $page.url.pathname.split('/')[1]
+</script>
+
+# /{path}
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas minus, voluptatum unde libero maxime sint corrupti itaque est non! Eos.
 

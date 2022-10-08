@@ -2,7 +2,7 @@
 	import { active } from '../utils/pagination'
 
 	export let pages: Array<{
-		title?: string
+		title: string
 		links: { href: string; text: string }[]
 	}>
 	export let path: string
@@ -18,6 +18,7 @@
 					{title}
 				</h4>
 			{/if}
+			bye
 			<ul>
 				{#each links as { href, text }}
 					<li class="mb-1 last:mb-0">

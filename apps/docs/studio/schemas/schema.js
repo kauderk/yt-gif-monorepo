@@ -9,7 +9,7 @@ import author from './documents/author'
 import category from './documents/category'
 import post from './documents/post'
 import sprint from './documents/sprint'
-import docs from './documents/docs'
+import doc from './documents/doc'
 
 // Object types
 import portableText from './objects/portableText'
@@ -25,7 +25,7 @@ export default createSchema({
 		// The following are document types which will appear
 		// in the studio.
 		sprint,
-		docs,
+		doc,
 		post,
 		category,
 		author,

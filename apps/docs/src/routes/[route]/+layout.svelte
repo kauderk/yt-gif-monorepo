@@ -8,13 +8,13 @@
 		{
 			title: data.preload.title,
 			links: data.posts.map(p => ({
-				href: p.slug.current ?? 'slug',
-				text: p.title ?? 'title',
+				href: p.slug.current,
+				text: p.title,
 			})),
 		},
 	]
 </script>
 
-<Base {pages} path="/sprints">
+<Base {pages} path="/{data.page}">
 	<slot />
 </Base>
