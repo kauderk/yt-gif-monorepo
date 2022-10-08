@@ -11,13 +11,17 @@
 	export let data: PageServerData
 
 	$: post = data.post
+
+	import { page } from '$app/stores'
+	$: path = $page.url.pathname.split('/')[1]
 </script>
 
 <svelte:head>
 	<title>{post.title}</title>
 </svelte:head>
 
-<h1>{post.title}</h1>
+<span>/{path}</span>
+<h1>/{post.title}</h1>
 <p>
 	Published {new Date(post.publishedAt).toLocaleDateString('en', {
 		month: 'long',

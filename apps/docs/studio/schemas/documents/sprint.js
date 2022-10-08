@@ -1,7 +1,7 @@
 import { BookIcon } from '@sanity/icons'
 
 export default {
-	name: 'sprints',
+	name: 'sprint',
 	type: 'document',
 	title: 'Weekly Sprint',
 	icon: BookIcon,
@@ -71,7 +71,7 @@ export default {
 			media: 'image',
 		},
 		prepare({ title = 'No title', slug, media }) {
-			const path = `/sprints/${slug.current}/`
+			const path = `/sprint/${slug.current}/`
 			return {
 				title,
 				media,

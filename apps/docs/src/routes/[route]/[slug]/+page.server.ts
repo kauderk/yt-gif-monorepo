@@ -5,7 +5,7 @@ import { client } from '$lib/sanityClient'
 export async function load(F) {
 	const post: { title: string; slug: { current: string } } =
 		await client.fetch(/* groq */ `*[
-			_type == "sprint" &&
+			_type == "${F.params.route}" &&
 			defined(slug.current) &&
 			 slug.current == "${F.params.slug}"][0]{
 			title,

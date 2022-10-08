@@ -18,7 +18,6 @@
 					{title}
 				</h4>
 			{/if}
-			bye
 			<ul>
 				{#each links as { href, text }}
 					<li class="mb-1 last:mb-0">

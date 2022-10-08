@@ -10,6 +10,9 @@ import category from './documents/category'
 import post from './documents/post'
 import sprint from './documents/sprint'
 import doc from './documents/doc'
+import devlog from './documents/devlog'
+import faq from './documents/faq'
+import page from './documents/page'
 
 // Object types
 import portableText from './objects/portableText'
@@ -27,6 +30,9 @@ export default createSchema({
 		sprint,
 		doc,
 		post,
+		devlog,
+		faq,
+		page,
 		category,
 		author,
 

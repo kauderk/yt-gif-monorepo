@@ -10,7 +10,7 @@
 	<!-- svelte-ignore a11y-missing-attribute -->
 	<a href="/" class:current={$page.url.pathname == '/'}>/inicio</a>
 	{#each roots as href}
-		<a href="/{href}" class:current={current(href)}>/{href}</a>
+		<a href="/{href}/home" class:current={current(href)}>/{href}</a>
 	{/each}
 </nav>
 

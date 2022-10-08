@@ -1,10 +1,10 @@
-import { Dashboard } from '@sanity/icons'
+import { DashboardIcon } from '@sanity/icons'
 
 export default {
 	name: 'doc',
 	type: 'document',
 	title: 'Documentation',
-	icon: Dashboard,
+	icon: DashboardIcon,
 	fields: [
 		{
 			name: 'title',

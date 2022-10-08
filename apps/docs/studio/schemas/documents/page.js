@@ -1,17 +1,16 @@
-import { DocumentIcon } from '@sanity/icons'
+import { UlistIcon } from '@sanity/icons'
 
 export default {
-	name: 'post',
+	name: 'page',
 	type: 'document',
-	title: 'Blog Post',
-	icon: DocumentIcon,
+	title: 'Pages',
+	icon: UlistIcon,
 	fields: [
 		{
 			name: 'title',
 			type: 'string',
 			title: 'Title',
-			description:
-				'Titles should be catchy, descriptive, and not too long',
+			description: 'Titles should be descriptive, and with many visuals.',
 			validation: Rule => Rule.required(),
 		},
 		{
@@ -72,7 +71,7 @@ export default {
 			media: 'image',
 		},
 		prepare({ title = 'No title', slug, media }) {
-			const path = `/blog/${slug.current}/`
+			const path = `/page/${slug.current}/`
 			return {
 				title,
 				media,

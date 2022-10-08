@@ -4,7 +4,7 @@
 
 	export let data: LayoutServerData
 
-	const pages = [
+	$: pages = [
 		{
 			title: data.preload.title,
 			links: data.posts.map(p => ({

@@ -38,9 +38,9 @@
 			</div>
 			<div class="flex items-center gap-4">
 				<a
-					href="/changelog"
+					href="/page/changelog"
 					class="text-sm font-medium py-2 px-3 rounded {path ===
-					'changelog'
+					'page'
 						? 'text-white bg-orange-500'
 						: 'hover:bg-gray-800 hover:text-white'}">
 					Changelog
@@ -50,8 +50,7 @@
 					on:click={toggleTheme}
 					>{dark ? 'Dark' : 'Light'} Mode</button>
 				<a
-					href="https://github.com/user/repository"
-					target="_blank"
+					href="https://github.com/kauderk/yt-gif-monorepo"
 					rel="noreferrer"
 					class="hover:text-white py-4">
 					<svg viewBox="0 0 16 16" fill="currentColor" class="w-5 h-5"
