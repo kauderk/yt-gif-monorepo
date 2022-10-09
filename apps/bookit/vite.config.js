@@ -1,10 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
-import { join, resolve } from 'path'
-import { readFileSync } from 'fs'
-import { cwd } from 'process'
+import { resolve } from 'path'
 import alias from '@rollup/plugin-alias'
-
-const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
 
 /** @type {import('vite').UserConfig} */
 const config = {
@@ -19,7 +15,6 @@ const config = {
 	},
 	ssr: {
 		noExternal: [
-			...Object.keys(pkg.dependencies || {}),
 			'@popperjs/core',
 			'dayjs',
 			'@popperjs+core',

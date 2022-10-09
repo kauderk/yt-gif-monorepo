@@ -6,6 +6,19 @@
 		//
 		"**/.svelte-kit": true,
 		"**/node_modules": true,
+		"**/patches": true,
+		"**/dist": true,
+		//
+		"**/build": true,
+		"**/.histoire": true,
+		"**/.turbo": true,
+		//
+		"**/*.netlify": true,
+		"**/*.toml": true,
+		//
+		"**/*.d.ts": true,
+		"**/.env": true,
+		//
 		"**/.npm*": true,
 		"**/.husky": true,
 		"**/.templates": true,
@@ -16,7 +29,7 @@
 		"**/plopfile.mjs": true,
 		//
 		"**/*.config.*": true,
-		"**/tsconfig.json": true,
+		"**/tsconfig*.json": true,
 		"**/*-lock.*": true
 	},
 	"editor.tabSize": 4,
