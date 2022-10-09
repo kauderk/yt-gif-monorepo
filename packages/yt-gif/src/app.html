@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="YT GIF components" />
+		<link rel="icon" href="/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>yt-gif preview</title>
+
+		<script>
+			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
+			if (
+				localStorage.theme === 'dark' ||
+				(!('theme' in localStorage) &&
+					window.matchMedia('(prefers-color-scheme: dark)').matches)
+			) {
+				document.documentElement.classList.add('dark')
+			} else {
+				document.documentElement.classList.remove('dark')
+			}
+		</script>
+		<script src="/dependencies.js"></script>
+		%sveltekit.head%
+	</head>
+	<body
+		class="font-body pt-1 bg-white text-black dark:bg-[#282C31] dark:text-gray-200 font-normal scroll-pt-40"
+	>
+		<div>%sveltekit.body%</div>
+	</body>
+</html>
