@@ -1,7 +1,7 @@
 <script>
 	export let Hst
-	import Range from '@packages/yt-gif/src/v0.3.0/components/Range/Range.svelte'
-	import { iframe_buffer_slider } from '@packages/yt-gif/src/v0.3.0/App/Miscellaneous.ts'
+	import { Range } from '@packages/yt-gif'
+	import { iframe_buffer_slider } from '@packages/yt-gif'
 </script>
 
 <Hst.Story title="Range">
