@@ -1,5 +1,5 @@
 <script>
-  import LandingPage from '$lib/components/landing/LandingPage.svelte';
+	import LandingPage from '$cmp/landing/LandingPage.svelte'
 </script>
 
 <LandingPage />
