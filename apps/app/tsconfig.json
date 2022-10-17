@@ -27,7 +27,11 @@
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
 			"$cmp": ["src/components"],
-			"$cmp/*": ["src/components/*"]
+			"$cmp/*": ["src/components/*"],
+			"$styles": ["src/styles"],
+			"$styles/*": ["src/styles/*"],
+			"$stores": ["src/stores"],
+			"$stores/*": ["src/stores/*"]
 		}
 	},
 	"include": [

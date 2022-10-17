@@ -13,6 +13,23 @@
 	</div>
 </div>
 
-<style>
-	@import '../../styles/style1.css';
+<style lang="scss">
+	@use '../../../styles/auth/layout.css';
+
+	.container2 {
+		background-color: #fff;
+		border-radius: 10px;
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+			0 10px 10px rgba(0, 0, 0, 0.22);
+		position: relative;
+		overflow: hidden;
+		width: 400px;
+		max-width: 100%;
+		min-height: 480px;
+	}
+	.sign-in-container2 {
+		left: 0;
+		width: 100%;
+		z-index: 2;
+	}
 </style>

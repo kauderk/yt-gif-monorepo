@@ -5,6 +5,16 @@ import adapter from '@sveltejs/adapter-netlify'
 /** @type {import('@sveltejs/kit').Config} */
 
 const config = {
+	onwarn: (warning, handler) => {
+		const { code } = warning
+		// I want to use "tree shaking" but @import is for global styles
+		// and @use might be bad for performance but is the best I can do
+		if (code === 'css-unused-selector') {
+			return
+		}
+
+		handler(warning)
+	},
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: [

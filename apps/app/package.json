@@ -22,6 +22,7 @@
 		"@portabletext/svelte": "^1.0.0-next.1",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-netlify": "1.0.0-next.78",
+		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@sveltejs/package": "1.0.0-next.5",
@@ -29,9 +30,11 @@
 		"@typescript-eslint/eslint-plugin": "^5.10.1",
 		"@typescript-eslint/parser": "^5.10.1",
 		"autoprefixer": "^10.4.7",
+		"cssnano": "^5.0.1",
 		"eslint": "^8.0.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^3.4.1",
+		"firebase": "^9.12.1",
 		"mdsvex": "^0.9.8",
 		"postcss": "^8.4.13",
 		"postcss-load-config": "^3.1.4",
@@ -46,9 +49,7 @@
 		"tailwindcss": "^3.0.24",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3",
-		"vite": "^3.1.0",
-		"@sveltejs/adapter-node": "next",
-		"cssnano": "^5.0.1"
+		"vite": "^3.1.0"
 	},
 	"dependencies": {
 		"@packages/components": "workspace:^0.2.0",
