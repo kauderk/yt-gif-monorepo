@@ -11,7 +11,7 @@
 
 <div class:flex={center} class="items-center justify-center">
 	<button
-		on:click={() => alert('You clicked an action')}
+		on:click
 		class={`
   ${primary && 'text-gray-800 bg-white'}
   ${secondary && 'text-gray-50 gradient'}

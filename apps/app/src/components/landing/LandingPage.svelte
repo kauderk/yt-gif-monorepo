@@ -2,10 +2,10 @@
 	import Nav from './Nav.svelte'
 	import Hero from './Hero.svelte'
 	import Features from './Features.svelte'
-	import Cards from './Cards.svelte'
-	import Pricing from './Pricing.svelte'
-	import CallToAction from './CallToAction.svelte'
-	import Footer from './Footer.svelte'
+	// import Cards from './Cards.svelte'
+	// import Pricing from './Pricing.svelte'
+	// import CallToAction from './CallToAction.svelte'
+	import Footer from './Footer/index.svelte'
 </script>
 
 <div
