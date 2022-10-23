@@ -17,12 +17,13 @@
 		"**/*.toml": true,
 		//
 		"**/*.d.ts": true,
-		"**/.env": true,
+		"**/.env*": true,
 		//
 		"**/.npm*": true,
 		"**/.husky": true,
 		"**/.templates": true,
 		"**/.changeset": true,
+		"**/*.dump": true,
 		//
 		"**/.prettier*": true,
 		"**/.*lint*": true,

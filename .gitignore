@@ -136,3 +136,8 @@ serverless-cms-media-manager
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase-admin api tokens
+**/admin.json
+# any kind of database
+**/*.dump
