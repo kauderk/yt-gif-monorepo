@@ -21,7 +21,10 @@ if (!getApps().length) {
 		credential: admin.credential.cert({
 			projectId: PRIVATE_FIREBASE_ADMIN_PROJECT_ID,
 			clientEmail: PRIVATE_FIREBASE_ADMIN_CLIENT_EMAIL,
-			privateKey: PRIVATE_FIREBASE_ADMIN_PRIVATE_KEY,
+			privateKey: PRIVATE_FIREBASE_ADMIN_PRIVATE_KEY?.replace(
+				/\\n/gm,
+				'\n'
+			),
 		}),
 		storageBucket: PRIVATE_FIREBASE_ADMIN_STORAGE_BUCKET,
 	})
