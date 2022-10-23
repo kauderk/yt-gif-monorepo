@@ -4,7 +4,8 @@
 	"scripts": {
 		"dev": "vite dev --port 5006",
 		"preview": "vite preview --port 5006",
-		"build": "rimraf .netlify && vite build",
+		"build": "npm run pre:db && rimraf .netlify && vite build",
+		"pre:db": "prisma db pull && prisma generate",
 		"package": "svelte-kit package",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
