@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  uid                String         @id @unique
+  username           String         @unique
+  name               String
+  photoUrl           String         @default("/images/default-user-photo.png")
+  createdAt          DateTime       @default(now())
+  followersCount     Int            @default(0)
+  followingCount     Int            @default(0)
+  privacy            PrivacySetting @default(PUBLIC)
+  createdCollections Collection[]   @relation("author")
+  following          Follow[]       @relation("follower")
+  followers          Follow[]       @relation("following")
+  posts              Post[]
+  allowedCollections Collection[]
+}
+
+model Follow {
+  followerUid  String
+  followingUid String
+  since        DateTime @default(now())
+  follower     User     @relation("follower", fields: [followerUid], references: [uid])
+  following    User     @relation("following", fields: [followingUid], references: [uid])
+
+  @@id([followerUid, followingUid])
+}
+
+model Post {
+  pid            String      @id @unique
+  title          String
+  description    String
+  imageUrl       String
+  authorUid      String
+  createdAt      DateTime    @default(now())
+  metadataKeys   String[]
+  metadataValues String[]
+  collectionCid  String?
+  showInFeed     Boolean     @default(true)
+  author         User        @relation(fields: [authorUid], references: [uid])
+  collection     Collection? @relation(fields: [collectionCid], references: [cid])
+}
+
+model Collection {
+  cid          String         @id @unique
+  name         String
+  description  String
+  authorUid    String
+  createdAt    DateTime       @default(now())
+  postsCount   Int            @default(0)
+  privacy      PrivacySetting @default(PUBLIC)
+  author       User           @relation("author", fields: [authorUid], references: [uid])
+  posts        Post[]
+  allowedUsers User[]
+}
+
+enum PrivacySetting {
+  PUBLIC
+  PRIVATE
+}
