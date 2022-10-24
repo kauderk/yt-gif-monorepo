@@ -21,11 +21,24 @@
 			goto('/')
 		}
 	}} />
+
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/Graph.css" />
+	<script
+		src="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/dependencies.js"
+		defer></script>
+	<script
+		src="https://kauderk.github.io/code-snippets/yt-gif-ddm/dist/Graph/Graph.js"
+		defer></script>
+</svelte:head>
+
 <Alerter />
 <div class="flex flex-col justify-between h-full">
 	<Header />
 
-	<main class="grow shrink-0 overflow-auto">
+	<main class="grow overflow-auto">
 		<slot />
 	</main>
 
