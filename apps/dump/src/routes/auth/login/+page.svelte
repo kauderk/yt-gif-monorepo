@@ -12,7 +12,7 @@
 
 		switch (result) {
 			case 'success':
-				goto(redirectUrl ?? `/`);
+				goto(`/`);
 				break;
 			case 'failure':
 				break;

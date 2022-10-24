@@ -43,7 +43,7 @@
 				const body = await res.json();
 				currentUser.set(body.user);
 
-				return goto(redirectUrl ?? `/${username}`);
+				return goto(`/`);
 			} else {
 				usernameError = 'Username is already in use';
 				finishLoading = false;
