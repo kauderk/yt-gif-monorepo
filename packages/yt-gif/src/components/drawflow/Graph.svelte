@@ -48,7 +48,7 @@
 	})
 </script>
 
-<div class="wrapper" style="height: calc(100% - 1px);">
+<div class="wrapper">
 	<div
 		class="flex flex-col justify-start items-center px-6 border-b border-gray-600 w-full">
 		<div
