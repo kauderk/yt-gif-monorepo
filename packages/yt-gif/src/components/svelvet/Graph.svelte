@@ -2,7 +2,7 @@
 	import Grid from 'svelte-grid/src/index.svelte'
 	// @ts-ignore
 	import gridHelp from 'svelte-grid/src/utils/helper'
-	import Temp from './Temp.svelte'
+	import Temp from './graph-node/YTGIF.svelte'
 
 	const COLS = 6
 
@@ -17,7 +17,7 @@
 				x: 0,
 				y: 0,
 				w: 3,
-				h: 2,
+				h: 4,
 				customDragger: true,
 			}),
 			id: id(),
@@ -28,7 +28,7 @@
 				x: 3,
 				y: 0,
 				w: 3,
-				h: 2,
+				h: 4,
 				customDragger: true,
 			}),
 			id: id(),
@@ -40,10 +40,10 @@
 	function add() {
 		let newItem = {
 			6: gridHelp.item({
-				w: Math.round(randomNumberInRange(1, 4)),
-				h: Math.round(randomNumberInRange(1, 4)),
 				x: 0,
 				y: 0,
+				w: 3,
+				h: 4,
 			}),
 			id: id(),
 		}
@@ -65,7 +65,7 @@
 		let newItem = {
 			6: gridHelp.item({
 				w: 3,
-				h: 2,
+				h: 4,
 				x: 0,
 				y: 0,
 				customDragger: true,
@@ -155,6 +155,8 @@
 		align-items: center;
 		justify-content: center;
 		height: inherit;
+
+		background-color: #fa807214;
 	}
 	.wrapper {
 		height: auto;
