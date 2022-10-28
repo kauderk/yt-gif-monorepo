@@ -2,18 +2,21 @@
 	import {
 		themeStore,
 		useDmmVars,
-		UpdateCssVars,
+		// UpdateCssVars,
 		useDdmVars,
 	} from '$v3/App/Footer/ThemeStore'
+	import { useDB } from '$stores/firebase'
 	import { onMount } from 'svelte'
 
 	onMount(() => {
 		themeStore.useLocalStorage()
 		useDmmVars.useLocalStorage()
 
-		UpdateCssVars($themeStore.theme)
+		//UpdateCssVars($themeStore.theme)
 
 		useDdmVars(null, $useDmmVars)
+
+		useDB()
 	})
 </script>
 
@@ -23,4 +26,11 @@
 	@tailwind base;
 	@tailwind components;
 	@tailwind utilities;
+	@import '../styles/open-props.scss';
+	@import '../styles/scrollbar.scss';
+
+	// tailwind|milkdown counter measurements
+	.milkdown img {
+		display: inline;
+	}
 </style>
