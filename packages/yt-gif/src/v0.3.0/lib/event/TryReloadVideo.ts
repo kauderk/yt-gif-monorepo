@@ -2,6 +2,7 @@ import { isRendered } from '../dom/elements-yt-gif-parent'
 import { allVideoParameters } from '../types/config'
 import type { YT_TargetWrapper } from '../types/yt-types'
 import { sleep } from '$lib/utils'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 /* ***************** */
 export async function TryReloadVideo({
@@ -71,7 +72,8 @@ export async function TryReloadVideo({
 	t.setVolume(vol)
 
 	try {
-		t.setOnStateChange(window.AvoidCircularDependency.getOnStateChange())
+		t.setOnStateChange(SrrGlobal.AvoidCircularDependency.getOnStateChange())
+		debugger
 	} catch (error) {
 		console.error(
 			'YT GIF: ReloadYTVideo | onStateChange assignment to undefined'

@@ -3,6 +3,7 @@ import { attrInfo } from '../../config/paths'
 import { getOption } from '../../../lib/backend-frontend/option'
 import { UI } from '../../config/yt-gif-init'
 import { CleanAndBrandNewWrapper } from '../../../lib/utils'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function FitBuffer(
 	arr: Array<Tobserver | string>,
@@ -73,7 +74,7 @@ export function FitBuffer_OffScreen(
 				arr = shiftedArr
 
 				observer.disconnect()
-				return (window.YT_GIF_OBSERVERS.masterIframeBuffer = arr) // this can happen in the future...
+				return (SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer = arr) // this can happen in the future...
 			},
 			{ root: null, threshold: 0.1 } // set offset 0.1 means trigger if atleast 10% of element in viewport
 		) // 1.1

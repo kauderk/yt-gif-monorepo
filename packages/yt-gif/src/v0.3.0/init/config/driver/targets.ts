@@ -1,9 +1,10 @@
 import { cssData } from '../paths'
 import { ObserveIframesAndDelployYTPlayers } from '../../observer/yt-gif'
 import { UI } from '../yt-gif-init'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 function pushMasterObserverWithTargetClass(classToObserve: string) {
-	window.YT_GIF_OBSERVERS.masterMutationObservers.push(
+	SrrGlobal.YT_GIF_OBSERVERS.masterMutationObservers.push(
 		ObserveIframesAndDelployYTPlayers(classToObserve)
 	)
 }

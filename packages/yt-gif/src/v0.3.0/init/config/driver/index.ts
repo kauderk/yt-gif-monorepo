@@ -1,6 +1,7 @@
 import { YTGIF_Config } from '../../../lib/types/config'
 import { isTrue, ObjectKeys } from '$lib/utils'
 import { targets } from './targets'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 function GetDeployStateDriver(target = targets) {
 	const state = {
@@ -56,6 +57,3 @@ function GetDeployStateDriver(target = targets) {
 	}
 }
 export const rm_components = GetDeployStateDriver()
-window.AvoidCircularDependency.getCurrentClassesToObserver = function () {
-	return rm_components.state.currentClassesToObserver
-}

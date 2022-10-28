@@ -7,7 +7,7 @@ import {
 } from '$lib/utils'
 import { PushNew_ShiftAllOlder_IframeBuffer } from '$v3/init/observer/performance'
 import { ValidateHierarchyTimestamps } from '$v3/init/timestamp/hierarchy'
-import type { YT_IFRAME as YT } from '$v3/lib/types/yt-types';
+import type { YT_IFRAME as YT } from '$v3/lib/types/yt-types'
 import { YT_TargetWrapper } from '$v3/lib/types/yt-types'
 import { GetHoverStates } from './listener/parent/in-out-states'
 import { setupPreviousParams } from './setup/setupPreviousParams'
@@ -22,13 +22,14 @@ import { GetQuery } from './setup/GetQuery'
 import { TrySetupRecordID } from './setup/SetupRecordID'
 import type { TStat, ILocal } from './lib/TStat'
 import { Refurbish } from './setup/Refurbish'
-import type { TQueryElements } from './setup/GetElements';
+import type { TQueryElements } from './setup/GetElements'
 import { GetElementsObj } from './setup/GetElements'
 import { GetFullscreenCallbacks } from '$v3/player-ready/listener/iframe/fullscreen'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 
 export async function onPlayerReady(event: YT) {
 	// setup
+	debugger
 	const t = new YT_TargetWrapper(event.target)
 	const key = t.GetIframeID()
 	const l = GetElementsObj(key, t)

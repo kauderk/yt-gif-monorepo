@@ -3,6 +3,7 @@ import { rm_components } from '../../config/driver'
 import type { Check } from './Check'
 import type { Label } from './Label'
 import type { Show } from './Show'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 // 1.1
 export const deployInfo = {
@@ -41,7 +42,7 @@ export function InputGate(
 	async function redCombo() {
 		setText(deployInfo.discharging)
 		visualFeedback(false)
-		window.YT_GIF_OBSERVERS.CleanMasterObservers()
+		SrrGlobal.YT_GIF_OBSERVERS.CleanMasterObservers()
 		await HoldInputFor10Secs(redAnimationNoInputs) //showing the red animation, because you are choosing to suspend
 		setText(deployInfo.deploy)
 	}

@@ -23,6 +23,7 @@ import type { TQueryResult } from '$v3/player-ready/setup/GetQuery'
 import { getParent } from '$v3/player-ready/setup/GetElements'
 import type { ILocal } from '$v3/player-ready/lib/TStat'
 import type { TQueryElements } from '$v3/player-ready/setup/GetElements'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 //#region 8. on destroyed - clean up and ready next session
 export function GetOnIframeRemovedFromDom(
@@ -139,7 +140,7 @@ function TryToGetPreviousParent(key: string) {
 	}
 
 	const observerTarget = div([
-		window.AvoidCircularDependency.getCurrentClassesToObserver()[0],
+		SrrGlobal.AvoidCircularDependency.getCurrentClassesToObserver()[0],
 	])
 	return <const>{ previousParent, observerTarget }
 }

@@ -5,9 +5,10 @@ import { ChangeTimestampsDisplay } from '../../observer/timestamp/display'
 import { ToggleTimestampShortcuts } from '../../observer/timestamp/shortcut'
 import { TimestampBtnsMutation_cb } from '../../observer/timestamp/mutation'
 import { addCustomChangeListener } from '$v3/lib/dom/options'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function ClearTimestampObserver(
-	{ timestampObserver } = window.YT_GIF_OBSERVERS
+	{ timestampObserver } = SrrGlobal.YT_GIF_OBSERVERS
 ) {
 	timestampObserver?.disconnect()
 	timestampObserver = new MutationObserver(TimestampBtnsMutation_cb)
@@ -15,7 +16,7 @@ export function ClearTimestampObserver(
 }
 
 export async function KickstartTimestampObserver(
-	{ timestampObserver, keyupEventHandler } = window.YT_GIF_OBSERVERS
+	{ timestampObserver, keyupEventHandler } = SrrGlobal.YT_GIF_OBSERVERS
 ) {
 	await toggleTimestampEmulation(
 		UI.display.simulate_roam_research_timestamps.checked,
