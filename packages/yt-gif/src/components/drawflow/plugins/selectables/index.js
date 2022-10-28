@@ -82,11 +82,19 @@ export default function Selectables(opts) {
 		e.stopPropagation()
 		return false
 	}
+	this.keyReset = function (e) {
+		try {
+			if (self.options.key && !e[self.options.key]) {
+				self.select()
+			}
+		} catch (error) {}
+	}
 	this.rectOpen = function (e) {
 		self.options.start && self.options.start(e)
 		if (self.options.key && !e[self.options.key]) {
 			return
 		}
+
 		document.body.classList.add('s-noselect')
 		self.foreach(self.items, function (el) {
 			el.addEventListener('click', self.suspend, true) //skip any clicks
@@ -100,10 +108,13 @@ export default function Selectables(opts) {
 			gh.id = 's-rectBox'
 			gh.style.left = e.pageX + 'px'
 			gh.style.top = e.pageY + 'px'
-			document.body.appendChild(gh)
+			setTimeout(() => {
+				document.body.appendChild(gh)
+			}, 100)
 		}
 		document.body.addEventListener('mousemove', self.rectDraw)
 		window.addEventListener('mouseup', self.select)
+		window.addEventListener('keyup', self.keyReset)
 	}
 	var rb = function () {
 		return document.getElementById('s-rectBox')
@@ -129,6 +140,8 @@ export default function Selectables(opts) {
 		document.body.classList.remove('s-noselect')
 		document.body.removeEventListener('mousemove', self.rectDraw)
 		window.removeEventListener('mouseup', self.select)
+		window.addEventListener('keyup', self.keyReset)
+
 		var s = self.options.selectedClass
 		self.foreach(self.items, function (el) {
 			if (cross(a, el) === true) {
@@ -141,6 +154,9 @@ export default function Selectables(opts) {
 				}
 			}
 			setTimeout(function () {
+				// this single line alone causes the drag to start right away
+				// I don't like that
+				// further more... the drag/select will stop if the user let's go of the "key" or the "touch input"
 				el.removeEventListener('click', self.suspend, true)
 			}, 100)
 		})
@@ -153,6 +169,10 @@ export default function Selectables(opts) {
 	this.rectDraw = function (e) {
 		var g = rb()
 		if (!self.ipos || g === null) {
+			return
+		}
+		if (self.options.key && !e[self.options.key]) {
+			self.select()
 			return
 		}
 		var tmp,

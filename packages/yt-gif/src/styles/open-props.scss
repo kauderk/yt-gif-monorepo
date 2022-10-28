@@ -44,6 +44,20 @@ html {
 	--surface3: var(--surface3-light);
 	--surface4: var(--surface4-light);
 	--surface5: var(--surface5-light);
+
+	// dark theme override
+	--brand1: var(--brand1-dark);
+	--brand2: var(--brand2-dark);
+	--brand2: var(--brand3-dark);
+
+	--text1: var(--text1-dark);
+	--text2: var(--text2-dark);
+
+	--surface1: var(--surface1-dark);
+	--surface2: var(--surface2-dark);
+	--surface3: var(--surface3-dark);
+	--surface4: var(--surface4-dark);
+	--surface5: var(--surface5-dark);
 }
 
 .dark-props {
