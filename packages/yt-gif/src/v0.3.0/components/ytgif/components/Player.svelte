@@ -14,15 +14,15 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte'
-	//import parse from '$v3/api-ready/parse'
-	//import { Deploy } from '$v3/api-ready/query'
-	//import { load } from '$v3/api-ready/setup/load-yt-iframe'
+	import parse from '$v3/api-ready/parse'
+	import { Deploy } from '$v3/api-ready/query'
+	import { load } from '$v3/api-ready/setup/load-yt-iframe'
 
 	count += 1
 	const id = 'yt-gif-player-' + count
 
 	let YT: any
-	//onMount(() => load((yt: any) => (YT = yt)))
+	onMount(() => load((yt: any) => (YT = yt)))
 
 	export let videoId = ''
 	export let type: 'click' | 'hover' = 'click'
@@ -33,9 +33,9 @@
 	}
 
 	const Fire = () => {
-		// const res = parse(id, videoId)
-		// if (!res) return console.warn('failed to load video')
-		//Deploy({ ...res }, YT)
+		const res = parse(id, videoId)
+		if (!res) return console.warn('failed to load video')
+		Deploy({ ...res }, YT)
 	}
 	let player: HTMLDivElement
 </script>
