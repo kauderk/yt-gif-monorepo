@@ -42,7 +42,13 @@
 			"$v2": ["src/yt-gif/v0.2.0/js"],
 			"$v2/*": ["src/yt-gif/v0.2.0/js/*"],
 			"$v3": ["src/v0.3.0"],
-			"$v3/*": ["src/v0.3.0/*"]
+			"$v3/*": ["src/v0.3.0/*"],
+			"$cmp": ["src/components"],
+			"$cmp/*": ["src/components/*"],
+			"$styles": ["src/styles"],
+			"$styles/*": ["src/styles/*"],
+			"$stores": ["src/stores"],
+			"$stores/*": ["src/stores/*"]
 		}
 	},
 	"include": [
