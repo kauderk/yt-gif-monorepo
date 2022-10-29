@@ -1,15 +1,13 @@
 # YT-GIF-GRAPH APP
 
--   [ ] Log In
--   [ ] Log out
--   [ ] Sign in
--   [ ] Sign out
--   [ ] Create account
--   [ ] Autocompletion
--   [ ] Forgot password
--   [ ] Reset password
--   [ ] Confirm password
--   [ ] Feature showcase
--   [ ] Navigation to app
+[Website](https://yt-gif-graph-static.netlify.app/)
 
-#### Template from https://github.com/opensas/sveltekit-landing-page.git
+### Why?
+> The ideas we get from watching YouTube videos are scattered everywhere. This application offers an alternative.
+
+### How?
+By creating timestamp blocks, and linking them on a graph, users can highlight their ideas.
+Powered by the [yt-gif library](/packages/yt-gif).
+
+## Get Started
+- Navigate the [yt-gif-graph website](https://yt-gif-graph-static.netlify.app/)
