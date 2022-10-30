@@ -19,7 +19,7 @@ export function ExtractUrlsObj(searchThrough: s): TIndexPair {
 
 	return (
 		indexPairObj(rgx2Gm(urlRgx), searchThrough, 'url')?.[0] ||
-		indexPairObj(rgx2Gm(minimalRgx), searchThrough, 'minimal')?.[0] ||
+		indexPairObj(rgx2Gm(minimalRgx), searchThrough, 'minimal')?.[1] ||
 		new TIndexPair()
 	)
 }
@@ -38,7 +38,6 @@ export function ExtractParamsFromUrl(url: s) {
 
 		media.start.setDefault(GetStartEndParam('start'))
 		media.end.setDefault(GetStartEndParam('end'))
-
 		media.volume.set(GetNumParam('volume'))
 		media.speed.setDefault(GetNumParam('speed'))
 

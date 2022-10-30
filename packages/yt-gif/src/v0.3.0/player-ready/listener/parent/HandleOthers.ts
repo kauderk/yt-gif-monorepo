@@ -7,9 +7,11 @@ import { getBlockID } from '$v3/player-ready/setup/GetElements'
 export function HandleOthers(iframe: IFR) {
 	return <const>{
 		StrictFlow() {
-			// FIXME:
-			Pause()
-			Mute()
+			if (playIs('strict')) {
+				Pause()
+			} else if (muteIs('strict')) {
+				Mute()
+			}
 		},
 		Mute,
 		Pause,

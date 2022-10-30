@@ -8,20 +8,20 @@ import type { YT_TargetWrapper } from '$v3/lib/types/yt-types'
 export function GetElementsObj(key: string, t: YT_TargetWrapper) {
 	const iframe = (document.getElementById(key) as IFR) || t.getIframe()
 	const parent = getParent(iframe)!
-	// const timeDisplay = parent.querySelector(
-	// 	'div.' + cssData.yt_gif_timestamp
-	// ) as HTMLElement
-	// const timeDisplayStart = timeDisplay.querySelector(
-	// 	'.yt-gif-timestamp-start'
-	// )!
-	// const timeDisplayEnd = timeDisplay.querySelector('.yt-gif-timestamp-end')!
-	// const resetBtn = parent.querySelector(
-	// 	'[yt-gif-url-btn="reset"]'
-	// ) as HTMLResetBtn
+	const timeDisplay = parent.querySelector(
+		'div.' + cssData.yt_gif_timestamp
+	) as HTMLElement
+	const timeDisplayStart = timeDisplay.querySelector(
+		'.yt-gif-timestamp-start'
+	)!
+	const timeDisplayEnd = timeDisplay.querySelector('.yt-gif-timestamp-end')!
+	const resetBtn = parent.querySelector(
+		'[yt-gif-url-btn="reset"]'
+	) as HTMLResetBtn
 	const withEventListeners = [
 		parent,
 		parent.parentNode as El,
-		//timeDisplay,
+		timeDisplay,
 		iframe,
 	] // ready to be cleaned
 
@@ -29,11 +29,11 @@ export function GetElementsObj(key: string, t: YT_TargetWrapper) {
 		blockID: getBlockID(iframe),
 		iframe,
 		parent,
+		timeDisplay,
+		resetBtn,
 		withEventListeners,
-		// timeDisplay,
-		// resetBtn,
-		// timeDisplayStart,
-		// timeDisplayEnd,
+		timeDisplayStart,
+		timeDisplayEnd,
 	}
 }
 export type TQueryElements = ReturnType<typeof GetElementsObj>

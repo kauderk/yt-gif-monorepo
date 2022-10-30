@@ -122,6 +122,7 @@ serverless-cms-media-manager
 /build
 /functions-build
 /dist
+**/yt-gif/dist
 
 # netlify
 .netlify

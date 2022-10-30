@@ -11,21 +11,21 @@ import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 export function* FlipStyleGenerator(o: TStyleCallbacks) {
 	let bol = true
 	while (true) {
-		// UI.playerSettings.play_style = Flip(
-		// 	UI.playerSettings.play_style,
-		// 	bol,
-		// 	o.play
-		// )
-		// UI.playerSettings.mute_style = Flip(
-		// 	UI.playerSettings.mute_style,
-		// 	bol,
-		// 	o.mute
-		// )
-		// UI.display.yt_playback_speed = Flip(
-		// 	UI.display.yt_playback_speed,
-		// 	bol,
-		// 	o.playback
-		// )
+		UI.playerSettings.play_style = Flip(
+			UI.playerSettings.play_style,
+			bol,
+			o.play
+		)
+		UI.playerSettings.mute_style = Flip(
+			UI.playerSettings.mute_style,
+			bol,
+			o.mute
+		)
+		UI.display.yt_playback_speed = Flip(
+			UI.display.yt_playback_speed,
+			bol,
+			o.playback
+		)
 		bol = yield bol
 	}
 }
@@ -72,7 +72,7 @@ function GetFuncPlayback(
 	local: ILocal
 ) {
 	return function () {
-		const value = 'Default'
+		const value = UI.display.yt_playback_speed.value
 		const speed = value == 'Default' ? map.speed.value : Number(value)
 		local.update.tickOffset = 1000 / speed
 		t.setPlaybackRate(speed)

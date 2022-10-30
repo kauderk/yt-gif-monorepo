@@ -17,7 +17,7 @@ export function ObserveIframesAndDelployYTPlayers(targetClass: string) {
 			PlayerOnIntersection({
 				wrapper,
 				message: 'second wave',
-				targetClass
+				targetClass,
 			})
 		)
 	)

@@ -28,11 +28,12 @@
 
 		cursor: row-resize;
 
-		color: transparent;
+		//color: transparent;
+		color: black;
 		transition: all 0.2s;
 
 		&:hover {
-			color: white;
+			//color: white;
 			text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
 				1px 1px 0 #000;
 		}

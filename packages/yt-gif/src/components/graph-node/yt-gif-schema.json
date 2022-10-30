@@ -1,0 +1,9 @@
+{
+	"yt-gifs": [
+		{
+			"position": ["right", "left", "bottom", "top"],
+			"mode": ["theater", "aside", "background", "foreground"],
+			"params": {}
+		}
+	]
+}

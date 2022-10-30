@@ -11,8 +11,7 @@ const urlFolder_js = (f: s) => urlFolder(`js/${f}`)
 
 export const links = {
 	css: {
-		dropDownMenuStyle: urlFolder_css('drop-down-menu.css'),
-		playerStyle: urlFolder_css('player.css'),
+		index: `https://kauderk.github.io/code-snippets/yt-gif/roamresearch/dev/yt-gif-app.css`,
 		themes: {
 			dark: urlFolder_css('themes/dark-drop-down-menu.css'),
 			light: urlFolder_css('themes/light-drop-down-menu.css'),

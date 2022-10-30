@@ -19,12 +19,12 @@ export function GetFuncResetBoundaries(
 	local: ILocal
 ) {
 	return async function (evt: TResetYTEvent | null) {
-		const tEl = evt?.currentTarget as Element //?? l.resetBtn
+		const tEl = (evt?.currentTarget as Element) ?? l.resetBtn
 		const awaiting = (bol: b) => awaitingAtrr(bol, tEl)
 
-		if (tEl?.hasAttribute('awaiting')) return
+		if (tEl.hasAttribute('awaiting')) return
 
-		//q.timeDisplay.visible(true)
+		q.timeDisplay.visible(true)
 		awaiting(true)
 
 		DeactivateTimestampsInHierarchy(closest_anchor_container(tEl), l.parent)
@@ -39,7 +39,7 @@ export function GetFuncResetBoundaries(
 		awaiting(false)
 
 		if (evt?.message != 'update-timestamp') {
-			//return q.timeDisplay.visible(false)
+			return q.timeDisplay.visible(false)
 		}
 
 		// update/visible until any interaction
@@ -50,12 +50,12 @@ export function GetFuncResetBoundaries(
 		)
 		t.ytgif.timers.push(t.ytgif.timerID)
 
-		//l.timeDisplay.onmousemove = stopUpdateDisplayOnce
+		l.timeDisplay.onmousemove = stopUpdateDisplayOnce
 	}
 	function stopUpdateDisplayOnce(e: Event) {
 		e.stopPropagation()
 		e.preventDefault()
-		//q.timeDisplay.visible(false)
+		q.timeDisplay.visible(false)
 		;(e.currentTarget as HTMLElement).onmousemove = null
 	}
 }

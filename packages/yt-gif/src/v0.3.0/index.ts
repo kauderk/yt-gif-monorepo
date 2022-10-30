@@ -4,6 +4,8 @@ import { links } from './init/config/paths'
 import { Ready } from './init/index'
 import { CreateXload } from '$v3/lib/helpers'
 import { TryCreateUserInputObject } from '$v3/init/config/yt-gif-init'
+import './../yt-gif/resources/css/player.css'
+import './../yt-gif/resources/css/drop-down-menu.css'
 
 init()
 async function init() {

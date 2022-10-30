@@ -4,7 +4,9 @@ import {
 	smart_LoadCSS,
 	smart_CssPlayer_UCS,
 	smart_Load_DDM_onTopbar,
+	smart_LoadStyle,
 } from '../dom/fetch'
+import { isApple } from '../../lib/browser/validation'
 
 export async function LoadHTML() {
 	links.html.fetched.playerControls = await fetchTextTrimed(
@@ -19,10 +21,13 @@ export async function LoadHTML() {
 	await smart_Load_DDM_onTopbar(links.html.dropDownMenu)
 }
 export async function LoadCSS() {
-	await smart_LoadCSS(links.css.dropDownMenuStyle, `yt-gif-dropDownMenuStyle`)
-	await smart_LoadCSS(links.css.playerStyle, `yt-gif-playerStyle`)
+	await smart_LoadCSS(links.css.index, `yt-gif-styles`)
 
-	//await smart_LoadCSS(themes.get(ddm_css_theme_stt.sessionValue), ddm_main_theme_id);
+	if (isApple()) {
+		const apple = await import('./../../lib/browser/safari.css')
+		await smart_LoadStyle(apple.default, `yt-gif-styles-apple`)
+	}
+
 	smart_CssPlayer_UCS(
 		window.YT_GIF_DIRECT_SETTINGS.get('player_span')?.sessionValue as s
 	)

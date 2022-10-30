@@ -1,6 +1,7 @@
 import { s_u_f_key } from '../../../lib/types/config'
 import type { ICustomChangeEvent } from '../../../lib/dom/select/CustomSelect'
 import { ValidUrlBtnUsage } from '$v3/init/formatter/button/validation'
+import { isApple } from '$v3/lib/browser/validation'
 
 /* ****************** */
 
@@ -12,9 +13,18 @@ export function confirmUrlBtnUsage(bol: b, e: ICustomChangeEvent) {
 		? 'Simulate because I have both graph and localStorage keys'
 		: 'Simulate, but first take me to the caution prompt - localStorage key is missing'
 
-	const userMind = confirm(
-		`YT GIF Url Button: Simulation Request\n\nYES: ${yesMessage} \n   -  https://github.com/kauderk/kauderk.github.io/blob/main/yt-gif-extension/install/faq/README.md#simulate-url-button-to-video-component \n\nNO: Don't simulate`
-	)
+	let userMind = false
+
+	if (isApple()) {
+		// https://stackoverflow.com/q/17696773/13914180
+		// https://stackoverflow.com/q/72935864/13914180
+		// safari doesn't support confirm() modals, well...
+		userMind = true
+	} else {
+		userMind = confirm(
+			`YT GIF Url Button: Simulation Request\n\nYES: ${yesMessage} \n   -  https://github.com/kauderk/kauderk.github.io/blob/main/yt-gif-extension/install/faq/README.md#simulate-url-button-to-video-component \n\nNO: Don't simulate`
+		)
+	}
 
 	if (userMind) {
 		localStorage.setItem(s_u_f_key, 'true')

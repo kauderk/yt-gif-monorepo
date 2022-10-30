@@ -6,7 +6,7 @@ import { HandleOthers } from '../listener/parent/HandleOthers'
 export function GetElementsMethods(
 	parent: Element,
 	iframe: IFR,
-	//timeDisplay: HTMLElement,
+	timeDisplay: HTMLElement,
 	// FIXME: get me out of here
 	t: YT_TargetWrapper
 ) {
@@ -25,23 +25,23 @@ export function GetElementsMethods(
 			Hover: () => parent.matches(':hover'),
 			isActive: () => parent.hasAttribute(active),
 		},
-		// timeDisplay: {
-		// 	Hover: () => timeDisplay.matches(':hover'),
-		// 	OnCustomVideoEnded() {
-		// 		if (timeDisplay.classList.contains('yt-gif-timestamp-update')) {
-		// 			timeDisplay.onmousemove = null
-		// 			this.visible(false)
-		// 			t.ytgif.ClearTimers()
-		// 		}
-		// 	},
-		// 	visible(bol: b) {
-		// 		toggleClasses(bol, ['yt-gif-timestamp-update'], timeDisplay)
-		// 		toggleClasses(!bol, ['yt-gif-invisible-element'], timeDisplay)
-		// 	},
-		// },
+		timeDisplay: {
+			Hover: () => timeDisplay.matches(':hover'),
+			OnCustomVideoEnded() {
+				if (timeDisplay.classList.contains('yt-gif-timestamp-update')) {
+					timeDisplay.onmousemove = null
+					this.visible(false)
+					t.ytgif.ClearTimers()
+				}
+			},
+			visible(bol: b) {
+				toggleClasses(bol, ['yt-gif-timestamp-update'], timeDisplay)
+				toggleClasses(!bol, ['yt-gif-invisible-element'], timeDisplay)
+			},
+		},
 		whole: {
 			anyHover() {
-				return parent.matches(':hover') // || timeDisplay.matches(':hover')
+				return parent.matches(':hover') || timeDisplay.matches(':hover')
 			},
 		},
 		target: {

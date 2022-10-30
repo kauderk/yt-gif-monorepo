@@ -15,7 +15,7 @@ export function BlockRegexObj(
 	const anyPossibleComponentsRgx = Wild_Config.targetStringRgx // https://stackoverflow.com/questions/30787438/how-to-stop-match-until-before-a-character-in-regex#:~:text=assisterId%3D-,(%5B%5E%22%5D*),-%5B%5E%22%5D*%20matches%20any%20character
 	const aliasPlusUidsRgx = /\[(.*?(?=\]))]\(\(\((.*?(?=\)))\)\)\)/gm
 	const tooltipCardRgx = /{{=:(.+?)\|([^}]*)/gm
-	const anyUidRgx = /(?<=\(\()([^(].*?[^)])(?=\)\))/gm
+	const anyUidRgx = /(?:\(\()([^(].*?[^)])(?=\)\))/gm
 	// set in the order in which roam renders them - anyPossibleComponents is kinda like a joker card, it will trap components along with irrelevant uids
 	const baseBlockRgx = [
 		tooltipCardRgx,
@@ -55,7 +55,7 @@ export function floatParam(p: string, url: string) {
 }
 export function time2sec(raw: string) {
 	if (/[hms]/.test(raw)) {
-		const hms = raw.split(/(?<=h)|(?<=m)|(?<=s)/)
+		const hms = [...raw.matchAll(/\w+h|\w+m|\w+s/g)].map(m => m[0])
 
 		return hms.reduce((acc, crr) => {
 			const t = parseInt(crr) || 0
