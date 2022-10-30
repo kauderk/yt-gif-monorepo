@@ -25,6 +25,17 @@ export async function smart_LoadCSS(cssURL: s, id: s) {
 		link.onload = () => resolve()
 	})
 }
+export async function smart_LoadStyle(cssString: s, id: s) {
+	return new Promise(function (resolve: Function, reject) {
+		DeleteDOM_Els(id, id)
+		var style = document.createElement('style')
+		style.id = id
+		style.innerHTML = cssString
+		document.head.appendChild(style)
+
+		style.onload = () => resolve()
+	})
+}
 function DeleteDOM_Els(id: s, cssURL: s) {
 	const stylesAlready = document.queryAllasArr(`[id='${id}']`)
 
