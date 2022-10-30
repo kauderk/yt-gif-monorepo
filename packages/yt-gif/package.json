@@ -14,7 +14,10 @@
 		"build": "vite build --watch",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"preinstall": "pnpm exec inherit -u"
+		"preinstall": "pnpm exec inherit -u",
+		"test:chrome": "pnpx playwright test --headed --browser=chromium",
+		"test:firefox": "pnpx playwright test --headed --browser=firefox",
+		"test:safari": "pnpx playwright test --headed --browser=webkit"
 	},
 	"devDependencies": {
 		"@material-design-icons/font": "0.12.1",
@@ -40,6 +43,7 @@
 		"@originjs/vite-plugin-commonjs": "^1.0.3",
 		"@packages/metadata": "workspace:^0.2.0",
 		"@packages/utils": "workspace:^0.2.0",
+		"@playwright/test": "^1.27.1",
 		"@popperjs/core": "^2.11.6",
 		"@rgossiaux/svelte-headlessui": "^1.0.2",
 		"@rollup/plugin-alias": "^3.1.9",

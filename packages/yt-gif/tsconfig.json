@@ -55,6 +55,7 @@
 		"src/**/*.d.ts",
 		"src/**/*.js",
 		"src/**/*.ts",
+		"tests/**/*.ts",
 		"src/**/*.svelte",
 		"src/**/**/*.svelte",
 		"static/global.d.ts"
