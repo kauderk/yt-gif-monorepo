@@ -19,7 +19,7 @@ export function ExtractUrlsObj(searchThrough: s): TIndexPair {
 
 	return (
 		indexPairObj(rgx2Gm(urlRgx), searchThrough, 'url')?.[0] ||
-		indexPairObj(rgx2Gm(minimalRgx), searchThrough, 'minimal')?.[0] ||
+		indexPairObj(rgx2Gm(minimalRgx), searchThrough, 'minimal')?.[1] ||
 		new TIndexPair()
 	)
 }

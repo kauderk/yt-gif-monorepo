@@ -30,7 +30,7 @@ export class YTGIF_Config {
 	static componentPage: TGifTarget = 'yt-gif|video' // this needs to change dynamically
 	static readonly targetStringRgx =
 		/https\:\/\/(www\.)?(youtu(be.com\/watch|.be\/))?(.*?(?=\s|$|\}|\]|\)))/
-	static readonly minimalRgx = /(?<!\S)\/[^:|\s|}|\]|\)]{11,}/
+	static readonly minimalRgx = /(?:\s|^)(\/[^:|\s|}|\]|\)]{11,})/ // /yt-id-with-11 characters
 	static readonly guardClause = (url: unknown) =>
 		typeof url == 'string' && !!url.match('https://(www.)?youtube|youtu.be')
 }

@@ -199,7 +199,7 @@ export const HMSToSecondsOnly = (str: string) => {
 
 		return s
 	} else if (/h|m|s/.test(str)) {
-		const hms = str.split(/(?<=h)|(?<=m)|(?<=s)/)
+		const hms = [...str.matchAll(/\w+h|\w+m|\w+s/g)].map(m => m[0])
 
 		return hms.reduce((acc, crr) => {
 			let t = parseInt(crr) || 0
