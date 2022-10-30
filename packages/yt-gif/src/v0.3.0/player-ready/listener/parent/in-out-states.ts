@@ -28,13 +28,13 @@ export function GetHoverStates(q: TQueryResult) {
 			}
 		},
 		play() {
-			// if (
-			// 	isSelected(
-			// 		UI.playerSettings.ps_options,
-			// 		'mantain_last_active_player'
-			// 	)
-			// )
-			q.parent.others.toggleActive()
+			if (
+				isSelected(
+					UI.playerSettings.ps_options,
+					'mantain_last_active_player'
+				)
+			)
+				q.parent.others.toggleActive()
 
 			q.target.others.StrictFlow()
 

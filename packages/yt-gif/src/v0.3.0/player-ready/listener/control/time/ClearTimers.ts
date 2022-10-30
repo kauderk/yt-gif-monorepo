@@ -39,8 +39,8 @@ export function TimeTargetObj(
 		const offsetClip = span < 0
 		const offsetStart = q.tick() > map.end.value
 
-		// toggleAttribute(offsetStart, 'tick-offset', l.timeDisplayStart)
-		// toggleAttribute(offsetClip, 'offset', l.timeDisplayEnd)
+		toggleAttribute(offsetStart, 'tick-offset', l.timeDisplayStart)
+		toggleAttribute(offsetClip, 'offset', l.timeDisplayEnd)
 
 		// timeDisplay.textContent = '00:00/00:00'
 		if (isSelected(UI.display.ms_options, 'clip_lifespan_format')) {
@@ -48,12 +48,12 @@ export function TimeTargetObj(
 			const boundedTick = Math.abs(span - (map.end.value - q.tick()))
 			const validEnd = offsetClip ? map.end.value : span
 
-			// l.timeDisplayStart.textContent = fmtMSS(boundedTick)
-			// l.timeDisplayEnd.textContent = fmtMSS(validEnd)
+			l.timeDisplayStart.textContent = fmtMSS(boundedTick)
+			l.timeDisplayEnd.textContent = fmtMSS(validEnd)
 		} // 'update'/'end'
 		else {
-			// l.timeDisplayStart.textContent = fmtMSS(q.tick())
-			// l.timeDisplayEnd.textContent = fmtMSS(map.end.value)
+			l.timeDisplayStart.textContent = fmtMSS(q.tick())
+			l.timeDisplayEnd.textContent = fmtMSS(map.end.value)
 		}
 	}
 	return <const>{

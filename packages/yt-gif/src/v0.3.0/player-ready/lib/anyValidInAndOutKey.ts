@@ -9,8 +9,7 @@ export function anyValidInAndOutKey(e: MouseEvent) {
 	}
 
 	return (
-		//UI.defaultValues.InAndOutKeys.split(',')
-		['altKey', 'shiftKey', 'ctrlKey']
+		UI.defaultValues.InAndOutKeys.split(',')
 			.map(s => s.trim())
 			.filter(s => !!s)
 			// @ts-ignore

@@ -38,7 +38,6 @@ export function ExtractParamsFromUrl(url: s) {
 
 		media.start.setDefault(GetStartEndParam('start'))
 		media.end.setDefault(GetStartEndParam('end'))
-
 		media.volume.set(GetNumParam('volume'))
 		media.speed.setDefault(GetNumParam('speed'))
 

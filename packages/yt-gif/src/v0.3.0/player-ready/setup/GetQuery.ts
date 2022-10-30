@@ -5,11 +5,11 @@ import type { ILocal } from '../lib/TStat'
 import { GetElementsMethods, GetConfig, GetTarget } from './composition'
 
 export function GetQuery(params: IQueryInput) {
-	const { parent, /* timeDisplay, */ iframe } = params
+	const { parent, timeDisplay, iframe } = params
 	const { map, t, local } = params
 
 	return <const>{
-		...GetElementsMethods(parent, iframe, /* timeDisplay, */ t),
+		...GetElementsMethods(parent, iframe, timeDisplay, t),
 		...GetConfig(map),
 		...GetTarget(t),
 
@@ -51,7 +51,7 @@ export function GetQuery(params: IQueryInput) {
 interface IQueryInput {
 	map: IExtendedVideoParams
 	parent: Element
-	//timeDisplay: HTMLElement
+	timeDisplay: HTMLElement
 	t: YT_TargetWrapper
 	iframe: IFR
 	local: ILocal

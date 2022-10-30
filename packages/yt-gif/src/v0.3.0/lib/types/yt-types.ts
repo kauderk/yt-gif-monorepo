@@ -31,7 +31,8 @@ export class YT_TargetWrapper {
 		target.ytgif ??= new m()
 		this.ytgif = target.ytgif
 	}
-	GetIframeID: FString = () => this.t.i.id || this.t.g.id
+	GetIframeID: FString = () =>
+		this.t.i?.id || this.t.g?.id || this.t.getIframe()?.id
 	GetVideoID: FString = () => this.t.j.i.videoId
 	GetVars: () => {
 		start: number

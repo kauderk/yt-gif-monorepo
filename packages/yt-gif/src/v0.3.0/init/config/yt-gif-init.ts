@@ -1,5 +1,4 @@
 import { getUniqueSelectorSmart } from '$lib/utils'
-import { windowExist } from '$lib/windowStore'
 import { CleanAndBrandNewWrapper } from '../../lib/utils'
 import { attrInfo } from './paths'
 
@@ -132,15 +131,12 @@ export const YT_GIF_OBSERVERS_TEMP = {
 			) //wrapperParent -> nest new span
 		}
 	},
-	dmm_html: null,
+	dmm_html: window.ddm_html,
 }
 
-windowExist.subscribe(() => {
-	// FIXME: window
-	// window.YT_GIF_OBSERVERS = !window.YT_GIF_OBSERVERS
-	// 	? YT_GIF_OBSERVERS_TEMP
-	// 	: window.YT_GIF_OBSERVERS
-})
+window.YT_GIF_OBSERVERS = !window.YT_GIF_OBSERVERS
+	? YT_GIF_OBSERVERS_TEMP
+	: window.YT_GIF_OBSERVERS
 export function TryCreateUserInputObject(
 	YT_GIF_SETTINGS_PAGE: typeof window.YT_GIF_SETTINGS_PAGE
 ): T_UI {

@@ -47,7 +47,8 @@ class BolParam extends Param<boolean> {
 		super(false, args)
 	}
 }
-const getPlayerVol = () => 40
+const getPlayerVol = () =>
+	window.YT_GIF_DIRECT_SETTINGS.get('player_volume')?.sessionValue as number
 export class TVideoParams {
 	readonly id = new StrParam({ value: '---------' })
 	readonly src = new StrParam({

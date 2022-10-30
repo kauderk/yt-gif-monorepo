@@ -10,11 +10,11 @@ export function CanUnmute() {
 //#region play/pause utils
 
 export function muteIs(v: TmuteStyle) {
-	return 'strict' == v
+	return UI.playerSettings.mute_style.value == v
 }
 type TplayStyle = 'strict' | 'soft' | 'all_visible'
 export function playIs(v: TplayStyle) {
-	const play = 'strict'
-	const is = play == v
+	const play = UI.playerSettings.play_style
+	const is = play.value == v
 	return is // && !getOption(play, v).disabled;
 }

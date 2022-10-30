@@ -7,7 +7,7 @@ import {
 } from '$lib/utils'
 import { PushNew_ShiftAllOlder_IframeBuffer } from '$v3/init/observer/performance'
 import { ValidateHierarchyTimestamps } from '$v3/init/timestamp/hierarchy'
-import type { YT_IFRAME as YT } from '$v3/lib/types/yt-types'
+import type { YT_IFRAME as YT } from '$v3/lib/types/yt-types';
 import { YT_TargetWrapper } from '$v3/lib/types/yt-types'
 import { GetHoverStates } from './listener/parent/in-out-states'
 import { setupPreviousParams } from './setup/setupPreviousParams'
@@ -22,7 +22,7 @@ import { GetQuery } from './setup/GetQuery'
 import { TrySetupRecordID } from './setup/SetupRecordID'
 import type { TStat, ILocal } from './lib/TStat'
 import { Refurbish } from './setup/Refurbish'
-import type { TQueryElements } from './setup/GetElements'
+import type { TQueryElements } from './setup/GetElements';
 import { GetElementsObj } from './setup/GetElements'
 import { GetFullscreenCallbacks } from '$v3/player-ready/listener/iframe/fullscreen'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
@@ -32,7 +32,7 @@ export async function onPlayerReady(event: YT) {
 	const t = new YT_TargetWrapper(event.target)
 	const key = t.GetIframeID()
 	const l = GetElementsObj(key, t)
-	const { iframe, parent /* timeDisplay, resetBtn */ } = l
+	const { iframe, parent, timeDisplay, resetBtn } = l
 
 	const map = allVideoParameters.get(key)!
 	map.start.set(map.start.value || 0)
@@ -42,7 +42,7 @@ export async function onPlayerReady(event: YT) {
 	const q = GetQuery({
 		map,
 		parent,
-		//timeDisplay,
+		timeDisplay,
 		t,
 		iframe,
 		local,
@@ -66,64 +66,64 @@ export async function onPlayerReady(event: YT) {
 	setupPreviousParams(local, q)
 
 	// 2. play style | pause style
-	// const flipIterator = FlipStyleGenerator(styleCallbacks)
-	// flipIterator.next()
+	const flipIterator = FlipStyleGenerator(styleCallbacks)
+	flipIterator.next()
 
 	// 3. Mouse over the frame functionality
 	const hover = GetHoverStates(q)
 	parent.addEventListener('mouseenter', hover.play)
 	parent.addEventListener('mouseleave', hover.stop as EventListener)
-	// parent.addEventListener(
-	// 	'customVideoEnded',
-	// 	q.timeDisplay.OnCustomVideoEnded
-	// )
+	parent.addEventListener(
+		'customVideoEnded',
+		q.timeDisplay.OnCustomVideoEnded
+	)
 
 	// 4. scroll wheel - timestamp display feature
-	// const time = TimeTargetObj(q, iframe, map, local, t, l)
-	// t.ytgif.enter = time.NewIntervalUpdate
-	// timeDisplay.addEventListener('wheel', time.SeekToScroll)
-	// timeDisplay.addEventListener('mouseenter', time.NewIntervalUpdate)
-	// timeDisplay.addEventListener('mouseleave', () => t.ytgif.ClearTimers())
+	const time = TimeTargetObj(q, iframe, map, local, t, l)
+	t.ytgif.enter = time.NewIntervalUpdate
+	timeDisplay.addEventListener('wheel', time.SeekToScroll)
+	timeDisplay.addEventListener('mouseenter', time.NewIntervalUpdate)
+	timeDisplay.addEventListener('mouseleave', () => t.ytgif.ClearTimers())
 
 	// 5. fullscreenStyle
-	// const fullscreen = GetFullscreenCallbacks(q, t)
-	// iframe.addEventListener('fullscreenchange', fullscreen.default)
-	// iframe.addEventListener('fullscreenchange', fullscreen.autoplaySynergy)
+	const fullscreen = GetFullscreenCallbacks(q, t)
+	iframe.addEventListener('fullscreenchange', fullscreen.default)
+	iframe.addEventListener('fullscreenchange', fullscreen.autoplaySynergy)
 
 	// 6. Reload boundaries
-	// const ResetBoundaries = GetFuncResetBoundaries(t, q, l, map, time, local)
-	// resetBtn.addEventListener('click', ResetBoundaries)
-	// resetBtn.ResetBoundaries_smart = ResetBoundaries
+	const ResetBoundaries = GetFuncResetBoundaries(t, q, l, map, time, local)
+	// @ts-ignore no overload for (this: HTMLElement, ev: MouseEvent) => any
+	resetBtn.addEventListener('click', ResetBoundaries)
+	resetBtn.ResetBoundaries_smart = ResetBoundaries
 
 	// 7. store relevant elements with event event listeners to clean them later
 	// 8. clean data and ready 'previous' parameters for next session with IframeRemovedFromDom_callback
 	// Expensive? think so. Elegant? no, but works
-	// RemovedElementObserver({
-	// 	el: iframe as IFRH,
-	// 	OnRemovedFromDom_cb: GetOnIframeRemovedFromDom(
-	// 		flipIterator,
-	// 		t,
-	// 		q,
-	// 		map,
-	// 		local.entry,
-	// 		l
-	// 	),
-	// })
+	RemovedElementObserver({
+		el: iframe as IFRH,
+		OnRemovedFromDom_cb: GetOnIframeRemovedFromDom(
+			flipIterator,
+			t,
+			q,
+			map,
+			local.entry,
+			l
+		),
+	})
 
 	// 9. Performance Mode - Iframe Buffer & Initialize on interaction - synergy
-	// if (local.entry.canBeCleanedByBuffer && parent) {
-	// 	// sometimes the parent is already gone - while loading iframe
-	// 	const parentCssPath = getUniqueSelectorSmart(parent)
-	// 	PushNew_ShiftAllOlder_IframeBuffer(parentCssPath)
-	// }
+	if (local.entry.canBeCleanedByBuffer && parent) {
+		// sometimes the parent is already gone - while loading iframe
+		const parentCssPath = getUniqueSelectorSmart(parent)
+		PushNew_ShiftAllOlder_IframeBuffer(parentCssPath)
+	}
 
 	// 10. 'auto pause' when an iframe goes out the viewport... stop playing and mute
-	// FIXME:
-	// const ViewportObserver = new IntersectionObserver(
-	// 	GetFuncPauseOffscreen(q, t, local),
-	// 	{ threshold: [0] }
-	// )
-	// ViewportObserver.observe(iframe)
+	const ViewportObserver = new IntersectionObserver(
+		GetFuncPauseOffscreen(q, t, local),
+		{ threshold: [0] }
+	)
+	ViewportObserver.observe(iframe)
 
 	// 11. well well well
 	if (map.playRightAway?.value && map.hasOwnProperty('updateTime')) {
@@ -137,7 +137,7 @@ export async function onPlayerReady(event: YT) {
 	TryToRunPreviousParams(t, local, styleCallbacks)
 	parent.setAttribute('loaded', '')
 	iframe.addEventListener('load', () => (t.ytgif.previousTick = q.tick()))
-	//ValidateHierarchyTimestamps(parent, t)
+	ValidateHierarchyTimestamps(parent, t)
 }
 function GetLocalObj(
 	map: IExtendedVideoParams,
