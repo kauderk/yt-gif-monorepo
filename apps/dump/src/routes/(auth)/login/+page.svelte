@@ -12,7 +12,7 @@
 
 		switch (result) {
 			case 'success':
-				goto(`/`)
+				goto('/app')
 				break
 			case 'failure':
 				break

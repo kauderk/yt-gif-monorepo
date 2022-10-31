@@ -1,4 +1,4 @@
-## `/` Landing Page/Feed
+## '/app' Landing Page/Feed
 
 ## `/auth` Authentication
 

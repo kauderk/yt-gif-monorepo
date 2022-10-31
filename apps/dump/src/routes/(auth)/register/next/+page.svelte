@@ -5,6 +5,7 @@
 	import { firebaseUser } from '$lib/modules/firebase/client'
 	import { page } from '$app/stores'
 	import UsernameInput from '$lib/components/inputs/UsernameInput.svelte'
+	import Dicebear from './Dicebear.svelte'
 	let username: string
 	let usernameError: string
 	let name: string
@@ -43,7 +44,7 @@
 				const body = await res.json()
 				currentUser.set(body.user)
 
-				return goto(`/`)
+				return goto('/app')
 			} else {
 				usernameError = 'Username is already in use'
 				finishLoading = false
@@ -87,12 +88,8 @@
 
 <div class="hero min-h-full bg-base-200">
 	<div class="hero-content flex-col lg:flex-row-reverse">
-		<div class="text-center lg:text-left lg:min-w-max">
-			<h1 class="text-5xl font-bold">One more thing...</h1>
-			<p class="py-6">
-				We need a few more information before you'll be ready to dump.
-			</p>
-		</div>
+		<Dicebear seed={username} />
+
 		<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
 			<div class="card-body">
 				<form on:submit={finish}>

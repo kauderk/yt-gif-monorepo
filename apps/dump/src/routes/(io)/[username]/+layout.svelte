@@ -1,17 +1,17 @@
 <script lang="ts">
-	import UserDisplay from '$lib/components/users/UserDisplay.svelte';
-	import { firebaseUser } from '$lib/modules/firebase/client';
-	import FollowsModal from '$lib/components/modals/FollowsModal.svelte';
-	import FollowButton from '$lib/components/inputs/FollowButton.svelte';
+	import UserDisplay from '$lib/components/users/UserDisplay.svelte'
+	import { firebaseUser } from '$lib/modules/firebase/client'
+	import FollowsModal from '$lib/components/modals/FollowsModal.svelte'
+	import FollowButton from '$lib/components/inputs/FollowButton.svelte'
 
-	import type { LayoutData } from './$types';
+	import type { LayoutData } from './$types'
 
-	export let data: LayoutData;
-	$: ({ user, url } = data);
-	$: isLoggedInUser = user.uid === $firebaseUser?.uid;
+	export let data: LayoutData
+	$: ({ user, url } = data)
+	$: isLoggedInUser = user.uid === $firebaseUser?.uid
 
-	let openFollowersModal: () => void;
-	let openFollowingModal: () => void;
+	let openFollowersModal: () => void
+	let openFollowingModal: () => void
 </script>
 
 {#key user}
@@ -42,7 +42,9 @@
 						{user.followingCount}
 					</span> following
 				</p>
-				<p class="text-sm">joined: {new Date(user.createdAt).toLocaleDateString()}</p>
+				<p class="text-sm">
+					joined: {new Date(user.createdAt).toLocaleDateString()}
+				</p>
 			</div>
 		</div>
 		{#if isLoggedInUser}
@@ -57,24 +59,25 @@
 				<a
 					class="tab md:tab-lg grow"
 					href="/{user.username}"
-					class:tab-active={url.endsWith(user.username)}
-				>
+					class:tab-active={url.endsWith(user.username)}>
 					feed
 				</a>
 				<a
 					class="tab md:tab-lg grow"
 					href="/{user.username}/posts"
-					class:tab-active={url.endsWith('posts')}
-				>
+					class:tab-active={url.endsWith('posts')}>
 					posts
 				</a>
 				<a
 					class="tab md:tab-lg grow"
 					href="/{user.username}/collections"
-					class:tab-active={url.endsWith('collections')}
-				>
+					class:tab-active={url.endsWith('collections')}>
 					collections
 				</a>
+				<a
+					class="tab md:tab-lg grow"
+					href="/app"
+					class:tab-active={url.endsWith('collections')}>🔙 home</a>
 			</div>
 		</div>
 		<slot />
