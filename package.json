@@ -49,5 +49,13 @@
 	"type": "module",
 	"dependencies": {
 		"svelte-preprocess": "^4.10.6"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"@popperjs/core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
+			"@popperjs+core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
+			"svelte-grid@5.1.1": "patches/svelte-grid@5.1.1.patch",
+			"svelte-grid+5.1.1": "patches/svelte-grid+5.1.1.patch"
+		}
 	}
 }

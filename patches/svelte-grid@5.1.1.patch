@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index a07261b2270b6eec64c16b6b40e0b1808843c329..5bb8bd444b0a838e39436662bb6e779791cf2557 100644
+--- a/package.json
++++ b/package.json
+@@ -12,6 +12,7 @@
+     "build": "node_modules/.bin/rollup -c",
+     "go": "npm-run-all pretty build"
+   },
++  "type": "module",
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/vaheqelyan/svelte-grid.git"
