@@ -13,7 +13,7 @@
 		<span class="material-icons-outlined"> add </span>
 	</a>
 	<a
-		href="/"
+		href="/app"
 		class:active={url?.toString().indexOf('/search') === -1 &&
 			url?.toString().indexOf('/new') === -1}>
 		<span class="material-icons-outlined"> home </span>

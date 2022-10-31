@@ -4,7 +4,8 @@
 
 <header class="navbar bg-base-300 shrink-0">
 	<div class="navbar-start">
-		<a class="btn btn-ghost uppercase font-bold" href="/">yt-gif-graph</a>
+		<a class="btn btn-ghost uppercase font-bold" href="/app"
+			>yt-gif-graph</a>
 	</div>
 	<div class="hidden md:flex navbar-center">
 		<!-- <UserSearchBar

@@ -4,7 +4,7 @@
 		routes: [
 			{
 				title: 'Link...',
-				href: '/',
+				href: '/app',
 			},
 		],
 	}

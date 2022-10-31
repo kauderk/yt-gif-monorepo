@@ -25,7 +25,7 @@
 				0
 			).toUTCString()};`
 			await auth.signOut()
-			goto('/')
+			goto('/app')
 		}
 	}} />
 
@@ -39,6 +39,3 @@
 
 	<Footer url={data.url} />
 </div>
-
-<style>
-</style>
