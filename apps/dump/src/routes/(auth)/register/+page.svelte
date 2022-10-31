@@ -155,7 +155,7 @@
 						Sign in with Google
 					</button>
 				</div>
-				<a href="/auth/login" class="label-text-alt link link-hover">
+				<a href="/login" class="label-text-alt link link-hover">
 					Already have an account ?
 				</a>
 			</div>

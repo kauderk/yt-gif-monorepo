@@ -92,9 +92,9 @@
 				<h1 class="text-5xl font-bold">YT-GIF-GRAPH</h1>
 				<p class="py-6">Share your content with the world.</p>
 				<div class="flex flex-col items-center">
-					<a class="btn btn-primary w-fit" href="/auth/register"
+					<a class="btn btn-primary w-fit" href="/register"
 						>Get Started</a>
-					<a class="link-primary text-sm mt-1" href="/auth/login"
+					<a class="link-primary text-sm mt-1" href="/login"
 						>Sign in. I have an account.</a>
 				</div>
 			</div>

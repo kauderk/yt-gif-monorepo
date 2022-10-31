@@ -18,11 +18,10 @@
 				<div class="flex flex-col items-center btn-group">
 					<a
 						class="btn btn-primary  w-full"
-						href="/auth/login?redirect={$page.url.toString()}"
-						>Login</a>
+						href="/login?redirect={$page.url.toString()}">Login</a>
 					<a
 						class="btn btn-ghost w-full"
-						href="/auth/register?redirect={$page.url.toString()}"
+						href="/register?redirect={$page.url.toString()}"
 						>Register</a>
 				</div>
 			{:else if $page.status === 403}

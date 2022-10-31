@@ -52,9 +52,8 @@
 				</ul>
 			</div>
 		{:else}
-			<a
-				class="btn btn-ghost lowercase text-base font-bold"
-				href="/auth/login">login</a>
+			<a class="btn btn-ghost lowercase text-base font-bold" href="/login"
+				>login</a>
 		{/if}
 	</div>
 </header>

@@ -5,7 +5,6 @@
 	import Header from '$lib/components/header/Header.svelte'
 	import { auth } from '$lib/modules/firebase/client'
 
-	import '../app.css'
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
