@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
 	import { auth, currentUser } from '$lib/modules/firebase/client'
-	import UserSearchBar from '../inputs/UserSearchBar.svelte'
 </script>
 
 <header class="navbar bg-base-300 shrink-0">
@@ -19,6 +17,7 @@
 			<a href="/new" class="hidden md:flex btn btn-ghost text-base"
 				>publish</a>
 			<div class="dropdown dropdown-end">
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<label
 					tabindex="0"
 					class="btn btn-ghost px-2 lowercase font-bold text-base"

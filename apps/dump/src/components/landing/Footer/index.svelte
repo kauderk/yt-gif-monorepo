@@ -51,14 +51,15 @@
 			],
 		},
 	]
+	import { theme } from '$cmp/theme/store'
 </script>
 
 <!--Footer-->
-<footer class="bg-white">
+<footer class="bg-white dark:bg-black">
 	<div class="container mx-auto px-8">
 		<div class="w-full flex flex-col md:flex-row py-6">
-			<div class="flex-1 mb-6 text-black">
-				<Brand duration={0} />
+			<div class="flex-1 mb-6 ">
+				<Brand duration={0} contrast={$theme != 'dark'} />
 			</div>
 			{#each lists as config}
 				<List {config} />

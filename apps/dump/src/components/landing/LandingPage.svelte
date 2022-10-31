@@ -6,10 +6,13 @@
 	// import Pricing from './Pricing.svelte'
 	// import CallToAction from './CallToAction.svelte'
 	import Footer from './Footer/index.svelte'
+	import { theme } from '$cmp/theme/store'
 </script>
 
 <div
-	class="leading-normal tracking-normal text-white gradient"
+	class={$theme == 'dark'
+		? `bg-gradient-to-r from-sky-700 to-indigo-700`
+		: 'leading-normal tracking-normal gradient'}
 	style="font-family: 'Source Sans Pro', sans-serif;">
 	<Nav />
 

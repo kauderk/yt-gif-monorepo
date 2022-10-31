@@ -15,7 +15,7 @@
 		class="h-8 fill-current inline"
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 512.005 512.005">
-		<Logo {duration} />
+		<Logo {duration} {contrast} />
 	</svg>
 	yt-gif
 	<span class="text-lg lg:text-2xl">v0.2.0</span>

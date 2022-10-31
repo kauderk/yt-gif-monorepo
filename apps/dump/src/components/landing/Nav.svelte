@@ -2,6 +2,7 @@
 	import Brand from '$cmp/graphics/svg/Brand.svelte'
 	import { clickOutside, clickOutsideAction } from '$lib/actions/clickOutside'
 	import Button from './components/Button.svelte'
+	import ThemeHead from '$cmp/theme/Head.svelte'
 
 	let y: number
 	let navFloat = false
@@ -61,6 +62,14 @@
 			<!-- separator -->
 			<ul class="list-reset lg:flex justify-end flex-1 items-center" />
 			<!-- links -->
+			<button
+				id="navAction"
+				class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+				<div class="flex items-center gap-2">
+					<a href="#">Theme</a>
+					<ThemeHead />
+				</div>
+			</button>
 			<button
 				id="navAction"
 				class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">

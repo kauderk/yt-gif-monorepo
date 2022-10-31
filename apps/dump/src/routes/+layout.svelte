@@ -9,7 +9,14 @@
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
+	import { theme } from '$cmp/theme/store'
 </script>
+
+<svelte:head>
+	<meta
+		name="color-scheme"
+		content={$theme == 'system' ? 'light dark' : $theme} />
+</svelte:head>
 
 <svelte:window
 	on:keydown={async e => {
