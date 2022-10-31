@@ -30,9 +30,11 @@
 	function SwitchDark(b = darkMode) {
 		document.documentElement.classList[b ? 'add' : 'remove']('dark')
 	}
+	export let id: null | string = null
 </script>
 
 <input
+	{id}
 	type="checkbox"
 	class="toggle toggle-md"
 	checked={darkMode}
