@@ -1,5 +1,5 @@
 <script>
-	import Brand from '$cmp/graphics/svg/Brand.svelte'
+	import Brand from '@cmp/graphics/svg/Brand.svelte'
 	import List from './List.svelte'
 
 	const lists = [
@@ -51,7 +51,7 @@
 			],
 		},
 	]
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 </script>
 
 <!--Footer-->

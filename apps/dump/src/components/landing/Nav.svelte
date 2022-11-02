@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Brand from '$cmp/graphics/svg/Brand.svelte'
-	import { clickOutside, clickOutsideAction } from '$lib/actions/clickOutside'
+	import Brand from '@cmp/graphics/svg/Brand.svelte'
+	import { clickOutside, clickOutsideAction } from '@lib/actions/clickOutside'
 	import Button from './components/Button.svelte'
-	import ThemeHead from '$cmp/theme/Head.svelte'
+	import ThemeHead from '@cmp/theme/Head.svelte'
 
 	let y: number
 	let navFloat = false
@@ -22,7 +22,7 @@
 	}) => {
 		if (!hambugerEl.contains(target)) showMenu = false
 	}
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 	$: dark = $theme == 'dark'
 	$: bg = navFloat ? (dark ? 'bg-gray-500' : 'bg-gray-300') : null
 </script>

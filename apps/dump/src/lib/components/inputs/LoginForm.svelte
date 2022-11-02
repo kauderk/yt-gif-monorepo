@@ -9,7 +9,7 @@
 		type UserCredential,
 	} from 'firebase/auth'
 	import { onMount } from 'svelte'
-	import { auth, googleProvider } from '$lib/modules/firebase/client'
+	import { auth, googleProvider } from '@lib/modules/firebase/client'
 	import { FirebaseError } from 'firebase/app'
 
 	let email: string

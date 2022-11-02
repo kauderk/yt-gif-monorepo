@@ -5,7 +5,7 @@
 		normal: 'Take notes on video timestamps and organize them on a graph.',
 		action: 'Get Started',
 	}
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 	$: shadow = $theme == 'dark' ? '#000' : '#fff'
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { lorem } from '$lib/random/lorem'
+	import { lorem } from '@lib/random/lorem'
 	import Controls from './Controls.svelte'
 	import Typewriter from 'svelte-typewriter'
 

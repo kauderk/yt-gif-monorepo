@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import Alerter from '$lib/components/Alerter.svelte'
-	import Footer from '$lib/components/footer/Footer.svelte'
-	import Header from '$lib/components/header/Header.svelte'
-	import { auth } from '$lib/modules/firebase/client'
+	import Alerter from '@lib/components/Alerter.svelte'
+	import Footer from '@lib/components/footer/Footer.svelte'
+	import Header from '@lib/components/header/Header.svelte'
+	import { auth } from '@lib/modules/firebase/client'
 
 	import type { LayoutData } from './$types'
 
 	export let data: LayoutData
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 </script>
 
 <svelte:head>

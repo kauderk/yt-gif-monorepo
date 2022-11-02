@@ -6,7 +6,7 @@
 	// import Pricing from './Pricing.svelte'
 	// import CallToAction from './CallToAction.svelte'
 	import Footer from './Footer/index.svelte'
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 </script>
 
 <div

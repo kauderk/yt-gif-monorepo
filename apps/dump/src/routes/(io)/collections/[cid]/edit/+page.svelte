@@ -1,77 +1,82 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { browser } from '$app/environment'
+	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
 
-	import UserSearchBar from '$lib/components/inputs/UserSearchBar.svelte';
-	import UserDisplaySmall from '$lib/components/users/UserDisplaySmall.svelte';
-	import { currentUser } from '$lib/modules/firebase/client';
-	import type { CollectionOutput, CreateOrUpdateCollectionInput } from '$lib/types/api';
-	import type { PageData } from './$types';
+	import UserSearchBar from '@lib/components/inputs/UserSearchBar.svelte'
+	import UserDisplaySmall from '@lib/components/users/UserDisplaySmall.svelte'
+	import { currentUser } from '@lib/modules/firebase/client'
+	import type {
+		CollectionOutput,
+		CreateOrUpdateCollectionInput,
+	} from '@lib/types/api'
+	import type { PageData } from './$types'
 
-	import type { User } from '@prisma/client';
-	import { onMount } from 'svelte/internal';
+	import type { User } from '@prisma/client'
+	import { onMount } from 'svelte/internal'
 
-	export let data: PageData;
-	$: ({ collection } = data);
+	export let data: PageData
+	$: ({ collection } = data)
 
-	$: isAuthor = collection.author.uid === $currentUser?.uid;
+	$: isAuthor = collection.author.uid === $currentUser?.uid
 
-	let allowedUids: string[] = [];
-	let allowedUsers: User[] = [];
+	let allowedUids: string[] = []
+	let allowedUsers: User[] = []
 	$: allowedUids,
 		(async () => {
-			if (!browser) return;
-			let i = 0;
+			if (!browser) return
+			let i = 0
 			for (; i < allowedUids.length; i++) {
-				const uid = allowedUids[i];
+				const uid = allowedUids[i]
 
-				let user: User | undefined = allowedUsers.find((u) => u.uid === uid);
+				let user: User | undefined = allowedUsers.find(
+					u => u.uid === uid
+				)
 				if (user) {
-					allowedUsers[i] = user;
+					allowedUsers[i] = user
 				} else {
-					const res = await fetch(`/api/users/${uid}`);
-					allowedUsers[i] = (await res.json()).user;
+					const res = await fetch(`/api/users/${uid}`)
+					allowedUsers[i] = (await res.json()).user
 				}
 			}
 			for (; i < allowedUsers.length; i++) {
-				allowedUsers.pop();
+				allowedUsers.pop()
 			}
-		})();
+		})()
 
-	let loading = false;
+	let loading = false
 	async function onsave() {
-		if (loading) return;
-		loading = true;
+		if (loading) return
+		loading = true
 		const body: CreateOrUpdateCollectionInput = {
 			name: collection.name,
 			description: collection.description,
 			privacy: collection.privacy,
-			allowedUids: allowedUids
-		};
+			allowedUids: allowedUids,
+		}
 
-		console.log(body);
+		console.log(body)
 
 		const res = await fetch(`/api/collections/${collection.cid}`, {
 			method: 'POST',
-			body: JSON.stringify(body)
-		});
+			body: JSON.stringify(body),
+		})
 
 		if (res.status === 200) {
-			let data = (await res.json()) as CollectionOutput;
+			let data = (await res.json()) as CollectionOutput
 
-			collection = data.collection;
+			collection = data.collection
 
-			goto(`/collections/${collection.cid}`);
+			goto(`/collections/${collection.cid}`)
 		}
-		loading = false;
+		loading = false
 	}
 
 	onMount(() => {
-		if (!isAuthor) goto('.');
+		if (!isAuthor) goto('.')
 
-		allowedUids = collection.allowedUsers.map(({ uid }) => uid);
-	});
+		allowedUids = collection.allowedUsers.map(({ uid }) => uid)
+	})
 </script>
 
 <section class="container mx-auto">
@@ -93,8 +98,7 @@
 					type="text"
 					placeholder="name"
 					class="input input-bordered"
-					required
-				/>
+					required />
 			</div>
 			<div class="form-control">
 				<label class="label" for="description">
@@ -104,12 +108,12 @@
 					class="textarea textarea-bordered"
 					placeholder="description"
 					bind:value={collection.description}
-					required
-				/>
+					required />
 			</div>
 		</div>
 	</div>
-	<div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100 h-full">
+	<div
+		class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100 h-full">
 		<div class="card-body">
 			<div class="card-title">
 				<h2 class="text-xl font-bold">privacy settings</h2>
@@ -118,7 +122,10 @@
 				<label class="label" for="privacy">
 					<span class="label-text">privacy*</span>
 				</label>
-				<select name="privacy" bind:value={collection.privacy} class="select select-bordered">
+				<select
+					name="privacy"
+					bind:value={collection.privacy}
+					class="select select-bordered">
 					<option value="PUBLIC">public</option>
 					<option value="PRIVATE">private</option>
 				</select>
@@ -129,34 +136,36 @@
 						<span class="label-text">allowed users</span>
 					</label>
 					<UserSearchBar
-						onclick={(user) => {
-							console.log(user);
+						onclick={user => {
+							console.log(user)
 
 							if (allowedUids.includes(user.uid)) {
-								return;
+								return
 							}
 
-							allowedUids = [...allowedUids, user.uid];
+							allowedUids = [...allowedUids, user.uid]
 						}}
-						closeOnSelect={true}
-					/>
+						closeOnSelect={true} />
 					<label class="label" for="">
 						<span class="label-text-alt">
-							selected users will be, apart from you, the only able to access the collection
+							selected users will be, apart from you, the only
+							able to access the collection
 						</span>
 					</label>
 				</div>
 				<div class="flex flex-col gap-2">
 					{#each allowedUsers as user, i}
 						{#key user.uid}
-							<div class="flex flex-row justify-between items-center">
+							<div
+								class="flex flex-row justify-between items-center">
 								<UserDisplaySmall bind:user />
 								<button
 									class="link link-hover"
 									on:click={() => {
-										allowedUids = allowedUids.filter((uid) => uid !== user.uid);
-									}}
-								>
+										allowedUids = allowedUids.filter(
+											uid => uid !== user.uid
+										)
+									}}>
 									remove
 								</button>
 							</div>
@@ -172,13 +181,13 @@
 	<div class="card w-fit">
 		<div class="card-body">
 			<div class="btn-group">
-				<button class="btn btn-primary" on:click={onsave} class:loading>save</button>
+				<button class="btn btn-primary" on:click={onsave} class:loading
+					>save</button>
 				<button
 					class="btn btn-ghost"
 					on:click={() => {
-						window.history.back();
-					}}
-				>
+						window.history.back()
+					}}>
 					cancel
 				</button>
 			</div>

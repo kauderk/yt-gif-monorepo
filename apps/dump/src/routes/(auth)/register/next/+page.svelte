@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { auth, currentUser } from '$lib/modules/firebase/client'
-	import { firebaseUser } from '$lib/modules/firebase/client'
+	import { auth, currentUser } from '@lib/modules/firebase/client'
+	import { firebaseUser } from '@lib/modules/firebase/client'
 	import { page } from '$app/stores'
-	import UsernameInput from '$lib/components/inputs/UsernameInput.svelte'
+	import UsernameInput from '@lib/components/inputs/UsernameInput.svelte'
 	import Dicebear from './Dicebear.svelte'
 	let username: string
 	let usernameError: string
@@ -60,7 +60,7 @@
 	let redirectUrl: string | null
 	onMount(async () => {
 		redirectUrl = $page.url.searchParams.get('redirect')
-		console.log(redirectUrl)
+		// console.log(redirectUrl)
 
 		firebaseUser.subscribe(async fbuser => {
 			if (fbuser == null) {
@@ -72,12 +72,12 @@
 
 			try {
 				let res = await fetch(`/api/users/${fbuser.uid}`)
-				let json = await res.json()
+				// let json = await res.json()
 				if (res.status === 200) {
-					goto(
-						$page.url.searchParams.get('redirect') ??
-							`/${json.user.username}`
-					)
+					const redirectUrl = $page.url.searchParams.get('redirect')
+					if (redirectUrl) {
+						goto(redirectUrl)
+					}
 				}
 			} catch (error) {
 				console.error(error)

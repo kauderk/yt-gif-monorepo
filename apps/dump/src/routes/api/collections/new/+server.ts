@@ -1,33 +1,33 @@
-import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/modules/database/prisma';
-import type { CreateOrUpdateCollectionInput } from '$lib/types/api';
-import type { RequestEvent } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit'
+import { prisma } from '@lib/modules/database/prisma'
+import type { CreateOrUpdateCollectionInput } from '@lib/types/api'
+import type { RequestEvent } from '@sveltejs/kit'
 
 export async function POST({ params, request, locals }: RequestEvent) {
 	if (!locals.user) {
 		return json(
 			{
-				message: 'You must be logged in to create a collection.'
+				message: 'You must be logged in to create a collection.',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
-	const data = (await request.json()) as CreateOrUpdateCollectionInput;
+	const data = (await request.json()) as CreateOrUpdateCollectionInput
 
 	if (!data.name || !data.description) {
 		return json(
 			{
-				message: 'You must provide a name and a description.'
+				message: 'You must provide a name and a description.',
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
-	let res;
+	let res
 	try {
 		res = await prisma.collection.create({
 			data: {
@@ -37,31 +37,31 @@ export async function POST({ params, request, locals }: RequestEvent) {
 				description: data.description,
 				privacy: data.privacy,
 				allowedUsers: {
-					connect: (data.allowedUids || []).map((uid) => ({ uid }))
-				}
+					connect: (data.allowedUids || []).map(uid => ({ uid })),
+				},
 			},
 			include: {
 				allowedUsers: {
 					select: {
-						uid: true
-					}
-				}
-			}
-		});
+						uid: true,
+					},
+				},
+			},
+		})
 	} catch (error) {
-		console.error(error);
+		console.error(error)
 
 		return json(
 			{
-				message: 'An error occurred while creating the collection.'
+				message: 'An error occurred while creating the collection.',
 			},
 			{
-				status: 500
+				status: 500,
 			}
-		);
+		)
 	}
 
 	return json({
-		collection: res
-	});
+		collection: res,
+	})
 }

@@ -14,7 +14,7 @@
 	})
 	// https://yqnn.github.io/svg-path-editor/
 
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 	export let contrast = $theme == 'dark'
 </script>
 

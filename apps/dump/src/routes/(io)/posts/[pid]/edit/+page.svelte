@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { currentUser } from '$lib/modules/firebase/client';
+	import { goto } from '$app/navigation'
+	import { currentUser } from '@lib/modules/firebase/client'
 
-	import type { Post, User } from '@prisma/client';
-	import { onMount } from 'svelte';
+	import type { Post, User } from '@prisma/client'
+	import { onMount } from 'svelte'
 
-	import type { PageData } from "./$types"
+	import type { PageData } from './$types'
 
-	export let data: PageData;
-	$: ({ post } = data);
+	export let data: PageData
+	$: ({ post } = data)
 
-	$: isAuthor = post.author.uid === $currentUser?.uid;
+	$: isAuthor = post.author.uid === $currentUser?.uid
 
 	let metatype: string[] = [
 		'location',
@@ -19,50 +19,50 @@
 		'focal-length',
 		'aperture',
 		'shutter-speed',
-		'iso'
-	];
-	$: selectedMetatype = notAddedMetatypes[0];
-	let metadata: Map<string, string> = new Map();
+		'iso',
+	]
+	$: selectedMetatype = notAddedMetatypes[0]
+	let metadata: Map<string, string> = new Map()
 	function addMetatype() {
-		metadata = metadata.set(selectedMetatype, '');
+		metadata = metadata.set(selectedMetatype, '')
 	}
-	$: notAddedMetatypes = metatype.filter((metatype) => !metadata.has(metatype));
+	$: notAddedMetatypes = metatype.filter(metatype => !metadata.has(metatype))
 
-	let loading = false;
+	let loading = false
 	async function onsave() {
-		if (loading) return;
+		if (loading) return
 
-		loading = true;
+		loading = true
 
 		try {
-			post.metadataKeys = Array.from(metadata.keys());
-			post.metadataValues = Array.from(metadata.values());
+			post.metadataKeys = Array.from(metadata.keys())
+			post.metadataValues = Array.from(metadata.values())
 
 			let res = await fetch(`/api/posts/${post.pid}`, {
 				method: 'POST',
-				body: JSON.stringify(post)
-			});
+				body: JSON.stringify(post),
+			})
 
 			if (res.status === 200) {
-				goto(`/posts/${post.pid}`);
+				goto(`/posts/${post.pid}`)
 			} else {
-				console.error(await res.json());
+				console.error(await res.json())
 			}
 		} catch (e) {
-			console.error(e);
+			console.error(e)
 		} finally {
-			loading = false;
+			loading = false
 		}
 	}
 
 	onMount(() => {
-		if (!isAuthor) goto('.');
+		if (!isAuthor) goto('.')
 
-		metadata = new Map();
+		metadata = new Map()
 		for (let i = 0; i < post.metadataKeys.length; i++) {
-			metadata.set(post.metadataKeys[i], post.metadataValues[i]);
+			metadata.set(post.metadataKeys[i], post.metadataValues[i])
 		}
-	});
+	})
 </script>
 
 <section class="container mx-auto">
@@ -83,8 +83,7 @@
 					id="title"
 					type="text"
 					placeholder="Title"
-					class="input input-bordered"
-				/>
+					class="input input-bordered" />
 			</div>
 			<div class="form-control">
 				<label class="label" for="description">
@@ -93,8 +92,7 @@
 				<textarea
 					class="textarea textarea-bordered"
 					placeholder="Description"
-					bind:value={post.description}
-				/>
+					bind:value={post.description} />
 			</div>
 		</div>
 	</div>
@@ -109,21 +107,25 @@
 						<span>{key}</span>
 						<input
 							value={metadata.get(key)}
-							on:change={(e) => {
-								metadata = metadata.set(key, e.currentTarget.value);
+							on:change={e => {
+								metadata = metadata.set(
+									key,
+									e.currentTarget.value
+								)
 							}}
 							id={key}
 							type="text"
 							placeholder={key}
-							class="input input-bordered"
-						/>
+							class="input input-bordered" />
 					</div>
 				</div>
 			{/each}
 			<div class="form-control ">
 				{#if notAddedMetatypes.length > 0}
 					<div class="input-group ">
-						<select class="select select-bordered" bind:value={selectedMetatype}>
+						<select
+							class="select select-bordered"
+							bind:value={selectedMetatype}>
 							{#each notAddedMetatypes as metatype}
 								<option>{metatype}</option>
 							{/each}
@@ -137,13 +139,13 @@
 	<div class="card w-fit">
 		<div class="card-body">
 			<div class="btn-group">
-				<button class="btn btn-primary" on:click={onsave} class:loading>save</button>
+				<button class="btn btn-primary" on:click={onsave} class:loading
+					>save</button>
 				<button
 					class="btn btn-ghost"
 					on:click={() => {
-						window.history.back();
-					}}
-				>
+						window.history.back()
+					}}>
 					cancel
 				</button>
 			</div>

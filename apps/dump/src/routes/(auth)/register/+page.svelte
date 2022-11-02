@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { firebaseUser } from '$lib/modules/firebase/client'
-	import { auth, googleProvider } from '$lib/modules/firebase/client'
+	import { firebaseUser } from '@lib/modules/firebase/client'
+	import { auth, googleProvider } from '@lib/modules/firebase/client'
 	import { FirebaseError } from 'firebase/app'
 	import {
 		createUserWithEmailAndPassword,
 		signInWithPopup,
 	} from 'firebase/auth'
 	import { onMount } from 'svelte'
-	import PasswordInput from '$lib/components/inputs/PasswordInput.svelte'
+	import PasswordInput from '@lib/components/inputs/PasswordInput.svelte'
 
 	let email: string
 	let password: string

@@ -1,113 +1,117 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation'
 
-	import MultipleImagePickerDragAndDrop from '$lib/components/inputs/MultipleImagePickerDragAndDrop.svelte';
-	import UserSearchBar from '$lib/components/inputs/UserSearchBar.svelte';
-	import UserDisplay from '$lib/components/users/UserDisplay.svelte';
-	import UserDisplaySmall from '$lib/components/users/UserDisplaySmall.svelte';
-	import { currentUser } from '$lib/modules/firebase/client';
-	import { Steps } from '$lib/modules/interaction/steps';
-	import { createPost } from '$lib/modules/requests/createPost';
+	import MultipleImagePickerDragAndDrop from '@lib/components/inputs/MultipleImagePickerDragAndDrop.svelte'
+	import UserSearchBar from '@lib/components/inputs/UserSearchBar.svelte'
+	import UserDisplay from '@lib/components/users/UserDisplay.svelte'
+	import UserDisplaySmall from '@lib/components/users/UserDisplaySmall.svelte'
+	import { currentUser } from '@lib/modules/firebase/client'
+	import { Steps } from '@lib/modules/interaction/steps'
+	import { createPost } from '@lib/modules/requests/createPost'
 	import type {
 		CollectionOutput,
 		CreateOrUpdateCollectionInput,
 		CreateOrUpdatePostInput,
 		PostOutput,
-		UploadImageInput
-	} from '$lib/types/api';
-	import type { PrivacySetting, User } from '@prisma/client';
-	import { onMount } from 'svelte';
+		UploadImageInput,
+	} from '@lib/types/api'
+	import type { PrivacySetting, User } from '@prisma/client'
+	import { onMount } from 'svelte'
 
-	let stepsContainer: HTMLElement;
-	let sectionsContainer: HTMLElement;
-	let steps: Steps;
-	let currentStep = 1;
-	let nextDisabled = false;
-	let previousDisabled = true;
-	let uploadDisabled = true;
-	let uploadError: string;
+	let stepsContainer: HTMLElement
+	let sectionsContainer: HTMLElement
+	let steps: Steps
+	let currentStep = 1
+	let nextDisabled = false
+	let previousDisabled = true
+	let uploadDisabled = true
+	let uploadError: string
 	function updateButtonsState(currentStep: number) {
 		if (currentStep === 1) {
-			previousDisabled = true;
+			previousDisabled = true
 		} else {
-			previousDisabled = false;
+			previousDisabled = false
 		}
 
 		if (currentStep === steps?.steps.length) {
-			nextDisabled = true;
+			nextDisabled = true
 		} else {
-			if (currentStep === 1 && (!title || !description)) nextDisabled = true;
-			else if (currentStep === 2 && files.length === 0) nextDisabled = true;
-			else if (currentStep === 3 && !privacy) nextDisabled = true;
-			else nextDisabled = false;
+			if (currentStep === 1 && (!title || !description))
+				nextDisabled = true
+			else if (currentStep === 2 && files.length === 0)
+				nextDisabled = true
+			else if (currentStep === 3 && !privacy) nextDisabled = true
+			else nextDisabled = false
 		}
 
 		if (!title || !description || files.length === 0 || !privacy) {
-			uploadDisabled = true;
+			uploadDisabled = true
 		} else {
-			uploadDisabled = false;
+			uploadDisabled = false
 		}
 	}
 
 	// Step 1
-	let title = '';
-	$: title, updateButtonsState(currentStep);
-	let description = '';
-	$: description, updateButtonsState(currentStep);
+	let title = ''
+	$: title, updateButtonsState(currentStep)
+	let description = ''
+	$: description, updateButtonsState(currentStep)
 
 	// Step 2
-	let files: File[] = [];
-	let dataUrls: string[] = [];
+	let files: File[] = []
+	let dataUrls: string[] = []
 	function onfileschange(files: File[]) {
-		updateButtonsState(currentStep);
+		updateButtonsState(currentStep)
 	}
 
 	// Step 3
-	let privacy: PrivacySetting = 'PUBLIC';
-	$: privacy, updateButtonsState(currentStep);
-	let allowedUids: string[] = [];
-	let allowedUsers: User[] = [];
+	let privacy: PrivacySetting = 'PUBLIC'
+	$: privacy, updateButtonsState(currentStep)
+	let allowedUids: string[] = []
+	let allowedUsers: User[] = []
 	$: allowedUids,
 		updateButtonsState(currentStep),
 		(async () => {
 			for (let i = 0; i < allowedUids.length; i++) {
-				const uid = allowedUids[i];
+				const uid = allowedUids[i]
 
-				let user: User | undefined = allowedUsers.find((u) => u.uid === uid);
+				let user: User | undefined = allowedUsers.find(
+					u => u.uid === uid
+				)
 				if (user) {
-					allowedUsers[i] = user;
+					allowedUsers[i] = user
 				} else {
-					const res = await fetch(`/api/users/${uid}`);
-					allowedUsers[i] = (await res.json()).user;
+					const res = await fetch(`/api/users/${uid}`)
+					allowedUsers[i] = (await res.json()).user
 				}
 			}
-		})();
+		})()
 
-	let uploading = false;
+	let uploading = false
 	async function upload() {
-		if (uploading) return;
+		if (uploading) return
 
 		const body: CreateOrUpdateCollectionInput = {
 			name: title,
 			description: description,
 			privacy: privacy,
-			allowedUids: allowedUids
-		};
+			allowedUids: allowedUids,
+		}
 
 		try {
-			uploading = true;
+			uploading = true
 			let res = await fetch('/api/collections/new', {
 				method: 'POST',
-				body: JSON.stringify(body)
-			});
+				body: JSON.stringify(body),
+			})
 
 			if (res.status === 200) {
-				let data = (await res.json()) as CollectionOutput;
+				let data = (await res.json()) as CollectionOutput
 
-				let collectionId = data.collection.cid;
+				let collectionId = data.collection.cid
 
 				// Create hidden posts for each file in the collection
-				let promises = [];
+				let promises = []
 				for (let i = 0; i < dataUrls.length; i++) {
 					const body: CreateOrUpdatePostInput = {
 						collectionCid: collectionId,
@@ -115,35 +119,35 @@
 						metadataValues: [],
 						title: files[i].name,
 						description: '',
-						showInFeed: false
-					};
+						showInFeed: false,
+					}
 
-					promises.push(createPost(body, dataUrls[i]));
+					promises.push(createPost(body, dataUrls[i]))
 				}
 
-				await Promise.all(promises);
+				await Promise.all(promises)
 
-				goto(`/collections/${collectionId}`);
+				goto(`/collections/${collectionId}`)
 			} else {
 				uploadError =
-					'An error occurred while creating the collection. Please try again or contact us if the problem persists.';
+					'An error occurred while creating the collection. Please try again or contact us if the problem persists.'
 			}
-			uploading = false;
+			uploading = false
 		} catch (error) {
-			uploading = false;
-			console.error(error);
+			uploading = false
+			console.error(error)
 			uploadError =
-				'An error occurred while creating the collection. Please try again or contact us if the problem persists.';
+				'An error occurred while creating the collection. Please try again or contact us if the problem persists.'
 		}
 	}
 
 	onMount(() => {
-		steps = new Steps(stepsContainer, sectionsContainer);
-		steps.currentStep.subscribe((cs) => {
-			currentStep = cs;
-			updateButtonsState(cs);
-		});
-	});
+		steps = new Steps(stepsContainer, sectionsContainer)
+		steps.currentStep.subscribe(cs => {
+			currentStep = cs
+			updateButtonsState(cs)
+		})
+	})
 </script>
 
 <div class="h-full flex flex-col justify-start items-center px-2">
@@ -156,7 +160,8 @@
 
 	<div bind:this={sectionsContainer} class="w-full shrink-0 grow">
 		<section>
-			<div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+			<div
+				class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
 				<div class="card-body">
 					<div class="form-control">
 						<label class="label" for="title">
@@ -168,8 +173,7 @@
 							type="text"
 							placeholder="name"
 							class="input input-bordered"
-							required
-						/>
+							required />
 					</div>
 					<div class="form-control">
 						<label class="label" for="description">
@@ -179,23 +183,29 @@
 							class="textarea textarea-bordered"
 							placeholder="description"
 							bind:value={description}
-							required
-						/>
+							required />
 					</div>
 				</div>
 			</div>
 		</section>
 		<section class="display: none;">
-			<MultipleImagePickerDragAndDrop bind:files bind:dataUrls onchange={onfileschange} />
+			<MultipleImagePickerDragAndDrop
+				bind:files
+				bind:dataUrls
+				onchange={onfileschange} />
 		</section>
 		<section class="display: none;">
-			<div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100 h-full">
+			<div
+				class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100 h-full">
 				<div class="card-body">
 					<div class="form-control">
 						<label class="label" for="privacy">
 							<span class="label-text">privacy*</span>
 						</label>
-						<select name="privacy" bind:value={privacy} class="select select-bordered">
+						<select
+							name="privacy"
+							bind:value={privacy}
+							class="select select-bordered">
 							<option value="PUBLIC">public</option>
 							<option value="PRIVATE">private</option>
 						</select>
@@ -206,18 +216,18 @@
 								<span class="label-text">allowed users</span>
 							</label>
 							<UserSearchBar
-								onclick={(user) => {
+								onclick={user => {
 									if (allowedUids.includes(user.uid)) {
-										return;
+										return
 									}
 
-									allowedUids = [...allowedUids, user.uid];
+									allowedUids = [...allowedUids, user.uid]
 								}}
-								closeOnSelect={true}
-							/>
+								closeOnSelect={true} />
 							<label class="label" for="">
 								<span class="label-text-alt">
-									selected users will be, apart from you, the only able to access the collection
+									selected users will be, apart from you, the
+									only able to access the collection
 								</span>
 							</label>
 						</div>
@@ -226,17 +236,20 @@
 								{#key user.uid}
 									<div
 										on:click={() => {
-											allowedUids = allowedUids.filter((uid) => uid !== user.uid);
+											allowedUids = allowedUids.filter(
+												uid => uid !== user.uid
+											)
 										}}
-										class="flex flex-row justify-between items-center"
-									>
+										class="flex flex-row justify-between items-center">
 										<UserDisplaySmall bind:user />
 										<button
 											class="link link-hover"
 											on:click={() => {
-												allowedUids = allowedUids.filter((uid) => uid !== user.uid);
-											}}
-										>
+												allowedUids =
+													allowedUids.filter(
+														uid => uid !== user.uid
+													)
+											}}>
 											remove
 										</button>
 									</div>
@@ -251,20 +264,27 @@
 			</div>
 		</section>
 		<section class="display: none;">
-			<div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+			<div
+				class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
 				<div class="card-body">
 					<div class="card-title">recap</div>
 					<h2 class="text-lg font-medium">basic info</h2>
 					<p><span class="kbd font-medium">name: </span>{title}</p>
-					<p><span class="kbd font-medium">description: </span>{description}</p>
+					<p>
+						<span class="kbd font-medium"
+							>description:
+						</span>{description}
+					</p>
 					<h2 class="text-lg font-medium">images</h2>
 					<p>
 						{#if files.length > 0}
 							{#each files as file, i}
-								<span class="kbd font-medium m-1">{file.name}</span>
+								<span class="kbd font-medium m-1"
+									>{file.name}</span>
 							{/each}
 						{:else}
-							<span class="label-text-alt">no images yet, you can always add some later.</span>
+							<span class="label-text-alt"
+								>no images yet, you can always add some later.</span>
 						{/if}
 					</p>
 					<h2 class="text-lg font-medium">privacy</h2>
@@ -272,7 +292,8 @@
 						{#if privacy === 'PUBLIC'}
 							<span class="kbd font-medium">public</span>
 						{:else}
-							<span class="kbd font-medium">private</span> {allowedUsers.length} allowed users
+							<span class="kbd font-medium">private</span>
+							{allowedUsers.length} allowed users
 						{/if}
 					</p>
 					<div class="card-actions">
@@ -281,13 +302,13 @@
 							name="upload"
 							on:click={upload}
 							disabled={uploading || uploadDisabled}
-							class:loading={uploading}
-						>
+							class:loading={uploading}>
 							Create
 						</button>
 						{#if uploadError}
 							<label class="label" for="upload">
-								<span class="label-text-alt text-red-600">{uploadError}</span>
+								<span class="label-text-alt text-red-600"
+									>{uploadError}</span>
 							</label>
 						{/if}
 					</div>
@@ -297,11 +318,18 @@
 	</div>
 
 	<div class="w-full m-4">
-		<div class="mx-auto px-4 w-full max-w-5xl flex flex-row justify-between">
-			<button class="btn" on:click={() => steps.prevStep()} disabled={previousDisabled}>
+		<div
+			class="mx-auto px-4 w-full max-w-5xl flex flex-row justify-between">
+			<button
+				class="btn"
+				on:click={() => steps.prevStep()}
+				disabled={previousDisabled}>
 				Back
 			</button>
-			<button class="btn btn-primary" on:click={() => steps.nextStep()} disabled={nextDisabled}>
+			<button
+				class="btn btn-primary"
+				on:click={() => steps.nextStep()}
+				disabled={nextDisabled}>
 				Continue
 			</button>
 		</div>

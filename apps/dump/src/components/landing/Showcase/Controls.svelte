@@ -1,5 +1,5 @@
 <script>
-	import { query } from '$lib/actions/containerClasses'
+	import { query } from '@lib/actions/containerClasses'
 	import Icon from './Icon.svelte'
 	import {
 		mdiTimerEditOutline,

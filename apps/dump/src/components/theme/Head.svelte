@@ -2,7 +2,7 @@
 	// https://dev.to/willkre/persistent-theme-switch-dark-mode-with-svelte-sveltekit-tailwind-1b9g
 	import { browser } from '$app/environment'
 	import Toggle from './Toggle.svelte'
-	import { theme } from '$cmp/theme/store'
+	import { theme } from '@cmp/theme/store'
 
 	let darkMode = true
 

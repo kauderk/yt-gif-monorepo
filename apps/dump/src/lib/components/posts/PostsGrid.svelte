@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import type { PostsOutput } from '$lib/types/api';
-	import type { Post, User } from '@prisma/client';
+	import { browser } from '$app/environment'
+	import type { PostsOutput } from '@lib/types/api'
+	import type { Post, User } from '@prisma/client'
 
-	import { onMount } from 'svelte/internal';
-	import InfiniteScroll from '../pagination/InfiniteScroll.svelte';
-	import Spinner from '../Spinner.svelte';
-	import PostPreview from './PostPreview.svelte';
+	import { onMount } from 'svelte/internal'
+	import InfiniteScroll from '../pagination/InfiniteScroll.svelte'
+	import Spinner from '../Spinner.svelte'
+	import PostPreview from './PostPreview.svelte'
 
-	export let author: User;
-	export let endpoint: string;
-	export let count: number;
+	export let author: User
+	export let endpoint: string
+	export let count: number
 
-	let postsPerPage: number;
-	let currentPage = 0;
+	let postsPerPage: number
+	let currentPage = 0
 
 	function setPostsPerPage() {
 		window.matchMedia('(min-width: 1536px)').matches
@@ -22,61 +22,61 @@
 			? (postsPerPage = 18)
 			: window.matchMedia('min-width: 768px').matches
 			? (postsPerPage = 12)
-			: (postsPerPage = 6);
+			: (postsPerPage = 6)
 	}
 
-	let loadingMore = false;
-	let posts: Post[] = [];
+	let loadingMore = false
+	let posts: Post[] = []
 	async function loadMore() {
-		if (loadingMore) return;
-		console.log('load more');
+		if (loadingMore) return
+		console.log('load more')
 
-		let pageNumber = Math.ceil(count / postsPerPage);
-		console.log(count, postsPerPage, pageNumber);
+		let pageNumber = Math.ceil(count / postsPerPage)
+		console.log(count, postsPerPage, pageNumber)
 
 		if (currentPage + 1 > pageNumber) {
-			loadingMore = false;
-			return;
+			loadingMore = false
+			return
 		}
 
-		console.log(currentPage, pageNumber);
+		console.log(currentPage, pageNumber)
 
-		loadingMore = true;
-		let take = postsPerPage;
-		let skip = currentPage * postsPerPage;
+		loadingMore = true
+		let take = postsPerPage
+		let skip = currentPage * postsPerPage
 
-		let response = await fetch(`${endpoint}?take=${take}&skip=${skip}`);
-		let data = (await response.json()) as PostsOutput;
+		let response = await fetch(`${endpoint}?take=${take}&skip=${skip}`)
+		let data = (await response.json()) as PostsOutput
 
 		if (data.posts.length > 0) {
-			currentPage++;
+			currentPage++
 		}
 
-		posts = [...posts, ...data.posts];
-		loadingMore = false;
+		posts = [...posts, ...data.posts]
+		loadingMore = false
 	}
 
-	export let selectMode = true;
-	export let selectedPosts: Post[] = [];
+	export let selectMode = true
+	export let selectedPosts: Post[] = []
 	let onselect = (post: Post, i: number) => {
 		if (selectMode) {
-			if (selectedPosts.filter((p) => p.pid === post.pid).length > 0) {
-				selectedPosts = selectedPosts.filter((p) => p.pid !== post.pid);
+			if (selectedPosts.filter(p => p.pid === post.pid).length > 0) {
+				selectedPosts = selectedPosts.filter(p => p.pid !== post.pid)
 			} else {
-				selectedPosts = [...selectedPosts, post];
+				selectedPosts = [...selectedPosts, post]
 			}
 		}
-	};
+	}
 
 	onMount(() => {
 		if (browser) {
-			setPostsPerPage();
+			setPostsPerPage()
 			window.onresize = () => {
-				setPostsPerPage();
-			};
+				setPostsPerPage()
+			}
 		}
-		loadMore();
-	});
+		loadMore()
+	})
 </script>
 
 <div class="flex flex-col">
@@ -87,21 +87,21 @@
 					type="checkbox"
 					class="checkbox  mr-2"
 					checked={selectedPosts.length === posts.length}
-					on:input={(e) => {
+					on:input={e => {
 						if (!e.currentTarget.checked) {
-							selectedPosts = [];
+							selectedPosts = []
 						} else {
-							selectedPosts = posts;
+							selectedPosts = posts
 						}
 
-						console.log(selectedPosts);
-					}}
-				/>
+						console.log(selectedPosts)
+					}} />
 				<span class="label-text">select all</span>
 			</label>
 		</div>
 	{/if}
-	<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+	<div
+		class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
 		{#each posts as post, i}
 			<div>
 				{#if selectMode}
@@ -109,9 +109,10 @@
 						<input
 							type="checkbox"
 							class="checkbox checkbox-sm"
-							checked={selectedPosts.filter((p) => p.pid === post.pid).length > 0}
-							on:click={() => onselect(post, i)}
-						/>
+							checked={selectedPosts.filter(
+								p => p.pid === post.pid
+							).length > 0}
+							on:click={() => onselect(post, i)} />
 					</div>
 				{/if}
 				<PostPreview {post} {author} />

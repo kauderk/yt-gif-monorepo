@@ -1,5 +1,5 @@
 <script>
-	import Showcase from '$cmp/landing/Showcase/index.svelte'
+	import Showcase from '@cmp/landing/Showcase/index.svelte'
 </script>
 
 <section

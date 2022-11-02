@@ -1,123 +1,123 @@
-import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/modules/database/prisma';
-import type { RequestEvent } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit'
+import { prisma } from '@lib/modules/database/prisma'
+import type { RequestEvent } from '@sveltejs/kit'
 
 export async function GET({ params, locals }: RequestEvent) {
 	if (!locals.user) {
 		return json(
 			{
-				message: 'Unauthorized'
+				message: 'Unauthorized',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
-	const { uid } = locals.user;
+	const { uid } = locals.user
 
 	const user = await prisma.user.findUnique({
 		where: {
-			uid: uid
-		}
-	});
+			uid: uid,
+		},
+	})
 
 	if (user) {
 		return json({
-			user
-		});
+			user,
+		})
 	}
 
 	return json(
 		{
-			message: 'User not found'
+			message: 'User not found',
 		},
 		{
-			status: 404
+			status: 404,
 		}
-	);
+	)
 }
 
-import { auth } from '$lib/modules/firebase/admin';
+import { auth } from '@lib/modules/firebase/admin'
 
 export async function POST({ request, locals }: RequestEvent) {
 	if (!locals.user) {
 		return json(
 			{
-				message: 'Unauthorized'
+				message: 'Unauthorized',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
-	const data = await request.json();
+	const data = await request.json()
 
-	const { uid } = locals.user;
+	const { uid } = locals.user
 
 	if (!data.username) {
 		return json(
 			{
-				message: 'Missing username'
+				message: 'Missing username',
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
 
 	if (!data.name) {
 		return json(
 			{
-				message: 'Missing name'
+				message: 'Missing name',
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
 
 	try {
-		const fbUser = await auth.getUser(uid);
+		const fbUser = await auth.getUser(uid)
 
 		if (!fbUser) {
 			return json(
 				{
-					message: 'Missing/wrong uid'
+					message: 'Missing/wrong uid',
 				},
 				{
-					status: 400
+					status: 400,
 				}
-			);
+			)
 		}
 
 		const user = await prisma.user.upsert({
 			where: {
-				uid: uid
+				uid: uid,
 			},
 			update: {
 				username: data.username,
-				name: data.name
+				name: data.name,
 			},
 			create: {
 				uid: uid,
 				username: data.username,
-				name: data.name
-			}
-		});
+				name: data.name,
+			},
+		})
 
 		return json({
-			user
-		});
+			user,
+		})
 	} catch (error) {
 		return json(
 			{
-				message: error
+				message: error,
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
 }

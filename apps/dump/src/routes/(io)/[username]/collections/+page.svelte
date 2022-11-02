@@ -1,13 +1,13 @@
 <script lang="ts">
-	import CollectionPreview from '$lib/components/collections/CollectionPreview.svelte';
-	import CollectionsGrid from '$lib/components/collections/CollectionsGrid.svelte';
-	import { firebaseUser } from '$lib/modules/firebase/client';
-	import type { PageData } from "./$types"
+	import CollectionPreview from '@lib/components/collections/CollectionPreview.svelte'
+	import CollectionsGrid from '@lib/components/collections/CollectionsGrid.svelte'
+	import { firebaseUser } from '@lib/modules/firebase/client'
+	import type { PageData } from './$types'
 
-	export let data: PageData;
-	$: ({ user, collections } = data);
+	export let data: PageData
+	$: ({ user, collections } = data)
 
-	$: isLoggedInUser = user.uid === $firebaseUser?.uid;
+	$: isLoggedInUser = user.uid === $firebaseUser?.uid
 </script>
 
 {#if collections.length === 0}
@@ -16,7 +16,8 @@
 			<h1 class="text-3xl font-bold">Nothing to see here yet...</h1>
 			<p class="font-medium mt-2">
 				{#if isLoggedInUser}
-					click <a class="link" href="/new/post">here</a> to create a new post.
+					click <a class="link" href="/new/post">here</a> to create a new
+					post.
 				{:else}
 					{user.name} hasn't created any collections yet.
 				{/if}

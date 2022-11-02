@@ -1,8 +1,8 @@
 <script lang="ts">
-	import UserDisplay from '$lib/components/users/UserDisplay.svelte'
-	import { firebaseUser } from '$lib/modules/firebase/client'
-	import FollowsModal from '$lib/components/modals/FollowsModal.svelte'
-	import FollowButton from '$lib/components/inputs/FollowButton.svelte'
+	import UserDisplay from '@lib/components/users/UserDisplay.svelte'
+	import { firebaseUser } from '@lib/modules/firebase/client'
+	import FollowsModal from '@lib/components/modals/FollowsModal.svelte'
+	import FollowButton from '@lib/components/inputs/FollowButton.svelte'
 
 	import type { LayoutData } from './$types'
 

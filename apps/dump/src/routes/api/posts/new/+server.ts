@@ -1,32 +1,32 @@
-import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/modules/database/prisma';
-import type { CreateOrUpdatePostInput } from '$lib/types/api';
-import type { Post } from '@prisma/client';
-import type { RequestEvent } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit'
+import { prisma } from '@lib/modules/database/prisma'
+import type { CreateOrUpdatePostInput } from '@lib/types/api'
+import type { Post } from '@prisma/client'
+import type { RequestEvent } from '@sveltejs/kit'
 
 export async function POST({ request, locals }: RequestEvent) {
 	if (!locals.user) {
 		return json(
 			{
-				message: 'You must be logged in to create a post.'
+				message: 'You must be logged in to create a post.',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
-	const data = (await request.json()) as CreateOrUpdatePostInput;
+	const data = (await request.json()) as CreateOrUpdatePostInput
 
 	if (!data.title) {
 		return json(
 			{
-				message: 'You must provide a title.'
+				message: 'You must provide a title.',
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
 
 	const post: Post = {
@@ -39,16 +39,16 @@ export async function POST({ request, locals }: RequestEvent) {
 		metadataKeys: data.metadataKeys,
 		metadataValues: data.metadataValues,
 		showInFeed: data.showInFeed ?? true,
-		collectionCid: data.collectionCid
-	};
+		collectionCid: data.collectionCid,
+	}
 
 	await prisma.post.create({
 		data: {
-			...post
-		}
-	});
+			...post,
+		},
+	})
 
 	return json({
-		post
-	});
+		post,
+	})
 }

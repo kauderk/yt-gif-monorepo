@@ -1,31 +1,31 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { auth } from '$lib/modules/firebase/client';
+	import { goto } from '$app/navigation'
+	import { auth } from '@lib/modules/firebase/client'
 	import {
 		GoogleAuthProvider,
 		reauthenticateWithCredential,
 		type AuthCredential,
-		type UserCredential
-	} from 'firebase/auth';
-	import { fade } from 'svelte/transition';
-	import LoginForm from '../inputs/LoginForm.svelte';
+		type UserCredential,
+	} from 'firebase/auth'
+	import { fade } from 'svelte/transition'
+	import LoginForm from '../inputs/LoginForm.svelte'
 
-	let container: HTMLElement;
-	let isOpen = false;
+	let container: HTMLElement
+	let isOpen = false
 	let onLogin: (
 		result: string,
 		credential?: UserCredential,
 		authCredential?: AuthCredential
-	) => void;
+	) => void
 
 	/**
 	 * Opens the modal
 	 * @returns {Promise<boolean>} resolves when the login is completed, returns true if the login was successful, false otherwise
 	 */
 	export const open = async (): Promise<boolean> => {
-		isOpen = true;
+		isOpen = true
 
-		await auth.signOut();
+		await auth.signOut()
 		return new Promise((resolve, reject) => {
 			onLogin = async (
 				result: string,
@@ -36,27 +36,30 @@
 					case 'success':
 						if (userCredential && authCredential) {
 							try {
-								await reauthenticateWithCredential(userCredential.user, authCredential);
+								await reauthenticateWithCredential(
+									userCredential.user,
+									authCredential
+								)
 							} catch (error) {
-								console.error(error);
+								console.error(error)
 							}
 						}
-						isOpen = false;
-						resolve(true);
-						break;
+						isOpen = false
+						resolve(true)
+						break
 					case 'failure':
-						isOpen = false;
-						resolve(false);
-						break;
+						isOpen = false
+						resolve(false)
+						break
 					case 'next':
-						goto('/register/next');
-						break;
+						goto('/register/next')
+						break
 					default:
-						break;
+						break
 				}
-			};
-		});
-	};
+			}
+		})
+	}
 </script>
 
 {#if isOpen && onLogin}

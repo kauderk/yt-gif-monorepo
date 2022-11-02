@@ -2,8 +2,8 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 
-	import LoginForm from '$lib/components/inputs/LoginForm.svelte'
-	import { auth, firebaseUser } from '$lib/modules/firebase/client'
+	import LoginForm from '@lib/components/inputs/LoginForm.svelte'
+	import { auth, firebaseUser } from '@lib/modules/firebase/client'
 	import { onMount } from 'svelte'
 	import type { Unsubscriber } from 'svelte/store'
 
