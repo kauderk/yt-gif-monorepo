@@ -30,7 +30,8 @@
 		"test": "turbo run test",
 		"prepare": "husky install",
 		"plop": "plop",
-		"clean": "git clean -fXd"
+		"clean": "git clean -fXd",
+		"postinstall": "npx patch-package"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.23.1",
@@ -41,6 +42,7 @@
 		"autoprefixer": "^10.4.7",
 		"husky": "^8.0.1",
 		"lint-staged": "^12.5.0",
+		"patch-package": "^6.5.0",
 		"plop": "^3.1.0",
 		"prettier": "^2.7.0",
 		"turbo": "latest",
@@ -49,13 +51,5 @@
 	"type": "module",
 	"dependencies": {
 		"svelte-preprocess": "^4.10.6"
-	},
-	"pnpm": {
-		"patchedDependencies": {
-			"@popperjs/core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
-			"@popperjs+core@2.11.6": "patches/@popperjs+core+2.11.6.patch",
-			"svelte-grid@5.1.1": "patches/svelte-grid@5.1.1.patch",
-			"svelte-grid+5.1.1": "patches/svelte-grid+5.1.1.patch"
-		}
 	}
 }
