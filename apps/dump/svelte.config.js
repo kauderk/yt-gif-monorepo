@@ -32,6 +32,10 @@ const config = {
 			// instead of creating a single one for the entire app
 			split: false,
 		}),
+		files: {
+			// stupidity :D
+			lib: '../../packages/yt-gif/src/lib',
+		},
 	},
 }
 

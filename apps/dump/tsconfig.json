@@ -24,14 +24,21 @@
 		"allowJs": true,
 		"checkJs": true,
 		"paths": {
-			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"],
-			"$cmp": ["src/components"],
-			"$cmp/*": ["src/components/*"],
-			"$styles": ["src/styles"],
-			"$styles/*": ["src/styles/*"],
-			"$stores": ["src/stores"],
-			"$stores/*": ["src/stores/*"]
+			// this project mustn't use "$alias"
+			// because "@packages/yt-gif" is already using them
+			// you'll get this anyways: Your compilerOptions.paths in tsconfig.json should include the following
+			// also, look for "stupidity" on the svelte.config.js
+			"$lib": ["../../packages/yt-gif/src/lib"],
+			"$lib/*": ["../../packages/yt-gif/src/lib/*"],
+			// stupid aliases https://github.com/vercel/turbo/discussions/620#discussioncomment-2136195
+			"@lib": ["src/lib"],
+			"@lib/*": ["src/lib/*"],
+			"@cmp": ["src/components"],
+			"@cmp/*": ["src/components/*"],
+			"@styles": ["src/styles"],
+			"@styles/*": ["src/styles/*"],
+			"@stores": ["src/stores"],
+			"@stores/*": ["src/stores/*"]
 		}
 	},
 	"include": [
