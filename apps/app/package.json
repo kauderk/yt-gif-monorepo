@@ -10,7 +10,7 @@
 	"scripts": {
 		"dev": "vite dev --port 5005",
 		"preview": "vite preview --port 5005",
-		"build": "rimraf .netlify && vite build",
+		"build": "rimraf build && vite build",
 		"package": "svelte-kit package",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check",
@@ -31,6 +31,7 @@
 		"@typescript-eslint/parser": "^5.10.1",
 		"autoprefixer": "^10.4.7",
 		"cssnano": "^5.0.1",
+		"devalue": "^4.2.0",
 		"eslint": "^8.0.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^3.4.1",
