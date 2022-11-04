@@ -10,7 +10,8 @@
 	"scripts": {
 		"dev": "vite dev --port 5005",
 		"preview": "vite preview --port 5005",
-		"build": "rimraf build && vite build",
+		"build": "vite build",
+		"start": "node build/index.js",
 		"package": "svelte-kit package",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check",
