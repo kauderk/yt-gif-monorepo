@@ -18,6 +18,7 @@
 	import { setContext } from 'svelte'
 	import { DrawflowStore as ctx } from './cmp/store'
 	import { DrawflowMinimap } from './plugins/minimap'
+	import { zoomToPointer } from './plugins/zoom-to-pointer'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
@@ -45,6 +46,9 @@
 		new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
 		// @ts-ignore
 		flush.push(draggableCancelation($ctx.editor).createListeners)
+
+		// @ts-ignore zoom
+		zoomToPointer($ctx.editor)
 
 		// kickstart API
 		$ctx.editor.start()
