@@ -1,13 +1,14 @@
 <script lang="ts" context="module">
 	export type Tconection = {
 		length: number
+		type: 'input' | 'output'
 		json: { [key: string]: { [key: string]: any[] } }
 	}
 </script>
 
 <script lang="ts">
 	export let length = 0
-	export let type: 'input' | 'output'
+	export let type: Tconection['type']
 
 	export let json: Tconection['json'] = {}
 

@@ -10,6 +10,7 @@
 	import { draggableCancelation } from './plugins/draggable-cancelation'
 	import { zoomToPointer } from './plugins/zoom-to-pointer'
 	import { createAddNode } from './plugins/add-node-svelte'
+	import { DrawflowMinimap } from './plugins/minimap'
 
 	import Sidebar from './cmp/Sidebar.svelte'
 	import Canvas from './cmp/Canvas.svelte'
@@ -20,7 +21,6 @@
 	import { onMount } from 'svelte'
 	import { setContext } from 'svelte'
 	import { DrawflowStore as ctx } from './cmp/store'
-	import { DrawflowMinimap } from './plugins/minimap'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)

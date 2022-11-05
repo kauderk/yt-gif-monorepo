@@ -21,13 +21,14 @@
 		id="node-{id}"
 		class="drawflow-node template selected {className}"
 		style="top: {top}px; left: {left}px;">
-		<Connection {...inputs} bind:json={inputs.json} type="input" />
+		<Connection {...inputs} bind:json={inputs.json} />
 		<div class="drawflow_content_node" bind:this={content}>
 			<div>
+				<!-- dynamic content -->
 				<slot />
 			</div>
 		</div>
-		<Connection {...outputs} bind:json={outputs.json} type="output" />
+		<Connection {...outputs} bind:json={outputs.json} />
 		<div class="drawflow-delete">x</div>
 	</div>
 </div>
