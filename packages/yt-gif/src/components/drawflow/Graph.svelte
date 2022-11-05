@@ -65,10 +65,9 @@
 
 <div class="wrapper">
 	<Sidebar />
-	<div class="col-right">
-		<Canvas>
-			<Footer />
-		</Canvas>
-		<div><div id="minimap" bind:this={$ctx.minimap} /></div>
-	</div>
+
+	<Canvas>
+		<Footer />
+	</Canvas>
+	<div><div id="minimap" bind:this={$ctx.minimap} /></div>
 </div>

@@ -35,7 +35,6 @@ function DisplaceBG(pos: pos, editor: Params) {
 	const point = Math.sqrt(sum)
 
 	const cord = editor.zoom * point
-	console.log({ cord, sum, point })
 
 	editor.container.style.setProperty('--dfBackgroundSize', cord + 'px')
 }
