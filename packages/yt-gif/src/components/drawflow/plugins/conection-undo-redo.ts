@@ -117,17 +117,27 @@ export default function (editor: Drawflow) {
 	const yRedo = getKeyDown('y', redo)
 	let target = window
 
+	function addListeners(_target?: any) {
+		target = _target ?? target
+		target.addEventListener('keydown', zUndo)
+		target.addEventListener('keydown', yRedo)
+	}
+	function removeListeners() {
+		target.removeEventListener('keydown', zUndo)
+		target.removeEventListener('keydown', yRedo)
+	}
 	return {
 		undo,
 		redo,
-		addListeners: (_target?: any) => {
-			target = _target ?? target
-			target.addEventListener('keydown', zUndo)
-			target.addEventListener('keydown', yRedo)
-		},
-		removeListeners: () => {
-			target.removeEventListener('keydown', zUndo)
-			target.removeEventListener('keydown', yRedo)
+		addListeners,
+		removeListeners,
+		/**
+		 * addListeners
+		 * @returns removeListeners
+		 */
+		createListeners() {
+			addListeners()
+			return removeListeners
 		},
 	}
 }
