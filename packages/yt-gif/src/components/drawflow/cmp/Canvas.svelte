@@ -1,3 +1,6 @@
+<!-- 
+	styles like https://ayushk7.github.io/CodeWire/
+ -->
 <script>
 	import { getContext } from './store'
 

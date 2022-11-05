@@ -1,3 +1,7 @@
+/*
+	the minimap moves too fast (hold down the pointer inside the minimap),
+	make it smoother https://jerosoler.github.io/drawflow-minimap-example/
+*/
 import Drawflow from 'drawflow'
 
 class DrawflowClone extends Drawflow {

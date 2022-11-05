@@ -1,3 +1,12 @@
+/*
+	- the background has to follow the viewport/dragging [line 14]
+	- get rid of the stiffness [line 24]
+	like https://ayushk7.github.io/CodeWire/
+
+	- the dragging stops working when leaving the canvas (blue rectangle), it should 
+	behave like this https://jerosoler.github.io/Drawflow/ - even with a far away zoom
+	Ctrl-Wheel
+*/
 import type Drawflow from 'drawflow'
 
 export function zoomToPointer(editor: Params) {

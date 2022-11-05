@@ -16,6 +16,8 @@
 	import Canvas from './cmp/Canvas.svelte'
 	import Footer from './cmp/Footer.svelte'
 	import Content from './cmp/Content.svelte'
+	import { createNodeComponent } from './cmp/inline'
+	import Minimap from './cmp/Minimap.svelte'
 	import './styles/plugins.css'
 
 	import { onMount } from 'svelte'
@@ -62,33 +64,10 @@
 
 		// @ts-ignore
 		$ctx.editor.registerNode('SvelteContent', Content)
-
-		$ctx.editor.import(dataToImport)
-
-		$ctx.editor.addNode(
-			'github',
-			1,
-			1,
-			150,
-			300,
-			'github',
-			{},
-			'SvelteContent',
-			'svelte'
-		)
-		$ctx.editor.addNode(
-			'github',
-			1,
-			1,
-			150,
-			300,
-			'github',
-			{},
-			'SvelteContent',
-			'svelte'
-		)
+		createNodeComponent($ctx.editor)
 
 		// add HTML nodes
+		$ctx.editor.import(dataToImport)
 
 		// @ts-ignore multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
@@ -102,5 +81,5 @@
 	<Canvas>
 		<Footer />
 	</Canvas>
-	<div><div id="minimap" bind:this={$ctx.minimap} /></div>
+	<Minimap />
 </div>

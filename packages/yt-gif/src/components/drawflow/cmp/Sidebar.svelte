@@ -1,3 +1,6 @@
+<!-- 
+	styles like https://ayushk7.github.io/CodeWire/
+ -->
 <script lang="ts">
 	import Drag from './Drag.svelte'
 	import { getContext } from './store'
@@ -20,32 +23,6 @@
 	]
 </script>
 
-<div class="absolute">
-	<div
-		class="flex flex-col justify-start items-center px-6 border-b border-gray-600 w-full">
-		<div
-			class="focus:outline-none text-left text-white flex justify-between items-center w-full py-5 space-x-14  ">
-			<p class="text-sm leading-5 uppercase">Draggable Templates</p>
-			<i class={'fab fa-' + 'slack'} />
-		</div>
-		<div
-			class="flex justify-start flex-col w-full md:w-auto items-start pb-1"
-			bind:this={$ctx.templateDragableRoot}>
-			{#each dragables as name}
-				<Drag {name} drag={$ctx.dnd.drag} />
-			{/each}
-		</div>
-	</div>
-	<div
-		style="display: none"
-		class="col"
-		bind:this={$ctx.templateDragableRoot}>
-		{#each dragables as name}
-			<Drag {name} drag={$ctx.dnd.drag} />
-		{/each}
-	</div>
-</div>
-
 <div id="left-panel" class="snipcss-BHdFa">
 	<div class="slider-icon" id="slide-left-panel">
 		<div style="margin-top: 1rem">
@@ -54,11 +31,30 @@
 	</div>
 	<div class="left-panel-content">
 		<div id="add-variables" class="left-panel-tab">
-			Section
 			<div
-				id="add-variables-plus-icon"
-				style="position: absolute; right: 0.7rem; transition: 0.1s;">
-				<i class="fas fa-chevron-down" />
+				class="focus:outline-none text-left text-white flex justify-between items-center w-full py-5 space-x-14  ">
+				<p class="text-sm leading-5 uppercase">Draggable Templates</p>
+				<i class={'fab fa-' + 'slack'} />
+			</div>
+		</div>
+		<div class="body">
+			<div
+				class="flex flex-col justify-start items-center px-6 border-b border-gray-600 w-full">
+				<div
+					class="flex justify-start flex-col w-full md:w-auto items-start pb-1"
+					bind:this={$ctx.templateDragableRoot}>
+					{#each dragables as name}
+						<Drag {name} drag={$ctx.dnd.drag} />
+					{/each}
+				</div>
+			</div>
+			<div
+				style="display: none"
+				class="col"
+				bind:this={$ctx.templateDragableRoot}>
+				{#each dragables as name}
+					<Drag {name} drag={$ctx.dnd.drag} />
+				{/each}
 			</div>
 		</div>
 	</div>
