@@ -2,7 +2,7 @@ import type Drawflow from 'drawflow'
 import type { ConnectionEvent } from 'drawflow'
 
 // https://github.com/jerosoler/Drawflow/issues/31
-export default function (editor: Drawflow) {
+export function undoRedo(editor: Drawflow) {
 	const history: {
 		connectionCreated?: ConnectionEvent[]
 		connectionRemoved?: ConnectionEvent[]

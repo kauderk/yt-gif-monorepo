@@ -1,8 +1,6 @@
 import type Drawflow from 'drawflow'
 
-export default function dragAndDrop(
-	editor: Drawflow & { precanvas: HTMLElement }
-) {
+export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 	let mobile_item_selec = ''
 	let mobile_last_move: TouchEvent
 	function positionMobile(ev: any) {

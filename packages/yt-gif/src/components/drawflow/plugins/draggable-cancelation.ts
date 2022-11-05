@@ -1,7 +1,7 @@
 import type Drawflow from 'drawflow'
 
 // https://github.com/jerosoler/Drawflow/issues/530
-export default function draggableCancelation(
+export function draggableCancelation(
 	editor: Drawflow & {
 		container: HTMLElement
 		position: (this: Drawflow, ev: PointerEvent) => any

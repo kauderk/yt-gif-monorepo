@@ -1,6 +1,6 @@
 import type Drawflow from 'drawflow'
 
-export default function (editor: Drawflow) {
+export function rerouteSquare(editor: Drawflow) {
 	editor.reroute = true
 	editor.reroute_fix_curvature = true
 	editor.reroute_curvature_start_end = 3
