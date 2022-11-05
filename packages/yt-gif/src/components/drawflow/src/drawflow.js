@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export default class Drawflow {
 	constructor(container, render = null, parent = null) {
 		this.events = {}

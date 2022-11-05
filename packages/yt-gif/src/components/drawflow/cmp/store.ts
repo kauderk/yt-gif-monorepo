@@ -11,6 +11,7 @@ export const DrawflowStore = writable({
 	mul: <ReturnType<typeof multiDrag>>{},
 	drawflowRoot: <HTMLElement>{},
 	templateDragableRoot: <HTMLElement>{},
+	minimap: <HTMLElement>{},
 })
 
 export type Ctx = typeof DrawflowStore
