@@ -11,12 +11,7 @@ import type Drawflow from 'drawflow'
  * @param flush Svelte Components' destroy() method
  * @returns An overridden addNode function, bound to "this".
  */
-export function createAddNode(
-	this: Drawflow,
-	root: HTMLElement,
-	flush: (() => void)[]
-) {
-	const that = this
+export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 	return function addNode(
 		name: string,
 		inputs: number,
@@ -28,10 +23,10 @@ export function createAddNode(
 		html: string,
 		typenode: boolean | string = false
 	) {
-		const newId = getUUID.bind(that)()
+		const newId = getUUID.bind(this)()
 
 		const node = new Node({
-			target: root,
+			target: this.container,
 			props: {
 				id: newId,
 				className,
@@ -45,7 +40,7 @@ export function createAddNode(
 		})
 		flush.push(() => node.$destroy)
 
-		AssertContentElement.bind(that)(node.content, html, typenode)
+		AssertContentElement.bind(this)(node.content, html, typenode)
 
 		addInputs(data, node.content)
 
@@ -63,6 +58,6 @@ export function createAddNode(
 			pos_y: posy,
 		}
 
-		return injectNodeCycle.bind(that)(node.parent, json)
+		return injectNodeCycle.bind(this)(node.parent, json)
 	}
 }

@@ -12,12 +12,15 @@
 	export let json: Tconection['json'] = {}
 
 	const range = (N: number) => [...Array(N).keys()]
-	const conection = (sfx: string, N: number) =>
-		(json![sfx + (N + 1)] = { connections: [] })
+	const conection = (sfx: string, N: number) => {
+		const idx = sfx + '_' + N
+		json![idx] = { connections: [] }
+		return idx
+	}
 </script>
 
 {#each range(length) as i}
 	<div class="{type}s">
-		<div class="{type} {type}_{conection(type, i)}" />
+		<div class="{type} {conection(type, i)}" />
 	</div>
 {/each}

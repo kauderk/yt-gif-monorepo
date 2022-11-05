@@ -31,8 +31,7 @@
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
 
 		// modify the API to work with svelte components
-		$ctx.editor.addNode = createAddNode.bind($ctx.editor)(
-			$ctx.drawflowRoot,
+		Drawflow.prototype.addNode = createAddNode.bind(Drawflow.prototype)(
 			flush
 		)
 
@@ -63,20 +62,33 @@
 
 		// @ts-ignore
 		$ctx.editor.registerNode('SvelteContent', Content)
+
+		$ctx.editor.import(dataToImport)
+
 		$ctx.editor.addNode(
-			'Content',
+			'github',
 			1,
 			1,
 			150,
 			300,
-			's-content',
+			'github',
+			{},
+			'SvelteContent',
+			'svelte'
+		)
+		$ctx.editor.addNode(
+			'github',
+			1,
+			1,
+			150,
+			300,
+			'github',
 			{},
 			'SvelteContent',
 			'svelte'
 		)
 
 		// add HTML nodes
-		//$ctx.editor.import(dataToImport)
 
 		// @ts-ignore multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
