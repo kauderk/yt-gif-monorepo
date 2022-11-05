@@ -8,25 +8,33 @@
 	import { selectMultiple } from './plugins/select-mulitple'
 	import { multiDrag } from './plugins/multi-drag'
 	import { draggableCancelation } from './plugins/draggable-cancelation'
+	import { zoomToPointer } from './plugins/zoom-to-pointer'
+	import { createAddNode } from './plugins/add-node-svelte'
 
 	import Sidebar from './cmp/Sidebar.svelte'
 	import Canvas from './cmp/Canvas.svelte'
 	import Footer from './cmp/Footer.svelte'
+	import Content from './cmp/Content.svelte'
 	import './styles/plugins.css'
 
 	import { onMount } from 'svelte'
 	import { setContext } from 'svelte'
 	import { DrawflowStore as ctx } from './cmp/store'
 	import { DrawflowMinimap } from './plugins/minimap'
-	import { zoomToPointer } from './plugins/zoom-to-pointer'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
-	let flush: Function[] = []
+	let flush: (() => void)[] = []
 
 	onMount(() => {
 		// @ts-ignore
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
+
+		// modify the API to work with svelte components
+		$ctx.editor.addNode = createAddNode.bind($ctx.editor)(
+			$ctx.drawflowRoot,
+			flush
+		)
 
 		// -------- PLUGINGS --------
 		// UndoRedo
@@ -53,8 +61,22 @@
 		// kickstart API
 		$ctx.editor.start()
 
+		// @ts-ignore
+		$ctx.editor.registerNode('SvelteContent', Content)
+		$ctx.editor.addNode(
+			'Content',
+			1,
+			1,
+			150,
+			300,
+			's-content',
+			{},
+			'SvelteContent',
+			'svelte'
+		)
+
 		// add HTML nodes
-		$ctx.editor.import(dataToImport)
+		//$ctx.editor.import(dataToImport)
 
 		// @ts-ignore multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
@@ -65,7 +87,6 @@
 
 <div class="wrapper">
 	<Sidebar />
-
 	<Canvas>
 		<Footer />
 	</Canvas>
