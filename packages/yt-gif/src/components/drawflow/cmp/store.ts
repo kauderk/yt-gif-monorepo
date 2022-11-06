@@ -13,7 +13,10 @@ export const DrawflowStore = writable({
 	templateDragableRoot: <HTMLElement>{},
 	minimap: <HTMLElement>{},
 })
-
 export type Ctx = typeof DrawflowStore
-
 export const getContext = () => svelteContext('DrawflowStore') as Ctx
+
+export const DefaultProps = { canvas: { height: '100vh' } }
+export const DrawflowProps = writable(DefaultProps)
+export type Prs = typeof DrawflowProps
+export const getProps = () => svelteContext('DrawflowProps') as Prs

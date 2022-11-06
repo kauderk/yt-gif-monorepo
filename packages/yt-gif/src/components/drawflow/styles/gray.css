@@ -14,7 +14,7 @@
 	--dfNodeBorderColor: rgba(106, 114, 118, 1);
 	--dfNodeBorderRadius: 4px;
 	--dfNodeMinHeight: 40px;
-	--dfNodeMinWidth: 160px;
+	--dfNodeMinWidth: auto;
 	--dfNodePaddingTop: 15px;
 	--dfNodePaddingBottom: 15px;
 	--dfNodeBoxShadowHL: 0px;
@@ -64,7 +64,7 @@
 	--dfOutputBorderSize: 2px;
 	--dfOutputBorderColor: #000000;
 	--dfOutputBorderRadius: 50px;
-	--dfOutputRight: -3px;
+	--dfOutputRight: -6px;
 	--dfOutputHeight: 20px;
 	--dfOutputWidth: 20px;
 

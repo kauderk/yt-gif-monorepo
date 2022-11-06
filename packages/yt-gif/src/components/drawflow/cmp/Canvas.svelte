@@ -1,13 +1,15 @@
 <!-- 
 	styles like https://ayushk7.github.io/CodeWire/
  -->
-<script>
-	import { getContext } from './store'
+<script lang="ts">
+	import { getContext, getProps } from './store'
 
 	const ctx = getContext()
+	const props = getProps()
 </script>
 
 <div
+	style:height={$props.canvas.height}
 	bind:this={$ctx.drawflowRoot}
 	id="drawflow"
 	on:drop={$ctx.dnd.drop}
