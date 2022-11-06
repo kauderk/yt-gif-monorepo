@@ -42,7 +42,7 @@
 		flush.push(undoRedo($ctx.editor).createListeners)
 
 		// square conections/links
-		rerouteSquare($ctx.editor)
+		// rerouteSquare($ctx.editor)
 
 		// drag and drop
 		$ctx.dnd = dragAndDrop($ctx.editor)
@@ -64,10 +64,10 @@
 
 		// @ts-ignore
 		$ctx.editor.registerNode('SvelteContent', Content)
-		createNodeComponent($ctx.editor)
 
 		// add HTML nodes
 		$ctx.editor.import(dataToImport)
+		createNodeComponent($ctx.editor)
 
 		// @ts-ignore multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
@@ -78,8 +78,6 @@
 
 <div class="wrapper">
 	<Sidebar />
-	<Canvas>
-		<Footer />
-	</Canvas>
+	<Canvas />
 	<Minimap />
 </div>
