@@ -14,19 +14,21 @@
 
 	import Sidebar from './cmp/Sidebar.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import Footer from './cmp/Footer.svelte'
 	import Content from './cmp/Content.svelte'
 	import { createNodeComponent } from './cmp/inline'
 	import Minimap from './cmp/Minimap.svelte'
 	import './styles/plugins.css'
 
-	import { onMount } from 'svelte'
-	import { setContext } from 'svelte'
-	import { DrawflowStore as ctx } from './cmp/store'
+	import { onMount, setContext } from 'svelte'
+	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
+	import { writable } from 'svelte/store'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
 	let flush: (() => void)[] = []
+
+	export let props = DefaultProps
+	setContext('DrawflowProps', writable(props))
 
 	onMount(() => {
 		// @ts-ignore
@@ -81,3 +83,11 @@
 	<Canvas />
 	<Minimap />
 </div>
+
+<style global lang="scss">
+	@import './styles/beautiful.css';
+	@import './styles/min.scss';
+	@import './styles/gray.css';
+	@import './plugins/selectables/index.css';
+	@import '../../styles/open-props.scss';
+</style>

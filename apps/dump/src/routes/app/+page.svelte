@@ -9,7 +9,7 @@
 </svelte:head>
 
 {#if $firebaseUser}
-	<Drawflow />
+	<Drawflow props={{ canvas: { height: '93vh' } }} />
 {:else}
 	<div class="hero bg-base-100 min-h-full">
 		<div class="hero-content text-center">
