@@ -48,6 +48,13 @@
 	z-index: 1;
 	margin-bottom: 5px;
 }
+.drawflow .drawflow-node .inputs,
+.drawflow .drawflow-node .outputs {
+	width: 0;
+}
+.drawflow_content_node {
+	width: -webkit-fill-available;
+}
 
 .drawflow-node .input {
 	left: -27px;
