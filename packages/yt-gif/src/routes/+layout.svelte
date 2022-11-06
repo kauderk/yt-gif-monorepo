@@ -27,7 +27,6 @@
 	@tailwind components;
 	@tailwind utilities;
 	@import '../styles/open-props.scss';
-	@import '../styles/scrollbar.scss';
 
 	// tailwind|milkdown counter measurements
 	.milkdown img {

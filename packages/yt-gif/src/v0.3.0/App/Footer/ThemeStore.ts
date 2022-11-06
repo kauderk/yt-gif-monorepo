@@ -1,28 +1,6 @@
-import { writable, get } from 'svelte/store'
+import { get } from 'svelte/store'
 import { saveCssShadeStyleVariables } from 'src/styles/pallete'
-
-// User/JWT-related
-// https://stackoverflow.com/a/61300826/2933427
-export const createWritableStore = <T>(key: string, startValue: T) => {
-	const { subscribe, set, update } = writable(startValue)
-
-	return {
-		subscribe,
-		set,
-		update,
-		reset: set(startValue),
-		useLocalStorage: () => {
-			const json = localStorage.getItem(key)
-			if (json) {
-				set(JSON.parse(json))
-			}
-
-			subscribe(current => {
-				localStorage.setItem(key, JSON.stringify(current))
-			})
-		},
-	}
-}
+import { createWritableStore } from '$lib/local-storage-store'
 
 // Theme / Color
 const placeholder = {

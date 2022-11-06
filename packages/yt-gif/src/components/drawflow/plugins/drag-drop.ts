@@ -326,6 +326,7 @@ export function AssignEvents(
 	root: HTMLElement,
 	dnd: ReturnType<typeof dragAndDrop>
 ) {
+	if (!root?.getElementsByClassName) return
 	/* Mouse and Touch Actions */
 	let elements = Array.from(
 		root.getElementsByClassName('drag-drawflow')
