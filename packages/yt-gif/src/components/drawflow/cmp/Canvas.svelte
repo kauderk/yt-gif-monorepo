@@ -24,13 +24,14 @@
 		width: 100vw;
 		position: absolute;
 		overflow: hidden;
-		background-color: #26282b;
+		background-color: rgb(28, 30, 32) !important;
 		background-image: linear-gradient(
-				rgb(92, 92, 92) 0.1rem,
-				transparent 0.1rem
+				rgb(92, 92, 92) 1px,
+				rgba(0, 0, 0, 0) 1px
 			),
-			linear-gradient(90deg, rgb(92, 92, 92) 0.1rem, transparent 0.1rem);
-		background-size: 10rem 10rem;
+			linear-gradient(90deg, rgb(92, 92, 92) 1px, rgba(0, 0, 0, 0) 1px);
+		background-size: 6.5rem 6.5rem !important;
 		background-position: 0px 0px;
+		box-shadow: rgba(0, 0, 0, 0.5) 15px 15px 25px 0px;
 	}
 </style>

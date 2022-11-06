@@ -210,6 +210,7 @@
 			outline: none;
 			border-radius: 0.25rem;
 			text-transform: uppercase;
+			background-color: rgb(214, 90, 49);
 			cursor: pointer;
 			& i {
 				font-size: 1.2rem;
@@ -227,7 +228,9 @@
 			}
 			&:hover,
 			&:focus {
-				outline: 1px solid rgb(var(--theme-color));
+				/*outline: 1px solid rgb(var(--theme-color));*/
+				background-color: rgb(239, 239, 239);
+				color: rgb(214, 90, 49);
 			}
 		}
 	}
@@ -297,6 +300,8 @@
 		flex-grow: 1;
 		outline: none;
 		padding: 1.25rem;
+		border-color: rgba(0, 208, 250, 0.35) !important;
+		box-shadow: rgba(0, 208, 250, 0.35) 0px 0px 3px inset;
 		cursor: pointer;
 		&.short {
 			color: white;
@@ -306,6 +311,11 @@
 		&:hover,
 		&:focus {
 			border: 1px solid rgb(var(--theme-color));
+		}
+
+		&:hover {
+			border-color: rgb(0, 208, 250) !important;
+			box-shadow: rgb(0, 208, 250) 0px 0px 20px inset;
 		}
 
 		& > i {
@@ -422,6 +432,14 @@
 
 	#view-section {
 		grid-area: 🪟;
+		& > .example-button {
+			border-color: rgba(58, 241, 238, 0.3) !important;
+			box-shadow: rgba(58, 241, 238, 0.3) 0px 0px 3px inset;
+			&:hover {
+				border-color: rgb(58, 241, 238) !important;
+				box-shadow: rgb(58, 241, 238) 0px 0px 20px inset;
+			}
+		}
 	}
 
 	#progress-section {
@@ -483,10 +501,16 @@
 		& > .example-button {
 			border: 1px solid rgba(var(--theme-color), 0.4);
 			height: 100px;
+			border-color: rgba(204, 255, 51, 0.27) !important;
+			box-shadow: rgba(204, 255, 51, 0.27) 0px 0px 3px inset;
 			&:hover,
 			&:focus {
 				background: rgba(var(--theme-color), 0.1);
 				border-color: rgb(var(--theme-color));
+			}
+			&:hover {
+				border-color: rgb(204, 255, 51) !important;
+				box-shadow: rgb(204, 255, 51) 0px 0px 20px inset;
 			}
 		}
 	}
