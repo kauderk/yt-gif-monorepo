@@ -1,13 +1,13 @@
 import type Drawflow from 'drawflow'
-import type createDragDrop from '../plugins/drag-drop'
-import type multiDrag from '../plugins/multi-drag'
+import type { dragAndDrop } from '../plugins/drag-drop'
+import type { multiDrag } from '../plugins/multi-drag'
 
 import { writable } from 'svelte/store'
 import { getContext as svelteContext } from 'svelte'
 
 export const DrawflowStore = writable({
 	editor: <Drawflow & { precanvas: HTMLElement }>{},
-	dnd: <ReturnType<typeof createDragDrop>>{},
+	dnd: <ReturnType<typeof dragAndDrop>>{},
 	mul: <ReturnType<typeof multiDrag>>{},
 	drawflowRoot: <HTMLElement>{},
 	templateDragableRoot: <HTMLElement>{},
