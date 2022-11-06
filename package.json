@@ -30,7 +30,10 @@
 		"test": "turbo run test",
 		"prepare": "husky install",
 		"plop": "plop",
-		"clean": "git clean -fXd"
+		"clean": "git clean -fXd",
+		"postinstall": "npx patch-package && if [ $CLIENT_ENV ]; then npm run postinstall-client; elif [ $SERVER_ENV ]; then npm run postinstall-server; else echo no environment detected, please set CLIENT_ENV or SERVER_ENV; fi",
+		"postinstall-client": "cd apps/app && npm install && npm run build",
+		"postinstall-server": "cd packages/yt-gif && npm install"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.23.1",
