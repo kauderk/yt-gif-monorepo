@@ -1,7 +1,9 @@
 <svelte:options accessors />
 
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import Connection, { type Tconection } from './Connection.svelte'
+	import CreateConnections from './CreateConnections.svelte'
 
 	export let id: number | string
 	export let className = ''
@@ -14,6 +16,16 @@
 
 	export let content: HTMLElement
 	export let parent: HTMLElement
+
+	/**
+	 * if provided, it will create conections,
+	 * it must be a companion to
+	 * @example
+	 * outputs.length = Object.keys(dataNode.outputs).length
+	 */
+	export let dataNode: any = undefined
+
+	onMount(() => dataNode?.task.resolve())
 </script>
 
 <div class="parent-node" bind:this={parent}>
@@ -21,7 +33,11 @@
 		id="node-{id}"
 		class="drawflow-node template selected {className}"
 		style="top: {top}px; left: {left}px;">
-		<Connection {...inputs} bind:json={inputs.json} />
+		{#if dataNode}
+			<CreateConnections {dataNode} />
+		{:else}
+			<Connection {...inputs} bind:json={inputs.json} />
+		{/if}
 		<div class="drawflow_content_node" bind:this={content}>
 			<div>
 				<!-- dynamic content -->

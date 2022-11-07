@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function rerouteSquare(editor: Drawflow) {
 	editor.reroute = true

@@ -1,7 +1,7 @@
 import Node from './Node.svelte'
 import { addInputs } from './add-inputs'
 import { AssertContentElement, getUUID, injectNodeCycle } from './query'
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
@@ -12,12 +12,12 @@ import type Drawflow from 'drawflow'
  * @returns An overridden addNode function, bound to "this".
  */
 export function createAddNode(this: Drawflow, flush: (() => void)[]) {
-	return function addNode(
+	function addNode(
 		name: string,
 		inputs: number,
 		outputs: number,
-		posx: number,
-		posy: number,
+		pos_x: number,
+		pos_y: number,
 		className: string,
 		data: any,
 		html: string,
@@ -30,15 +30,15 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 			props: {
 				id: newId,
 				className,
-				top: posy,
-				left: posx,
+				top: pos_y,
+				left: pos_x,
 				inputs: { length: inputs, json: {}, type: 'input' },
 				outputs: { length: outputs, json: {}, type: 'output' },
 				content: <HTMLElement>{},
 				parent: <HTMLElement>{},
 			},
 		})
-		flush.push(() => node.$destroy)
+		// flush.push(() => node.$destroy)
 
 		AssertContentElement.bind(this)(node.content, html, typenode)
 
@@ -54,10 +54,55 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 			class: className,
 			inputs: node.inputs.json,
 			outputs: node.outputs.json,
-			pos_x: posx,
-			pos_y: posy,
+			pos_x: pos_x,
+			pos_y: pos_y,
 		}
 
 		return injectNodeCycle.bind(this)(node.parent, json)
 	}
+	// TODO: unify API parameters
+	async function addNodeImport(dataNode: any, precanvas: any) {
+		let task = Task()
+
+		const node = new Node({
+			target: precanvas,
+			props: {
+				id: dataNode.id,
+				className: dataNode.class,
+				top: dataNode.pos_y,
+				left: dataNode.pos_x,
+				inputs: { length: dataNode.inputs, json: {}, type: 'input' },
+				outputs: {
+					length: Object.keys(dataNode.outputs).length,
+					offset: 1, // man...
+					json: {},
+					type: 'output',
+				},
+				content: <HTMLElement>{},
+				parent: <HTMLElement>{},
+				dataNode: { ...dataNode, precanvas, task },
+			},
+		})
+		await task.promise
+		// flush.push(() => node.$destroy)
+
+		AssertContentElement.bind(this)(
+			node.content,
+			dataNode.html,
+			dataNode.typenode
+		)
+
+		addInputs(dataNode.data, node.content)
+	}
+	return { addNode, addNodeImport }
+}
+function Task<T>() {
+	let resolve = (v: T) => {},
+		reject = () => {}
+
+	const promise = new Promise<T>(function (_resolve, _reject) {
+		resolve = _resolve
+		reject = _reject
+	})
+	return { resolve, reject, promise }
 }

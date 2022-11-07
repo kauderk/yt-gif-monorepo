@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 import { nodeEl } from '../../lib/utils'
 
 // https://github.com/jerosoler/Drawflow/issues/322#issuecomment-1133036432

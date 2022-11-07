@@ -7,7 +7,7 @@
 	behave like this https://jerosoler.github.io/Drawflow/ - even with a far away zoom
 	Ctrl-Wheel
 */
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function zoomToPointer(editor: Params) {
 	let position = { x: 0, y: 0 }

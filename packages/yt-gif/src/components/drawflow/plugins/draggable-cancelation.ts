@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 // https://github.com/jerosoler/Drawflow/issues/530
 export function draggableCancelation(
