@@ -1,5 +1,5 @@
 // @ts-nocheck
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 import Content from './Content.svelte'
 import Simple from './blocks/Simple.svelte'
 
@@ -8,8 +8,8 @@ export function createNodeComponents(editor: Drawflow) {
 		'github',
 		1,
 		1,
-		150,
-		300,
+		600,
+		210,
 		'github',
 		{},
 		'SvelteContent', // drawflow/cmp/Content.svelte
@@ -19,8 +19,8 @@ export function createNodeComponents(editor: Drawflow) {
 		'simple',
 		1,
 		1,
-		150,
-		300,
+		863,
+		515,
 		'simple',
 		{},
 		'SimpleBlock', // drawflow/cmp/Simple.svelte
