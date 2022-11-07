@@ -14,8 +14,7 @@
 
 	import Sidebar from './cmp/Sidebar.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import Content from './cmp/Content.svelte'
-	import { createNodeComponent } from './cmp/inline'
+	import { createNodeComponents, registerNodeComponents } from './cmp/inline'
 	import Minimap from './cmp/Minimap.svelte'
 
 	import { onMount, setContext } from 'svelte'
@@ -63,12 +62,12 @@
 		// kickstart API
 		$ctx.editor.start()
 
-		// @ts-ignore
-		$ctx.editor.registerNode('SvelteContent', Content)
+		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
 		$ctx.editor.import(dataToImport)
-		createNodeComponent($ctx.editor)
+
+		createNodeComponents($ctx.editor)
 
 		// @ts-ignore multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
