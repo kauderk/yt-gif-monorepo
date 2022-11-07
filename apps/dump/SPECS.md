@@ -1,10 +1,10 @@
-## `/` Landing Page/Feed
+## '/app' Landing Page/Feed
 
 ## `/auth` Authentication
 
-- ## `/auth/login` Login Page
+- ## `/login` Login Page
 
-- ## `/auth/register` Register Page
+- ## `/register` Register Page
 
 ## `[username]` User Page
 

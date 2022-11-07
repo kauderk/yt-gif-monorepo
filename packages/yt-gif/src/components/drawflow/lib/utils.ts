@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function lockToggle(editor: Drawflow) {
 	return function (e: Event) {

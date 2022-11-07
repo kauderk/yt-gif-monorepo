@@ -1,6 +1,11 @@
 {
 	"name": "@apps/dump",
+	"description": "",
+	"author": "YT GIF Client app",
 	"version": "0.2.0",
+	"inherits": [
+		"@packages/dependencies/package.packages.json"
+	],
 	"scripts": {
 		"dev": "vite dev --port 5006",
 		"preview": "vite preview --port 5006",
@@ -46,7 +51,11 @@
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
 		"daisyui": "^2.17.0",
-		"material-icons": "^1.11.10"
+		"material-icons": "^1.11.10",
+		"@packages/yt-gif": "workspace:^0.2.0",
+		"@packages/config": "workspace:^0.2.0",
+		"@packages/metadata": "workspace:^0.2.0",
+		"@packages/components": "workspace:^0.2.0"
 	},
 	"type": "module"
 }

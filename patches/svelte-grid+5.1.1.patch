@@ -1,0 +1,12 @@
+diff --git a/node_modules/svelte-grid/package.json b/node_modules/svelte-grid/package.json
+index a07261b..1fe2d04 100644
+--- a/node_modules/svelte-grid/package.json
++++ b/node_modules/svelte-grid/package.json
+@@ -5,6 +5,7 @@
+   "svelte": "src/index.svelte",
+   "module": "build/index.mjs",
+   "main": "build/index.js",
++  "type": "module",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1",
+     "lint": "eslint .",

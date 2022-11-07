@@ -1,41 +1,47 @@
-import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/modules/database/prisma';
+import { json } from '@sveltejs/kit'
+import { prisma } from '@lib/modules/database/prisma'
 
-export async function GET({ params, locals }: { params: { uid: string }; locals: App.Locals }) {
-	const { uid } = params;
+export async function GET({
+	params,
+	locals,
+}: {
+	params: { uid: string }
+	locals: App.Locals
+}) {
+	const { uid } = params
 
 	if (!locals.user) {
 		return json(
 			{
-				message: 'Unauthorized'
+				message: 'Unauthorized',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
 	const user = await prisma.user.findUnique({
 		where: {
-			uid
+			uid,
 		},
 		include: {
-			following: true
-		}
-	});
+			following: true,
+		},
+	})
 
 	if (!user) {
 		return json(
 			{
-				message: 'User not found'
+				message: 'User not found',
 			},
 			{
-				status: 404
+				status: 404,
 			}
-		);
+		)
 	}
 
 	return json({
-		following: user.following
-	});
+		following: user.following,
+	})
 }

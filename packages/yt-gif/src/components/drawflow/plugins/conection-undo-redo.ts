@@ -1,8 +1,8 @@
-import type Drawflow from 'drawflow'
-import type { ConnectionEvent } from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
+import type { ConnectionEvent } from '$cmp/drawflow/src/drawflow'
 
 // https://github.com/jerosoler/Drawflow/issues/31
-export default function (editor: Drawflow) {
+export function undoRedo(editor: Drawflow) {
 	const history: {
 		connectionCreated?: ConnectionEvent[]
 		connectionRemoved?: ConnectionEvent[]
@@ -117,17 +117,27 @@ export default function (editor: Drawflow) {
 	const yRedo = getKeyDown('y', redo)
 	let target = window
 
+	function addListeners(_target?: any) {
+		target = _target ?? target
+		target.addEventListener('keydown', zUndo)
+		target.addEventListener('keydown', yRedo)
+	}
+	function removeListeners() {
+		target.removeEventListener('keydown', zUndo)
+		target.removeEventListener('keydown', yRedo)
+	}
 	return {
 		undo,
 		redo,
-		addListeners: (_target?: any) => {
-			target = _target ?? target
-			target.addEventListener('keydown', zUndo)
-			target.addEventListener('keydown', yRedo)
-		},
-		removeListeners: () => {
-			target.removeEventListener('keydown', zUndo)
-			target.removeEventListener('keydown', yRedo)
+		addListeners,
+		removeListeners,
+		/**
+		 * addListeners
+		 * @returns removeListeners
+		 */
+		createListeners() {
+			addListeners()
+			return removeListeners
 		},
 	}
 }

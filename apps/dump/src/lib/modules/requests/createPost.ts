@@ -1,32 +1,39 @@
-import type { CreateOrUpdatePostInput, PostOutput, UploadImageInput } from '$lib/types/api';
-import type { Post } from '@prisma/client';
+import type {
+	CreateOrUpdatePostInput,
+	PostOutput,
+	UploadImageInput,
+} from '@lib/types/api'
+import type { Post } from '@prisma/client'
 
-export async function createPost(post: CreateOrUpdatePostInput, dataUrl: string): Promise<Post> {
+export async function createPost(
+	post: CreateOrUpdatePostInput,
+	dataUrl: string
+): Promise<Post> {
 	const createPostBody: CreateOrUpdatePostInput = {
 		collectionCid: post.collectionCid,
 		metadataKeys: post.metadataKeys,
 		metadataValues: post.metadataValues,
 		title: post.title,
 		description: post.description,
-		showInFeed: post.showInFeed
-	};
+		showInFeed: post.showInFeed,
+	}
 
 	let response = await fetch('/api/posts/new', {
 		method: 'POST',
-		body: JSON.stringify(createPostBody)
-	});
+		body: JSON.stringify(createPostBody),
+	})
 
-	const data = (await response.json()) as PostOutput;
+	const data = (await response.json()) as PostOutput
 
 	const uploadImageBody: UploadImageInput = {
 		pid: data.post.pid,
-		dataUrl: dataUrl
-	};
+		dataUrl: dataUrl,
+	}
 
 	response = await fetch('/api/upload', {
 		method: 'POST',
-		body: JSON.stringify(uploadImageBody)
-	});
+		body: JSON.stringify(uploadImageBody),
+	})
 
-	return (await response.json()).post;
+	return (await response.json()).post
 }

@@ -1,190 +1,196 @@
-import { json } from '@sveltejs/kit';
-import { prisma } from '$lib/modules/database/prisma';
+import { json } from '@sveltejs/kit'
+import { prisma } from '@lib/modules/database/prisma'
 
-export async function GET({ params, locals }: { params: { uid: string }; locals: App.Locals }) {
-	const { uid } = params;
+export async function GET({
+	params,
+	locals,
+}: {
+	params: { uid: string }
+	locals: App.Locals
+}) {
+	const { uid } = params
 
 	if (!locals.user) {
 		return json(
 			{
-				message: 'Unauthorized'
+				message: 'Unauthorized',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
 	const user = await prisma.user.findUnique({
 		where: {
-			uid
+			uid,
 		},
 		include: {
-			followers: true
-		}
-	});
+			followers: true,
+		},
+	})
 
 	if (!user) {
 		return json(
 			{
-				message: 'User not found'
+				message: 'User not found',
 			},
 			{
-				status: 404
+				status: 404,
 			}
-		);
+		)
 	}
 
 	return json({
-		followers: user.followers
-	});
+		followers: user.followers,
+	})
 }
 
 export async function POST({
 	params,
 	request,
-	locals
+	locals,
 }: {
-	params: { uid: string };
-	request: Request;
-	locals: App.Locals;
+	params: { uid: string }
+	request: Request
+	locals: App.Locals
 }) {
-	const { uid: uidToFollow } = params;
-	const data = await request.json();
-	const { uid } = locals.user!;
+	const { uid: uidToFollow } = params
+	const data = await request.json()
+	const { uid } = locals.user!
 
 	if (!uid) {
 		return json(
 			{
-				message: 'Unauthorized'
+				message: 'Unauthorized',
 			},
 			{
-				status: 401
+				status: 401,
 			}
-		);
+		)
 	}
 
 	const follower = await prisma.user.findUnique({
 		where: {
-			uid
-		}
-	});
+			uid,
+		},
+	})
 
 	if (!follower) {
 		return json(
 			{
-				message: 'User not found'
+				message: 'User not found',
 			},
 			{
-				status: 404
+				status: 404,
 			}
-		);
+		)
 	}
 
 	const userToFollow = await prisma.user.findUnique({
 		where: {
-			uid: uidToFollow
-		}
-	});
+			uid: uidToFollow,
+		},
+	})
 
 	if (!userToFollow) {
 		return json(
 			{
-				message: 'User to follow not found'
+				message: 'User to follow not found',
 			},
 			{
-				status: 404
+				status: 404,
 			}
-		);
+		)
 	}
 
 	try {
 		const res = await prisma.follow.findFirst({
 			where: {
 				followerUid: follower.uid,
-				followingUid: userToFollow.uid
-			}
-		});
+				followingUid: userToFollow.uid,
+			},
+		})
 
 		if (res) {
 			await prisma.follow.delete({
 				where: {
 					followerUid_followingUid: {
 						followerUid: follower.uid,
-						followingUid: userToFollow.uid
-					}
-				}
-			});
+						followingUid: userToFollow.uid,
+					},
+				},
+			})
 
 			await prisma.user.update({
 				where: {
-					uid: userToFollow.uid
+					uid: userToFollow.uid,
 				},
 				data: {
 					followersCount: {
-						decrement: 1
-					}
-				}
-			});
+						decrement: 1,
+					},
+				},
+			})
 
 			await prisma.user.update({
 				where: {
-					uid: follower.uid
+					uid: follower.uid,
 				},
 				data: {
 					followingCount: {
-						decrement: 1
-					}
-				}
-			});
+						decrement: 1,
+					},
+				},
+			})
 		} else {
 			await prisma.follow.create({
 				data: {
 					follower: {
 						connect: {
-							uid: follower.uid
-						}
+							uid: follower.uid,
+						},
 					},
 					following: {
 						connect: {
-							uid: userToFollow.uid
-						}
-					}
-				}
-			});
+							uid: userToFollow.uid,
+						},
+					},
+				},
+			})
 
 			await prisma.user.update({
 				where: {
-					uid: userToFollow.uid
+					uid: userToFollow.uid,
 				},
 				data: {
 					followersCount: {
-						increment: 1
-					}
-				}
-			});
+						increment: 1,
+					},
+				},
+			})
 
 			await prisma.user.update({
 				where: {
-					uid: follower.uid
+					uid: follower.uid,
 				},
 				data: {
 					followingCount: {
-						increment: 1
-					}
-				}
-			});
+						increment: 1,
+					},
+				},
+			})
 		}
 	} catch (error) {
 		return json(
 			{
-				message: 'An error occurred'
+				message: 'An error occurred',
 			},
 			{
-				status: 400
+				status: 400,
 			}
-		);
+		)
 	}
 
-	return new Response(undefined);
+	return new Response(undefined)
 }

@@ -4,7 +4,7 @@
 	text-align: initial;
 	width: 100%;
 	height: 800px;
-	border: 1px solid red;
+	/* border: 1px solid red; */
 }
 .drawflow svg {
 	z-index: 1;

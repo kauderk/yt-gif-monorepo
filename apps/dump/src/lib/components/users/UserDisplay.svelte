@@ -1,16 +1,22 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation'
 
-	import type { User } from '@prisma/client';
+	import type { User } from '@prisma/client'
 
-	export let user: User;
-	export let size = 'md';
+	export let user: User
+	export let size = 'md'
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div on:click={() => goto(`/${user.username}`)} class="cursor-pointer">
 	<div class="avatar w-full flex items-center justify-center">
-		<div class="rounded-full" class:w-24={size === 'md'} class:w-16={size === 'sm'}>
-			<img src={user.photoUrl} alt="{user.username}'s profile picture" />
+		<div
+			class="rounded-full"
+			class:w-24={size === 'md'}
+			class:w-16={size === 'sm'}>
+			<img
+				src={'https://avatars.dicebear.com/api/pixel-art/avatar.svg'}
+				alt="{user.username}'s profile picture" />
 		</div>
 	</div>
 	<div class="card-title flex-col items-center gap-0">

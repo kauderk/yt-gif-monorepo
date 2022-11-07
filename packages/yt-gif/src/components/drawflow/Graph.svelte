@@ -1,121 +1,91 @@
 <script lang="ts">
-	import Drawflow from 'drawflow'
-	import Drag from './Drag.svelte'
+	import Drawflow from '$cmp/drawflow/src/drawflow'
 	import dataToImport from './data.json'
-	import createUndoRedo from './plugins/conection-undo-redo'
-	import rerouteSquare from './plugins/reroute-square'
-	import createDragDrop, { AssignEvents } from './plugins/drag-drop'
-	import selectMultiple from './plugins/select-mulitple'
-	import multiDrag from './plugins/multi-drag'
-	import { lockToggle } from './lib/utils'
-	import { onMount } from 'svelte'
-	import Nav from './Nav.svelte'
+
+	import { undoRedo } from './plugins/conection-undo-redo'
+	import { rerouteSquare } from './plugins/reroute-square'
+	import { dragAndDrop, AssignEvents } from './plugins/drag-drop'
+	import { selectMultiple } from './plugins/select-mulitple'
+	import { multiDrag } from './plugins/multi-drag'
+	import { draggableCancelation } from './plugins/draggable-cancelation'
+	import { zoomToPointer } from './plugins/zoom-to-pointer'
+	import { createAddNode } from './plugins/add-node-svelte'
+	import { DrawflowMinimap } from './plugins/minimap'
+
+	import Sidebar from './cmp/Sidebar.svelte'
+	import Canvas from './cmp/Canvas.svelte'
+	import { createNodeComponents, registerNodeComponents } from './cmp/inline'
+	import Minimap from './cmp/Minimap.svelte'
+
+	import { onMount, setContext } from 'svelte'
+	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
+	import { writable } from 'svelte/store'
 
 	// REACTIVE Definitions
-	let editor: Drawflow & { precanvas: HTMLElement }
-	let dnd = <ReturnType<typeof createDragDrop>>{}
-	let mul = <ReturnType<typeof multiDrag>>{}
-	let drawflowRoot: HTMLElement
-	let templateDragableRoot: HTMLElement
-	$: _lockToggle = lockToggle(editor)
+	setContext('DrawflowStore', ctx)
+	let flush: (() => void)[] = []
 
-	onMount(() => {
+	export let props = DefaultProps
+	setContext('DrawflowProps', writable(props))
+
+	onMount(async () => {
 		// @ts-ignore
-		editor = new Drawflow(drawflowRoot)
+		$ctx.editor = new Drawflow($ctx.drawflowRoot)
+
+		// modify the API to work with svelte components
+		const { addNode, addNodeImport } = createAddNode.bind(
+			Drawflow.prototype
+		)(flush)
+		// @ts-ignore
+		Drawflow.prototype.addNode = addNode
+		// @ts-ignore
+		Drawflow.prototype.addNodeImport = addNodeImport
 
 		// -------- PLUGINGS --------
 		// UndoRedo
-		const { addListeners, removeListeners } = createUndoRedo(editor)
+		flush.push(undoRedo($ctx.editor).createListeners)
+
 		// square conections/links
-		rerouteSquare(editor)
+		// rerouteSquare($ctx.editor)
+
 		// drag and drop
-		dnd = createDragDrop(editor)
-		AssignEvents(templateDragableRoot, dnd)
+		$ctx.dnd = dragAndDrop($ctx.editor)
+		AssignEvents($ctx.templateDragableRoot, $ctx.dnd)
+
 		// @ts-ignore shift key selection
-		selectMultiple(editor)
+		selectMultiple($ctx.editor)
+
+		// mimimap
+		new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
+		// @ts-ignore
+		flush.push(draggableCancelation($ctx.editor).createListeners)
+
+		// @ts-ignore zoom
+		zoomToPointer($ctx.editor)
 
 		// kickstart API
-		editor.start()
+		await $ctx.editor.start()
+
+		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
-		editor.import(dataToImport)
+		await $ctx.editor.import(dataToImport)
+
+		createNodeComponents($ctx.editor)
 
 		// @ts-ignore multi drag after load
-		mul = multiDrag(editor)
+		$ctx.mul = multiDrag($ctx.editor)
 
-		addListeners()
-		return removeListeners
+		return flush.map(create => create())
 	})
 </script>
 
 <div class="wrapper">
-	<div
-		class="flex flex-col justify-start items-center px-6 border-b border-gray-600 w-full">
-		<div
-			class="focus:outline-none text-left text-white flex justify-between items-center w-full py-5 space-x-14  ">
-			<p class="text-sm leading-5 uppercase">Draggable Templates</p>
-			<i class={'fab fa-' + 'slack'} />
-		</div>
-		<div
-			class="flex justify-start flex-col w-full md:w-auto items-start pb-1"
-			bind:this={templateDragableRoot}>
-			{#each ['facebook', 'slack', 'github', 'telegram', 'aws', 'log', 'google', 'email', 'template', 'multiple', 'personalized', 'dbclick'] as name}
-				<Drag {name} drag={dnd.drag} />
-			{/each}
-		</div>
-	</div>
-	<div style="display: none" class="col" bind:this={templateDragableRoot}>
-		{#each ['facebook', 'slack', 'github', 'telegram', 'aws', 'log', 'google', 'email', 'template', 'multiple', 'personalized', 'dbclick'] as name}
-			<Drag {name} drag={dnd.drag} />
-		{/each}
-	</div>
-	<div class="col-right">
-		<div class="menu">
-			<Nav />
-		</div>
-		<div
-			bind:this={drawflowRoot}
-			id="drawflow"
-			on:drop={dnd.drop}
-			on:dblclick={mul.clear_selection}
-			on:dragover={dnd.allowDrop}>
-			<!-- NODES WILL BE INJECTED HERE -->
-			<!-- ... -->
-			<!-- Footer alike -->
-			<div class="btn-export">Export</div>
-			<div class="btn-clear" on:click={editor.clearModuleSelected}>
-				Clear
-			</div>
-			<div class="btn-lock" on:click={_lockToggle}>
-				<i class={'fas fa-lock'} />
-			</div>
-			<div class="bar-zoom">
-				<i class="fas fa-search-minus" on:click={editor.zoom_out} />
-				<i class="fas fa-search" on:click={editor.zoom_reset} />
-				<i class="fas fa-search-plus" on:click={editor.zoom_in} />
-			</div>
-		</div>
-	</div>
+	<Sidebar />
+	<Canvas />
+	<Minimap />
 </div>
 
-<style lang="scss">
-	.wrapper,
-	.menu {
-		background: var(--surface3);
-	}
-	.col {
-		display: flex;
-	}
-
-	#drawflow {
-		.btn-export {
-			border: 1px solid var(--surface3);
-			background: var(--surface2);
-		}
-
-		.btn-clear {
-			border: 1px solid var(--surface3);
-			background: var(--surface2);
-		}
-	}
+<style global lang="scss">
+	@import '../../styles/open-props.scss';
 </style>

@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { goto } from '$app/navigation'
-	import { auth, currentUser } from '$lib/modules/firebase/client'
-	import UserSearchBar from '../inputs/UserSearchBar.svelte'
+	import { auth, currentUser } from '@lib/modules/firebase/client'
 </script>
 
 <header class="navbar bg-base-300 shrink-0">
 	<div class="navbar-start">
-		<a class="btn btn-ghost uppercase font-bold" href="/">yt-gif-graph</a>
+		<a class="btn btn-ghost uppercase font-bold" href="/app"
+			>yt-gif-graph</a>
 	</div>
 	<div class="hidden md:flex navbar-center">
 		<!-- <UserSearchBar
@@ -19,6 +18,7 @@
 			<a href="/new" class="hidden md:flex btn btn-ghost text-base"
 				>publish</a>
 			<div class="dropdown dropdown-end">
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<label
 					tabindex="0"
 					class="btn btn-ghost px-2 lowercase font-bold text-base"
@@ -52,9 +52,8 @@
 				</ul>
 			</div>
 		{:else}
-			<a
-				class="btn btn-ghost lowercase text-base font-bold"
-				href="/auth/login">login</a>
+			<a class="btn btn-ghost lowercase text-base font-bold" href="/login"
+				>login</a>
 		{/if}
 	</div>
 </header>
