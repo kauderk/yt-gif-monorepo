@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte'
 	import Connection, { type Tconection } from './Connection.svelte'
 	import CreateConnections from './CreateConnections.svelte'
+	import { nodeBG } from '../../cmp/store'
 
 	export let id: number | string
 	export let className = ''
@@ -16,6 +17,11 @@
 
 	export let content: HTMLElement
 	export let parent: HTMLElement
+
+	let bgValue: string
+	nodeBG.subscribe(value => {
+		bgValue = value
+	})
 
 	/**
 	 * if provided, it will create conections,
@@ -32,7 +38,7 @@
 	<div
 		id="node-{id}"
 		class="drawflow-node template selected {className}"
-		style="top: {top}px; left: {left}px;">
+		style="top: {top}px; left: {left}px; background-color: {bgValue};">
 		{#if dataNode}
 			<CreateConnections {dataNode} />
 		{:else}
@@ -61,7 +67,7 @@
 		z-index: 2; // infront of conections
 
 		// theme
-		background-color: rgba(131, 131, 131, 0.4);
+		background-color: var(--node-bg-color);
 		color: white;
 
 		// contrast

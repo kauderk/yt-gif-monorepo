@@ -20,3 +20,5 @@ export const DefaultProps = { canvas: { height: '100vh' } }
 export const DrawflowProps = writable(DefaultProps)
 export type Prs = typeof DrawflowProps
 export const getProps = () => svelteContext('DrawflowProps') as Prs
+
+export const nodeBG = writable('rgba(131, 131, 131, 0.4)')

@@ -2,9 +2,13 @@
 	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
 	import { fly } from 'svelte/transition'
 	import type { TView } from '../types'
+	import { nodeBG } from '../../cmp/store'
 
 	export let state: TView = 'left-sidebar'
 	const setState = (to: TView) => (state = to)
+	function setTheme(color: string) {
+		nodeBG.set(color)
+	}
 </script>
 
 <div class="top-view">
@@ -49,14 +53,47 @@
 			</div>
 			<!--  -->
 			<div id="theme-picker-section" class="example-section">
-				<input type="radio" name="theme" value="white" checked={true} />
-				<input type="radio" name="theme" value="red" />
-				<input type="radio" name="theme" value="orange" />
-				<input type="radio" name="theme" value="yellow" />
-				<input type="radio" name="theme" value="green" />
-				<input type="radio" name="theme" value="blue" />
-				<input type="radio" name="theme" value="indigo" />
-				<input type="radio" name="theme" value="violet" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('rgba(131, 131, 131, 0.4)')}
+					value="white"
+					checked={true} />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#7b1d1d')}
+					value="red" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('rgb(214, 90, 49)')}
+					value="orange" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#dbae00')}
+					value="yellow" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#0e6f2f')}
+					value="green" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#173693')}
+					value="blue" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#4f107d')}
+					value="indigo" />
+				<input
+					type="radio"
+					name="theme"
+					on:click={() => setTheme('#914091')}
+					value="violet" />
 			</div>
 			<HorizontalScroller>
 				<div id="side-bar-section" class="example-section">
