@@ -13,6 +13,7 @@
 		"build:rollup": "rollup -c",
 		"build": "vite build --watch",
 		"preview": "vite preview",
+		"sync": "svelte-kit sync",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"preinstall": "pnpm exec inherit -u",
 		"test:chrome": "pnpx playwright test --headed --browser=chromium",
