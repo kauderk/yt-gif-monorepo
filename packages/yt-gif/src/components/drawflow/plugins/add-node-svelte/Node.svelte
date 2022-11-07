@@ -18,11 +18,6 @@
 	export let content: HTMLElement
 	export let parent: HTMLElement
 
-	let bgValue: string
-	nodeBG.subscribe(value => {
-		bgValue = value
-	})
-
 	/**
 	 * if provided, it will create conections,
 	 * it must be a companion to
@@ -38,7 +33,7 @@
 	<div
 		id="node-{id}"
 		class="drawflow-node template selected {className}"
-		style="top: {top}px; left: {left}px; background-color: {bgValue};">
+		style="top: {top}px; left: {left}px; background-color: {$nodeBG};">
 		{#if dataNode}
 			<CreateConnections {dataNode} />
 		{:else}
@@ -67,7 +62,6 @@
 		z-index: 2; // infront of conections
 
 		// theme
-		background-color: var(--node-bg-color);
 		color: white;
 
 		// contrast

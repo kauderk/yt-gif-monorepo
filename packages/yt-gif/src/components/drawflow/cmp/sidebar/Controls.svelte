@@ -1,14 +1,18 @@
 <script lang="ts">
-	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
-	import { fly } from 'svelte/transition'
 	import type { TView } from '../types'
+	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
+
+	import { onMount } from 'svelte'
+	import { fly } from 'svelte/transition'
 	import { nodeBG } from '../../cmp/store'
 
 	export let state: TView = 'left-sidebar'
 	const setState = (to: TView) => (state = to)
-	function setTheme(color: string) {
-		nodeBG.set(color)
-	}
+
+	// prettier-ignore
+	const colors = 	[ 'rgba(131, 131, 131, 0.4)', '#7b1d1d', 'rgb(214, 90, 49)', '#dbae00', '#0e6f2f', '#173693', '#4f107d', '#914091' ]
+
+	onMount(() => nodeBG.useLocalStorage())
 </script>
 
 <div class="top-view">
@@ -53,47 +57,14 @@
 			</div>
 			<!--  -->
 			<div id="theme-picker-section" class="example-section">
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('rgba(131, 131, 131, 0.4)')}
-					value="white"
-					checked={true} />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#7b1d1d')}
-					value="red" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('rgb(214, 90, 49)')}
-					value="orange" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#dbae00')}
-					value="yellow" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#0e6f2f')}
-					value="green" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#173693')}
-					value="blue" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#4f107d')}
-					value="indigo" />
-				<input
-					type="radio"
-					name="theme"
-					on:click={() => setTheme('#914091')}
-					value="violet" />
+				{#each colors as current}
+					<input
+						type="radio"
+						name="theme"
+						on:click={() => ($nodeBG = current)}
+						style="--accent-color: {current}"
+						checked={$nodeBG == current} />
+				{/each}
 			</div>
 			<HorizontalScroller>
 				<div id="side-bar-section" class="example-section">
@@ -427,37 +398,16 @@
 		& > input:checked:before {
 			display: block;
 		}
-
-		& > input[value='white']:after {
-			background: rgb(255, 255, 255);
+		& > input {
+			accent-color: var(--accent-color, gray);
 		}
-
-		& > input[value='red']:after {
-			background: rgb(var(--red));
+		& > input:after {
+			background: var(--accent-color, gray);
 		}
-
-		& > input[value='orange']:after {
-			background: rgb(var(--orange));
-		}
-
-		& > input[value='yellow']:after {
-			background: rgb(var(--yellow));
-		}
-
-		& > input[value='green']:after {
-			background: rgb(var(--green));
-		}
-
-		& > input[value='blue']:after {
-			background: rgb(var(--blue));
-		}
-
-		& > input[value='indigo']:after {
-			background: rgb(var(--indigo));
-		}
-
-		& > input[value='violet']:after {
-			background: rgb(var(--violet));
+		& > input:checked {
+			&:after {
+				background: rgba(128, 128, 128, 0.363);
+			}
 		}
 	}
 

@@ -12,6 +12,10 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 		signal: () => [get, set],
 		reset: () => set(startValue),
 		get,
+		/**
+		 * Once the client side component has loaded, this will retrieve the local storage key
+		 * @returns Storage Unsubscriber (Function), useful to prevent memory leaks
+		 */
 		useLocalStorage: () => {
 			const json = localStorage.getItem(key)
 			if (json) {

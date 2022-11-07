@@ -4,6 +4,7 @@ import type { multiDrag } from '../plugins/multi-drag'
 
 import { writable } from 'svelte/store'
 import { getContext as svelteContext } from 'svelte'
+import { createWritableStore } from '$lib/local-storage-store'
 
 export const DrawflowStore = writable({
 	editor: <Drawflow & { precanvas: HTMLElement }>{},
@@ -21,4 +22,4 @@ export const DrawflowProps = writable(DefaultProps)
 export type Prs = typeof DrawflowProps
 export const getProps = () => svelteContext('DrawflowProps') as Prs
 
-export const nodeBG = writable('rgba(131, 131, 131, 0.4)')
+export const nodeBG = createWritableStore('nodeBG', 'rgba(131, 131, 131, 0.4)')
