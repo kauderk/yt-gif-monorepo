@@ -124,6 +124,36 @@
 {/if}
 
 <style lang="scss">
+	@keyframes bounce {
+		from,
+		6.66%,
+		17.66%,
+		33.33% {
+			animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+			transform: translate3d(0, 0, 0);
+		}
+
+		13.33%,
+		14.33% {
+			animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+			transform: translate3d(0, -30px, 0) scaleY(1.1);
+		}
+
+		23.33% {
+			animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+			transform: translate3d(0, -15px, 0) scaleY(1.05);
+		}
+
+		26.66% {
+			transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+			transform: translate3d(0, 0, 0) scaleY(0.95);
+		}
+
+		30% {
+			transform: translate3d(0, -4px, 0) scaleY(1.02);
+		}
+	}
+
 	#left-panel,
 	.top-view {
 		overflow-y: hidden;
@@ -222,6 +252,7 @@
 			}
 			&:hover {
 				background: rgba(255 255 255 / 10%);
+				animation: bounce 3s infinite;
 			}
 			&:active {
 				background: rgba(255 255 255 / 15%);
@@ -316,6 +347,7 @@
 		&:hover {
 			border-color: rgb(0, 208, 250) !important;
 			box-shadow: rgb(0, 208, 250) 0px 0px 20px inset;
+			animation: bounce 3s infinite;
 		}
 
 		& > i {
