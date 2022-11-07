@@ -63,6 +63,7 @@
 
 		// theme
 		color: white;
+		border-radius: 0.5em;
 
 		// contrast
 		backdrop-filter: blur(4px);
