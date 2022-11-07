@@ -29,7 +29,10 @@
 	onMount(() => dataNode?.task.resolve())
 </script>
 
-<div class="parent-node" bind:this={parent}>
+<div
+	class="parent-node"
+	bind:this={parent}
+	on:wheel|preventDefault|stopPropagation>
 	<div
 		id="node-{id}"
 		class="drawflow-node template selected {className}"
