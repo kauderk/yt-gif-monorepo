@@ -11,11 +11,13 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function zoomToPointer(editor: Params) {
 	let position = { x: 0, y: 0 }
+	BGSize(editor)
+
 	editor.zoom_enter = function (e: WheelEvent) {
 		e.preventDefault()
 		if (e.ctrlKey) {
 			zoom(e, editor)
-			DisplaceBG(position, editor)
+			BGSize(editor)
 		} else {
 			CanvasWheel(e, editor)
 		}
@@ -39,10 +41,7 @@ function zoom(e: WheelEvent, editor: Params) {
 	}
 }
 
-function DisplaceBG(pos: pos, editor: Params) {
-	const sum = pos.x * pos.x + pos.y * pos.y
-	const point = Math.sqrt(sum)
-
+function BGSize(editor: Params) {
 	const cord = editor.zoom * 6.5
 	const square = cord + 'em'
 

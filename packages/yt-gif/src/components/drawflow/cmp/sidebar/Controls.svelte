@@ -7,13 +7,15 @@
 	import { nodeBG } from '../../cmp/store'
 
 	export let state: TView = 'left-sidebar'
-	const setState = (to: TView) => (state = to)
-
+	const openCloseSidebar = () =>
+		(state = state == 'left-sidebar' ? 'full-graph' : 'left-sidebar')
 	// prettier-ignore
 	const colors = 	[ 'rgba(131, 131, 131, 0.4)', '#7b1d1d', 'rgb(214, 90, 49)', '#dbae00', '#0e6f2f', '#173693', '#4f107d', '#914091' ]
 
 	onMount(() => nodeBG.useLocalStorage())
 </script>
+
+<svelte:window on:keydown={e => e.key == 'º' && openCloseSidebar()} />
 
 <div class="top-view">
 	<div id="view-section" class="example-section">
@@ -21,20 +23,12 @@
 		<button
 			type="button"
 			class="example-button short"
-			on:click={() => setState('full-graph')}>
-			<i class="fa-light fa-diagram-project" />
-		</button>
-		<button
-			type="button"
-			class="example-button short"
-			on:click={() => setState('full-graph')}>
-			<i class="fa-solid fa-gallery-thumbnails" />
-		</button>
-		<button
-			type="button"
-			class="example-button short"
-			on:click={() => setState('left-sidebar')}>
-			<i class="fa-solid fa-sidebar" />
+			on:click={openCloseSidebar}>
+			{#if state == 'left-sidebar'}
+				<i class="fa-solid fa-sidebar" />
+			{:else}
+				<i class="fa-light fa-diagram-project" />
+			{/if}
 		</button>
 	</div>
 </div>
