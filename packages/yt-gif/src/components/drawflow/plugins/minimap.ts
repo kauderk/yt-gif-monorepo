@@ -111,9 +111,11 @@ export class DrawflowMinimap {
 
 		this.editor.on('nodeCreated', id => {
 			const data = {}
+			// I don't like this...
+			this.minimap.nodeId = this.nodeId = this.editor.nodeId
 			const node = this.editor.getNodeFromId(id)
 
-			this.minimap.addNode(
+			this.minimap.addNode.bind(this.minimap)(
 				node.name,
 				Object.keys(node.inputs).length,
 				Object.keys(node.outputs).length,

@@ -69,7 +69,7 @@
 		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
-		$ctx.editor.import(dataToImport)
+		await $ctx.editor.import(dataToImport)
 
 		createNodeComponents($ctx.editor)
 
