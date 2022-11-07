@@ -1,6 +1,5 @@
 /* eslint-disable */
 // @ts-nocheck
-
 export default class Drawflow {
 	constructor(container, render = null, parent = null) {
 		this.events = {}
@@ -53,7 +52,7 @@ export default class Drawflow {
 		this.prevDiff = -1
 	}
 
-	start() {
+	async start() {
 		// console.info("Start Drawflow!!");
 		this.container.classList.add('parent-drawflow')
 		this.container.tabIndex = 0
@@ -95,7 +94,7 @@ export default class Drawflow {
 		this.container.onpointerout = this.pointerup_handler.bind(this)
 		this.container.onpointerleave = this.pointerup_handler.bind(this)
 
-		this.load()
+		await this.load()
 	}
 
 	/* Mobile zoom */
@@ -148,13 +147,17 @@ export default class Drawflow {
 		}
 	}
 	/* End Mobile Zoom */
-	load() {
-		for (var key in this.drawflow.drawflow[this.module].data) {
-			this.addNodeImport(
-				this.drawflow.drawflow[this.module].data[key],
-				this.precanvas
+	async load() {
+		let promises = []
+		for (let key in this.drawflow.drawflow[this.module].data) {
+			promises.push(
+				this.addNodeImport(
+					this.drawflow.drawflow[this.module].data[key],
+					this.precanvas
+				)
 			)
 		}
+		await Promise.all(promises)
 
 		if (this.reroute) {
 			for (var key in this.drawflow.drawflow[this.module].data) {
@@ -165,7 +168,11 @@ export default class Drawflow {
 		}
 
 		for (var key in this.drawflow.drawflow[this.module].data) {
-			this.updateConnectionNodes('node-' + key)
+			try {
+				this.updateConnectionNodes('node-' + key)
+			} catch (error) {
+				debugger
+			}
 		}
 
 		const editor = this.drawflow.drawflow
@@ -2066,7 +2073,7 @@ export default class Drawflow {
 		return newNodeId
 	}
 
-	addNodeImport(dataNode, precanvas) {
+	async addNodeImport(dataNode, precanvas) {
 		const parent = document.createElement('div')
 		parent.classList.add('parent-node')
 
@@ -2833,7 +2840,7 @@ export default class Drawflow {
 		this.drawflow.drawflow[name] = { data: {} }
 		this.dispatch('moduleCreated', name)
 	}
-	changeModule(name) {
+	async changeModule(name) {
 		this.dispatch('moduleChanged', name)
 		this.module = name
 		this.precanvas.innerHTML = ''
@@ -2846,12 +2853,12 @@ export default class Drawflow {
 		this.zoom = 1
 		this.zoom_last_value = 1
 		this.precanvas.style.transform = ''
-		this.import(this.drawflow, false)
+		await this.import(this.drawflow, false)
 	}
 
-	removeModule(name) {
+	async removeModule(name) {
 		if (this.module === name) {
-			this.changeModule('Home')
+			await this.changeModule('Home')
 		}
 		delete this.drawflow.drawflow[name]
 		this.dispatch('moduleRemoved', name)
@@ -2872,10 +2879,10 @@ export default class Drawflow {
 		return dataExport
 	}
 
-	import(data, notifi = true) {
+	async import(data, notifi = true) {
 		this.clear()
 		this.drawflow = JSON.parse(JSON.stringify(data))
-		this.load()
+		await this.load()
 		if (notifi) {
 			this.dispatch('import', 'import')
 		}

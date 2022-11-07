@@ -1,12 +1,14 @@
 <script lang="ts" context="module">
 	export type Tconection = {
 		length: number
+		offset?: number
 		type: 'input' | 'output'
 		json: { [key: string]: { [key: string]: any[] } }
 	}
 </script>
 
 <script lang="ts">
+	export let offset = 0
 	export let length = 0
 	export let type: Tconection['type']
 
@@ -14,7 +16,7 @@
 
 	const range = (N: number) => [...Array(N).keys()]
 	const conection = (sfx: string, N: number) => {
-		const idx = sfx + '_' + N
+		const idx = sfx + '_' + (N + offset) // FUCK!
 		json![idx] = { connections: [] }
 		return idx
 	}

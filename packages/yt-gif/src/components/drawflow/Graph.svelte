@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Drawflow from 'drawflow'
+	import Drawflow from '$cmp/drawflow/src/drawflow'
 	import dataToImport from './data.json'
 
 	import { undoRedo } from './plugins/conection-undo-redo'
@@ -28,14 +28,18 @@
 	export let props = DefaultProps
 	setContext('DrawflowProps', writable(props))
 
-	onMount(() => {
+	onMount(async () => {
 		// @ts-ignore
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
 
 		// modify the API to work with svelte components
-		Drawflow.prototype.addNode = createAddNode.bind(Drawflow.prototype)(
-			flush
-		)
+		const { addNode, addNodeImport } = createAddNode.bind(
+			Drawflow.prototype
+		)(flush)
+		// @ts-ignore
+		Drawflow.prototype.addNode = addNode
+		// @ts-ignore
+		Drawflow.prototype.addNodeImport = addNodeImport
 
 		// -------- PLUGINGS --------
 		// UndoRedo
@@ -60,7 +64,7 @@
 		zoomToPointer($ctx.editor)
 
 		// kickstart API
-		$ctx.editor.start()
+		await $ctx.editor.start()
 
 		registerNodeComponents($ctx.editor)
 
