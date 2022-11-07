@@ -25,3 +25,35 @@
 		<div class="{type} {conection(type, i)}" />
 	</div>
 {/each}
+
+<style lang="scss" global>
+	.input,
+	.output {
+		position: relative;
+
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		margin-bottom: 5px;
+
+		cursor: crosshair;
+		z-index: 1;
+
+		background: rgb(119, 119, 119);
+	}
+	// Axis aligment
+	.input {
+		left: -23.5px;
+		top: 2px;
+	}
+	.output {
+		right: -3px;
+		top: 2px;
+	}
+
+	// don't take space
+	.inputs,
+	.outputs {
+		width: 0;
+	}
+</style>

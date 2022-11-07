@@ -32,3 +32,69 @@
 		<div class="drawflow-delete">x</div>
 	</div>
 </div>
+
+<style lang="scss" global>
+	// node
+	.drawflow-node {
+		// coordinates
+		position: absolute;
+		display: flex;
+
+		// relative to siblings
+		align-items: center; // conections Y-axis
+		z-index: 2; // infront of conections
+
+		// theme
+		background-color: rgba(131, 131, 131, 0.4);
+		color: white;
+
+		// contrast
+		backdrop-filter: blur(4px);
+		box-shadow: 0px 2px 15px 2px rgba(71, 71, 71, 0.123);
+
+		&:hover {
+			cursor: move;
+			background: rgba(131, 131, 131, 0.575);
+			&.selected {
+				background: rgba(131, 131, 131, 0.788);
+			}
+			& .output:hover {
+				background: rgb(131, 131, 131);
+			}
+			.title-box {
+				background-color: rgba(139, 139, 139, 0.692);
+			}
+		}
+	}
+
+	.drawflow_content_node {
+		width: -webkit-fill-available;
+	}
+
+	// runtime
+	.drawflow-delete {
+		position: absolute;
+		display: block;
+		width: 30px;
+		height: 30px;
+
+		z-index: 4;
+
+		line-height: 30px;
+		font-weight: 700;
+		text-align: center;
+		border: 1px solid solid;
+		border-radius: 50%;
+		font-family: monospace;
+		cursor: pointer;
+
+		margin-left: -15px;
+		margin-top: 15px;
+
+		right: -15px;
+		top: -15px;
+
+		color: white;
+		background: black;
+	}
+</style>

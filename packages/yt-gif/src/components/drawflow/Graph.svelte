@@ -17,7 +17,6 @@
 	import Content from './cmp/Content.svelte'
 	import { createNodeComponent } from './cmp/inline'
 	import Minimap from './cmp/Minimap.svelte'
-	import './styles/plugins.css'
 
 	import { onMount, setContext } from 'svelte'
 	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
@@ -85,9 +84,5 @@
 </div>
 
 <style global lang="scss">
-	@import './styles/beautiful.css';
-	@import './styles/min.scss';
-	@import './styles/gray.css';
-	@import './plugins/selectables/index.css';
 	@import '../../styles/open-props.scss';
 </style>
