@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function getUUID(this: Drawflow): number {
 	if (this.useuuid) {

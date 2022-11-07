@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 import Selectables from './selectables'
 import './selectables/index.css'
 import { nodeEl } from '../lib/utils'

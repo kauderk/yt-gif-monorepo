@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 	let mobile_item_selec = ''

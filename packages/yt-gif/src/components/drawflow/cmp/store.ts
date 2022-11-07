@@ -1,4 +1,4 @@
-import type Drawflow from 'drawflow'
+import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { dragAndDrop } from '../plugins/drag-drop'
 import type { multiDrag } from '../plugins/multi-drag'
 

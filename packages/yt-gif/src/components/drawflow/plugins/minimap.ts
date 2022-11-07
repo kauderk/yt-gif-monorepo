@@ -2,7 +2,9 @@
 	the minimap moves too fast (hold down the pointer inside the minimap),
 	make it smoother https://jerosoler.github.io/drawflow-minimap-example/
 */
-import Drawflow from 'drawflow'
+// @ts-nocheck
+
+import Drawflow from '$cmp/drawflow/src/drawflow'
 
 class DrawflowClone extends Drawflow {
 	position(e) {

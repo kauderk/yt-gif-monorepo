@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 
 export default class Drawflow {
 	constructor(container, render = null, parent = null) {
