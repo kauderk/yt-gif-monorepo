@@ -5,6 +5,7 @@ import Simple from './blocks/Simple.svelte'
 import Player from './blocks/Player.svelte'
 import ShadowBlock from './blocks/Shadow.svelte'
 import SocialMediaPost from './blocks/SocialMediaPost.svelte'
+import SquareTags from './blocks/SquareTags.svelte'
 
 export function createNodeComponents(editor: Drawflow) {
 	editor.addNode(
@@ -33,7 +34,7 @@ export function createNodeComponents(editor: Drawflow) {
 		'graph-node',
 		1,
 		1,
-		1000,
+		1100,
 		715,
 		'graph-node',
 		{},
@@ -59,7 +60,18 @@ export function createNodeComponents(editor: Drawflow) {
 		315,
 		'graph-node',
 		{},
-		'SocialMediaPost', // drawflow/cmp/ShadowBlock.svelte
+		'SocialMediaPost', // drawflow/cmp/SocialMediaPost.svelte
+		'svelte'
+	)
+	editor.addNode(
+		'graph-node',
+		1,
+		1,
+		550,
+		715,
+		'graph-node',
+		{},
+		'SquareTagsBlock', // drawflow/cmp/SquareTags.svelte
 		'svelte'
 	)
 }
@@ -69,4 +81,5 @@ export function registerNodeComponents(editor: Drawflow) {
 	editor.registerNode('PlayerBlock', Player)
 	editor.registerNode('ShadowBlock', ShadowBlock)
 	editor.registerNode('SocialMediaPost', SocialMediaPost)
+	editor.registerNode('SquareTagsBlock', SquareTags)
 }
