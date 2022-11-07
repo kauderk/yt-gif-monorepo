@@ -58,4 +58,9 @@
 	.outputs {
 		width: 0;
 	}
+
+	// rare conflict with @apps/dump
+	.input {
+		padding-right: 0 !important;
+	}
 </style>

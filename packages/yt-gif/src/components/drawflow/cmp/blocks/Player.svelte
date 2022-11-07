@@ -62,7 +62,7 @@ body
   position: relative
   width: 350px
   height: 290px
-  margin: 1em
+  margin: .5em
   box-shadow: 0 0 60px rgba(0,0,0,0.8)
   border-radius: 10px
   background: #222

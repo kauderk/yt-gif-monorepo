@@ -131,6 +131,9 @@
 </div>
 
 <style lang="scss">
+	#phone {
+		max-height: 440px;
+	}
 	// https://codepen.io/Hyperplexed/pen/jOxMejd
 	:root {
 		--font-color: 20, 20, 20;
