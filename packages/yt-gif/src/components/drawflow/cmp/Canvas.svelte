@@ -29,7 +29,8 @@
 		left: 0;
 
 		background-color: rgb(28, 30, 32) !important;
-		background-size: 6.5rem 6.5rem !important;
+		// background-size: 6.5rem 6.5rem !important;
+
 		background-position: 0px 0px;
 		background-image: linear-gradient(
 				rgb(72, 78, 80) 0.1rem,

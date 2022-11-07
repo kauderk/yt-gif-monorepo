@@ -25,7 +25,7 @@ export function zoomToPointer(editor: Params) {
 			x: pos.x - position.x,
 			y: pos.y - position.y,
 		}
-		editor.container.style.backgroundPosition = `${position.x}px ${position.y}px`
+		editor.container.style.backgroundPosition = `${pos.x}px ${pos.y}px`
 	})
 }
 
@@ -43,9 +43,10 @@ function DisplaceBG(pos: pos, editor: Params) {
 	const sum = pos.x * pos.x + pos.y * pos.y
 	const point = Math.sqrt(sum)
 
-	const cord = editor.zoom * point
+	const cord = editor.zoom * 6.5
+	const square = cord + 'em'
 
-	editor.container.style.setProperty('--dfBackgroundSize', cord + 'px')
+	editor.container.style.setProperty('background-size', `${square} ${square}`)
 }
 
 function CanvasWheel(e: WheelEvent, editor: Params) {
