@@ -1,14 +1,19 @@
-<script>
+<script lang="ts">
 	export let hue = 0
 	export let icon = 'info'
 	export let expanded = false
+	export let cmp: any = null
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="item" class:expanded style="--hue: {hue}" on:click>
 	<i class="icon material-icons">{icon}</i>
 	{#if expanded}
-		<slot />
+		{#if cmp}
+			<svelte:component this={cmp} />
+		{:else}
+			<slot />
+		{/if}
 	{/if}
 </div>
 

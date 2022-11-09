@@ -36,6 +36,7 @@
 						<Item
 							hue={item.id * 35}
 							icon={item.icon}
+							cmp={item.cmp}
 							on:click={() => dispatch('click', { item })} />
 					</div>
 				{/each}

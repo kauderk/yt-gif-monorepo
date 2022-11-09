@@ -22,6 +22,7 @@
 					<Item
 						hue={item.id * 35}
 						icon={item.icon}
+						cmp={item.cmp}
 						on:click={() => (opened = item)} />
 				</div>
 			{/each}
@@ -31,7 +32,12 @@
 				class="item"
 				in:receive={{ key: opened.id }}
 				out:send={{ key: opened.id }}>
-				<Item hue={opened.id * 35} icon={opened.icon} expanded on:click>
+				<Item
+					hue={opened.id * 35}
+					icon={opened.icon}
+					expanded
+					cmp={opened.cmp}
+					on:click>
 					{opened.title}
 				</Item>
 			</div>
