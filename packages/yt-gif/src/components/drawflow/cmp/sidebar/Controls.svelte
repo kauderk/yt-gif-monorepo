@@ -1,6 +1,13 @@
 <script lang="ts">
 	import type { TView } from '../types'
 	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
+	import SocialMediaPost from '../blocks/SocialMediaPost.svelte'
+	import { ScaleToFitParent } from '$cmp/stand-alone/ScaleToFitParent'
+	import Player from '../blocks/Player.svelte'
+	import Shadow from '../blocks/Shadow.svelte'
+	import Tools from '../blocks/Tools.svelte'
+	import Video from '../blocks/Video.svelte'
+	import SquareTags from '../blocks/SquareTags.svelte'
 
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
@@ -11,8 +18,17 @@
 		(state = state == 'left-sidebar' ? 'full-graph' : 'left-sidebar')
 	// prettier-ignore
 	const colors = 	[ 'rgba(131, 131, 131, 0.4)', '#7b1d1d', 'rgb(214, 90, 49)', '#dbae00', '#0e6f2f', '#173693', '#4f107d', '#914091' ]
+	// prettier-ignore
+	const blocks = { SocialMediaPost, Player, Shadow, Tools, Video, SquareTags }
+	let block: keyof typeof blocks = 'SocialMediaPost'
 
 	onMount(() => nodeBG.useLocalStorage())
+
+	import { crossfade } from 'svelte/transition'
+
+	const [send, receive] = crossfade({
+		duration: 300,
+	})
 </script>
 
 <svelte:window on:keydown={e => e.key == 'º' && openCloseSidebar()} />
@@ -92,9 +108,19 @@
 				</div>
 			</div>
 			<div id="image-section" class="example-section vertical">
-				<img
-					src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-					alt="Nature!" />
+				{#if block}
+					{#key block}
+						<div
+							in:receive={{ key: 'block' }}
+							out:send={{ key: 'block' }}>
+							<svelte:component this={blocks[block]} />
+						</div>
+					{/key}
+				{:else}
+					<img
+						src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+						alt="Nature!" />
+				{/if}
 				<div id="image-section-rotator">
 					<button type="button" class="image-section-dot" />
 					<button type="button" class="image-section-dot" />
@@ -102,30 +128,42 @@
 				</div>
 			</div>
 			<div id="shape-section" class="example-section">
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-square" />
-				</button>
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-triangle" />
-				</button>
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-circle" />
-				</button>
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-hexagon" />
-				</button>
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-star" />
-				</button>
-				<button type="button" class="example-button">
-					<i class="fa-solid fa-rhombus" />
-				</button>
+				{#each Object.entries(blocks) as [key, cmp]}
+					<button
+						type="button"
+						class="example-button"
+						on:click={() => (block = key)}
+						use:ScaleToFitParent>
+						{#if block != key}
+							<div
+								in:receive={{ key: 'block' }}
+								out:send={{ key: 'block' }}>
+								<svelte:component this={cmp} />
+							</div>
+						{:else}
+							<img
+								src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+								alt="Nature!" />
+						{/if}
+					</button>
+				{/each}
 			</div>
 		</div>
 	</div>
 {/if}
 
 <style lang="scss">
+	.scaler {
+		max-width: 140px;
+		height: fit-content;
+		position: relative;
+		div {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			background-color: red;
+		}
+	}
 	#left-panel,
 	.top-view {
 		overflow-y: hidden;
@@ -224,7 +262,6 @@
 			}
 			&:hover {
 				background: rgba(255 255 255 / 10%);
-				animation: var(--animation-shake-y);
 			}
 			&:active {
 				background: rgba(255 255 255 / 15%);
@@ -319,7 +356,6 @@
 		&:hover {
 			border-color: rgb(0, 208, 250) !important;
 			box-shadow: rgb(0, 208, 250) 0px 0px 20px inset;
-			animation: var(--animation-shake-y);
 		}
 
 		& > i {
