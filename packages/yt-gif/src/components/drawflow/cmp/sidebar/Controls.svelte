@@ -8,6 +8,7 @@
 	import Tools from '../blocks/Tools.svelte'
 	import Video from '../blocks/Video.svelte'
 	import SquareTags from '../blocks/SquareTags.svelte'
+	import CrossfadeMenu from '../CrossfadeMenu/App.svelte'
 
 	import { onMount } from 'svelte'
 	import { fly } from 'svelte/transition'
@@ -20,15 +21,9 @@
 	const colors = 	[ 'rgba(131, 131, 131, 0.4)', '#7b1d1d', 'rgb(214, 90, 49)', '#dbae00', '#0e6f2f', '#173693', '#4f107d', '#914091' ]
 	// prettier-ignore
 	const blocks = { SocialMediaPost, Player, Shadow, Tools, Video, SquareTags }
-	let block: keyof typeof blocks = 'SocialMediaPost'
+	let selctedComponent: typeof blocks[keyof typeof blocks]
 
 	onMount(() => nodeBG.useLocalStorage())
-
-	import { crossfade } from 'svelte/transition'
-
-	const [send, receive] = crossfade({
-		duration: 300,
-	})
 </script>
 
 <svelte:window on:keydown={e => e.key == 'º' && openCloseSidebar()} />
@@ -107,20 +102,11 @@
 					<div class="progress-bar-completion" />
 				</div>
 			</div>
-			<div id="image-section" class="example-section vertical">
-				{#if block}
-					{#key block}
-						<div
-							in:receive={{ key: 'block' }}
-							out:send={{ key: 'block' }}>
-							<svelte:component this={blocks[block]} />
-						</div>
-					{/key}
-				{:else}
-					<img
-						src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-						alt="Nature!" />
-				{/if}
+			<div
+				id="image-section"
+				class="example-section vertical"
+				style="align-items: flex-start;">
+				<CrossfadeMenu />
 				<div id="image-section-rotator">
 					<button type="button" class="image-section-dot" />
 					<button type="button" class="image-section-dot" />
@@ -128,23 +114,13 @@
 				</div>
 			</div>
 			<div id="shape-section" class="example-section">
-				{#each Object.entries(blocks) as [key, cmp]}
+				{#each Object.values(blocks) as cmp}
 					<button
 						type="button"
 						class="example-button"
-						on:click={() => (block = key)}
+						on:click={() => (selctedComponent = cmp)}
 						use:ScaleToFitParent>
-						{#if block != key}
-							<div
-								in:receive={{ key: 'block' }}
-								out:send={{ key: 'block' }}>
-								<svelte:component this={cmp} />
-							</div>
-						{:else}
-							<img
-								src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW91bnRhaW5zfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-								alt="Nature!" />
-						{/if}
+						<svelte:component this={cmp} />
 					</button>
 				{/each}
 			</div>
@@ -482,6 +458,7 @@
 	#image-section {
 		grid-area: 🖼️;
 		gap: 1rem;
+		height: 500px;
 		& > img {
 			width: 100%;
 		}
