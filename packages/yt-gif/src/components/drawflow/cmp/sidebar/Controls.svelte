@@ -85,17 +85,6 @@
 {/if}
 
 <style lang="scss">
-	.scaler {
-		max-width: 140px;
-		height: fit-content;
-		position: relative;
-		div {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			background-color: red;
-		}
-	}
 	#left-panel,
 	.top-view {
 		overflow-y: hidden;
@@ -226,6 +215,13 @@
 		font-family: 'Rubik', sans-serif;
 		font-size: 1em;
 	}
+	#image-section {
+		grid-area: 🖼️;
+		gap: 1rem;
+		height: 500px;
+		// if it gets to tight remove the padding
+		padding: 0;
+	}
 
 	#example-wrapper {
 		// margin: 4rem auto;
@@ -315,68 +311,6 @@
 		}
 	}
 
-	#theme-picker-section {
-		grid-area: 🎨;
-		justify-content: space-between;
-
-		& > input {
-			height: 1.8rem;
-			width: 1.8rem;
-			margin: 0px;
-			outline: none;
-			position: relative;
-			cursor: pointer;
-		}
-
-		& > input:before,
-		& > input:after {
-			content: '';
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
-			border-radius: 100%;
-			z-index: 2;
-		}
-
-		& > input:after {
-			height: 104%;
-			width: 104%;
-		}
-
-		& > input:before {
-			display: none;
-			height: 120%;
-			width: 120%;
-			border: 0.2rem solid white;
-		}
-
-		& > input:not(:checked):hover:before,
-		& > input:not(:checked):active:before {
-			display: block;
-			border-color: rgba(255, 255, 255, 0.5);
-		}
-
-		& > input:checked:before {
-			display: block;
-		}
-		& > input {
-			accent-color: var(--accent-color, gray);
-		}
-		& > input:after {
-			background: var(--accent-color, gray);
-		}
-		& > input:checked {
-			&:after {
-				background: rgba(128, 128, 128, 0.363);
-			}
-		}
-	}
-
-	#side-bar-section {
-		grid-area: ⬅️;
-	}
-
 	#search-section {
 		grid-area: 🔍;
 	}
@@ -389,83 +323,6 @@
 			&:hover {
 				border-color: rgb(58, 241, 238) !important;
 				box-shadow: rgb(58, 241, 238) 0px 0px 20px inset;
-			}
-		}
-	}
-
-	#progress-section {
-		grid-area: 🅿️;
-	}
-
-	.progress-bar {
-		background: rgba(255, 255, 255, 0.04);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 1rem;
-		height: 1rem;
-		width: 100%;
-		.progress-bar-completion {
-			background: rgb(var(--theme-color));
-			border-radius: inherit;
-			height: 100%;
-			width: 40%;
-		}
-	}
-
-	#image-section {
-		grid-area: 🖼️;
-		gap: 1rem;
-		height: 500px;
-		// if it gets to tight remove the padding
-		padding: 0;
-
-		& > img {
-			width: 100%;
-		}
-	}
-
-	#image-section-rotator {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		gap: 1rem;
-
-		& > .image-section-dot {
-			background: rgba(var(--theme-color), 0.4);
-			height: 0.5rem;
-			width: 0.5rem;
-			margin: 0px;
-			padding: 0px;
-			border-radius: 100%;
-			border: none;
-			outline: none;
-			&:hover,
-			&:focus {
-				background: rgba(var(--theme-color), 0.8);
-				cursor: pointer;
-			}
-			&:first-child {
-				background: rgb(var(--theme-color));
-			}
-		}
-	}
-
-	#shape-section {
-		grid-area: 🔼;
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-		& > .example-button {
-			border: 1px solid rgba(var(--theme-color), 0.4);
-			height: 100px;
-			border-color: rgba(204, 255, 51, 0.27) !important;
-			box-shadow: rgba(204, 255, 51, 0.27) 0px 0px 3px inset;
-			&:hover,
-			&:focus {
-				background: rgba(var(--theme-color), 0.1);
-				border-color: rgb(var(--theme-color));
-			}
-			&:hover {
-				border-color: rgb(204, 255, 51) !important;
-				box-shadow: rgb(204, 255, 51) 0px 0px 20px inset;
 			}
 		}
 	}
@@ -490,27 +347,11 @@
 			width: 1.5rem;
 		}
 
-		#theme-picker-section {
-			display: grid;
-			gap: 1rem;
-			grid-template-columns: repeat(4, 1fr);
-			justify-items: center;
-			& > input {
-				height: 1.4rem;
-				width: 1.4rem;
-			}
-		}
-
 		#view-section {
 			flex-direction: column;
 			& > button {
 				width: 100%;
 			}
-		}
-
-		#side-bar-section {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
 		}
 	}
 </style>
