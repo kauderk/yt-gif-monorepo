@@ -10,32 +10,13 @@ const Props: TProps = {
 	timeoutRepaint: 0,
 	sizeReference: 'parent',
 }
+type cord = 'width' | 'height'
 export function ScaleToFitParent(el: HTMLElement, props = Props) {
 	function scale() {
-		const computed = (el: HTMLElement, k: any) =>
-			Number(window.getComputedStyle(el)[k].replace('px', ''))
+		const { sizeRef, scaled } = getElms(el, props)
+		let { ratioY, ratioX, padding } = tryGetAspectRatio(sizeRef, scaled)
+		const axis = createAxisFunc(sizeRef, scaled, ratioY)
 
-		const pr = el as HTMLElement,
-			ch = el.firstChild as HTMLElement
-
-		const sizeRef = props.sizeReference == 'parent' ? pr : ch,
-			scaled = props.sizeReference == 'parent' ? ch : pr
-
-		let ratioX = computed(sizeRef, 'width') / computed(scaled, 'width'),
-			ratioY = computed(sizeRef, 'height') / computed(scaled, 'height'),
-			sizeRefRatioY =
-				computed(sizeRef, 'width') / computed(sizeRef, 'height'),
-			padding = computed(scaled, 'height') * 0
-
-		const tempRatio = ratioY - (ratioY - ratioX)
-		ratioY = sizeRefRatioY > 0 ? tempRatio : ratioY
-
-		const axis = (cor: 'Width' | 'Height') => {
-			// @ts-ignore
-			// prettier-ignore
-			const p = sizeRef['client' + cor] / 2, c = (scaled['client' + cor] * ratioY) / 2
-			return p - c
-		}
 		// prevent
 		// "weird" spacing
 		sizeRef.style.setProperty('padding', '0px')
@@ -50,7 +31,7 @@ export function ScaleToFitParent(el: HTMLElement, props = Props) {
 		// center
 		scaled.style.setProperty(
 			'translate',
-			axis('Width') + 'px ' + axis('Height') + 'px '
+			`${axis('width')}px ${axis('height')}px`
 		)
 
 		sizeRef.style.setProperty('padding-top', padding.toString()) // keeps the parent height in ratio to child resize
@@ -70,4 +51,42 @@ export function ScaleToFitParent(el: HTMLElement, props = Props) {
 			window.removeEventListener('keydown', refresh)
 		},
 	}
+}
+function createAxisFunc(
+	sizeRef: HTMLElement,
+	scaled: HTMLElement,
+	ratioY: number
+) {
+	return (cor: cord) => {
+		const cap = cor.charAt(0).toUpperCase() + cor.slice(1)
+		// @ts-ignore
+		// prettier-ignore
+		const p = sizeRef['client' + cap] / 2, c = (scaled['client' + cap] * ratioY) / 2
+		return p - c
+	}
+}
+
+function tryGetAspectRatio(sizeRef: HTMLElement, scaled: HTMLElement) {
+	let ratioX = computed(sizeRef, 'width') / computed(scaled, 'width'),
+		ratioY = computed(sizeRef, 'height') / computed(scaled, 'height'),
+		sizeRefRatioY =
+			computed(sizeRef, 'width') / computed(sizeRef, 'height'),
+		padding = computed(scaled, 'height') * 0
+
+	const tempRatio = ratioY - (ratioY - ratioX)
+	ratioY = sizeRefRatioY > 0 ? tempRatio : ratioY
+	return { ratioY, ratioX, padding }
+}
+
+function getElms(el: HTMLElement, props: TProps) {
+	const pr = el as HTMLElement,
+		ch = el.firstChild as HTMLElement
+
+	const sizeRef = props.sizeReference == 'parent' ? pr : ch,
+		scaled = props.sizeReference == 'parent' ? ch : pr
+	return { sizeRef, scaled }
+}
+
+function computed(el: HTMLElement, k: cord) {
+	return Number(window.getComputedStyle(el)[k].replace('px', ''))
 }
