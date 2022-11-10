@@ -50,7 +50,6 @@
 
 		// drag and drop
 		$ctx.dnd = dragAndDrop($ctx.editor)
-		AssignEvents($ctx.templateDragableRoot, $ctx.dnd)
 
 		// @ts-ignore shift key selection
 		selectMultiple($ctx.editor)

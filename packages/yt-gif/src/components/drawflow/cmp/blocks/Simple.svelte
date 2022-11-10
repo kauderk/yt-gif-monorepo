@@ -1,1 +1,1 @@
-Hola
+<div>Simple</div>

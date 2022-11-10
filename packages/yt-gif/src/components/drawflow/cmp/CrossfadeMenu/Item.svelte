@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { ScaleToFitParent } from '$cmp/stand-alone/ScaleToFitParent'
+	import Drag from '../Drag.svelte'
+	import { getContext } from '../store'
 	import Controls from './Item.Controls.svelte'
 
 	export let hue = 0
 	export let icon = 'info'
 	export let expanded = false
 	export let cmp: any = null
+	export let GraphNodeID: string = 'missing'
+
+	const ctx = getContext()
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -20,7 +25,9 @@
 	{#if expanded}
 		{#if cmp}
 			<div class="whole" use:ScaleToFitParent>
-				<svelte:component this={cmp} />
+				<Drag {...$ctx.dnd} name={GraphNodeID}>
+					<svelte:component this={cmp} />
+				</Drag>
 			</div>
 		{:else}
 			<slot />

@@ -3,11 +3,23 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import Content from './Content.svelte'
 import Simple from './blocks/Simple.svelte'
 import Player from './blocks/Player.svelte'
-import ShadowBlock from './blocks/Shadow.svelte'
+import Shadow from './blocks/Shadow.svelte'
 import SocialMediaPost from './blocks/SocialMediaPost.svelte'
 import SquareTags from './blocks/SquareTags.svelte'
 import Tools from './blocks/Tools.svelte'
 import Video from './blocks/Video.svelte'
+
+export const DrawflowKeyComponents = <const>{
+	SvelteContent: 'SvelteContent',
+	SimpleBlock: 'SimpleBlock',
+	PlayerBlock: 'PlayerBlock',
+	ShadowBlock: 'ShadowBlock',
+	SocialMediaPost: 'SocialMediaPost',
+	SquareTagsBlock: 'SquareTagsBlock',
+	ToolsBlock: 'ToolsBlock',
+	VideoBlock: 'VideoBlock',
+}
+const keys = DrawflowKeyComponents
 
 export function createNodeComponents(editor: Drawflow) {
 	editor.addNode(
@@ -18,7 +30,7 @@ export function createNodeComponents(editor: Drawflow) {
 		210,
 		'graph-node',
 		{},
-		'SvelteContent', // drawflow/cmp/Content.svelte
+		keys.SvelteContent, // drawflow/cmp/Content.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -29,7 +41,7 @@ export function createNodeComponents(editor: Drawflow) {
 		515,
 		'graph-node',
 		{},
-		'SimpleBlock', // drawflow/cmp/Simple.svelte
+		keys.SimpleBlock, // drawflow/cmp/Simple.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -40,7 +52,18 @@ export function createNodeComponents(editor: Drawflow) {
 		715,
 		'graph-node',
 		{},
-		'PlayerBlock', // drawflow/cmp/Simple.svelte
+		keys.PlayerBlock, // drawflow/cmp/Simple.svelte
+		'svelte'
+	)
+	editor.addNode(
+		'graph-node',
+		1,
+		1,
+		100,
+		715,
+		'graph-node',
+		{},
+		keys.PlayerBlock, // drawflow/cmp/Simple.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -51,7 +74,7 @@ export function createNodeComponents(editor: Drawflow) {
 		215,
 		'graph-node',
 		{},
-		'ShadowBlock', // drawflow/cmp/ShadowBlock.svelte
+		keys.ShadowBlock, // drawflow/cmp/ShadowBlock.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -62,7 +85,7 @@ export function createNodeComponents(editor: Drawflow) {
 		315,
 		'graph-node',
 		{},
-		'SocialMediaPost', // drawflow/cmp/SocialMediaPost.svelte
+		keys.SocialMediaPost, // drawflow/cmp/SocialMediaPost.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -73,7 +96,7 @@ export function createNodeComponents(editor: Drawflow) {
 		715,
 		'graph-node',
 		{},
-		'SquareTagsBlock', // drawflow/cmp/SquareTags.svelte
+		keys.SquareTagsBlock, // drawflow/cmp/SquareTags.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -84,7 +107,7 @@ export function createNodeComponents(editor: Drawflow) {
 		50,
 		'graph-node',
 		{},
-		'ToolsBlock', // drawflow/cmp/Tools.svelte
+		keys.ToolsBlock, // drawflow/cmp/Tools.svelte
 		'svelte'
 	)
 	editor.addNode(
@@ -95,17 +118,17 @@ export function createNodeComponents(editor: Drawflow) {
 		50,
 		'graph-node',
 		{},
-		'VideoBlock', // drawflow/cmp/Video.svelte
+		keys.VideoBlock, // drawflow/cmp/Video.svelte
 		'svelte'
 	)
 }
 export function registerNodeComponents(editor: Drawflow) {
-	editor.registerNode('SvelteContent', Content)
-	editor.registerNode('SimpleBlock', Simple)
-	editor.registerNode('PlayerBlock', Player)
-	editor.registerNode('ShadowBlock', ShadowBlock)
-	editor.registerNode('SocialMediaPost', SocialMediaPost)
-	editor.registerNode('SquareTagsBlock', SquareTags)
-	editor.registerNode('ToolsBlock', Tools)
-	editor.registerNode('VideoBlock', Video)
+	editor.registerNode(keys.SvelteContent, Content)
+	editor.registerNode(keys.SimpleBlock, Simple)
+	editor.registerNode(keys.PlayerBlock, Player)
+	editor.registerNode(keys.ShadowBlock, Shadow)
+	editor.registerNode(keys.SocialMediaPost, SocialMediaPost)
+	editor.registerNode(keys.SquareTagsBlock, SquareTags)
+	editor.registerNode(keys.ToolsBlock, Tools)
+	editor.registerNode(keys.VideoBlock, Video)
 }

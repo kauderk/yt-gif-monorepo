@@ -1,34 +1,17 @@
 <script lang="ts">
 	export let drag: (ev: any) => void
-	export let name = 'missing'
+	export let drop: (ev: any) => void
+	export let positionMobile: (ev: any) => void
+	export let name: string
 </script>
 
 <div
-	class="drag-drawflow flex justify-start items-center space-x-6 rounded px-3  w-full md:w-52"
+	class="drag-drawflow"
 	draggable="true"
 	on:dragstart={drag}
+	on:touchend={drop}
+	on:touchmove={positionMobile}
+	on:touchstart={drag}
 	data-node={name}>
-	<i class={'fab fa-' + name} /><span class="text-base leading-0"
-		>{name}</span>
+	<slot />
 </div>
-
-<style>
-	.drag-drawflow {
-		margin-top: 10px;
-		margin-bottom: 10px;
-		padding-top: 4px;
-		padding-bottom: 4px;
-		border-radius: 0px !important;
-		border-width: var(--border-size-2);
-		border-color: rgb(0, 208, 250);
-		box-shadow: rgb(0, 208, 250) 0px 0px 5px inset;
-	}
-
-	.drag-drawflow:hover {
-		box-shadow: rgb(0, 208, 250) 0px 0px 30px inset;
-	}
-
-	.drag-drawflow span {
-		margin-left: 0px !important;
-	}
-</style>

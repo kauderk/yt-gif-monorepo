@@ -43,6 +43,7 @@
 					icon={opened.icon}
 					expanded
 					cmp={opened.cmp}
+					GraphNodeID={opened.GraphNodeID}
 					on:click>
 					{opened.title}
 				</Item>

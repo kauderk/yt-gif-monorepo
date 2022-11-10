@@ -7,6 +7,7 @@ export type TItem = {
 	icon: string
 	title: string
 	cmp: any
+	GraphNodeID: string
 }
 export type TItems = TItem[]
 
