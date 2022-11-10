@@ -1,3 +1,8 @@
+<script>
+	import MultiTags from './MultiTags.svelte'
+	import Close from './Close.svelte'
+</script>
+
 <div id="header">
 	<div class="header-row  snipcss-fgc3D">
 		<div class="header-options ">
@@ -42,6 +47,10 @@
 			</div>
 		</div>
 	</div>
+	<div class="multi-tags">
+		<MultiTags />
+	</div>
+	<Close />
 </div>
 
 <style lang="scss">

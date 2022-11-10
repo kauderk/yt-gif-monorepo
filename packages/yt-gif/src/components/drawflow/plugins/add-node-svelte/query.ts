@@ -1,4 +1,5 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
+import { toast } from '@zerodevx/svelte-toast'
 
 export function getUUID(this: Drawflow): number {
 	if (this.useuuid) {
@@ -22,9 +23,19 @@ export function AssertContentElement(
 		content.appendChild(this.noderegister[html].html.cloneNode(true))
 	} else {
 		// SVELTE CODE
-		const wrapper = new this.noderegister[html].html({
-			target: content,
-		})
+		try {
+			const wrapper = new this.noderegister[html].html({
+				target: content,
+			})
+		} catch (error) {
+			toast.push(
+				`The previous Node won't load. Internal Drawflow Error.`,
+				{ pausable: true }
+			)
+			throw new Error(
+				'Drowflow & Svelte components faild to load. noderegister[html] is undefined'
+			)
+		}
 		// SVELTE CODE
 	}
 }

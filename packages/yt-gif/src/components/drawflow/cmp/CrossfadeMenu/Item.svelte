@@ -2,7 +2,7 @@
 	import { ScaleToFitParent } from '$cmp/stand-alone/ScaleToFitParent'
 	import Drag from '../Drag.svelte'
 	import { getContext } from '../store'
-	import Controls from './Item.Controls.svelte'
+	import Controls from './controls/Controls.svelte'
 
 	export let hue = 0
 	export let icon = 'info'
