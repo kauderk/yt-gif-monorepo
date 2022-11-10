@@ -23,8 +23,8 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: 3rem;
-		height: 3rem;
+		width: 5rem;
+		aspect-ratio: 1 / 1;
 		border-width: 1px;
 		border-style: solid;
 		border-radius: 0.5rem;

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { TView } from '../types'
 	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
+	import ScrollableItems from './ScrollableItems.svelte'
+
 	import SocialMediaPost from '../blocks/SocialMediaPost.svelte'
 	import { ScaleToFitParent } from '$cmp/stand-alone/ScaleToFitParent'
 	import Player from '../blocks/Player.svelte'
@@ -60,48 +62,13 @@
 					<span>Post</span>
 				</button>
 			</div>
-			<!--  -->
-			<div id="theme-picker-section" class="example-section">
-				{#each colors as current}
-					<input
-						type="radio"
-						name="theme"
-						on:click={() => ($nodeBG = current)}
-						style="--accent-color: {current}"
-						checked={$nodeBG == current} />
-				{/each}
-			</div>
-			<HorizontalScroller>
-				<div id="side-bar-section" class="example-section">
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-alien" />
-					</button>
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-cactus" />
-					</button>
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-code" />
-					</button>
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-cat" />
-					</button>
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-blender" />
-					</button>
-					<button type="button" class="example-button">
-						<i class="fa-solid fa-crab" />
-					</button>
-				</div>
-			</HorizontalScroller>
-
 			<div id="search-section" class="example-section">
 				<input type="text" placeholder="Search" class="example-input" />
 			</div>
-			<div id="progress-section" class="example-section">
-				<div class="progress-bar">
-					<div class="progress-bar-completion" />
-				</div>
-			</div>
+			<HorizontalScroller>
+				<ScrollableItems />
+			</HorizontalScroller>
+
 			<div
 				id="image-section"
 				class="example-section vertical"
@@ -112,17 +79,6 @@
 					<button type="button" class="image-section-dot" />
 					<button type="button" class="image-section-dot" />
 				</div>
-			</div>
-			<div id="shape-section" class="example-section">
-				{#each Object.values(blocks) as cmp}
-					<button
-						type="button"
-						class="example-button"
-						on:click={() => (selctedComponent = cmp)}
-						use:ScaleToFitParent>
-						<svelte:component this={cmp} />
-					</button>
-				{/each}
 			</div>
 		</div>
 	</div>
@@ -459,6 +415,9 @@
 		grid-area: 🖼️;
 		gap: 1rem;
 		height: 500px;
+		// if it gets to tight remove the padding
+		padding: 0;
+
 		& > img {
 			width: 100%;
 		}
