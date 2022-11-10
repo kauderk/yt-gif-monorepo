@@ -17,6 +17,7 @@ export function AssertContentElement(
 	html: string,
 	typenode: boolean | unknown
 ) {
+	let asldfkj = null
 	if (typenode === false) {
 		content.innerHTML = html
 	} else if (typenode === true) {
@@ -24,7 +25,7 @@ export function AssertContentElement(
 	} else {
 		// SVELTE CODE
 		try {
-			const wrapper = new this.noderegister[html].html({
+			asldfkj = new this.noderegister[html].html({
 				target: content,
 			})
 		} catch (error) {
@@ -32,12 +33,11 @@ export function AssertContentElement(
 				`The previous Node won't load. Internal Drawflow Error.`,
 				{ pausable: true }
 			)
-			throw new Error(
-				'Drowflow & Svelte components faild to load. noderegister[html] is undefined'
-			)
+			asldfkj = false
 		}
 		// SVELTE CODE
 	}
+	return { ok: asldfkj }
 }
 
 export function injectNodeCycle(

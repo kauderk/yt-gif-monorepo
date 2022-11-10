@@ -40,8 +40,16 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		})
 		// flush.push(() => node.$destroy)
 
-		AssertContentElement.bind(this)(node.content, html, typenode)
-
+		const { ok } = AssertContentElement.bind(this)(
+			node.content,
+			html,
+			typenode
+		)
+		if (!ok) {
+			this.nodeId -= 1 // undo, assuming it's a number...
+			node.$destroy()
+			return
+		}
 		addInputs(data, node.content)
 
 		const json = {

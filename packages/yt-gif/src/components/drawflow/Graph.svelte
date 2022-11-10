@@ -55,7 +55,7 @@
 		selectMultiple($ctx.editor)
 
 		// mimimap
-		new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
+		// new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
 		// @ts-ignore
 		flush.push(draggableCancelation($ctx.editor).createListeners)
 
