@@ -5,7 +5,7 @@
 	setContext()
 </script>
 
-<div class="menu">
+<div class="menu" style:--max-w="500px" style:--max-h="500px">
 	<Menu />
 </div>
 
@@ -17,8 +17,8 @@
 
 <style>
 	.menu {
-		max-width: 500px;
-		height: 100%;
+		max-width: var(--max-w, 500px);
+		aspect-ratio: 9 / 12;
 		margin: 0;
 	}
 </style>

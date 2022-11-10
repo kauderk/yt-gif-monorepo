@@ -32,10 +32,12 @@
 	.layout-1 {
 		position: absolute;
 		width: 100%;
-		height: 100%;
+
 		display: flex;
 		justify-content: center;
-		align-items: center;
+
+		align-items: flex-start;
+		padding: 0.5em;
 		> .menu {
 			display: grid;
 			grid-template-rows: repeat(3, auto);

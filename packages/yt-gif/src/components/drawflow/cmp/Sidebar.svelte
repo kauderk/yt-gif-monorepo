@@ -15,4 +15,3 @@
 </script>
 
 <Controls bind:state={$localStore} />
-<Sidebar />

@@ -14,7 +14,7 @@
 	@use './style.scss';
 	.top-view {
 		display: flex;
-		height: 5%;
+		height: 6%;
 		top: 0;
 		overflow-y: hidden;
 		#view-section {

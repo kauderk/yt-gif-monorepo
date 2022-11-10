@@ -58,7 +58,7 @@
 		// horizontal scrollable component won't work with flex
 		// display: flex;
 		justify-content: start;
-		padding: 0.5rem;
+		// padding: 0.5rem;
 
 		// horizontal
 		flex-direction: column;
@@ -75,6 +75,7 @@
 
 		> .content {
 			flex-grow: 1;
+			margin: auto;
 			// nice offset when vertical
 			// padding-left: 0.5rem;
 

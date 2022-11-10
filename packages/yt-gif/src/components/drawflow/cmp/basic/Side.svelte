@@ -13,7 +13,7 @@
 	@use './style.scss';
 
 	#left-panel {
-		height: 95%;
+		height: 94%;
 		bottom: 0;
 		#example-wrapper {
 			position: relative;

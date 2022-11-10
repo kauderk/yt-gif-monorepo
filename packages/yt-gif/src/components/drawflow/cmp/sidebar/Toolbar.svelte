@@ -43,7 +43,7 @@
 		color: rgb(var(--theme-color));
 		flex-grow: 1;
 		outline: none;
-		padding: 1.25rem;
+
 		border-color: rgba(0, 208, 250, 0.35) !important;
 		box-shadow: rgba(0, 208, 250, 0.35) 0px 0px 3px inset;
 		cursor: pointer;
@@ -57,12 +57,10 @@
 		}
 
 		&.short {
-			padding: 0rem 0.5rem;
 		}
 
 		&.short {
 			color: white;
-			padding: 0.3rem 1.5rem;
 		}
 
 		&:hover,
