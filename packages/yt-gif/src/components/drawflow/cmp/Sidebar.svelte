@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte'
 
 	import Controls from './sidebar/Controls.svelte'
+	import Sidebar from './sidebar/Sidebar.svelte'
 	import type { TView } from './types'
 
 	const localStore = createWritableStore<TView>('view', 'left-sidebar')
@@ -14,3 +15,4 @@
 </script>
 
 <Controls bind:state={$localStore} />
+<Sidebar />

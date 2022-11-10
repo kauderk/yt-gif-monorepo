@@ -1,17 +1,22 @@
-import { writable, get as getter } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 
 // User/JWT-related
 // https://stackoverflow.com/a/61300826/2933427
 export const createWritableStore = <T>(key: string, startValue: T) => {
 	const store = writable(startValue)
-	const get = () => getter(store)
-	const set = (newValue: T) => store.set(newValue)
+
+	const read = () => get(store)
+	const write = (newValue: T) => store.set(newValue)
 
 	return {
 		...store,
-		signal: () => [get, set],
-		reset: () => set(startValue),
-		get,
+		/**
+		 * Convenient way to get the store's getter and setter
+		 * @returns [read, write]
+		 */
+		effect: (): [typeof read, typeof write] => [read, write],
+		reset: () => write(startValue),
+		get: read,
 		/**
 		 * Once the client side component has loaded, this will retrieve the local storage key
 		 * @returns Storage Unsubscriber (Function), useful to prevent memory leaks
@@ -19,7 +24,7 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 		useLocalStorage: () => {
 			const json = localStorage.getItem(key)
 			if (json) {
-				set(JSON.parse(json))
+				write(JSON.parse(json))
 			}
 
 			return store.subscribe(current => {
