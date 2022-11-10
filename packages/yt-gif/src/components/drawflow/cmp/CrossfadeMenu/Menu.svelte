@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { crossfade } from 'svelte/transition'
-	import MenuLayout1 from './MenuLayout1.svelte'
-	import MenuLayout2 from './MenuLayout2.svelte'
+	import Grid from './Grid.svelte'
+	import Expanded from './Expanded.svelte'
 	import type { TItem } from './store'
 
 	const [send, receive] = crossfade({ duration: 500 })
@@ -11,15 +11,11 @@
 
 {#key opened}
 	{#if !opened}
-		<MenuLayout1
+		<Grid
 			{send}
 			{receive}
 			on:click={event => (opened = event.detail.item)} />
 	{:else}
-		<MenuLayout2
-			{send}
-			{receive}
-			{opened}
-			on:click={() => (opened = null)} />
+		<Expanded {send} {receive} {opened} on:click={() => (opened = null)} />
 	{/if}
 {/key}

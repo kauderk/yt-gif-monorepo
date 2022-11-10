@@ -19,6 +19,7 @@
 				{#each items.filter( ({ id }) => (opened ? opened.id !== id : true) ) as item (item.id)}
 					<div
 						class="item"
+						class:selected={opened.id == item.id}
 						in:receive={{ key: item.id }}
 						out:send={{ key: item.id }}
 						animate:flip>
@@ -66,6 +67,7 @@
 
 		.menu {
 			display: flex;
+			gap: 0.5em;
 			> .item:not(:last-child) {
 				margin-bottom: 0.5rem;
 			}
