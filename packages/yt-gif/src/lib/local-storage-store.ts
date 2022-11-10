@@ -22,9 +22,12 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 		 * @returns Storage Unsubscriber (Function), useful to prevent memory leaks
 		 */
 		useLocalStorage: () => {
-			const json = localStorage.getItem(key)
+			let json = localStorage.getItem(key)!
 			if (json) {
-				write(JSON.parse(json))
+				try {
+					json = JSON.parse(json)
+				} catch (e) {}
+				write(json as T)
 			}
 
 			return store.subscribe(current => {
