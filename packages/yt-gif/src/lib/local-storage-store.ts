@@ -18,10 +18,9 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 		reset: () => write(startValue),
 		get: read,
 		/**
-		 * Once the client side component has loaded, this will retrieve the local storage key
-		 * @returns Storage Unsubscriber (Function), useful to prevent memory leaks
+		 * Update writable store from local storage, but don't subscribe to it
 		 */
-		useLocalStorage: () => {
+		touchLocalStorage() {
 			let json = localStorage.getItem(key)!
 			if (json) {
 				try {
@@ -29,6 +28,14 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 				} catch (e) {}
 				write(json as T)
 			}
+			return read()
+		},
+		/**
+		 * Once the client side component has loaded, this will retrieve the local storage key
+		 * @returns Storage Unsubscriber (Function), useful to prevent memory leaks
+		 */
+		useLocalStorage() {
+			this.touchLocalStorage()
 
 			return store.subscribe(current => {
 				localStorage.setItem(key, JSON.stringify(current))

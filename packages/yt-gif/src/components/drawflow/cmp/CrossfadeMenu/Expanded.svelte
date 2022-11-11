@@ -1,6 +1,5 @@
 <!-- {/key} -->
 <script lang="ts">
-	import ScrollableItems from '../sidebar/ScrollableItems.svelte'
 	import HorizontalScroller from '$cmp/stand-alone/HorizontalScroller.svelte'
 	import { flip } from 'svelte/animate'
 	import { type TItem, getContext, defCrossfade } from './store'

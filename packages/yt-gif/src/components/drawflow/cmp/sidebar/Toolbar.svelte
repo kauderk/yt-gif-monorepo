@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import { openCloseSidebar, state } from '../basic/store'
 	import TopLeft from '../basic/TopLeft.svelte'
+
+	onMount(() => state.useLocalStorage())
 </script>
 
 <svelte:component this={TopLeft}>

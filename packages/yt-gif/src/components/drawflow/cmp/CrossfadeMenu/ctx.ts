@@ -77,3 +77,11 @@ export const items = [
 		title: 'He otherwise me incommode explained so in remaining',
 	},
 ]
+
+export interface TItemCtx {
+	id: number
+	icon: string
+	GraphNodeID: typeof keys[keyof typeof keys]
+	cmp: any
+	title: string
+}
