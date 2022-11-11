@@ -3,8 +3,8 @@
 	import { state } from './store'
 </script>
 
-{#if $state.active == 'leftSidebar'}
-	<div id="left-panel" transition:fly={{ x: -300 }}>
+{#if $state.active == 'rightSidebar'}
+	<div id="right-panel" transition:fly={{ x: -300 }}>
 		<slot />
 	</div>
 {/if}
@@ -12,7 +12,7 @@
 <style lang="scss">
 	@use './style.scss';
 
-	#left-panel {
+	#right-panel {
 		height: 94%;
 		bottom: 0;
 		#example-wrapper {

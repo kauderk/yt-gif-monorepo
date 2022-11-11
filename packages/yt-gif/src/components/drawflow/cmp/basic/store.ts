@@ -1,9 +1,18 @@
 import { createWritableStore } from '$lib/local-storage-store'
-import type { TView } from '../types'
-export let state = createWritableStore<TView>('views', 'left-sidebar')
+import type { TView, states } from '../types'
+export let state = createWritableStore<TView>('views', {
+	active: 'leftSidebar',
+	previous: 'leftSidebar',
+})
 
-export const openCloseSidebar = () => {
-	const [view, setView] = state.effect()
+export const toggleActiveView = (to: states) => {
+	return () => {
+		const [view, setView] = state.effect()
 
-	setView(view() == 'left-sidebar' ? 'full-graph' : 'left-sidebar')
+		setView(
+			view().active == to
+				? { ...view(), active: '' }
+				: { ...view(), active: to }
+		)
+	}
 }

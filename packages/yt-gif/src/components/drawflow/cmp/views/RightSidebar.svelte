@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Side from '../basic/Side.svelte'
+	import RightSide from '../basic/RightSide.svelte'
 </script>
 
-<svelte:component this={Side}>Hello</svelte:component>
+<svelte:component this={RightSide}
+	>lsdfjdlskjflksdjfklsdjlfkjsdlkfjsdlfjsdlkfjlksdjjsdfjklsdjf</svelte:component>
