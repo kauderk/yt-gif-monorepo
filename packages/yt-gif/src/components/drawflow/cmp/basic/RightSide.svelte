@@ -4,7 +4,7 @@
 </script>
 
 {#if $state.active == 'rightSidebar'}
-	<div id="right-panel" transition:fly={{ x: -300 }}>
+	<div id="right-panel" transition:fly={{ x: 300 }}>
 		<slot />
 	</div>
 {/if}
@@ -13,8 +13,12 @@
 	@use './style.scss';
 
 	#right-panel {
-		height: 94%;
-		bottom: 0;
+		height: 100%;
+		top: 0;
+		right: 0;
+		// counter style.scss
+		left: auto;
+
 		#example-wrapper {
 			position: relative;
 			z-index: 2;
