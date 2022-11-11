@@ -10,7 +10,10 @@ export const defCrossfade = crossfade({})
 export const getContext = () => Ctx('CrossfadeMenu') as TItems
 export const setContext = () => SetCtx('CrossfadeMenu', items)
 
+type Falsy<T> = undefined | null | T
 export const itemHistory = createWritableStore('itemHistory', {
-	previous: { id: <n | null>null, item: <TItem | null>null },
-	current: { id: <n | null>null, item: <TItem | null>null },
+	previous: { id: <Falsy<n>>null, item: <Falsy<TItem>>null },
+	current: { id: <Falsy<n>>null, item: <Falsy<TItem>>null },
 })
+
+export const opened = createWritableStore('opened-item', <Falsy<TItemCtx>>null)

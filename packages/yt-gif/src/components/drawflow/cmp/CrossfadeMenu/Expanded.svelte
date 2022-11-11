@@ -4,8 +4,11 @@
 	import { flip } from 'svelte/animate'
 	import { type TItem, getContext, defCrossfade } from './store'
 	import Item from './Item.svelte'
+	import { createEventDispatcher } from 'svelte'
 
 	const items = getContext()
+	const dispatch = createEventDispatcher()
+
 	export let opened: TItem
 	export let [send, receive] = defCrossfade
 </script>
@@ -26,7 +29,7 @@
 							hue={item.id * 35}
 							icon={item.icon}
 							cmp={item.cmp}
-							on:click={() => (opened = item)} />
+							on:click={() => dispatch('click', { item })} />
 					</div>
 				{/each}
 			</div>
@@ -42,8 +45,7 @@
 					icon={opened.icon}
 					expanded
 					cmp={opened.cmp}
-					GraphNodeID={opened.GraphNodeID}
-					on:click>
+					GraphNodeID={opened.GraphNodeID}>
 					{opened.title}
 				</Item>
 			</div>
