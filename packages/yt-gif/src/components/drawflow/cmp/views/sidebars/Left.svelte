@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Side from '../basic/Side.svelte'
+	import Wrapper from '../../basic/Side.svelte'
 
-	import CrossfadeMenu from '../CrossfadeMenu/App.svelte'
+	import CrossfadeMenu from '../../CrossfadeMenu/App.svelte'
 </script>
 
-<svelte:component this={Side}>
+<svelte:component this={Wrapper}>
 	<div id="example-wrapper">
 		<div id="search-section" class="example-section">
 			<input type="text" placeholder="Search" class="example-input" />

@@ -3,7 +3,7 @@
 
 	export let active: typeof $state['active']
 	export let on: string
-	export let off: string
+	export let off = on
 	$: selected = $state.active == active
 </script>
 

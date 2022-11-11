@@ -9,6 +9,7 @@ export type states =
 	| 'rightVideo'
 	| 'topVideo'
 	| 'bottomVideo'
+	| 'Layouts'
 	| ''
 
 export type TView = {

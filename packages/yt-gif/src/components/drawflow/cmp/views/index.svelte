@@ -2,9 +2,10 @@
 	styles like https://ayushk7.github.io/CodeWire/
  -->
 <script lang="ts">
-	import Toolbar from './Toolbar.svelte'
-	import Sidebar from './Sidebar.svelte'
-	import RightSidebar from './RightSidebar.svelte'
+	import Toolbar from './toolbar/Toolbar.svelte'
+	import LeftSidebar from './sidebars/Left.svelte'
+	import RightSidebar from './sidebars/Right.svelte'
+	import Layouts from './layouts/index.svelte'
 	import { toggleActiveView, state } from '../basic/store'
 
 	import { onMount } from 'svelte'
@@ -16,5 +17,6 @@
 	on:keydown={e => e.key == 'º' && toggleActiveView($state.previous)()} />
 
 <Toolbar />
-<Sidebar />
+<LeftSidebar />
 <RightSidebar />
+<Layouts />

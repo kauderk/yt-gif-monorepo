@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { state } from '../basic/store'
-	import TopLeft from '../basic/TopLeft.svelte'
-	import Button from './toolbar/Button.svelte'
+	import { state } from '../../basic/store'
+	import TopLeft from '../../basic/TopLeft.svelte'
+	import Button from './Button.svelte'
 
 	onMount(() => state.useLocalStorage())
 </script>
@@ -11,7 +11,8 @@
 	<div id="controls">
 		<label for="none">View</label>
 		<Button active="leftSidebar" on="sidebar" off="diagram-project" />
-		<Button active="rightSidebar" on="sidebar-flip" off="sidebar-flip" />
+		<Button active="rightSidebar" on="sidebar-flip" />
+		<Button active="Layouts" on="gallery-thumbnails" />
 	</div>
 </svelte:component>
 

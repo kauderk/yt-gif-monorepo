@@ -1,8 +1,8 @@
 <script lang="ts">
-	import RightSide from '../basic/RightSide.svelte'
+	import Wrapper from '../../basic/RightSide.svelte'
 </script>
 
-<svelte:component this={RightSide}>
+<svelte:component this={Wrapper}>
 	<div id="example-wrapper">Hello</div>
 </svelte:component>
 
