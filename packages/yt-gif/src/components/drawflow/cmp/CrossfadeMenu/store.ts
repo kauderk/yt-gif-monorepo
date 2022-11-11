@@ -1,7 +1,7 @@
 import { createWritableStore } from '$lib/local-storage-store'
 import { getContext as Ctx, setContext as SetCtx } from 'svelte'
 import { crossfade } from 'svelte/transition'
-import { type TItemCtx, items } from './ctx'
+import { type TItemCtx, items } from '../ctx'
 
 export type TItem = TItemCtx
 export type TItems = TItemCtx[]

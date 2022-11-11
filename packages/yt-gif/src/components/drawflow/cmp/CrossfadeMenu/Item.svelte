@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ScaleToFitParent } from '$cmp/stand-alone/ScaleToFitParent'
-	import Drag from '../Drag.svelte'
+	import Drag from '../blocks/Drag.svelte'
 	import { getContext } from '../store'
 	import Controls from './controls/Controls.svelte'
 

@@ -4,7 +4,7 @@
 	import Expanded from './Expanded.svelte'
 	import { itemHistory, opened } from './store'
 	import { onMount } from 'svelte'
-	import { items } from './ctx'
+	import { items } from '../ctx'
 
 	const [send, receive] = crossfade({ duration: 500 })
 

@@ -12,9 +12,12 @@
 	import { createAddNode } from './plugins/add-node-svelte'
 	import { DrawflowMinimap } from './plugins/minimap'
 
-	import Sidebar from './cmp/Sidebar.svelte'
+	import Views from './cmp/views/index.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import { createNodeComponents, registerNodeComponents } from './cmp/inline'
+	import {
+		createNodeComponents,
+		registerNodeComponents,
+	} from './cmp/blocks/registration'
 	import Minimap from './cmp/Minimap.svelte'
 
 	import { onMount, setContext } from 'svelte'
@@ -80,7 +83,7 @@
 </script>
 
 <div class="wrapper">
-	<Sidebar />
+	<Views />
 	<Canvas />
 	<Minimap />
 </div>

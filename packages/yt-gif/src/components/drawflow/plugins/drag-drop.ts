@@ -1,5 +1,5 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
-import { items } from '../cmp/CrossfadeMenu/ctx'
+import { items } from '../cmp/ctx'
 
 export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 	let mobile_item_selec = ''
