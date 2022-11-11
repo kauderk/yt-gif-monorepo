@@ -9,11 +9,15 @@
 	const [send, receive] = crossfade({ duration: 500 })
 
 	onMount(() => {
-		const usnsubscriber = itemHistory.useLocalStorage()
-		$opened = items.find(o => o.id == $itemHistory.previous.id)
+		const localUnSub = itemHistory.useLocalStorage() // read data
+		$opened = items.find(o => o.id == $itemHistory.previous.id) // assign
+		const sessionUbSub = opened.subscribe(() => {
+			$itemHistory.previous.id = $opened?.id // react to it
+		})
 		return () => {
-			$itemHistory.previous.id = $opened?.id
-			usnsubscriber()
+			// cleanup
+			sessionUbSub()
+			localUnSub()
 		}
 	})
 </script>

@@ -28,7 +28,6 @@ export const createWritableStore = <T>(key: string, startValue: T) => {
 				} catch (e) {}
 				write(json as T)
 			}
-			return read()
 		},
 		/**
 		 * Once the client side component has loaded, this will retrieve the local storage key

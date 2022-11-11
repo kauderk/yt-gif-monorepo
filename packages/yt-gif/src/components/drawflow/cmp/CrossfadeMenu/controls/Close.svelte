@@ -1,15 +1,12 @@
 <script>
-	import { fade } from 'svelte/transition'
-	import { itemHistory } from '../store'
+	import { opened } from '../store'
 
 	let open = true
 </script>
 
 <div class="wrapper">
 	{#if open}
-		<i
-			class="fa-solid fa-sidebar"
-			on:click={() => ($itemHistory.current.item = null)} />
+		<i class="fa-solid fa-sidebar" on:click={() => ($opened = null)} />
 	{:else}
 		<i class="fa-light fa-diagram-project" />
 	{/if}
