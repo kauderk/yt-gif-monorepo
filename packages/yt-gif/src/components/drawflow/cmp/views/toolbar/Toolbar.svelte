@@ -10,7 +10,8 @@
 <svelte:component this={TopLeft}>
 	<div id="controls">
 		<label for="none">View</label>
-		<Button active="leftSidebar" on="sidebar" off="diagram-project" />
+		<Button active="fullGraph" on="diagram-project" />
+		<Button active="leftSidebar" on="sidebar" />
 		<Button active="rightSidebar" on="sidebar-flip" />
 		<Button active="Layouts" on="gallery-thumbnails" />
 	</div>

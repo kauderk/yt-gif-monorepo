@@ -1,8 +1,8 @@
 import { createWritableStore } from '$lib/local-storage-store'
 import type { TView, states } from '../types'
 export let state = createWritableStore<TView>('views', {
-	active: 'leftSidebar',
-	previous: 'leftSidebar',
+	active: '',
+	previous: '',
 })
 
 export const toggleActiveView = (to: states) => {

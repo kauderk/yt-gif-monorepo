@@ -1,130 +1,112 @@
-<script context="module" lang="ts">
-	let onTop: HTMLElement //keeping track of which open modal is on top
-	type cb = (callback: (m: TMod) => void) => void
-	export type TMod = { open: cb; openDefault: Function; close: Function }
-	const modals: { [key: string]: TMod } = {} //all modals get registered here for easy future access
-
-	// 	returns an object for the modal specified by `id`, which contains the API functions (`open` and `close` )
-	export function getModal(id = '') {
-		return modals[id]
-	}
-</script>
-
 <script lang="ts">
-	import { onDestroy } from 'svelte'
-	import { fade } from 'svelte/transition'
+	import { createEventDispatcher } from 'svelte'
+	import { cubicOut } from 'svelte/easing'
+	import { scale, fade } from 'svelte/transition'
 
-	let topDiv: HTMLElement
-	let visible = false
-	let prevOnTop: HTMLElement
-	let closeCallback: Function
+	const dispatch = createEventDispatcher()
 
-	export let id = ''
-
-	function keyPress(ev: KeyboardEvent) {
-		//only respond if the current modal is the top one
-		if (ev.key == 'Escape' && onTop == topDiv) close() //ESC
+	export let isOpen = false
+	export const open = () => (isOpen = true)
+	export const close = () => {
+		isOpen = false
+		dispatch('close', {})
 	}
 
-	/**  API **/
-	function open(callback: Function) {
-		closeCallback = callback
-		if (visible) return
-		prevOnTop = onTop
-		onTop = topDiv
-		window.addEventListener('keydown', keyPress)
+	function inject(node: HTMLElement, argument = 'body') {
+		var targetNode: any
 
-		//this prevents scrolling of the main window on larger screens
-		document.body.style.overflow = 'hidden'
+		if (typeof argument !== 'string') {
+			targetNode = argument
+		} else {
+			targetNode = document.querySelector(argument)
+		}
+		targetNode.insertAdjacentElement('beforeend', node)
 
-		visible = true
-		//Move the modal in the DOM to be the last child of <BODY> so that it can be on top of everything
-		document.body.appendChild(topDiv)
+		return {
+			destroy() {
+				node.remove()
+			},
+		}
 	}
-
-	function close(retVal?: any) {
-		if (!visible) return
-		window.removeEventListener('keydown', keyPress)
-		onTop = prevOnTop
-		if (onTop == null) document.body.style.overflow = ''
-		visible = false
-		if (closeCallback) closeCallback(retVal)
-	}
-
-	//expose the API
-	modals[id] = { open, close, openDefault: () => open(() => {}) }
-
-	onDestroy(() => {
-		delete modals[id]
-		window.removeEventListener('keydown', keyPress)
-	})
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div id="topModal" class:visible bind:this={topDiv} on:click={() => close()}>
-	<div id="modal" on:click|stopPropagation={() => {}}>
-		<svg id="close" on:click={() => close()} viewBox="0 0 12 12">
-			<circle cx="6" cy="6" r="6" />
-			<line x1="3" y1="3" x2="9" y2="9" />
-			<line x1="9" y1="3" x2="3" y2="9" />
-		</svg>
-		<div id="modal-content">
-			<slot />
+{#if isOpen}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		class="modal"
+		use:inject
+		transition:fade={{ duration: 90, easing: cubicOut }}
+		on:click={close}>
+		<div
+			class="view"
+			transition:scale={{ duration: 100, easing: cubicOut }}
+			on:click|stopPropagation>
+			<button aria-label="Close modal" on:click={close}>
+				<i class="fa-solid fa-x" />
+			</button>
+			<div class="content">
+				<slot />
+			</div>
 		</div>
 	</div>
-</div>
+{/if}
 
 <style>
-	#topModal {
-		visibility: hidden;
-		z-index: 9999;
+	.modal {
 		position: fixed;
+		z-index: 1000;
 		top: 0;
 		left: 0;
-		right: 0;
-		bottom: 0;
-		backdrop-filter: blur(4px);
-
-		background: rgba(6, 6, 6, 0.66);
 		display: flex;
-		align-items: center;
+		flex-direction: column;
 		justify-content: center;
+		width: 100vw;
+		height: 100vh;
+
+		backdrop-filter: blur(4px);
+		background: rgba(0, 0, 0, 0.66);
+
+		background-image: initial;
+		background-color: rgba(6, 6, 6, 0.66);
 	}
-	#modal {
+	.view {
 		position: relative;
-		border-radius: 6px;
+		width: 40rem;
+		max-width: 100%;
+		max-height: 100%;
+		margin: 2rem auto;
+		color: black;
+		border-radius: 0.5rem;
 		background: white;
-		border: 2px solid #000;
-		filter: drop-shadow(5px 5px 5px #555);
-		padding: 1em;
-	}
 
-	.visible {
-		visibility: visible !important;
+		color: rgb(227, 225, 222);
+		background-image: initial;
+		background-color: rgb(29, 31, 32);
 	}
-
-	#close {
-		position: absolute;
-		top: -12px;
-		right: -12px;
-		width: 24px;
-		height: 24px;
-		cursor: pointer;
-		fill: #f44;
-		transition: transform 0.3s;
-	}
-
-	#close:hover {
-		transform: scale(2);
-	}
-
-	#close line {
-		stroke: #fff;
-		stroke-width: 2;
-	}
-	#modal-content {
-		max-width: calc(100vw - 20px);
-		max-height: calc(100vh - 20px);
+	.content {
+		position: relative;
+		padding: 1rem;
+		max-height: calc(100vh - 4rem);
 		overflow: auto;
+	}
+	button {
+		display: block;
+		box-sizing: border-box;
+		position: absolute;
+		z-index: 1000;
+		top: 1rem;
+		right: 1rem;
+		margin: 0;
+		padding: 0;
+		width: 1.5rem;
+		height: 1.5rem;
+		border: 0;
+		color: black;
+		border-radius: 1.5rem;
+		background: white;
+		box-shadow: 0 0 0 1px black;
+		transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+			background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+		-webkit-appearance: none;
 	}
 </style>
