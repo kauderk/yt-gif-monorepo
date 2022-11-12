@@ -21,21 +21,11 @@
 
 	import { SvelteToast } from '@zerodevx/svelte-toast'
 	import Tour from '$cmp/drawflow/cmp/views/toolbar/Tour.svelte'
+	import '../app.css'
+	import '../styles/open-props.scss'
 </script>
 
 <SvelteToast />
 
 <slot />
 <Tour />
-
-<style global lang="scss">
-	@tailwind base;
-	@tailwind components;
-	@tailwind utilities;
-	@import '../styles/open-props.scss';
-
-	// tailwind|milkdown counter measurements
-	.milkdown img {
-		display: inline;
-	}
-</style>

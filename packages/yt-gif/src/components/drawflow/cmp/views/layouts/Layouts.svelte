@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { crossfade, scale } from 'svelte/transition'
+	import Tab from './Tab.svelte'
 	let layout = 'layout-a'
 
 	const [send, receive] = crossfade({
@@ -9,16 +10,12 @@
 	})
 </script>
 
-<div class="layout">
-	<label
-		><input type="radio" value="layout-a" bind:group={layout} />Layout A
-		(display: flex)</label>
-	<label
-		><input type="radio" value="layout-b" bind:group={layout} />Layout B
-		(float)</label>
-	<label
-		><input type="radio" value="layout-c" bind:group={layout} />Layout C
-		(diplay: grid)</label>
+<div class="flex justify-center">
+	<div class="layout tabs block">
+		<Tab value="layout-a" bind:layout>Flex</Tab>
+		<Tab value="layout-b" bind:layout>Float</Tab>
+		<Tab value="layout-c" bind:layout>Grid</Tab>
+	</div>
 </div>
 <br />
 

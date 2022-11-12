@@ -17,7 +17,7 @@
 {#each [opened] as _ (opened.id)}
 	<div class="layout-2">
 		<HorizontalScroller>
-			<div class="menu">
+			<div class="s-menu">
 				{#each items.filter( ({ id }) => (opened ? opened.id !== id : true) ) as item (item.id)}
 					<div
 						class="item"
@@ -67,7 +67,7 @@
 		align-items: center;
 		align-content: center;
 
-		.menu {
+		.s-menu {
 			display: flex;
 			gap: 0.5em;
 			> .item:not(:last-child) {

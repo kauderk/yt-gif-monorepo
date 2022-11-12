@@ -15,11 +15,6 @@
 			class="example-section vertical"
 			style="align-items: flex-start;">
 			<CrossfadeMenu />
-			<div id="image-section-rotator">
-				<button type="button" class="image-section-dot" />
-				<button type="button" class="image-section-dot" />
-				<button type="button" class="image-section-dot" />
-			</div>
 		</div>
 	</div>
 </svelte:component>
@@ -46,7 +41,7 @@
 	#image-section {
 		grid-area: 🖼️;
 		gap: 1rem;
-		height: 500px;
+
 		// if it gets to tight remove the padding
 		padding: 0;
 	}

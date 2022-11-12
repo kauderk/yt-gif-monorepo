@@ -10,7 +10,7 @@
 	let loaded = false
 	onMount(() => {
 		loaded = true
-		return (loaded = false)
+		return () => (loaded = false)
 	})
 </script>
 

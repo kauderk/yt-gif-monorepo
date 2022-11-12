@@ -71,6 +71,7 @@
 		"chromatism": "^3.0.0",
 		"color": "^4.2.3",
 		"color-blend": "^4.0.0",
+		"daisyui": "^2.17.0",
 		"dotenv": "^16.0.1",
 		"drawflow": "^0.0.59",
 		"eslint": "^8.0.0",

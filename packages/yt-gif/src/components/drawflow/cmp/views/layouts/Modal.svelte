@@ -33,7 +33,7 @@
 {#if isOpen}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		class="modal"
+		class="s-modal"
 		use:inject
 		transition:fade={{ duration: 90, easing: cubicOut }}
 		on:click={close}>
@@ -52,7 +52,7 @@
 {/if}
 
 <style>
-	.modal {
+	.s-modal {
 		position: fixed;
 		z-index: 1000;
 		top: 0;

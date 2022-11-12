@@ -5,7 +5,7 @@
 	setContext()
 </script>
 
-<div class="menu" style:--max-w="500px" style:--max-h="500px">
+<div style:--max-w="500px" style:--max-h="500px">
 	<Menu />
 </div>
 
@@ -16,7 +16,7 @@
 </svelte:head>
 
 <style>
-	.menu {
+	div {
 		max-width: var(--max-w, 500px);
 		aspect-ratio: 9 / 12;
 		margin: 0;
