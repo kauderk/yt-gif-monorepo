@@ -14,6 +14,8 @@
 	</nav>
 </header>
 
+<slot />
+
 <!-- https://codepen.io/ra_reyes/pen/gJwEWr -->
 <style>
 	.previous {
