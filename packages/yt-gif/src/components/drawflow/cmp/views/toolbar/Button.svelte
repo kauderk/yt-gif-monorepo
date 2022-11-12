@@ -11,6 +11,7 @@
 	type="button"
 	class="short"
 	class:selected
+	id={active}
 	on:click={toggleActiveView(active)}>
 	{#if selected}
 		<i class="fa-solid fa-{on}" />

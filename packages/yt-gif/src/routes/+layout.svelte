@@ -20,14 +20,13 @@
 	})
 
 	import { SvelteToast } from '@zerodevx/svelte-toast'
-
-	// Optionally set default options here
-	const options = {}
+	import Tour from '$cmp/drawflow/cmp/views/toolbar/Tour.svelte'
 </script>
 
 <SvelteToast />
 
 <slot />
+<Tour />
 
 <style global lang="scss">
 	@tailwind base;
