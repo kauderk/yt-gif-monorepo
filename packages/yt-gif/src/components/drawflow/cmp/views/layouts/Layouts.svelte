@@ -4,7 +4,8 @@
 
 	const [send, receive] = crossfade({
 		duration: 200,
-		// fallback: scale,
+		// @ts-ignore
+		fallback: scale,
 	})
 </script>
 
@@ -22,43 +23,63 @@
 <br />
 
 {#if layout === 'layout-a'}
-	<main class="container layout-a">
-		<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-			ad minim veniam, quis nostrud exercitation ullamco
-		</div>
-		<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>B</div>
-		<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>C</div>
-	</main>
+	<div class="container">
+		<main class="layout-a">
+			<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+				enim ad minim veniam, quis nostrud exercitation ullamco
+			</div>
+			<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>
+				B
+			</div>
+			<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>
+				C
+			</div>
+		</main>
+	</div>
 {:else if layout === 'layout-b'}
-	<main class="container layout-b">
-		<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>B</div>
-		<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-			ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-			aliquip ex ea commodo consequat. Duis aute irure dolor in
-			reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-			pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-			culpa qui officia deserunt mollit anim id est laborum.
-		</div>
-		<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>C</div>
-	</main>
+	<div class="container">
+		<main class="layout-b">
+			<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>
+				B
+			</div>
+			<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+				enim ad minim veniam, quis nostrud exercitation ullamco laboris
+				nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+				in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+				nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+				sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</div>
+			<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>
+				C
+			</div>
+		</main>
+	</div>
 {:else if layout === 'layout-c'}
-	<main class="container layout-c">
-		<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>C</div>
-		<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>B</div>
-		<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-			eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-			ad minim veniam, quis nostrud exercitation ullamco
-		</div>
-		<div class="d" in:receive={{ key: 'd' }} out:send={{ key: 'd' }}>D</div>
-	</main>
+	<div class="container">
+		<main class="layout-c">
+			<div class="c" in:receive={{ key: 'c' }} out:send={{ key: 'c' }}>
+				C
+			</div>
+			<div class="b" in:receive={{ key: 'b' }} out:send={{ key: 'b' }}>
+				B
+			</div>
+			<div class="a" in:receive={{ key: 'a' }} out:send={{ key: 'a' }}>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+				eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+				enim ad minim veniam, quis nostrud exercitation ullamco
+			</div>
+			<div class="d" in:receive={{ key: 'd' }} out:send={{ key: 'd' }}>
+				D
+			</div>
+		</main>
+	</div>
 {/if}
 
-<style>
+<style lang="scss">
 	:global(body) {
 		padding: 0;
 	}
@@ -68,14 +89,20 @@
 	.container {
 		position: absolute;
 		width: 100%;
+		> main {
+			padding: 0.5em;
+			> div {
+				height: auto;
+			}
+		}
 	}
 	.layout-a {
 		display: flex;
 	}
+
 	.layout-a .a,
 	.layout-a .b,
 	.layout-a .c {
-		height: 100px;
 		flex: 1;
 		font-size: 40px;
 		display: flex;
@@ -84,7 +111,7 @@
 		color: white;
 	}
 	.layout-a .a {
-		color: black;
+		color: white;
 		font-size: 12px;
 		display: block;
 		padding: 4px;
@@ -107,7 +134,7 @@
 		align-items: center;
 		justify-content: center;
 		color: white;
-		margin: 4px;
+		margin: 0.5em;
 	}
 	.layout-b .c {
 		height: 200px;
@@ -115,7 +142,7 @@
 		align-items: center;
 		justify-content: center;
 		color: white;
-		margin: 4px;
+		margin: 0.5em;
 	}
 
 	.layout-c {
