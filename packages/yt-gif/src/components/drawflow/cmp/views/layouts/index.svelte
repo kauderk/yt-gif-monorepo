@@ -15,7 +15,7 @@
 	isOpen={$state.active == 'Layouts'}
 	on:close={() => ($state.active = 'fullGraph')}>
 	<div>
-		<Idle />
+		<Settings />
 	</div>
 </Modal>
 

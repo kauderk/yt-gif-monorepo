@@ -19,12 +19,20 @@
 		useDB()
 	})
 
+	import NavLoader, { navState } from '$cmp/stand-alone/NavLoader.svelte'
+	import { navigating } from '$app/stores'
+	// if we're navigating, set the store accordingly
+	$: $navState = $navigating != null ? 'loading' : 'loaded'
+
 	import { SvelteToast } from '@zerodevx/svelte-toast'
+
 	import Tour from '$cmp/drawflow/cmp/views/toolbar/Tour.svelte'
+
 	import '../app.css'
 	import '../styles/open-props.scss'
 </script>
 
+<NavLoader />
 <SvelteToast />
 
 <slot />
