@@ -6,3 +6,24 @@
 .milkdown img {
 	display: inline;
 }
+
+@layer components {
+	.s-scrollbar {
+		overflow-y: scroll;
+	}
+	.s-scrollbar::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 6px var(--surface2);
+		border-radius: var(--radius-4);
+		border-width: var(--border-size-2);
+		background-color: var(--surface1);
+	}
+	.s-scrollbar::-webkit-scrollbar {
+		width: 12px;
+		background-color: var(--surface2);
+	}
+	.s-scrollbar::-webkit-scrollbar-thumb {
+		border-radius: var(--radius-4);
+		box-shadow: inset 0 0 6px var(--surface3);
+		background-color: var(--surface2);
+	}
+}

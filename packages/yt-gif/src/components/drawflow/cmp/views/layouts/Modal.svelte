@@ -44,7 +44,7 @@
 			<button aria-label="Close modal" on:click={close}>
 				<i class="fa-solid fa-x" />
 			</button>
-			<div class="content">
+			<div class="content s-scrollbar">
 				<slot />
 			</div>
 		</div>
