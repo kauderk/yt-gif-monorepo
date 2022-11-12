@@ -4,40 +4,41 @@
 	https://cookietrack.io/dashboard/
  -->
 <script context="module" lang="ts">
-	import { writable } from 'svelte/store'
+	import { get, writable } from 'svelte/store'
 
-	type step = {
-		element: string
-		message: string
-		targetNode?: Element | null
-	}
+	type step = string
 	type steps = step[]
 	const steps = writable(new Array<step>())
+	const selectors = writable(new Array<string>())
 
-	export function startTour(_steps: steps) {
-		steps.set(_steps)
+	let step = 0
+	export function startTour(o: { message?: s; step?: n }) {
+		step = o.step ?? 0
+		steps.set([o.message ?? '', ...get(selectors)].filter(s => !!s))
+	}
+
+	export function register(targetNode: HTMLElement, message: string) {
+		targetNode.setAttribute('data-tour', message)
+		selectors.set([...get(selectors), message])
 	}
 </script>
 
 <script lang="ts">
 	import { crossfade, fly } from 'svelte/transition'
 
-	let currentStepPos = 0
+	let currentStepPos = step
 	let stepOnStage: steps = []
 	let promptPos = ''
 
 	const promptTransition = { key: {}, duration: 100, y: -8 }
 	const spotlightTransition = { key: {}, duration: 100 }
 
-	$: {
-		$steps
-		start()
-	}
+	$: $steps.length && start()
 
 	function start() {
 		if (!$steps || !$steps.length) return
 
-		startStep(0)
+		startStep(step)
 	}
 
 	function startStep(stepPos: number) {
@@ -49,24 +50,22 @@
 		currentStepPos = stepPos
 
 		const step = $steps[currentStepPos]
-		if (step.element) {
-			step.targetNode = document.querySelector(step.element)
 
-			if (step.targetNode) {
-				step.targetNode.scrollIntoView({
-					behavior: 'smooth',
-					block: 'center',
-					inline: 'center',
-				})
-			}
-		}
+		getTourNode(step)?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center',
+			inline: 'center',
+		})
 
 		stepOnStage = [step]
+	}
+	function getTourNode(step: string) {
+		return document.querySelector(`[data-tour="${step}"]`)
 	}
 
 	function reset() {
 		steps.set([])
-		currentStepPos = 0
+		currentStepPos = step
 		stepOnStage = []
 	}
 
@@ -81,6 +80,7 @@
 	function onSkip() {
 		reset()
 	}
+	let hole = { x: 0, y: 0 }
 
 	function tourAction(node: HTMLElement, step: step) {
 		type x = HTMLElement // alright...
@@ -97,10 +97,11 @@
 		}
 
 		function updatePos() {
-			if (step.targetNode) {
+			const targetNode = getTourNode(step)
+			if (targetNode) {
 				// set prompt position
 				const promptRect = promptNode.getBoundingClientRect()
-				const targetRect = step.targetNode.getBoundingClientRect()
+				const targetRect = targetNode.getBoundingClientRect()
 
 				if (
 					targetRect.bottom + promptRect.height + 5 <
@@ -141,6 +142,11 @@
 					getNum(aStyle.borderLeftWidth) +
 					'px'
 
+				hole = {
+					x: targetRect.left - targetRect.width / 1.25,
+					y: targetRect.top - targetRect.height / 1.25,
+				}
+
 				// set spotlight position
 				spotlightStyle.top = `${targetRect.top}px`
 				spotlightStyle.left = `${targetRect.left}px`
@@ -157,6 +163,7 @@
 					(document.body.clientWidth - bodyRect.width) / 2
 				}px`
 				promptPos = 'center'
+				hole = { x: -100, y: -100 }
 
 				// set spotlight to center
 				spotlightStyle.top = `${document.body.clientHeight / 2}px`
@@ -180,10 +187,13 @@
 
 	// @ts-ignore
 	const [send, receive] = crossfade({ fallback: fly })
+
+	import MaskedBlur from './MaskedBlur.svelte'
 </script>
 
 {#if $steps.length}
 	<div class="tour-backdrop">
+		<MaskedBlur bind:cord={hole} />
 		{#each stepOnStage as step (step)}
 			<div use:tourAction={step}>
 				<div
@@ -198,7 +208,7 @@
 					out:send={promptTransition}>
 					<div class="tour-arrow" />
 					<div class="tour-body">
-						<div class="tour-content">{step.message}</div>
+						<div class="tour-content">{step}</div>
 						<div class="tour-footer">
 							<div class="tour-footer-left">
 								{#if currentStepPos < $steps.length - 1}

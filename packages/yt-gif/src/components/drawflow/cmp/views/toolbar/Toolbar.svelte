@@ -3,51 +3,37 @@
 	import { state } from '../../basic/store'
 	import TopLeft from '../../basic/TopLeft.svelte'
 	import Button from './Button.svelte'
-	import { startTour } from './Tour.svelte'
+	import { register, startTour } from './Tour.svelte'
+	import EmailFeedback from './EmailFeedback.svelte'
 
 	onMount(() => state.useLocalStorage())
-
-	function onTour() {
-		startTour([
-			// @ts-ignore
-			{
-				message: `Welcome, let's start the tour now.`,
-			},
-			{
-				element: '#fullGraph',
-				message: 'You can use filters too.',
-			},
-			{
-				element: '#leftSidebar',
-				message: 'You can sort customers here.',
-			},
-			{
-				element: '#rightSidebar',
-				message:
-					'Country filter is already populated with the existing countries from our customers database',
-			},
-			{
-				element: '#Layouts',
-				message: 'F',
-			},
-		])
-	}
 </script>
 
 <svelte:component this={TopLeft}>
 	<div id="controls">
 		<label for="none">View</label>
 
-		<Button active="fullGraph" on="diagram-project" />
-		<Button active="leftSidebar" on="sidebar" />
-		<Button active="rightSidebar" on="sidebar-flip" />
-		<Button active="Layouts" on="gallery-thumbnails" />
+		<div use:register={'You can use filters too.'}>
+			<Button active="fullGraph" on="diagram-project" />
+		</div>
+		<div use:register={'You can sort customers here.'}>
+			<Button active="leftSidebar" on="sidebar" />
+		</div>
+		<div
+			use:register={'Country filter is already populated with the existing countries from our customers database'}>
+			<Button active="rightSidebar" on="sidebar-flip" />
+		</div>
+		<div use:register={'F'}>
+			<Button active="Layouts" on="gallery-thumbnails" />
+		</div>
 
-		<button on:click={onTour}>go</button>
-		<!-- https://github.com/kommitapp/kommit/search?q=OLSKAppToolbarGuideLink -->
-		<a
-			href="javascript:window.location.href = window.atob('bWFpbHRvOmErUlBfMDA0QHJjcmVhdGl2LmNvbQ==')"
-			>Send feedback</a>
+		<button
+			on:click={() =>
+				startTour({
+					message: "Welcome, let's start the tour now.",
+					step: 0,
+				})}>go</button>
+		<EmailFeedback />
 	</div>
 </svelte:component>
 
