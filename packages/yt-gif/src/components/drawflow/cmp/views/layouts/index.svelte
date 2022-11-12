@@ -6,13 +6,14 @@
 	import Chips from './views/Chips.svelte'
 	import Settings from './views/Settings.svelte'
 	import YouTubeIDs from './youtube/YouTubeIDs.svelte'
+	import Playlist from './youtube/Playlist.svelte'
 </script>
 
 <Modal
 	isOpen={$state.active == 'Layouts'}
 	on:close={() => ($state.active = 'fullGraph')}>
 	<div>
-		<YouTubeIDs />
+		<Playlist />
 	</div>
 </Modal>
 
