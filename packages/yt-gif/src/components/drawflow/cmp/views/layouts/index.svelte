@@ -8,13 +8,14 @@
 	import YouTubeIDs from './youtube/YouTubeIDs.svelte'
 	import Playlist from './youtube/Playlist.svelte'
 	import UrlProcesor from './youtube/UrlProcesor.svelte'
+	import Idle from './youtube/Idle.svelte'
 </script>
 
 <Modal
 	isOpen={$state.active == 'Layouts'}
 	on:close={() => ($state.active = 'fullGraph')}>
 	<div>
-		<UrlProcesor />
+		<Idle />
 	</div>
 </Modal>
 
