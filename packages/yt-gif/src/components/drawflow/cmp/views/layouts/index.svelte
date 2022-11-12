@@ -7,13 +7,14 @@
 	import Settings from './views/Settings.svelte'
 	import YouTubeIDs from './youtube/YouTubeIDs.svelte'
 	import Playlist from './youtube/Playlist.svelte'
+	import UrlProcesor from './youtube/UrlProcesor.svelte'
 </script>
 
 <Modal
 	isOpen={$state.active == 'Layouts'}
 	on:close={() => ($state.active = 'fullGraph')}>
 	<div>
-		<Playlist />
+		<UrlProcesor />
 	</div>
 </Modal>
 
