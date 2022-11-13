@@ -62,6 +62,7 @@
 			</button>
 
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
+			<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
 			<div>
 				{#if $nodeTransition.id != id && ComponentSlot}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>

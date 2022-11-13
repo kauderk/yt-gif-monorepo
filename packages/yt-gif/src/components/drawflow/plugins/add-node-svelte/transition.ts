@@ -1,7 +1,7 @@
 import { createWritableStore } from '$lib/local-storage-store'
 import { crossfade, scale } from 'svelte/transition'
 const [send, receive] = crossfade({
-	duration: 500,
+	duration: 250,
 	// @ts-ignore
 	fallback: scale,
 })
