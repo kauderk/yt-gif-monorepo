@@ -34,7 +34,6 @@
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="s-modal"
-		use:inject
 		transition:fade={{ duration: 90, easing: cubicOut }}
 		on:click={close}>
 		<div

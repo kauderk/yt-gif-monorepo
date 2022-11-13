@@ -34,23 +34,23 @@
 		<div class="container">
 			<main class="layout-a">
 				<h1>Layout</h1>
+				<div class="s-portald">
+					{#if $nodeTransition.id && $nodeTransition.state == 'modal'}
+						<div
+							class="s-portald"
+							in:receive={{ key: $nodeTransition.prev }}
+							out:send={{ key: $nodeTransition.prev }}>
+							{#if item}
+								<svelte:component this={item.cmp} />
+							{/if}
+							<slot />
+						</div>
+					{/if}
+				</div>
 			</main>
 		</div>
 	</div>
 </Modal>
-<div class="s-portal">
-	{#if $nodeTransition.id}
-		<div
-			class="s-portal"
-			in:receive={{ key: $nodeTransition.prev }}
-			out:send={{ key: $nodeTransition.prev }}>
-			{#if item}
-				<svelte:component this={item.cmp} />
-			{/if}
-			<slot />
-		</div>
-	{/if}
-</div>
 
 <style lang="scss">
 	.s-portal {
