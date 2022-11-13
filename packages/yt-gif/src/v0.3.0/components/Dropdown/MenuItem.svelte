@@ -24,7 +24,8 @@
 	<a class="text-color-100"><slot /></a>
 
 	{#if rightIcon}
-		<span data-visit={'right'} class="text-color-SA00">
+		<span data-visit={'right'}>
+			<!--text-color-SA00-->
 			<Icon path={rightIcon ?? ''} />
 		</span>
 	{/if}
@@ -34,14 +35,28 @@
 	div {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
-		gap: 8px;
+		gap: 12px;
 		align-items: center;
 		transition: background var(--speed);
-
+		background-color: rgba(42, 42, 42, 0.705);
+		border-radius: 7px;
+		margin: 12px 0 25px 0;
+		padding: 18px;
+		font-size: 15px;
+		font-weight: 700;
+		border: 1px solid rgba(255, 255, 255, 0.283);
+		width: 100%;
 		&[data-visited*='left'] > [data-visit='left'],
 		&[data-visited*='right'] > [data-visit='right'] {
 			font-size: 1.5em;
 			filter: brightness(120%);
 		}
+	}
+
+	div:hover {
+		background-color: rgb(238, 238, 238);
+		color: rgb(215, 0, 36);
+		border: 1px solid rgba(248, 255, 219, 0.322);
+		box-shadow: rgba(255, 255, 255, 0.863) 0px 0px 35px inset;
 	}
 </style>

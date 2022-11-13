@@ -18,6 +18,7 @@
 		right: 0;
 		// counter style.scss
 		left: auto;
+		box-shadow: rgba(6, 6, 6, 0.518) 0px 0px 40px;
 
 		#example-wrapper {
 			position: relative;

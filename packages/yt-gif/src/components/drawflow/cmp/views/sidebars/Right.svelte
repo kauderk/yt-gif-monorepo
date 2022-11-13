@@ -4,7 +4,7 @@
 </script>
 
 <svelte:component this={Wrapper}>
-	<div id="example-wrapper"><DDM /></div>
+	<div id="example-wrapper" style="height:100% !important;"><DDM /></div>
 </svelte:component>
 
 <style lang="scss">
