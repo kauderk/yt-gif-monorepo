@@ -25,7 +25,6 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 	) {
 		const newId = getUUID.bind(this)()
 
-		debugger
 		const SvelteComponentSlot = this.noderegister[htmlOrGraphNodeID]?.html
 		const node = new Node({
 			target: this.container,

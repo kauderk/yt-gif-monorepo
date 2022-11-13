@@ -76,34 +76,6 @@
 </div>
 
 <style lang="scss" global>
-	.s-portal {
-		position: absolute;
-		z-index: 1000000000;
-		width: 500px;
-		aspect-ratio: 1 / 1;
-		background-color: rgba(128, 128, 128, 0.158);
-		backdrop-filter: blur(2px);
-	}
-	button {
-		display: block;
-		box-sizing: border-box;
-		position: absolute;
-		z-index: 1000;
-		top: 1rem;
-		right: 1rem;
-		margin: 0;
-		padding: 0;
-		width: 1.5rem;
-		height: 1.5rem;
-		border: 0;
-		color: black;
-		border-radius: 1.5rem;
-		background: white;
-		box-shadow: 0 0 0 1px black;
-		transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
-			background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
-		-webkit-appearance: none;
-	}
 	// node
 	.drawflow-node {
 		// coordinates

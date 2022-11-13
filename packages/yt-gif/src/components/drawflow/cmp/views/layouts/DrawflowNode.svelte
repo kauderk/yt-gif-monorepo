@@ -53,14 +53,6 @@
 </Modal>
 
 <style lang="scss">
-	.s-portal {
-		position: fixed;
-		z-index: 1000000000;
-		width: 500px;
-		aspect-ratio: 1 / 1;
-		background-color: rgba(128, 128, 128, 0.158);
-		backdrop-filter: blur(2px);
-	}
 	:global(body) {
 		padding: 0;
 	}
