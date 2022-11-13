@@ -3,6 +3,7 @@
 	import 'svooltip/svooltip.css' // Include default styling
 
 	export let info: s[]
+	export let delay = 1000
 
 	$: currentInfo = info[0]
 	let format = 'string'
@@ -20,7 +21,7 @@
 						<p>${info[1] || ''}</p>
 						<small>${info[2] || ''}</small>
 					`
-			}, 1000)
+			}, delay)
 		},
 		onDestroy() {
 			currentInfo = info[0]

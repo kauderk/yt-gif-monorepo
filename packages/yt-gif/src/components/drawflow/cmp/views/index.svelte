@@ -9,6 +9,7 @@
 	import { toggleActiveView, state } from '../basic/store'
 
 	import { onMount } from 'svelte'
+	import DrawflowNode from './layouts/DrawflowNode.svelte'
 
 	onMount(() => state.useLocalStorage())
 </script>
@@ -20,3 +21,4 @@
 <LeftSidebar />
 <RightSidebar />
 <Layouts />
+<DrawflowNode />

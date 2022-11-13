@@ -5,9 +5,13 @@
 	import Connection, { type Tconection } from './Connection.svelte'
 	import CreateConnections from './CreateConnections.svelte'
 	import { nodeBG } from '../../cmp/store'
+	import { nodeTransition, receive, send } from './transition'
+	import { items } from '$cmp/drawflow/cmp/ctx'
 
-	export let id: number | string
+	export let id: string
 	export let className = ''
+	export let GraphNodeID = ''
+	export let SvelteComponentSlot: any = undefined
 
 	export let top: number
 	export let left: number
@@ -27,6 +31,8 @@
 	export let dataNode: any = undefined
 
 	onMount(() => dataNode?.task.resolve())
+
+	const ComponentSlot = items.find(o => o.GraphNodeID == GraphNodeID)?.cmp
 </script>
 
 <div
@@ -43,17 +49,60 @@
 			<Connection {...inputs} bind:json={inputs.json} />
 		{/if}
 		<div class="drawflow_content_node" bind:this={content}>
+			<button
+				aria-label="Open/Close modal"
+				on:click={() =>
+					($nodeTransition = {
+						id,
+						prev: id,
+						GraphNodeID,
+						state: 'modal',
+					})}>
+				<i class="fa-solid fa-x" />
+			</button>
+
+			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 			<div>
-				<!-- dynamic content -->
-				<slot />
+				{#if $nodeTransition.id != id && ComponentSlot}
+					<div in:receive={{ key: id }} out:send={{ key: id }}>
+						<svelte:component this={ComponentSlot} />
+					</div>
+				{/if}
 			</div>
 		</div>
 		<Connection {...outputs} bind:json={outputs.json} />
-		<div class="drawflow-delete">x</div>
 	</div>
 </div>
 
 <style lang="scss" global>
+	.s-portal {
+		position: absolute;
+		z-index: 1000000000;
+		width: 500px;
+		aspect-ratio: 1 / 1;
+		background-color: rgba(128, 128, 128, 0.158);
+		backdrop-filter: blur(2px);
+	}
+	button {
+		display: block;
+		box-sizing: border-box;
+		position: absolute;
+		z-index: 1000;
+		top: 1rem;
+		right: 1rem;
+		margin: 0;
+		padding: 0;
+		width: 1.5rem;
+		height: 1.5rem;
+		border: 0;
+		color: black;
+		border-radius: 1.5rem;
+		background: white;
+		box-shadow: 0 0 0 1px black;
+		transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1),
+			background 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+		-webkit-appearance: none;
+	}
 	// node
 	.drawflow-node {
 		// coordinates

@@ -14,18 +14,20 @@ export function getUUID(this: Drawflow): number {
 export function AssertContentElement(
 	this: Drawflow,
 	content: HTMLElement,
-	html: string,
+	htmlOrGraphNodeID: string,
 	typenode: boolean | unknown
 ) {
 	let asldfkj = null
 	if (typenode === false) {
-		content.innerHTML = html
+		content.innerHTML = htmlOrGraphNodeID
 	} else if (typenode === true) {
-		content.appendChild(this.noderegister[html].html.cloneNode(true))
+		content.appendChild(
+			this.noderegister[htmlOrGraphNodeID].html.cloneNode(true)
+		)
 	} else {
-		// SVELTE CODE
+		// SVELTE CODE | new SvelteComponent(props:{target})
 		try {
-			asldfkj = new this.noderegister[html].html({
+			asldfkj = new this.noderegister[htmlOrGraphNodeID].html({
 				target: content,
 			})
 		} catch (error) {

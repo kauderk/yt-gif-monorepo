@@ -65,8 +65,8 @@
 					: [
 							`🕵️ It's completely anonymous`,
 							`🛡️ Help use improve the user experience`,
-							'',
-					  ]}>
+					  ]}
+				delay={dev ? 0 : 1000}>
 				<EmailFeedback />
 			</Tooltip>
 		</div>

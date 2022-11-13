@@ -14,15 +14,5 @@
 	})
 </script>
 
-<svelte:head>
-	{#if loaded}
-		<script
-			async
-			defer
-			data-theme="light"
-			src="https://cdn.jsdelivr.net/gh/samuelstroschein/bromb/packages/web/dist/widget.js"></script>
-	{/if}
-</svelte:head>
-
 <!-- https://github.com/kommitapp/kommit/search?q=OLSKAppToolbarGuideLink -->
-<a href="https://submission.bromb.co/jujiliqi/k">Give Feedback</a>
+<a href="#">Give Feedback</a>
