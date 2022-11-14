@@ -54,9 +54,9 @@
 	}
 
 	div:hover {
-		background-color: rgb(238, 238, 238);
-		color: rgb(215, 0, 36);
+		background-color: rgba(76, 76, 76, 0.705);
+		box-shadow: none;
+		color: rgb(255, 255, 255);
 		border: 1px solid rgba(248, 255, 219, 0.322);
-		box-shadow: rgba(255, 255, 255, 0.863) 0px 0px 35px inset;
 	}
 </style>

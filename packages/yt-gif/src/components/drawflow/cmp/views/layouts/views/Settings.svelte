@@ -8,10 +8,10 @@
 
 <main class="resp-content-width">
 	<section>
-		<span class="h5">Appearance</span>
+		<span class="h5 setting_title">Appearance</span>
 		<div class="setting">
 			<label for="theme">Theme </label>
-			<div class="select">
+			<div class="select2">
 				<select
 					name="theme"
 					id="theme"
@@ -36,7 +36,7 @@
 		</div>
 	</section>
 	<section>
-		<span class="h5">Playback</span>
+		<span class="h5 setting_title">Playback</span>
 		<div class="setting">
 			<label>Dedupe Automix</label>
 
@@ -49,7 +49,7 @@
 		</div>
 		<div class="setting">
 			<label for="quality">Quality</label>
-			<div class="select">
+			<div class="select2">
 				<select
 					name="quality"
 					disabled
@@ -69,7 +69,7 @@
 				Stream
 				<i> (reload Beatbump after setting)</i>
 			</label>
-			<div class="select">
+			<div class="select2">
 				<select
 					name="stream"
 					id="stream"
@@ -86,11 +86,11 @@
 		</div>
 	</section>
 	<section>
-		<span class="h5">Network</span>
+		<span class="h5 setting_title">Network</span>
 		<div class="setting">
 			<label for="proxy">Audio Proxy Server </label>
 			<div class="input-container">
-				<div class="input no-btn mb-1">
+				<div class="input2 no-btn mb-1" style="width: 250px;">
 					<input
 						type="text"
 						on:input={e => {
@@ -114,10 +114,10 @@
 		</div>
 	</section>
 	<section>
-		<span class="h5">Search</span>
+		<span class="h5 setting_title">Search</span>
 		<div class="setting">
 			<label for="preserve">Preserve </label>
-			<div class="select">
+			<div class="select2">
 				<select
 					name="preserve"
 					id="preserve"
@@ -139,6 +139,30 @@
 		min-width: 15ch !important;
 		max-width: 32ch !important;
 		width: 100%;
+	}
+
+	.setting_title {
+		font-weight: 700;
+		font-size: 18px;
+		margin-bottom: 12px;
+		padding-bottom: 7px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.171);
+	}
+
+	select {
+		padding: 5px 10px;
+		width: 180px;
+		border-radius: 5px;
+		background-color: rgba(42, 42, 42, 0.705);
+		border: 1px solid rgba(255, 255, 255, 0.283);
+	}
+
+	select:hover,
+	.input2 input:hover {
+		background-color: rgba(76, 76, 76, 0.705);
+		box-shadow: none;
+		color: rgb(255, 255, 255);
+		border: 1px solid rgba(248, 255, 219, 0.322);
 	}
 
 	label {
@@ -165,6 +189,14 @@
 		&:not(:last-child) {
 			border-bottom: 0.01em solid rgba(218, 218, 218, 0.082);
 		}
+	}
+
+	.input2 input {
+		width: 100%;
+		padding: 2px 10px;
+		background-color: rgba(42, 42, 42, 0.705);
+		border: 1px solid rgba(255, 255, 255, 0.283);
+		margin-bottom: 3px;
 	}
 
 	.setting {
@@ -210,6 +242,13 @@
 		left: 0.125em;
 		transition: left 0.3s;
 		box-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.384);
+	}
+
+	.input-container {
+		text-align: right;
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column;
 	}
 
 	[type='checkbox']:checked + .switch::after {
