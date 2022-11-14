@@ -1,18 +1,15 @@
-<!-- https://stackoverflow.com/questions/13231125/automatically-open-default-email-client-and-pre-populate-content -->
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte'
+	import { CreateXload } from '$lib/dom'
 
-	const email = 'yt-gif-graph@gmail.com'
-	const subject = 'yt-gif-graph'
-	const emailBody = 'Feedback about...'
-	const send = `mailto:${email}?subject=${subject}&body=${emailBody}`
+	onMount(async () => {
+		await CreateXload('https://unpkg.com/feedbackfin@^1')
 
-	let loaded = false
-	onMount(() => {
-		loaded = true
-		return () => (loaded = false)
+		window.feedbackfin = { config: {}, ...window.feedbackfin }
+		window.feedbackfin.config.url =
+			'https://rowy-hooks-yvhyzywkga-nn.a.run.app/wh/FeedbackFin/BZUfAEweZftboUDHzsYL'
+		window.feedbackfin.init()
 	})
 </script>
 
-<!-- https://github.com/kommitapp/kommit/search?q=OLSKAppToolbarGuideLink -->
-<a href="#">Give Feedback</a>
+<button data-feedbackfin-button>Feedback</button>
