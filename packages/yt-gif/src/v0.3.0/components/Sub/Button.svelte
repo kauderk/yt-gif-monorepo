@@ -21,7 +21,9 @@
 		width: max-content;
 		height: max-content;
 
-		padding: 0px 2px;
+		margin-top: 6px;
+		margin-bottom: 6px;
+		padding: 4px;
 		border: 1px solid var(--ddm-400);
 
 		font-weight: bold;

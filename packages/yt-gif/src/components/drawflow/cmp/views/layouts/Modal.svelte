@@ -63,11 +63,12 @@
 		height: 100vh;
 
 		backdrop-filter: blur(4px);
-		background: rgba(0, 0, 0, 0.66);
+		background: rgba(0, 0, 0, 0.705);
 
 		background-image: initial;
-		background-color: rgba(6, 6, 6, 0.66);
+		background-color: rgba(0, 0, 0, 0.705);
 	}
+
 	.view {
 		position: relative;
 		width: 40rem;
@@ -80,7 +81,8 @@
 
 		color: rgb(227, 225, 222);
 		background-image: initial;
-		background-color: rgb(29, 31, 32);
+		background-color: #1c1c1fe0 !important;
+		padding: 25px;
 	}
 	.content {
 		position: relative;
