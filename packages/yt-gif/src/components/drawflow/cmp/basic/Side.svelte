@@ -1,9 +1,12 @@
-<script>
+<script lang="ts">
 	import { fly } from 'svelte/transition'
+	import type { states } from '../types'
 	import { state } from './store'
+
+	export let active: states = 'leftSidebar'
 </script>
 
-{#if $state.active == 'leftSidebar'}
+{#if $state.active == active}
 	<div id="left-panel" transition:fly={{ x: -300 }}>
 		<slot />
 	</div>

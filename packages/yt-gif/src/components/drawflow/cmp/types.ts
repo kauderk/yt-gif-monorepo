@@ -1,4 +1,5 @@
 export type states =
+	| 'Explorer'
 	| 'leftSidebar'
 	| 'rightSidebar'
 	| 'fullGraph'

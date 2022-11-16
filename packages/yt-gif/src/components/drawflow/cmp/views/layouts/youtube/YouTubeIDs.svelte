@@ -122,7 +122,6 @@
 
 	header,
 	section {
-		position: fixed;
 		text-align: center;
 		width: 560px;
 	}
@@ -140,10 +139,6 @@
 		width: 120px;
 		height: 70px;
 		border-radius: 4px;
-	}
-
-	main {
-		padding: 370px 18px 10px;
 	}
 
 	article {

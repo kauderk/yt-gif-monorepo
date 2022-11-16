@@ -3,13 +3,15 @@
 	// @ts-ignore
 	import AutoComplete from 'simple-svelte-autocomplete'
 
+	export let endpoint = './sort'
 	// https://javascript.plainenglish.io/how-to-fetch-data-after-user-input-with-react-query-b083d51b5d2d
 	// it's a shame you can't pass, refetch params
 	let queryKey = 'empty'
 
 	const ytQuery = useQuery(
 		'ytsearch',
-		async _ => fetch(`./sort?keyword=${queryKey}`).then(res => res.json()),
+		async _ =>
+			fetch(`${endpoint}?keyword=${queryKey}`).then(res => res.json()),
 		{
 			refetchOnWindowFocus: false,
 			enabled: false,

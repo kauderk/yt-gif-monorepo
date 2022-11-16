@@ -38,17 +38,22 @@
 					</Tooltip>
 				{/if}
 			</label>
-			<div use:register={'You can use filters too.'}>
+			<div
+				use:register={'This is the Full Graph view. All your active nodes live here.'}>
 				<Button active="fullGraph" on="diagram-project" />
 			</div>
-			<div use:register={'You can sort customers here.'}>
-				<Button active="leftSidebar" on="sidebar" />
+			<div
+				use:register={'All your files, folders and workspaces live here.'}>
+				<Button active="Explorer" on="list-tree" />
 			</div>
 			<div
-				use:register={'Country filter is already populated with the existing countries from our customers database'}>
+				use:register={'Create your Presets then can Drag And Drop them onto the canvas.'}>
+				<Button active="leftSidebar" on="sidebar" />
+			</div>
+			<div use:register={'All Node settings live here.'}>
 				<Button active="rightSidebar" on="sidebar-flip" />
 			</div>
-			<div use:register={'F'}>
+			<div use:register={'Here you will see your Layouts Worspaces.'}>
 				<Button active="Layouts" on="gallery-thumbnails" />
 			</div>
 		</div>
