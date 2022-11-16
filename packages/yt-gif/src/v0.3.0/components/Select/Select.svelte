@@ -47,6 +47,8 @@
 
 		border: 1px solid var(--ddm-300);
 		margin: 5px 0px;
+		padding: 3px;
+		width: 100%;
 
 		cursor: pointer;
 	}

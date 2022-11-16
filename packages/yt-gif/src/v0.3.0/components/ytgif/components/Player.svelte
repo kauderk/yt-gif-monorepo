@@ -12,54 +12,15 @@
 	]
 </script>
 
-<script lang="ts">
-	import { onMount } from 'svelte'
-	import parse from '$v3/api-ready/parse'
-	import { Deploy } from '$v3/api-ready/query'
-	import { load } from '$v3/api-ready/setup/load-yt-iframe'
-
-	count += 1
-	const id = 'yt-gif-player-' + count
-
-	let YT: any
-	onMount(() => load((yt: any) => (YT = yt)))
-
-	export let videoId = ''
-	export let type: 'click' | 'hover' = 'click'
-	$: handler = type === 'click' ? Fire : null
-
-	if (!videoId) {
-		videoId = available[Math.floor(Math.random() * available.length)]
-	}
-
-	const Fire = () => {
-		const res = parse(id, videoId)
-		if (!res) return console.warn('failed to load video')
-		Deploy({ ...res }, YT)
-	}
-	let player: HTMLDivElement
-</script>
-
 <div class="outter">
 	<div class="wrapper dont-focus-block" data-anim="pulse input thumbnail">
 		<!-- @ts-ignore -->
-		<div class="iframe-wrapper" bind:this={player}>
-			{#key videoId}
-				<div {id} />
-			{/key}
-		</div>
+		<div class="iframe-wrapper" />
 		<div class="controls">
 			<slot />
 		</div>
 	</div>
 </div>
-
-<svelte:window
-	on:keydown={() => {
-		if (player?.matches(':hover')) {
-			handler?.()
-		}
-	}} />
 
 <style lang="scss">
 	@import 'https://unpkg.com/open-props';

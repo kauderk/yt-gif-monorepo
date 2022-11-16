@@ -1,0 +1,159 @@
+<script lang="ts">
+	// casuses problemns on @apps/dump
+	// import MultiSelect from 'svelte-multiselect'
+
+	const ui_libs = [`Svelte`, `React`, `Vue`, `Angular`, `...`]
+
+	let selected: any[] = []
+</script>
+
+<div class="wrapper">
+	<!-- <span>Tags: </span>
+	<MultiSelect bind:selected options={ui_libs} /> -->
+</div>
+
+<style>
+	.wrapper {
+		width: min-content;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-content: flex-start;
+		margin: auto;
+		gap: 0.5em;
+	}
+	:root {
+		--night: #10002c;
+		--blue: cornflowerblue;
+		--text-color: #ddd;
+
+		--sms-active-color: var(--blue);
+		--sms-options-bg: rgb(0, 0, 32);
+		--sms-selected-bg: rgba(255, 255, 255, 0.2);
+		--sms-text-color: white;
+		--sms-disabled-bg: rgba(7, 1, 34, 0.87);
+		--sms-li-disabled-bg: black;
+		--sms-placeholder-color: lightgray;
+		--sms-margin: 1em 0;
+
+		--toc-mobile-bg: #1c0e3e;
+		--toc-li-padding: 4pt 1ex;
+		--toc-mobile-btn-color: white;
+		--toc-desktop-nav-margin: 0 0 0 1em;
+
+		--ghc-color: var(--night);
+		--ghc-bg: white;
+	}
+	html {
+		/* smoothly scroll heading links into view, unfortunately also applies to jumping
+  between matches when searching site https://stackoverflow.com/a/51588820 */
+		scroll-behavior: smooth;
+	}
+	body {
+		background: var(--night);
+		padding: calc(1ex + 2vw);
+		font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+		color: var(--text-color);
+		line-height: 1.5;
+	}
+	main {
+		margin: auto;
+		margin-bottom: 3em;
+		width: 100%;
+		max-width: 50em;
+	}
+	button {
+		color: var(--text-color);
+		cursor: pointer;
+		border: none;
+		border-radius: 3pt;
+		background: darkcyan;
+		padding: 2pt 4pt;
+	}
+	a {
+		color: var(--blue);
+		text-decoration: none;
+		transition: 0.2s;
+	}
+	a:hover {
+		color: orange;
+	}
+	code {
+		overflow-wrap: break-word;
+		padding: 0 2pt;
+		border-radius: 2pt;
+		font-size: 1.2em;
+		background-color: rgba(255, 255, 255, 0.15);
+	}
+	pre code {
+		background-color: transparent;
+		display: inline-block;
+	}
+	pre {
+		border-radius: 4pt;
+		font-size: 9.5pt;
+		background-color: rgba(0, 0, 0, 0.4);
+		padding: 1em;
+		overflow-x: auto;
+	}
+	ul {
+		padding-left: 1em;
+	}
+	label {
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	table :is(td, th) {
+		border: 1px solid gray;
+		padding: 0.4em 0.8em;
+	}
+	tbody tr:nth-child(odd) {
+		background: black;
+	}
+
+	h1 {
+		display: flex;
+		font-size: clamp(2rem, 2rem + 2vw, 3rem);
+		place-items: center;
+		place-content: center;
+		margin: 1.2em 0;
+	}
+
+	:where(h2, h3, h4, h5, h6) {
+		scroll-margin-top: 50px;
+		transition: 0.3s;
+	}
+	:where(h2, h3, h4, h5, h6).toc-clicked {
+		color: orange;
+	}
+	/* style heading anchors added by rehype-autolink-headings, see svelte.config.js */
+	:where(h2, h3, h4, h5, h6) a[aria-hidden='true'] {
+		transition: 0.3s;
+		margin-left: 4pt;
+		opacity: 0;
+	}
+	:where(h2, h3, h4, h5, h6):hover a[aria-hidden='true'] {
+		opacity: 1;
+	}
+
+	blockquote {
+		border-left: 3pt solid var(--blue);
+		padding: 4pt 2pt 4pt 9pt;
+		margin: 1em auto;
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+	blockquote p:last-child {
+		margin-bottom: 0;
+	}
+	blockquote p:first-child {
+		margin-top: 0;
+	}
+	div.multiselect.invalid {
+		border: 1px solid red !important;
+	}
+</style>

@@ -12,9 +12,12 @@
 	import { createAddNode } from './plugins/add-node-svelte'
 	import { DrawflowMinimap } from './plugins/minimap'
 
-	import Sidebar from './cmp/Sidebar.svelte'
+	import Views from './cmp/views/index.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import { createNodeComponents, registerNodeComponents } from './cmp/inline'
+	import {
+		createNodeComponents,
+		registerNodeComponents,
+	} from './cmp/blocks/registration'
 	import Minimap from './cmp/Minimap.svelte'
 
 	import { onMount, setContext } from 'svelte'
@@ -50,13 +53,12 @@
 
 		// drag and drop
 		$ctx.dnd = dragAndDrop($ctx.editor)
-		AssignEvents($ctx.templateDragableRoot, $ctx.dnd)
 
 		// @ts-ignore shift key selection
 		selectMultiple($ctx.editor)
 
 		// mimimap
-		new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
+		// new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
 		// @ts-ignore
 		flush.push(draggableCancelation($ctx.editor).createListeners)
 
@@ -81,7 +83,7 @@
 </script>
 
 <div class="wrapper">
-	<Sidebar />
+	<Views />
 	<Canvas />
 	<Minimap />
 </div>

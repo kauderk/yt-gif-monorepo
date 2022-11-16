@@ -1,0 +1,21 @@
+.layout {
+	position: absolute;
+	width: 100%;
+	// horizontal scrollable component won't work with flex
+	// display: flex;
+	justify-content: start;
+	padding: 0.5rem;
+
+	// horizontal
+	flex-direction: column;
+	align-items: center;
+	align-content: center;
+
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+
+	align-items: flex-start;
+}

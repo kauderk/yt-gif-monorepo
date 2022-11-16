@@ -1,11 +1,21 @@
-export type TView =
-	| 'left-sidebar'
-	| 'full-graph'
+export type states =
+	| 'Explorer'
+	| 'leftSidebar'
+	| 'rightSidebar'
+	| 'fullGraph'
 	| 'theater'
 	| 'list'
 	| 'blocks'
-	| 'left-video'
-	| 'right-video'
-	| 'top-video'
-	| 'bottom-video'
-	| TView[]
+	| 'leftVideo'
+	| 'rightVideo'
+	| 'topVideo'
+	| 'bottomVideo'
+	| 'Layouts'
+	| ''
+
+export type TView = {
+	[key in states]?: any
+} & {
+	active: states
+	previous: states
+}

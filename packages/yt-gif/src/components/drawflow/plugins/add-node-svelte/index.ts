@@ -20,14 +20,17 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		pos_y: number,
 		className: string,
 		data: any,
-		html: string,
+		htmlOrGraphNodeID: string,
 		typenode: boolean | string = false
 	) {
 		const newId = getUUID.bind(this)()
 
+		const SvelteComponentSlot = this.noderegister[htmlOrGraphNodeID]?.html
 		const node = new Node({
 			target: this.container,
 			props: {
+				SvelteComponentSlot,
+				GraphNodeID: htmlOrGraphNodeID,
 				id: newId,
 				className,
 				top: pos_y,
@@ -40,14 +43,10 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		})
 		// flush.push(() => node.$destroy)
 
-		AssertContentElement.bind(this)(node.content, html, typenode)
-
-		addInputs(data, node.content)
-
 		const json = {
 			name,
 			data,
-			html,
+			html: htmlOrGraphNodeID,
 			typenode,
 
 			id: newId,

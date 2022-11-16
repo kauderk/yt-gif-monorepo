@@ -28,4 +28,16 @@
 	.absolute {
 		position: absolute !important;
 	}
+	.menu-der {
+		width: 87% !important;
+		height: 90% !important;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.sub-ddm {
+		gap: 16px;
+		width: 87% !important;
+		height: 100% !important;
+	}
 </style>

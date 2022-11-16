@@ -1,0 +1,40 @@
+#left-panel,
+.top-view,
+#right-panel {
+	overflow-y: hidden;
+	//display: flex;
+	position: fixed;
+	// top: 0;
+	left: 0;
+	width: 25rem;
+	height: auto;
+
+	background-color: rgba(38, 38, 38, 0.4);
+
+	// border-right: 1px solid #d65a31;
+	backdrop-filter: blur(4px);
+	box-shadow: rgba(6, 6, 6, 0.5) 15px 15px 25px;
+	z-index: 5;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	overflow: auto;
+	transition: left 0.5s;
+	border-right-color: rgb(146, 61, 34);
+	&::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+	&::-webkit-scrollbar-track {
+		border-radius: 10px;
+		background: rgba(245, 245, 245, 0.356);
+	}
+	&::-webkit-scrollbar {
+		width: 12px;
+		//background: rgba(245, 245, 245, 0.356);
+		background: transparent;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background: #555;
+	}
+}

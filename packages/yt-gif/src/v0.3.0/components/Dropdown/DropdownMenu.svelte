@@ -9,7 +9,8 @@
 
 	let v = false
 	$: offsetHeight = 0
-	$: height = offsetHeight <= 0 ? '0%' : offsetHeight + 'px'
+	//$: height = offsetHeight <= 0 ? '0%' : offsetHeight + 'px'
+	$: height = '99.5%'
 </script>
 
 <Drops let:active let:go let:drops let:leaveOthers>
@@ -19,12 +20,13 @@
 		class="relative"
 		transition:slide={{ duration: 300 }}
 		on:introstart={() => (v = false)}
-		on:introend={() => (v = true)}>
+		on:introend={() => (v = true)}
+		style="height: {height}">
 		<!-- switch between percentage and pixel in height -->
 		<div class={'expandable ' + ddm_bg} style="height: {height}">
 			<!-- swipe left to right: menu items  -->
 			{#if active === 'main'}
-				<Swipe bind:offsetHeight {v} x={-1}>
+				<Swipe bind:offsetHeight {v} x={-1} clazz="menu-der">
 					{#each drops as { key, visit, icon = mdiYoutubeStudio }}
 						<MenuItem
 							{visit}
@@ -59,6 +61,9 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
+
+		background-color: #1c1c1f72 !important;
+		color: rgb(227, 225, 222) !important;
 
 		min-width: 18.5em !important;
 
