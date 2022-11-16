@@ -1,5 +1,6 @@
 <script lang="ts">
-	import MultiSelect from 'svelte-multiselect'
+	// casuses problemns on @apps/dump
+	// import MultiSelect from 'svelte-multiselect'
 
 	const ui_libs = [`Svelte`, `React`, `Vue`, `Angular`, `...`]
 
@@ -7,8 +8,8 @@
 </script>
 
 <div class="wrapper">
-	<span>Tags: </span>
-	<MultiSelect bind:selected options={ui_libs} />
+	<!-- <span>Tags: </span>
+	<MultiSelect bind:selected options={ui_libs} /> -->
 </div>
 
 <style>

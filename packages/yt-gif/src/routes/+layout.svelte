@@ -24,26 +24,10 @@
 	// if we're navigating, set the store accordingly
 	$: $navState = $navigating != null ? 'loading' : 'loaded'
 
-	import { SvelteToast } from '@zerodevx/svelte-toast'
-
-	import Tour from '$cmp/drawflow/cmp/views/toolbar/Tour.svelte'
-
 	import '../app.css'
 	import '../styles/open-props.scss'
-
-	import {
-		QueryClient,
-		QueryClientProvider,
-		QueryCache,
-	} from '@sveltestack/svelte-query'
-	const queryClient = new QueryClient()
 </script>
 
 <NavLoader />
-<SvelteToast />
 
-<QueryClientProvider client={queryClient}>
-	<slot />
-</QueryClientProvider>
-
-<Tour />
+<slot />

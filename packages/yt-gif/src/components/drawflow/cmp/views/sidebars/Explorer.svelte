@@ -7,7 +7,7 @@
 <svelte:component this={Wrapper} active="Explorer">
 	<Tree />
 	<div>
-		<YTAutocomplete endpoint="Widgets/sort" />
+		<YTAutocomplete endpoint="./app" />
 	</div>
 </svelte:component>
 
