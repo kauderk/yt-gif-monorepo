@@ -30,10 +30,20 @@
 
 	import '../app.css'
 	import '../styles/open-props.scss'
+
+	import {
+		QueryClient,
+		QueryClientProvider,
+		QueryCache,
+	} from '@sveltestack/svelte-query'
+	const queryClient = new QueryClient()
 </script>
 
 <NavLoader />
 <SvelteToast />
 
-<slot />
+<QueryClientProvider client={queryClient}>
+	<slot />
+</QueryClientProvider>
+
 <Tour />

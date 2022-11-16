@@ -5,7 +5,12 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
 	ssr: {
-		noExternal: ['@popperjs/core', 'dayjs', '@popperjs+core'],
+		noExternal: [
+			'@popperjs/core',
+			'dayjs',
+			'@popperjs+core',
+			'@sveltestack/svelte-query',
+		],
 	},
 	optimizeDeps: {
 		include: ['svelvet'],

@@ -15,7 +15,6 @@
 	const opacity = tweened(1, { easing: cubicOut })
 
 	const unsubscribe = navState.subscribe(state => {
-		console.log(state)
 		if (state === 'loading') {
 			opacity.set(1, { duration: 0 })
 			progress.set(0.7, { duration: 3500 })

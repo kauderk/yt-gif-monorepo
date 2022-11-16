@@ -25,6 +25,8 @@ function itemToData(item): any {
 }
 
 export async function LoadJQuery() {
+	if (window.$) return window.$
+
 	await Promise.all([
 		CreateXload(
 			'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'
