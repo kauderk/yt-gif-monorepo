@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Wrapper from '../../basic/Side.svelte'
-	import Tree from '../../tree/Index.svelte'
 	import YTAutocomplete from '../../../../../routes/Widgets/sort/YTAutocomplete.svelte'
+	import FolderView from '../../tree/FolderView.svelte'
 </script>
 
 <svelte:component this={Wrapper} active="Explorer">
-	<Tree />
+	<FolderView />
 	<div>
 		<YTAutocomplete endpoint="./app" />
 	</div>
