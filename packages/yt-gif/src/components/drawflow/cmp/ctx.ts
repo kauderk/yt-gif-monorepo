@@ -52,6 +52,12 @@ export const items = [
 		...DrawflowBlocks.VideoBlock,
 		title: 'He otherwise me incommode explained so in remaining',
 	},
+	{
+		id: uuid(),
+		icon: 'info',
+		...DrawflowBlocks.MyBlock,
+		title: 'Test block',
+	},
 ]
 
 export interface TItemCtx {

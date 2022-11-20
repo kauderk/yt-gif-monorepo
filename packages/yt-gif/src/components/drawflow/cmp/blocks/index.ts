@@ -6,6 +6,7 @@ import SocialMediaPost from './SocialMediaPost.svelte'
 import SquareTags from './SquareTags.svelte'
 import Tools from './Tools.svelte'
 import Video from './Video.svelte'
+import MyBlock from './MyBlock.svelte'
 
 export const DrawflowBlocks = <const>{
 	SvelteContent: {
@@ -39,5 +40,9 @@ export const DrawflowBlocks = <const>{
 	VideoBlock: {
 		GraphNodeID: 'VideoBlock',
 		cmp: Video,
+	},
+	MyBlock: {
+		GraphNodeID: 'MyBlock',
+		cmp: MyBlock,
 	},
 }

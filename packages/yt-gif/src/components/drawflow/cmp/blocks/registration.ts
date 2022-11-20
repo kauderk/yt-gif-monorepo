@@ -101,6 +101,17 @@ export function createNodeComponents(editor: Drawflow) {
 		DrawflowBlocks.VideoBlock.GraphNodeID, // drawflow/cmp/Video.svelte
 		'svelte'
 	)
+	editor.addNode(
+		'graph-node',
+		1,
+		1,
+		1000,
+		50,
+		'graph-node',
+		{},
+		DrawflowBlocks.MyBlock.GraphNodeID, // drawflow/cmp/MyBlock.svelte
+		'svelte'
+	)
 }
 export function registerNodeComponents(editor: Drawflow) {
 	Object.values(DrawflowBlocks).forEach(o => {
