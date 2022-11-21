@@ -58,6 +58,12 @@ export const items = [
 		...DrawflowBlocks.MyBlock,
 		title: 'Test block',
 	},
+	{
+		id: uuid(),
+		icon: 'info',
+		...DrawflowBlocks.YtvidBlock,
+		title: 'YtvidBlock',
+	},
 ]
 
 export interface TItemCtx {

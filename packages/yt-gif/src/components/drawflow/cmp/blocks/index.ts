@@ -7,6 +7,7 @@ import SquareTags from './SquareTags.svelte'
 import Tools from './Tools.svelte'
 import Video from './Video.svelte'
 import MyBlock from './MyBlock.svelte'
+import Ytvid from './Ytvid.svelte'
 
 export const DrawflowBlocks = <const>{
 	SvelteContent: {
@@ -44,5 +45,9 @@ export const DrawflowBlocks = <const>{
 	MyBlock: {
 		GraphNodeID: 'MyBlock',
 		cmp: MyBlock,
+	},
+	YtvidBlock: {
+		GraphNodeID: 'YtvidBlock',
+		cmp: Ytvid,
 	},
 }
