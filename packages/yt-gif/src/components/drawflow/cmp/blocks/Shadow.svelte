@@ -52,6 +52,7 @@
 				</div>
 				<div id="browse">
 					<a
+						rel="noreferrer"
 						class="browse-option"
 						href="https://youtube.com/shorts/TmSIIR64yLQ"
 						target="_blank">
@@ -145,32 +146,13 @@
 		--theme-primary: 0, 0, 0;
 	}
 
-	body {
-		background-color: rgb(var(--body-color));
-		margin: 0px;
-	}
-
-	body::-webkit-scrollbar {
-		width: 4px;
-	}
-
-	body::-webkit-scrollbar-track {
-		background-color: rgb(var(--body-color));
-	}
-
-	body::-webkit-scrollbar-thumb {
-		background: rgba(255, 255, 255, 0.15);
-	}
-
 	* {
 		box-sizing: border-box;
 	}
 
-	h1,
 	h2,
 	h3,
 	input,
-	select,
 	button,
 	span,
 	a {
@@ -654,10 +636,6 @@
 	}
 
 	@media (max-width: 500px) {
-		body {
-			overflow: auto;
-		}
-
 		#phone {
 			height: auto;
 			width: 100%;

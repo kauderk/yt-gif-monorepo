@@ -143,7 +143,7 @@
 		&:after {
 			width: 2vh;
 			height: 2vh;
-			transform: translate(-50%, -50%) scale(16/9 * 50);
+			transform: translate(-50%, -50%) scale(calc(16 / 9) * 50);
 			transition: transform 0.5s ease-out;
 		}
 	}

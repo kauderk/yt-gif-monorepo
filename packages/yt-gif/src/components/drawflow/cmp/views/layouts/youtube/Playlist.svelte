@@ -62,11 +62,6 @@
 		padding: 0;
 		box-sizing: border-box;
 	}
-	body {
-		background-color: rgb(24, 24, 24);
-		padding: 1rem;
-		font-family: 'montserrat';
-	}
 	.listContainer {
 		width: 100%;
 		background-color: rgb(32, 32, 32);

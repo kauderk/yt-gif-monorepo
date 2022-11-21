@@ -11,7 +11,6 @@
 	export let id: string
 	export let className = ''
 	export let GraphNodeID = ''
-	export let SvelteComponentSlot: any = undefined
 
 	export let top: number
 	export let left: number

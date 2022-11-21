@@ -203,15 +203,6 @@
 		transition: all 0.5s;
 	}
 
-	#theater,
-	#other {
-		width: 800px;
-		aspect-ratio: 16 / 9;
-		background-color: rgba(3, 188, 255, 0.265);
-	}
-	#other {
-		background-color: rgba(255, 3, 167, 0.265);
-	}
 	.options {
 		display: flex;
 		flex: 0 0 0%;

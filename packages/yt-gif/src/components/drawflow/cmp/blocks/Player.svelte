@@ -49,14 +49,7 @@
 * , *:before, *:after
   box-sizing: border-box
   
-html
-  min-height: 100%
 
-body
-  background: #eee url("//i.imgur.com/82fLDu4.jpg") no-repeat center
-  background-size: cover
-  font-family: 'Open Sans', sans-serif
-  
   
 .music-player 
   position: relative
@@ -69,18 +62,7 @@ body
   overflow: hidden
   z-index: 0
   
-  img
-    position: absolute
-    top: 0px
-    left: 0px
-    bottom: 0px
-    right: 0px
-    z-index: -1
-    display: block
-    width: 100% !important
-    height: 100% !important
-    filter: blur(2px)
-    
+  
   .info
     width: 100%
     height: 100px
@@ -89,24 +71,7 @@ body
     text-align: center
     position: relative
 
-    .jp-playlist 
-      li
-        display: none
-        a
-          font-size: 30px
-          font-weight: 300
-          text-decoration: none
-          color: #fff
-          color: rgba(225, 225, 225, 0.4)
-          span
-            font-size: 14px
-            display: block
-            margin-top: 10px
-        &.jp-playlist-current
-          display: block
-        .jp-free-media , .jp-playlist-item-remove
-          display: none
-
+    
     .left , .right
       width: 25px
       position: absolute
@@ -132,22 +97,7 @@ body
     cursor: pointer
     border: none
 
-    .ui-slider-range
-      display: block
-      background: #ed553b
-      height: 5px
-      border-radius: 0
-      
-    .ui-slider-handle
-      position: absolute
-      top: -8px 
-      width: 8px
-      height: 22px
-      background: url("//i.imgur.com/tsqwz1N.png") no-repeat center
-      border: none
-      outline: none
-      margin: 0 0 0 -3px
-      cursor: move
+    
     
   .controls
     text-align: center
@@ -176,16 +126,6 @@ body
       margin: 30px auto 0
       background: rgba(225, 225, 225, 0.3)
 
-      .ui-slider-range
-        height: 2px
-
-      .ui-slider-handle
-        top: -8px
-        margin-left: -9px
-        width: 22px
-        height: 22px
-        background-image: url("//i.imgur.com/V5i67V2.png")    
-        
       .icon-volume-up , .icon-volume-down
         position: absolute
         right: -34px  
@@ -224,13 +164,5 @@ body
   &-volume-down
     background-image: url("//i.imgur.com/3iirf2f.png")
 
-.copyrights
-  text-align: center
-  text-transform: capitalize
-  margin: 50px 
-  color: rgba(0,0,0,0.6)
-  
-  a
-    color: rgba(152, 46, 75, 0.9)
-    text-decoration: none
+
 </style>
