@@ -30,9 +30,9 @@
 			</div>
 		</form>
 
-		<br /><br />
+		<br />
 		<div class="textar">
-			<textarea id="freeform" name="freeform" rows="4" cols="30" />
+			<textarea id="freeform" name="freeform" rows="4" cols="35" />
 		</div>
 	</div>
 
@@ -61,6 +61,8 @@
 	.text-holder {
 		width: 60%;
 		margin: 10px;
+		margin-left: 20px;
+		margin-top: 15px;
 	}
 	#form-group {
 		height: 10px;
@@ -70,13 +72,14 @@
 		margin-top: 5px;
 		height: 10px;
 		border-radius: 5px;
-		background: #6611cf;
+		color: aliceblue;
+		background: #170550;
+		bottom: 10px;
 	}
 
-	#textar {
-		position: absolute;
-		display: block;
-		top: 10px;
+	textarea {
+		resize: none;
+		display: inline-block;
 	}
 
 	.embed-responsive-item {
