@@ -7,7 +7,7 @@
 		let jq = await LoadJQuery()
 	})
 
-	let newURL = 'https://www.youtube.com/embed/CUd92xnhjm0'
+	let newURL = 'https://www.youtube.com/embed/CUd92xnhjm0' //esto es placeholder
 
 	function changeUrl(e: any) {
 		e.preventDefault()
@@ -31,7 +31,9 @@
 		</form>
 
 		<br /><br />
-		<textarea id="freeform" name="freeform" rows="4" cols="30" />
+		<div class="textar">
+			<textarea id="freeform" name="freeform" rows="4" cols="30" />
+		</div>
 	</div>
 
 	{#key newURL}
@@ -60,7 +62,10 @@
 		width: 60%;
 		margin: 10px;
 	}
-
+	#form-group {
+		height: 10px;
+		padding-bottom: 10px;
+	}
 	button {
 		margin-top: 5px;
 		height: 10px;
@@ -68,18 +73,19 @@
 		background: #6611cf;
 	}
 
-	.freeform {
+	#textar {
 		position: absolute;
-		padding-top: 15px;
+		display: block;
+		top: 10px;
 	}
 
 	.embed-responsive-item {
 		position: absolute;
-		top: 50%;
-		right: 3rem;
+		top: 60%;
+		right: 1rem;
 		transform: translateY(-50%);
-		width: 30%;
-		height: 50%;
+		width: 50%;
+		height: 60%;
 		background-image: url(https://assets.codepen.io/4787486/pattern4.jpg);
 		background-size: cover;
 		border-radius: 0 5px 5px 0;
