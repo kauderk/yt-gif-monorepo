@@ -24,8 +24,10 @@
 			</div>
 		</form>
 
-		<br /><br />
-		<textarea id="freeform" name="freeform" rows="4" cols="30" />
+		<br />
+		<div class="textar">
+			<textarea id="freeform" name="freeform" rows="4" cols="35" />
+		</div>
 	</div>
 
 	{#key newURL}
@@ -55,27 +57,30 @@
 	.text-holder {
 		width: 60%;
 		margin: 10px;
+		margin-left: 20px;
+		margin-top: 15px;
 	}
-
 	button {
 		margin-top: 5px;
 		height: 10px;
 		border-radius: 5px;
-		background: #6611cf;
+		color: aliceblue;
+		background: #170550;
+		bottom: 10px;
 	}
 
-	.freeform {
-		position: absolute;
-		padding-top: 15px;
+	textarea {
+		resize: none;
+		display: inline-block;
 	}
 
 	.embed-responsive-item {
 		position: absolute;
-		top: 50%;
-		right: 3rem;
+		top: 60%;
+		right: 1rem;
 		transform: translateY(-50%);
-		width: 30%;
-		height: 50%;
+		width: 50%;
+		height: 60%;
 		background-image: url(https://assets.codepen.io/4787486/pattern4.jpg);
 		background-size: cover;
 		border-radius: 0 5px 5px 0;
