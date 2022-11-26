@@ -13,7 +13,10 @@
 			<div id="content">
 				<div id="featured-slider" data-active-index="0">
 					<div class="featured-slider-items">
-						<a class="featured-slider-item" href="#">
+						<a
+							class="featured-slider-item"
+							href="#"
+							draggable="false">
 							<div class="featured-slider-item-info-wrapper">
 								<div class="featured-slider-item-info">
 									<h2 class="title">Cybermonk 2099</h2>
