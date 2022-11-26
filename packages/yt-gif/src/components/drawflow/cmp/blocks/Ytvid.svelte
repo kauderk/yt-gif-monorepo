@@ -1,13 +1,7 @@
 <script lang="ts">
 	import { getYouTubeVideoID } from '$lib/utils'
-	import { LoadJQuery } from 'src/routes/Widgets/sort/query'
-	import { onMount } from 'svelte'
 
-	onMount(async () => {
-		let jq = await LoadJQuery()
-	})
-
-	let newURL = 'https://www.youtube.com/embed/CUd92xnhjm0'
+	let newURL = ''
 
 	function changeUrl(e: any) {
 		e.preventDefault()
@@ -35,13 +29,15 @@
 	</div>
 
 	{#key newURL}
-		<iframe
-			title="video"
-			class="embed-responsive-item"
-			src={newURL}
-			frameborder="0"
-			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-			allowfullscreen />
+		{#if newURL}
+			<iframe
+				title="video"
+				class="embed-responsive-item"
+				src={newURL}
+				frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+				allowfullscreen />
+		{/if}
 	{/key}
 </div>
 

@@ -129,12 +129,12 @@ export function multiDrag(
 	}
 
 	editor.on('nodeCreated', function (id) {
-		console.log('Node created ' + id)
+		//console.log('Node created ' + id)
 		toggle()
 	})
 
 	editor.on('nodeRemoved', function (id) {
-		console.log('Node removed ' + id)
+		//console.log('Node removed ' + id)
 		toggle()
 	})
 
