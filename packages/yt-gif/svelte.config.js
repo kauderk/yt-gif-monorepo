@@ -1,5 +1,10 @@
 import { svelteConfig } from '@packages/config'
 
+import { watchAPI } from 'sveltekit-zero-api'
+if (process.env.NODE_ENV !== 'production') {
+	watchAPI()
+}
+
 const config = {
 	onwarn: (warning, handler) => {
 		const { code } = warning
