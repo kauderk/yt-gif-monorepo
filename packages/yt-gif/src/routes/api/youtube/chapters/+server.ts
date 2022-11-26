@@ -16,5 +16,10 @@ export const GET = async (event: API<TGet>) => {
 
 	const match = matchAll<'time' | 'chapterTitle'>(res.description, rgx)
 
-	return Ok({ body: match })
+	return Ok({
+		body: {
+			match: match.length ? match! : null,
+			chapters: match.length ? null : res.chapters!,
+		},
+	})
 }

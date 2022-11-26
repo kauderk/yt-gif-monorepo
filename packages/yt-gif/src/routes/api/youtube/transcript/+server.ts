@@ -4,7 +4,7 @@ import { getDomainText, ParseUniqueIDs } from '$lib/fetch'
 import axios from 'axios'
 import { getSummaryOptions, Script } from './summary'
 import { API, querySpread } from 'sveltekit-zero-api'
-import { BadRequest, Ok } from 'sveltekit-zero-api/http'
+import { Ok } from 'sveltekit-zero-api/http'
 import type { RequireAtLeastOne } from '$lib/types/utilities'
 
 type TQuery = { sum?: boolean } & RequireAtLeastOne<{
