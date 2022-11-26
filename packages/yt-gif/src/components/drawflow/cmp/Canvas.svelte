@@ -12,6 +12,7 @@
 	style:height={$props.canvas.height}
 	bind:this={$ctx.drawflowRoot}
 	id="drawflow"
+	class="parent-drawflow"
 	on:drop={$ctx.dnd.drop}
 	on:dblclick={$ctx.mul.clear_selection}
 	on:dragover={$ctx.dnd.allowDrop}>
