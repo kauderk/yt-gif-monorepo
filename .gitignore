@@ -142,3 +142,12 @@ yarn-error.log*
 **/admin.json
 # any kind of database
 **/*.dump
+
+# python
+# Byte-compiled / optimized / DLL files 
+__pycache__/
+*.py[cod]
+*$py.class
+venv
+# packages
+.deta

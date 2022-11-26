@@ -1,18 +1,39 @@
 <script lang="ts">
 	import type { PageData } from './$types'
-
 	export let data: PageData
+
 	import { match } from './store'
+	import { Api } from 'src/api'
 </script>
 
 <header>
 	<nav class="navegation">
-		{#each data.menu as { link, title }}
+		{#each data.menu as { link, title = "" }}
 			<a href={link} class="cool-hover" class:previous={match(title)}
 				>{title}</a>
 		{/each}
 	</nav>
 </header>
+
+<button
+	style="position: fixed;
+    z-index: 10000;
+    color: white;
+    top: 0px;"
+	on:click={async () => {
+		const id = 'ZwLekxsSY3Y'
+		const common = { query: { id } }
+
+		Api.youtube.search.GET(common).Ok(o => console.log({ search: o.body }))
+
+		Api.youtube.chapters
+			.GET(common)
+			.Ok(o => console.log({ chapters: o.body }))
+
+		Api.youtube.transcript
+			.GET(common)
+			.Ok(o => console.log({ transcript: o.body }))
+	}}>FETCH</button>
 
 <slot />
 

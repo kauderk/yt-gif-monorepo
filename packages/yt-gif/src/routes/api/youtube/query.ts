@@ -281,17 +281,18 @@ const GetVideoDetails = async videoId => {
 		const secondContent = await result.results.results.contents[1]
 			.videoSecondaryInfoRenderer
 		const res = await {
-			title: firstContent.title.runs[0].text,
+			title: firstContent.title.runs[0].text as s,
 			isLive: firstContent.viewCount.videoViewCountRenderer.hasOwnProperty(
 				'isLive'
 			)
-				? firstContent.viewCount.videoViewCountRenderer.isLive
+				? (firstContent.viewCount.videoViewCountRenderer.isLive as b)
 				: false,
-			channel: secondContent.owner.videoOwnerRenderer.title.runs[0].text,
+			channel: secondContent.owner.videoOwnerRenderer.title.runs[0]
+				.text as s,
 			description: secondContent.description.runs
 				.map(x => x.text)
 				.join()
-				.toString(),
+				.toString() as s,
 			suggestion: result.secondaryResults.secondaryResults.results
 				.filter(y => y.hasOwnProperty('compactVideoRenderer'))
 				.map(x => compactVideoRenderer(x)),
