@@ -2,10 +2,11 @@
 import YoutubeTranscript from 'youtube-transcript'
 import { getDomainText, ParseUniqueIDs } from '$lib/fetch'
 import axios from 'axios'
-import { getSummaryOptions, Script } from './summary'
+import { getSummaryOptions } from './summary'
 import { API, querySpread } from 'sveltekit-zero-api'
 import { Ok } from 'sveltekit-zero-api/http'
 import type { RequireAtLeastOne } from '$lib/types/utilities'
+import { Script } from './parse'
 
 type TQuery = { sum?: boolean } & RequireAtLeastOne<{
 	list: string
@@ -14,13 +15,17 @@ type TQuery = { sum?: boolean } & RequireAtLeastOne<{
 
 export const GET = async (event: API<{ query: TQuery }>) => {
 	const params = querySpread(event)
+	let res: { id?: TRes; list?: TRes[] } = {}
+
 	if (params.id) {
-		return Ok({ body: await fetchTranscript(params) })
+		res.id = await fetchTranscript(params)
 	}
 
 	if (params.list) {
-		return Ok({ body: await getPlaylistTranscripts(params) })
+		res.list = await getPlaylistTranscripts(params)
 	}
+
+	return Ok({ body: res })
 }
 async function getPlaylistTranscripts(params: TQuery) {
 	const ids = await getDomainText(
@@ -31,14 +36,14 @@ async function getPlaylistTranscripts(params: TQuery) {
 		ids.map(async id => ({ id, ...(await fetchTranscript(params)) }))
 	)
 }
-
+type TRes = Awaited<ReturnType<typeof fetchTranscript>>
 async function fetchTranscript(params: TQuery) {
 	const transcript = await YoutubeTranscript.fetchTranscript(params.id!)
 	return {
-		transcript: !params.sum ? transcript : '',
+		transcript: !params.sum ? transcript : null,
 		//
 		transcript_summary: params.sum
 			? await axios.request(getSummaryOptions(await Script(transcript)))
-			: '',
+			: null,
 	}
 }

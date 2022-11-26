@@ -1,6 +1,5 @@
 // @ts-ignore
 import { PRIVATE_RAPIDAPI_KEY } from '$env/static/private'
-import type { TranscriptResponse } from 'youtube-transcript'
 
 export function getSummaryOptions(text: s) {
 	const encodedParams = new URLSearchParams()
@@ -18,18 +17,4 @@ export function getSummaryOptions(text: s) {
 		data: encodedParams,
 	}
 	return options
-}
-
-export async function Script(transcript: TranscriptResponse[]) {
-	// https://huggingface.co/spaces/jipenaflor/Youtube-Transcript-Summarizer/blob/main/app.py
-	let script = ''
-
-	for (const text of transcript) {
-		let t = text['text']
-		if (t != '[Music]') {
-			script += t + ' '
-		}
-	}
-
-	return script
 }

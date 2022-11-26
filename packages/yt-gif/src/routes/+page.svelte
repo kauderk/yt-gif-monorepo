@@ -4,6 +4,8 @@
 
 	import { match } from './store'
 	import { Api } from 'src/api'
+	import { Script } from './api/youtube/transcript/parse'
+	import { identity } from 'svelte/internal'
 </script>
 
 <header>
@@ -22,7 +24,7 @@
     top: 0px;"
 	on:click={async () => {
 		const id = 'ZwLekxsSY3Y'
-		const common = { query: { id } }
+		const common = Object.freeze({ query: { id } })
 
 		Api.youtube.search.GET(common).Ok(o => console.log({ search: o.body }))
 
