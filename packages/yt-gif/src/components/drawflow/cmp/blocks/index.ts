@@ -1,4 +1,5 @@
 import Api from './Api.svelte'
+import Chapter from './Chapter.svelte'
 import Content from './Content.svelte'
 import Simple from './Simple.svelte'
 import Player from './Player.svelte'
@@ -18,11 +19,15 @@ type Block = {
 	}
 }
 
-export const DrawflowBlocks: Block = {
+export const DrawflowBlocks: Block = <const>{
 	ApiBlock: {
 		GraphNodeID: 'ApiBlock',
 		cmp: Api,
 		provider: true,
+	},
+	ChapterBlock: {
+		GraphNodeID: 'ChapterBlock',
+		cmp: Chapter,
 	},
 	SvelteContent: {
 		GraphNodeID: 'SvelteContent',

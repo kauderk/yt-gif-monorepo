@@ -2,9 +2,18 @@ import search from '../query'
 import { API, querySpread } from 'sveltekit-zero-api'
 import { Ok } from 'sveltekit-zero-api/http'
 import { matchAll } from '$lib/regex/match'
+import type { Chapter } from '../types'
 
 interface TGet {
 	query: { id: string }
+}
+export type ChapterData = {
+	match:
+		| ({
+				match: string
+		  } & Record<'time' | 'chapterTitle', string>)[]
+		| null
+	chapters: Chapter[] | null
 }
 export const GET = async (event: API<TGet>) => {
 	const { id } = querySpread(event)

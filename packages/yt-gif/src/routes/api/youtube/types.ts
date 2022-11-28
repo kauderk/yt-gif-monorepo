@@ -3529,7 +3529,7 @@ interface ChapterRenderer {
 	thumbnail: Thumbnail15
 }
 
-interface Chapter {
+export interface Chapter {
 	chapterRenderer: ChapterRenderer
 }
 

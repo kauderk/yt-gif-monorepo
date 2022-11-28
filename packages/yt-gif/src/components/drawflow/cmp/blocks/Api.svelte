@@ -6,6 +6,8 @@
 		PlaceholderID,
 	} from 'src/routes/api/youtube/get-endpoints'
 
+	import { CreateChapterBlock } from './create/chapters'
+
 	const queries = MakeGETQueries()
 </script>
 
@@ -28,9 +30,12 @@
 								const f = await query.refetch({
 									cancelRefetch: true,
 								})
+								if (key == 'chapters') {
+									CreateChapterBlock(f.data)
+								}
 							}}>Fetch</button>
 						{#if query && query.data}
-							{JSON.stringify(query.data, null, 2)}
+							done
 						{/if}
 					</Subscribe>
 				</div>
