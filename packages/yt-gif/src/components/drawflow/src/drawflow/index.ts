@@ -3,6 +3,7 @@ import type { DrawflowExport, DrawflowNode, ID } from './types'
 import type { EventNames, OnEvents } from './events'
 import { DrawFlowDefault, type ET } from './properties'
 import { ObjectKeys } from '$lib/utils'
+import type { AddNodeProps } from './method-types'
 
 export default class Drawflow extends DrawFlowDefault {
 	//#region LifeCycle
@@ -2149,17 +2150,12 @@ export default class Drawflow extends DrawFlowDefault {
 		return nodes
 	}
 
-	addNode(
-		name: s,
-		num_in: n,
-		num_out: n,
-		ele_pos_x: n,
-		ele_pos_y: n,
-		classoverride: s,
-		data: any,
-		html: s,
-		typenode: boolean | 'svelte' | 'vue' = false
-	) {
+	addNode(params: AddNodeProps) {
+		let { name, data } = params
+		let { html, typenode, classoverride } = params.node
+		let { inputs: num_in, outputs: num_out } = params.connections
+		let { x: ele_pos_x, y: ele_pos_y } = params.cords
+
 		let newNodeId: ID
 		if (this.useuuid) {
 			newNodeId = this.getUuid()

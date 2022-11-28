@@ -542,7 +542,7 @@ export interface DrawflowNode {
 	>
 	pos_x: number
 	pos_y: number
-	typenode: boolean
+	typenode: boolean | 'svelte' | 'vue'
 }
 
 export interface DrawflowConnectionDetail {

@@ -45,38 +45,24 @@ export function dragAndDrop(editor: Drawflow) {
 		}
 	}
 
-	function addNodeToDrawFlow(key: s, pos_x: n, pos_y: n) {
+	function addNodeToDrawFlow(key: s, x: n, y: n) {
 		if (editor.editor_mode === 'fixed') {
 			return false
 		}
-		pos_x =
-			pos_x *
+		x =
+			x *
 				(editor.precanvas.clientWidth /
 					(editor.precanvas.clientWidth * editor.zoom)) -
 			editor.precanvas.getBoundingClientRect().x *
 				(editor.precanvas.clientWidth /
 					(editor.precanvas.clientWidth * editor.zoom))
-		pos_y =
-			pos_y *
+		y =
+			y *
 				(editor.precanvas.clientHeight /
 					(editor.precanvas.clientHeight * editor.zoom)) -
 			editor.precanvas.getBoundingClientRect().y *
 				(editor.precanvas.clientHeight /
 					(editor.precanvas.clientHeight * editor.zoom))
-
-		const addNode = (key: s, in_ = 1, out_ = 1, data = {}) => {
-			editor.addNode(
-				key,
-				in_,
-				out_,
-				pos_x,
-				pos_y,
-				key,
-				data,
-				key, // drawflow/cmp/Simple.svelte
-				'svelte'
-			)
-		}
 
 		const id = items.find(o => o.GraphNodeID == key)?.GraphNodeID
 		if (!id) {
@@ -84,7 +70,23 @@ export function dragAndDrop(editor: Drawflow) {
 				'Drawflow: DragAndDrop - AddNode. id is undefined'
 			)
 		}
-		addNode(id)
+		editor.addNode({
+			name: id,
+			connections: {
+				inputs: 1,
+				outputs: 1,
+			},
+			cords: {
+				y,
+				x,
+			},
+			data: {},
+			node: {
+				classoverride: key,
+				html: key,
+				typenode: 'svelte',
+			},
+		})
 	}
 
 	return {

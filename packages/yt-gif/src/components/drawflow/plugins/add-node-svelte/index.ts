@@ -2,6 +2,7 @@ import Node from './Node.svelte'
 import { addInputs } from './add-inputs'
 import { AssertContentElement, getUUID, injectNodeCycle } from './query'
 import type Drawflow from '$cmp/drawflow/src/drawflow'
+import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
 
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
@@ -12,31 +13,29 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
  * @returns An overridden addNode function, bound to "this".
  */
 export function createAddNode(this: Drawflow, flush: (() => void)[]) {
-	function addNode(
-		name: string,
-		inputs: number,
-		outputs: number,
-		pos_x: number,
-		pos_y: number,
-		className: string,
-		data: any,
-		htmlOrGraphNodeID: string,
-		typenode: boolean | 'svelte' | 'vue' = false
-	) {
+	function addNode(params: AddNodeProps) {
 		const newId = getUUID.bind(this)()
 
-		const SvelteComponentSlot = this.noderegister[htmlOrGraphNodeID]?.html
+		const SvelteComponentSlot = this.noderegister[params.node.html]?.html
 		const node = new Node({
 			target: this.container,
 			props: {
 				SvelteComponentSlot,
-				GraphNodeID: htmlOrGraphNodeID,
+				GraphNodeID: params.node.html,
 				id: newId,
-				className,
-				top: pos_y,
-				left: pos_x,
-				inputs: { length: inputs, json: {}, type: 'input' },
-				outputs: { length: outputs, json: {}, type: 'output' },
+				classoverride: params.node.classoverride,
+				left: params.cords.x,
+				top: params.cords.y,
+				inputs: {
+					length: params.connections.inputs,
+					json: {},
+					type: 'input',
+				},
+				outputs: {
+					length: params.connections.outputs,
+					json: {},
+					type: 'output',
+				},
 				content: <HTMLElement>{},
 				parent: <HTMLElement>{},
 			},
@@ -44,17 +43,17 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		// flush.push(() => node.$destroy)
 
 		const json = {
-			name,
-			data,
-			html: htmlOrGraphNodeID,
-			typenode,
+			name: params.name,
+			data: params.data,
+			html: params.node.html,
+			typenode: params.node.typenode,
 
 			id: newId,
-			class: className,
+			class: params.node.classoverride,
 			inputs: node.inputs.json,
 			outputs: node.outputs.json,
-			pos_x: pos_x,
-			pos_y: pos_y,
+			pos_x: params.cords.x,
+			pos_y: params.cords.y,
 		}
 
 		return injectNodeCycle.bind(this)(node.parent, json)
