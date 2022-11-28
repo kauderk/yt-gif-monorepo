@@ -42,10 +42,17 @@ function zoom(e: WheelEvent, editor: Drawflow) {
 }
 
 function BGSize(editor: Drawflow) {
-	const cord = editor.zoom * 6.5
-	const square = cord + 'em'
+	const cord = editor.zoom * 100
+	const big = cord + 'px'
+	const smoll = cord / 4 + 'px'
 
-	editor.container.style.setProperty('background-size', `${square} ${square}`)
+	const bigCord = `${big} ${big}`
+	const smollCord = `${smoll} ${smoll}`
+
+	editor.container.style.setProperty(
+		'background-size',
+		`${smollCord}, ${smollCord}, ${bigCord}, ${bigCord}`
+	)
 }
 
 function CanvasWheel(e: WheelEvent, editor: Drawflow) {

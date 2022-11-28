@@ -94,6 +94,8 @@
 		backdrop-filter: blur(4px);
 		box-shadow: 0px 2px 15px 2px rgba(71, 71, 71, 0.123);
 
+		background-color: #27282c !important;
+
 		&:hover {
 			cursor: move;
 			background: rgba(131, 131, 131, 0.575);
