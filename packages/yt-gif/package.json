@@ -103,6 +103,7 @@
 		"svelte-multiselect": "^8.0.2",
 		"svelte-popover": "^2.0.8",
 		"svelte-preprocess": "^4.10.7",
+		"svelte-subscribe": "^1.0.5",
 		"sveltekit-zero-api": "^0.11.15",
 		"svelvet": "^3.0.0",
 		"svooltip": "^0.3.0",

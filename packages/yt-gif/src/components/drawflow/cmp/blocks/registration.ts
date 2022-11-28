@@ -4,7 +4,7 @@ import { ObjectValues } from '$lib/utils'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
-	// return addNode()
+	return addNode()
 
 	return ObjectValues(DrawflowBlocks).forEach((o, i) => {
 		addNode({
@@ -91,7 +91,7 @@ export function createNodeComponents(editor: Drawflow) {
 			data: { ...partial.data },
 			node: {
 				classoverride: 'graph-node',
-				html: DrawflowBlocks.SvelteContent.GraphNodeID,
+				html: DrawflowBlocks.ApiBlock.GraphNodeID,
 				typenode: 'svelte',
 				...partial.node,
 			},
