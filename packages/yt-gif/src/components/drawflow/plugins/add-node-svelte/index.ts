@@ -16,16 +16,18 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 	function addNode(params: AddNodeProps) {
 		const newId = getUUID.bind(this)()
 
-		const SvelteComponentSlot = this.noderegister[params.node.html]?.html
 		const node = new Node({
 			target: this.container,
 			props: {
-				SvelteComponentSlot,
 				GraphNodeID: params.node.html,
+				GraphNodeProps: params.node.props ?? {},
+
 				id: newId,
 				classoverride: params.node.classoverride,
+
 				left: params.cords.x,
 				top: params.cords.y,
+
 				inputs: {
 					length: params.connections.inputs,
 					json: {},
@@ -36,6 +38,7 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 					json: {},
 					type: 'output',
 				},
+
 				content: <HTMLElement>{},
 				parent: <HTMLElement>{},
 			},

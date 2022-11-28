@@ -4,18 +4,23 @@ import type { ID, DrawflowNode } from './types'
 type x = DrawflowNode
 export interface AddNodeProps {
 	name: ID
+
 	connections: {
 		inputs: n
 		outputs: n
 	}
+
 	cords: {
 		y: n
 		x: n
 	}
+
 	data: any
+
 	node: {
 		classoverride: string
 		html: string
 		typenode: boolean | 'svelte' | 'vue'
+		props?: {}
 	}
 }

@@ -12,7 +12,9 @@
 
 	export let id: ID
 	export let className = ''
+
 	export let GraphNodeID = ''
+	export let GraphNodeProps = {}
 
 	export let top: number
 	export let left: number
@@ -68,7 +70,9 @@
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider condition={Slot.provider}>
-							<svelte:component this={Slot.cmp} />
+							<svelte:component
+								this={Slot.cmp}
+								{...GraphNodeProps} />
 						</SvelteQueryProvider>
 					</div>
 				{/if}
