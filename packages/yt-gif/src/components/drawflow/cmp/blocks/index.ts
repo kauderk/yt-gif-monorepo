@@ -10,10 +10,19 @@ import Video from './Video.svelte'
 import MyBlock from './MyBlock.svelte'
 import Ytvid from './Ytvid.svelte'
 
-export const DrawflowBlocks = <const>{
+type Block = {
+	[key: s]: {
+		GraphNodeID: s
+		cmp: any
+		provider?: boolean
+	}
+}
+
+export const DrawflowBlocks: Block = {
 	ApiBlock: {
 		GraphNodeID: 'ApiBlock',
 		cmp: Api,
+		provider: true,
 	},
 	SvelteContent: {
 		GraphNodeID: 'SvelteContent',

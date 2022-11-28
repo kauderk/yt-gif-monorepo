@@ -8,6 +8,7 @@
 	import { nodeTransition, receive, send } from './transition'
 	import { items } from '$cmp/drawflow/cmp/ctx'
 	import type { ID } from '$cmp/drawflow/src/drawflow/types'
+	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
 
 	export let id: ID
 	export let className = ''
@@ -32,7 +33,7 @@
 
 	onMount(() => dataNode?.task.resolve())
 
-	const ComponentSlot = items.find(o => o.GraphNodeID == GraphNodeID)?.cmp
+	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
 </script>
 
 <div
@@ -64,9 +65,11 @@
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 			<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
 			<div>
-				{#if $nodeTransition.id != id && ComponentSlot}
+				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
-						<svelte:component this={ComponentSlot} />
+						<SvelteQueryProvider condition={Slot.provider}>
+							<svelte:component this={Slot.cmp} />
+						</SvelteQueryProvider>
 					</div>
 				{/if}
 			</div>

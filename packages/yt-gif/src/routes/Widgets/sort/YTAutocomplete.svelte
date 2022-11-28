@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { stealthQuery } from '$lib/api/svelte-query/client'
 	import { useQuery } from '@sveltestack/svelte-query'
 	// @ts-ignore
 	import AutoComplete from 'simple-svelte-autocomplete'
@@ -12,10 +13,7 @@
 		'ytsearch',
 		async _ =>
 			fetch(`${endpoint}?keyword=${queryKey}`).then(res => res.json()),
-		{
-			refetchOnWindowFocus: false,
-			enabled: false,
-		}
+		stealthQuery
 	)
 
 	async function handelInput(userKeyword: s) {
