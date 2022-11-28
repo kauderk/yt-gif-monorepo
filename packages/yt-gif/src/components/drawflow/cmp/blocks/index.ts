@@ -1,3 +1,4 @@
+import Api from './Api.svelte'
 import Content from './Content.svelte'
 import Simple from './Simple.svelte'
 import Player from './Player.svelte'
@@ -10,6 +11,10 @@ import MyBlock from './MyBlock.svelte'
 import Ytvid from './Ytvid.svelte'
 
 export const DrawflowBlocks = <const>{
+	ApiBlock: {
+		GraphNodeID: 'ApiBlock',
+		cmp: Api,
+	},
 	SvelteContent: {
 		GraphNodeID: 'SvelteContent',
 		cmp: Content,

@@ -1,16 +1,22 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
+import { ObjectValues } from '$lib/utils'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
-	return addNode()
+	// return addNode()
 
-	addNode({
-		cords: { x: 863, y: 515 },
-		node: {
-			html: DrawflowBlocks.SimpleBlock.GraphNodeID,
-		},
+	return ObjectValues(DrawflowBlocks).forEach((o, i) => {
+		addNode({
+			cords: { x: 0 + i * 100, y: 0 + i * 100 },
+			node: {
+				html: o.GraphNodeID,
+			},
+		})
 	})
+
+	return undefined
+
 	addNode({
 		cords: { x: 1100, y: 715 },
 		node: {
