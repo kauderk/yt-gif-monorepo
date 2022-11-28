@@ -6,7 +6,8 @@
 		PlaceholderID,
 	} from 'src/routes/api/youtube/get-endpoints'
 
-	import { CreateChapterBlock } from './create/chapters'
+	import { CreateChapterBlock } from './chapter/create'
+	import { CreateTranscriptBlock } from './transcript/create'
 
 	const queries = MakeGETQueries()
 </script>
@@ -32,6 +33,9 @@
 								})
 								if (key == 'chapters') {
 									CreateChapterBlock(f.data)
+								}
+								if (key == 'transcript') {
+									CreateTranscriptBlock(f.data)
 								}
 							}}>Fetch</button>
 						{#if query && query.data}

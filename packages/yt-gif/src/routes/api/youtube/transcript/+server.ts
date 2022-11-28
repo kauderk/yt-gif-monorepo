@@ -1,7 +1,7 @@
 // @ts-ignore
-import YoutubeTranscript from 'youtube-transcript'
+import YoutubeTranscript, { TranscriptResponse } from 'youtube-transcript'
 import { getDomainText, ParseUniqueIDs } from '$lib/fetch'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { getSummaryOptions } from './summary'
 import { API, querySpread } from 'sveltekit-zero-api'
 import { Ok } from 'sveltekit-zero-api/http'
@@ -12,7 +12,20 @@ type TQuery = { sum?: boolean } & RequireAtLeastOne<{
 	list: string
 	id: string
 }>
-
+export type TranscriptData = {
+	id?:
+		| {
+				transcript: TranscriptResponse[] | null
+				transcript_summary: AxiosResponse<any, any> | null
+		  }
+		| undefined
+	list?:
+		| {
+				transcript: TranscriptResponse[] | null
+				transcript_summary: AxiosResponse<any, any> | null
+		  }[]
+		| undefined
+}
 export const GET = async (event: API<{ query: TQuery }>) => {
 	const params = querySpread(event)
 	let res: { id?: TRes; list?: TRes[] } = {}

@@ -1,5 +1,6 @@
 import Api from './Api.svelte'
-import Chapter from './Chapter.svelte'
+import Chapter from './chapter/Index.svelte'
+import Transcript from './transcript/Index.svelte'
 import Content from './Content.svelte'
 import Simple from './Simple.svelte'
 import Player from './Player.svelte'
@@ -28,6 +29,10 @@ export const DrawflowBlocks: Block = <const>{
 	ChapterBlock: {
 		GraphNodeID: 'ChapterBlock',
 		cmp: Chapter,
+	},
+	TranscriptBlock: {
+		GraphNodeID: 'TranscriptBlock',
+		cmp: Transcript,
 	},
 	SvelteContent: {
 		GraphNodeID: 'SvelteContent',

@@ -1,6 +1,6 @@
 import { DrawflowBlocks } from '../index'
 import { DrawflowStore as ctx } from '../../store'
-import type ChapterBlock from './../Chapter.svelte'
+import type ChapterBlock from './Index.svelte'
 import type { ChapterData } from 'src/routes/api/youtube/chapters/+server'
 import { get } from 'svelte/store'
 
