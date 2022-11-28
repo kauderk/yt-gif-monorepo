@@ -7,8 +7,9 @@
 	import { nodeBG } from '../../cmp/store'
 	import { nodeTransition, receive, send } from './transition'
 	import { items } from '$cmp/drawflow/cmp/ctx'
+	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 
-	export let id: string
+	export let id: ID
 	export let className = ''
 	export let GraphNodeID = ''
 

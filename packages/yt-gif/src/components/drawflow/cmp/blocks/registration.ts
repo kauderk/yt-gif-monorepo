@@ -2,6 +2,7 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
+	return
 	editor.addNode(
 		'graph-node',
 		1,

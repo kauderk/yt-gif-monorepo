@@ -1,57 +1,10 @@
 /* eslint-disable */
-// @ts-nocheck
-export default class Drawflow {
-	constructor(container, render = null, parent = null) {
-		this.events = {}
-		this.container = container
-		this.precanvas = null
-		this.nodeId = 1
-		this.ele_selected = null
-		this.node_selected = null
-		this.drag = false
-		this.reroute = false
-		this.reroute_fix_curvature = false
-		this.curvature = 0.5
-		this.reroute_curvature_start_end = 0.5
-		this.reroute_curvature = 0.5
-		this.reroute_width = 6
-		this.drag_point = false
-		this.editor_selected = false
-		this.connection = false
-		this.connection_ele = null
-		this.connection_selected = null
-		this.canvas_x = 0
-		this.canvas_y = 0
-		this.pos_x = 0
-		this.pos_x_start = 0
-		this.pos_y = 0
-		this.pos_y_start = 0
-		this.mouse_x = 0
-		this.mouse_y = 0
-		this.line_path = 5
-		this.first_click = null
-		this.force_first_input = false
-		this.draggable_inputs = true
-		this.useuuid = false
-		this.parent = parent
+import type { DrawflowExport, DrawflowNode, ID } from './types'
+import type { EventNames, OnEvents } from './events'
+import { DrawFlowDefault, type ET } from './properties'
+import { ObjectKeys } from '$lib/utils'
 
-		this.noderegister = {}
-		this.render = render
-		this.drawflow = { drawflow: { Home: { data: {} } } }
-		// Configurable options
-		this.module = 'Home'
-		this.editor_mode = 'edit'
-		this.zoom = 1
-		this.zoom_max = 1.6
-		this.zoom_min = 0.5
-		this.zoom_value = 0.1
-		this.zoom_last_value = 1
-
-		// Mobile
-		this.evCache = new Array()
-		this.prevDiff = -1
-	}
-
+export default class Drawflow extends DrawFlowDefault {
 	async start() {
 		// console.info("Start Drawflow!!");
 		this.container.classList.add('parent-drawflow')
@@ -97,7 +50,7 @@ export default class Drawflow {
 		await this.load()
 	}
 
-	/* Mobile zoom */
+	//#region Mobile zoom
 	pointerdown_handler(ev) {
 		this.evCache.push(ev)
 	}
@@ -146,7 +99,8 @@ export default class Drawflow {
 			}
 		}
 	}
-	/* End Mobile Zoom */
+	//#endregion End Mobile Zoom
+
 	async load() {
 		let promises = []
 		for (let key in this.drawflow.drawflow[this.module].data) {
@@ -198,7 +152,7 @@ export default class Drawflow {
 		}
 	}
 
-	click(e) {
+	click(e: ET<TouchEvent> | ET<MouseEvent>) {
 		this.dispatch('click', e)
 		if (this.editor_mode === 'fixed') {
 			//return false;
@@ -386,7 +340,7 @@ export default class Drawflow {
 		this.dispatch('clickEnd', e)
 	}
 
-	position(e) {
+	position(e: ET<PointerEvent> | ET<MouseEvent>) {
 		if (e.type === 'touchmove') {
 			var e_pos_x = e.touches[0].clientX
 			var e_pos_y = e.touches[0].clientY
@@ -508,7 +462,7 @@ export default class Drawflow {
 		this.dispatch('mouseMove', { x: e_pos_x, y: e_pos_y })
 	}
 
-	dragEnd(e) {
+	dragEnd(e: ET<TouchEvent> | ET<MouseEvent>) {
 		if (e.type === 'touchend') {
 			var e_pos_x = this.mouse_x
 			var e_pos_y = this.mouse_y
@@ -648,7 +602,7 @@ export default class Drawflow {
 
 		this.dispatch('mouseUp', e)
 	}
-	contextmenu(e) {
+	contextmenu(e: ET<Event>) {
 		this.dispatch('contextmenu', e)
 		e.preventDefault()
 		if (this.editor_mode === 'fixed' || this.editor_mode === 'view') {
@@ -716,7 +670,7 @@ export default class Drawflow {
 		}
 	}
 
-	zoom_enter(event, delta) {
+	zoom_enter(event) {
 		if (event.ctrlKey) {
 			event.preventDefault()
 			if (event.deltaY > 0) {
@@ -762,12 +716,12 @@ export default class Drawflow {
 	}
 
 	createCurvature(
-		start_pos_x,
-		start_pos_y,
-		end_pos_x,
-		end_pos_y,
-		curvature_value,
-		type
+		start_pos_x: number,
+		start_pos_y: number,
+		end_pos_x: number,
+		end_pos_y: number,
+		curvature_value: number,
+		type: 'open' | 'close' | 'other' | 'openclose'
 	) {
 		var line_x = start_pos_x
 		var line_y = start_pos_y
@@ -883,7 +837,7 @@ export default class Drawflow {
 		}
 	}
 
-	drawConnection(ele) {
+	drawConnection(ele: HTMLElement) {
 		var connection = document.createElementNS(
 			'http://www.w3.org/2000/svg',
 			'svg'
@@ -907,9 +861,19 @@ export default class Drawflow {
 		})
 	}
 
-	updateConnection(eX, eY) {
+	updateConnection(eX: number, eY: number) {
 		const precanvas = this.precanvas
 		const zoom = this.zoom
+		if (!this.precanvas || !precanvas) {
+			return console.error(
+				'Drawflow: at method updateConnection, canvas is undefined'
+			)
+		}
+		if (!this.connection_ele || !this.ele_selected) {
+			return console.error(
+				'Drawflow: at method updateConnection, connections are undefined'
+			)
+		}
 		let precanvasWitdhZoom =
 			precanvas.clientWidth / (precanvas.clientWidth * zoom)
 		precanvasWitdhZoom = precanvasWitdhZoom || 0
@@ -956,7 +920,12 @@ export default class Drawflow {
 		path.setAttributeNS(null, 'd', lineCurve)
 	}
 
-	addConnection(id_output, id_input, output_class, input_class) {
+	addConnection(
+		id_output: string,
+		id_input: string,
+		output_class: string,
+		input_class: string
+	) {
 		var nodeOneModule = this.getModuleFromNodeId(id_output)
 		var nodeTwoModule = this.getModuleFromNodeId(id_input)
 		if (nodeOneModule === nodeTwoModule) {
@@ -1023,7 +992,7 @@ export default class Drawflow {
 		}
 	}
 
-	updateConnectionNodes(id) {
+	updateConnectionNodes(id: string) {
 		// Aquí nos quedamos;
 		const idSearch = 'node_in_' + id
 		const idSearchOut = 'node_out_' + id
@@ -1037,6 +1006,13 @@ export default class Drawflow {
 		const reroute_fix_curvature = this.reroute_fix_curvature
 		const rerouteWidth = this.reroute_width
 		const zoom = this.zoom
+
+		if (!precanvas) {
+			return console.error(
+				'Drawflow: at method updateConnectionNodes, canvas is undefined'
+			)
+		}
+
 		let precanvasWitdhZoom =
 			precanvas.clientWidth / (precanvas.clientWidth * zoom)
 		precanvasWitdhZoom = precanvasWitdhZoom || 0
@@ -1046,18 +1022,18 @@ export default class Drawflow {
 
 		const elemsOut = container.querySelectorAll(`.${idSearchOut}`)
 
-		Object.keys(elemsOut).map(function (item, index) {
-			if (elemsOut[item].querySelector('.point') === null) {
+		ObjectKeys(elemsOut).map(function (_, index) {
+			if (elemsOut[index].querySelector('.point') === null) {
 				var elemtsearchId_out = container.querySelector(`#${id}`)
 
-				var id_search = elemsOut[item].classList[1].replace(
+				var id_search = elemsOut[index].classList[1].replace(
 					'node_in_',
 					''
 				)
 				var elemtsearchId = container.querySelector(`#${id_search}`)
 
 				var elemtsearch = elemtsearchId.querySelectorAll(
-					'.' + elemsOut[item].classList[4]
+					'.' + elemsOut[index].classList[4]
 				)[0]
 
 				var eX =
@@ -1072,7 +1048,7 @@ export default class Drawflow {
 						precanvasHeightZoom
 
 				var elemtsearchOut = elemtsearchId_out.querySelectorAll(
-					'.' + elemsOut[item].classList[3]
+					'.' + elemsOut[index].classList[3]
 				)[0]
 
 				var line_x =
@@ -1097,11 +1073,11 @@ export default class Drawflow {
 					curvature,
 					'openclose'
 				)
-				elemsOut[item].children[0].setAttributeNS(null, 'd', lineCurve)
+				elemsOut[index].children[0].setAttributeNS(null, 'd', lineCurve)
 			} else {
-				const points = elemsOut[item].querySelectorAll('.point')
+				const points = elemsOut[index].querySelectorAll('.point')
 				let linecurve = ''
-				const reoute_fix = []
+				const reoute_fix: s[] = []
 				points.forEach((item, i) => {
 					if (i === 0 && points.length - 1 === 0) {
 						var elemtsearchId_out = container.querySelector(
@@ -1147,6 +1123,7 @@ export default class Drawflow {
 						linecurve += lineCurveSearch
 						reoute_fix.push(lineCurveSearch)
 
+						// FIXME:
 						var elemtsearchId_out = item
 						var id_search = item.parentElement.classList[1].replace(
 							'node_in_',
@@ -1375,14 +1352,14 @@ export default class Drawflow {
 				})
 				if (reroute_fix_curvature) {
 					reoute_fix.forEach((itempath, i) => {
-						elemsOut[item].children[i].setAttributeNS(
+						elemsOut[index].children[i].setAttributeNS(
 							null,
 							'd',
 							itempath
 						)
 					})
 				} else {
-					elemsOut[item].children[0].setAttributeNS(
+					elemsOut[index].children[0].setAttributeNS(
 						null,
 						'd',
 						linecurve
@@ -1392,17 +1369,17 @@ export default class Drawflow {
 		})
 
 		const elems = container.querySelectorAll(`.${idSearch}`)
-		Object.keys(elems).map(function (item, index) {
-			if (elems[item].querySelector('.point') === null) {
+		Object.keys(elems).map(function (_, index) {
+			if (elems[index].querySelector('.point') === null) {
 				var elemtsearchId_in = container.querySelector(`#${id}`)
 
-				var id_search = elems[item].classList[2].replace(
+				var id_search = elems[index].classList[2].replace(
 					'node_out_',
 					''
 				)
 				var elemtsearchId = container.querySelector(`#${id_search}`)
 				var elemtsearch = elemtsearchId.querySelectorAll(
-					'.' + elems[item].classList[3]
+					'.' + elems[index].classList[3]
 				)[0]
 
 				var line_x =
@@ -1417,7 +1394,7 @@ export default class Drawflow {
 						precanvasHeightZoom
 
 				var elemtsearchId_in = elemtsearchId_in.querySelectorAll(
-					'.' + elems[item].classList[4]
+					'.' + elems[index].classList[4]
 				)[0]
 				var x =
 					elemtsearchId_in.offsetWidth / 2 +
@@ -1438,11 +1415,11 @@ export default class Drawflow {
 					curvature,
 					'openclose'
 				)
-				elems[item].children[0].setAttributeNS(null, 'd', lineCurve)
+				elems[index].children[0].setAttributeNS(null, 'd', lineCurve)
 			} else {
-				const points = elems[item].querySelectorAll('.point')
+				const points = elems[index].querySelectorAll('.point')
 				let linecurve = ''
-				const reoute_fix = []
+				const reoute_fix: s[] = []
 				points.forEach((item, i) => {
 					if (i === 0 && points.length - 1 === 0) {
 						var elemtsearchId_out = container.querySelector(
@@ -1718,20 +1695,24 @@ export default class Drawflow {
 				})
 				if (reroute_fix_curvature) {
 					reoute_fix.forEach((itempath, i) => {
-						elems[item].children[i].setAttributeNS(
+						elems[index].children[i].setAttributeNS(
 							null,
 							'd',
 							itempath
 						)
 					})
 				} else {
-					elems[item].children[0].setAttributeNS(null, 'd', linecurve)
+					elems[index].children[0].setAttributeNS(
+						null,
+						'd',
+						linecurve
+					)
 				}
 			}
 		})
 	}
 
-	dblclick(e) {
+	dblclick(e: ET<MouseEvent>) {
 		if (this.connection_selected != null && this.reroute) {
 			this.createReroutePoint(this.connection_selected)
 		}
@@ -1741,7 +1722,7 @@ export default class Drawflow {
 		}
 	}
 
-	createReroutePoint(ele) {
+	createReroutePoint(ele: HTMLElement) {
 		this.connection_selected.classList.remove('selected')
 		const nodeUpdate =
 			this.connection_selected.parentElement.classList[2].slice(9)
@@ -1850,7 +1831,7 @@ export default class Drawflow {
 		this.updateConnectionNodes(nodeUpdate)
 	}
 
-	removeReroutePoint(ele) {
+	removeReroutePoint(ele: HTMLElement) {
 		const nodeUpdate = ele.parentElement.classList[2].slice(9)
 		const nodeUpdateIn = ele.parentElement.classList[1].slice(13)
 		const output_class = ele.parentElement.classList[3]
@@ -1886,18 +1867,18 @@ export default class Drawflow {
 		this.updateConnectionNodes(nodeUpdate)
 	}
 
-	registerNode(name, html, props = null, options = null) {
-		this.noderegister[name] = { html: html, props: props, options: options }
+	registerNode(name: s, html: s | object, props = null, options = null) {
+		this.noderegister[name] = { html, props, options }
 	}
 
-	getNodeFromId(id) {
+	getNodeFromId(id: ID) {
 		var moduleName = this.getModuleFromNodeId(id)
 		return JSON.parse(
 			JSON.stringify(this.drawflow.drawflow[moduleName].data[id])
 		)
 	}
-	getNodesFromName(name) {
-		var nodes = []
+	getNodesFromName(name: s) {
+		var nodes: n[] = []
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			for (var node in editor[moduleName].data) {
@@ -1910,20 +1891,21 @@ export default class Drawflow {
 	}
 
 	addNode(
-		name,
-		num_in,
-		num_out,
-		ele_pos_x,
-		ele_pos_y,
-		classoverride,
-		data,
-		html,
-		typenode = false
+		name: s,
+		num_in: n,
+		num_out: n,
+		ele_pos_x: n,
+		ele_pos_y: n,
+		classoverride: s,
+		data: any,
+		html: s,
+		typenode: boolean | 'svelte' | 'vue' = false
 	) {
+		let newNodeId: ID
 		if (this.useuuid) {
-			var newNodeId = this.getUuid()
+			newNodeId = this.getUuid()
 		} else {
-			var newNodeId = this.nodeId
+			newNodeId = this.nodeId
 		}
 		const parent = document.createElement('div')
 		parent.classList.add('parent-node')
@@ -1942,7 +1924,8 @@ export default class Drawflow {
 		const outputs = document.createElement('div')
 		outputs.classList.add('outputs')
 
-		const json_inputs = {}
+		type json = { [key: s]: { connections: [] } }
+		const json_inputs: json = {}
 		for (var x = 0; x < num_in; x++) {
 			const input = document.createElement('div')
 			input.classList.add('input')
@@ -1951,7 +1934,7 @@ export default class Drawflow {
 			inputs.appendChild(input)
 		}
 
-		const json_outputs = {}
+		const json_outputs: json = {}
 		for (var x = 0; x < num_out; x++) {
 			const output = document.createElement('div')
 			output.classList.add('output')
@@ -2005,7 +1988,7 @@ export default class Drawflow {
 			}
 		})
 
-		function insertObjectkeys(object, name, completname) {
+		function insertObjectkeys(object: any, name: s, completname: s) {
 			if (object === null) {
 				var object = data[name]
 			} else {
@@ -2042,11 +2025,11 @@ export default class Drawflow {
 		this.precanvas.appendChild(parent)
 		var json = {
 			id: newNodeId,
-			name: name,
-			data: data,
+			name,
+			data,
 			class: classoverride,
-			html: html,
-			typenode: typenode,
+			html,
+			typenode,
 			inputs: json_inputs,
 			outputs: json_outputs,
 			pos_x: ele_pos_x,
@@ -2060,7 +2043,7 @@ export default class Drawflow {
 		return newNodeId
 	}
 
-	async addNodeImport(dataNode, precanvas) {
+	async addNodeImport(dataNode: DrawflowNode, precanvas: HTMLElement) {
 		const parent = document.createElement('div')
 		parent.classList.add('parent-node')
 
@@ -2206,26 +2189,23 @@ export default class Drawflow {
 		this.precanvas.appendChild(parent)
 	}
 
-	addRerouteImport(dataNode) {
+	addRerouteImport(dataNode: DrawflowNode) {
 		const reroute_width = this.reroute_width
 		const reroute_fix_curvature = this.reroute_fix_curvature
 		const container = this.container
 		Object.keys(dataNode.outputs).map(function (output_item, index) {
 			Object.keys(dataNode.outputs[output_item].connections).map(
-				function (input_item, index) {
+				function (_, index) {
 					const points =
-						dataNode.outputs[output_item].connections[input_item]
-							.points
+						dataNode.outputs[output_item].connections[index].points
 					if (points !== undefined) {
 						points.forEach((item, i) => {
 							const input_id =
-								dataNode.outputs[output_item].connections[
-									input_item
-								].node
+								dataNode.outputs[output_item].connections[index]
+									.node
 							const input_class =
-								dataNode.outputs[output_item].connections[
-									input_item
-								].output
+								dataNode.outputs[output_item].connections[index]
+									.output
 							const ele = container.querySelector(
 								'.connection.node_in_node-' +
 									input_id +
@@ -2271,7 +2251,7 @@ export default class Drawflow {
 		})
 	}
 
-	updateNodeValue(event) {
+	updateNodeValue(event: ET<InputEvent>) {
 		var attr = event.target.attributes
 		for (var i = 0; i < attr.length; i++) {
 			if (attr[i].nodeName.startsWith('df-')) {
@@ -2302,7 +2282,7 @@ export default class Drawflow {
 		}
 	}
 
-	updateNodeDataFromId(id, data) {
+	updateNodeDataFromId(id: s, data: object) {
 		var moduleName = this.getModuleFromNodeId(id)
 		this.drawflow.drawflow[moduleName].data[id].data = data
 		if (this.module === moduleName) {
@@ -2322,7 +2302,7 @@ export default class Drawflow {
 				}
 			})
 
-			function insertObjectkeys(object, name, completname) {
+			function insertObjectkeys(object: any, name: s, completname: s) {
 				if (object === null) {
 					var object = data[name]
 				} else {
@@ -2353,7 +2333,7 @@ export default class Drawflow {
 		}
 	}
 
-	addNodeInput(id) {
+	addNodeInput(id: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		const numInputs = Object.keys(infoNode.inputs).length
@@ -2373,7 +2353,7 @@ export default class Drawflow {
 		] = { connections: [] }
 	}
 
-	addNodeOutput(id) {
+	addNodeOutput(id: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		const numOutputs = Object.keys(infoNode.outputs).length
@@ -2393,7 +2373,7 @@ export default class Drawflow {
 		] = { connections: [] }
 	}
 
-	removeNodeInput(id, input_class) {
+	removeNodeInput(id: s, input_class: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		if (this.module === moduleName) {
@@ -2502,7 +2482,7 @@ export default class Drawflow {
 		this.updateConnectionNodes('node-' + id)
 	}
 
-	removeNodeOutput(id, output_class) {
+	removeNodeOutput(id: s, output_class: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		if (this.module === moduleName) {
@@ -2616,7 +2596,7 @@ export default class Drawflow {
 		this.updateConnectionNodes('node-' + id)
 	}
 
-	removeNodeId(id) {
+	removeNodeId(id: s) {
 		this.removeConnectionNodeId(id)
 		var moduleName = this.getModuleFromNodeId(id.slice(5))
 		if (this.module === moduleName) {
@@ -2664,7 +2644,12 @@ export default class Drawflow {
 		}
 	}
 
-	removeSingleConnection(id_output, id_input, output_class, input_class) {
+	removeSingleConnection(
+		id_output: s,
+		id_input: s,
+		output_class: s,
+		input_class: s
+	) {
 		var nodeOneModule = this.getModuleFromNodeId(id_output)
 		var nodeTwoModule = this.getModuleFromNodeId(id_input)
 		if (nodeOneModule === nodeTwoModule) {
@@ -2729,7 +2714,7 @@ export default class Drawflow {
 		}
 	}
 
-	removeConnectionNodeId(id) {
+	removeConnectionNodeId(id: s) {
 		const idSearchIn = 'node_in_' + id
 		const idSearchOut = 'node_out_' + id
 
@@ -2810,8 +2795,8 @@ export default class Drawflow {
 		}
 	}
 
-	getModuleFromNodeId(id) {
-		var nameModule
+	getModuleFromNodeId(id: ID) {
+		var nameModule: ID | undefined
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			Object.keys(editor[moduleName].data).map(function (node, index2) {
@@ -2823,11 +2808,11 @@ export default class Drawflow {
 		return nameModule
 	}
 
-	addModule(name) {
+	addModule(name: s) {
 		this.drawflow.drawflow[name] = { data: {} }
 		this.dispatch('moduleCreated', name)
 	}
-	async changeModule(name) {
+	async changeModule(name: s) {
 		this.dispatch('moduleChanged', name)
 		this.module = name
 		this.precanvas.innerHTML = ''
@@ -2866,7 +2851,7 @@ export default class Drawflow {
 		return dataExport
 	}
 
-	async import(data, notifi = true) {
+	async import(data: DrawflowExport, notifi = true) {
 		this.clear()
 		this.drawflow = JSON.parse(JSON.stringify(data))
 		await this.load()
@@ -2876,31 +2861,31 @@ export default class Drawflow {
 	}
 
 	/* Events */
-	on(event, callback) {
+	on: OnEvents = (eventName, callback) => {
 		// Check if the callback is not a function
 		if (typeof callback !== 'function') {
 			console.error(
 				`The listener callback must be a function, the given type is ${typeof callback}`
 			)
-			return false
+			return
 		}
 		// Check if the event is not a string
-		if (typeof event !== 'string') {
+		if (typeof eventName !== 'string') {
 			console.error(
-				`The event name must be a string, the given type is ${typeof event}`
+				`The event name must be a string, the given type is ${typeof eventName}`
 			)
-			return false
+			return
 		}
 		// Check if this event not exists
-		if (this.events[event] === undefined) {
-			this.events[event] = {
+		if (this.events[eventName] === undefined) {
+			this.events[eventName] = {
 				listeners: [],
 			}
 		}
-		this.events[event].listeners.push(callback)
+		this.events[eventName].listeners.push(callback)
 	}
 
-	removeListener(event, callback) {
+	removeListener: OnEvents = (event, callback) => {
 		// Check if this event not exists
 
 		if (!this.events[event]) return false
@@ -2911,7 +2896,7 @@ export default class Drawflow {
 		if (hasListener) listeners.splice(listenerIndex, 1)
 	}
 
-	dispatch(event, details) {
+	dispatch(event: EventNames, details: any) {
 		// Check if this event not exists
 		if (this.events[event] === undefined) {
 			// console.error(`This event: ${event} does not exist`);

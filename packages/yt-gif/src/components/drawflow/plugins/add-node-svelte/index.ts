@@ -21,7 +21,7 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		className: string,
 		data: any,
 		htmlOrGraphNodeID: string,
-		typenode: boolean | string = false
+		typenode: boolean | 'svelte' | 'vue' = false
 	) {
 		const newId = getUUID.bind(this)()
 

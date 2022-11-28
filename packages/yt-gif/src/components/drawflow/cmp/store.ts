@@ -7,7 +7,7 @@ import { getContext as svelteContext } from 'svelte'
 import { createWritableStore } from '$lib/local-storage-store'
 
 export const DrawflowStore = writable({
-	editor: <Drawflow & { precanvas: HTMLElement }>{},
+	editor: <Drawflow>{},
 	dnd: <ReturnType<typeof dragAndDrop>>{},
 	mul: <ReturnType<typeof multiDrag>>{},
 	drawflowRoot: <HTMLElement>{},

@@ -2,9 +2,7 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import { nodeEl } from '../../lib/utils'
 
 // https://github.com/jerosoler/Drawflow/issues/322#issuecomment-1133036432
-export function selectMultiple(
-	editor: Drawflow & { node_selected: El; module: n; precanvas: El; drag: b }
-) {
+export function selectMultiple(editor: Drawflow) {
 	const selection = new Array<n | s>()
 
 	editor.on('clickEnd', e => {

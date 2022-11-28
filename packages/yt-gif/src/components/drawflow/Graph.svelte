@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Drawflow from '$cmp/drawflow/src/drawflow'
+	import Drawflow from './src/drawflow'
 	import dataToImport from './data.json'
 
 	import { undoRedo } from './plugins/conection-undo-redo'
@@ -32,16 +32,15 @@
 	setContext('DrawflowProps', writable(props))
 
 	onMount(async () => {
-		// @ts-ignore
+		//
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
 
 		// modify the API to work with svelte components
 		const { addNode, addNodeImport } = createAddNode.bind(
 			Drawflow.prototype
 		)(flush)
-		// @ts-ignore
+
 		Drawflow.prototype.addNode = addNode
-		// @ts-ignore
 		Drawflow.prototype.addNodeImport = addNodeImport
 
 		// -------- PLUGINGS --------
@@ -54,15 +53,14 @@
 		// drag and drop
 		$ctx.dnd = dragAndDrop($ctx.editor)
 
-		// @ts-ignore shift key selection
+		// shift key selection
 		selectMultiple($ctx.editor)
 
 		// mimimap
 		// new DrawflowMinimap($ctx.minimap, $ctx.editor, 0.05)
-		// @ts-ignore
 		flush.push(draggableCancelation($ctx.editor).createListeners)
 
-		// @ts-ignore zoom
+		// zoom
 		zoomToPointer($ctx.editor)
 
 		// kickstart API
@@ -75,7 +73,7 @@
 
 		createNodeComponents($ctx.editor)
 
-		// @ts-ignore multi drag after load
+		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
 
 		return flush.map(create => create())

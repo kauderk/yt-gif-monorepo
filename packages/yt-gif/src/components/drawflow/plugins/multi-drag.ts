@@ -4,9 +4,7 @@ import './selectables/index.css'
 import { nodeEl } from '../lib/utils'
 
 // https://github.com/jerosoler/Drawflow/issues/322#issuecomment-993469501
-export function multiDrag(
-	editor: Drawflow & { nodeId: n; editor_selected: b }
-) {
+export function multiDrag(editor: Drawflow) {
 	let is_multiselect = false
 	let mult_arr: n[] = []
 

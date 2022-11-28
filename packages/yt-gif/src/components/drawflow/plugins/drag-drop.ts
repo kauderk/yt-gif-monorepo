@@ -1,7 +1,7 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import { items } from '../cmp/ctx'
 
-export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
+export function dragAndDrop(editor: Drawflow) {
 	let mobile_item_selec = ''
 	let mobile_last_move: TouchEvent
 	function positionMobile(ev: any) {
@@ -45,7 +45,7 @@ export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 		}
 	}
 
-	function addNodeToDrawFlow(key: keyof typeof Keys, pos_x: n, pos_y: n) {
+	function addNodeToDrawFlow(key: s, pos_x: n, pos_y: n) {
 		if (editor.editor_mode === 'fixed') {
 			return false
 		}
@@ -64,12 +64,7 @@ export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 				(editor.precanvas.clientHeight /
 					(editor.precanvas.clientHeight * editor.zoom))
 
-		const addNode = (
-			key: keyof typeof Keys,
-			in_ = 1,
-			out_ = 1,
-			data = {}
-		) => {
+		const addNode = (key: s, in_ = 1, out_ = 1, data = {}) => {
 			editor.addNode(
 				key,
 				in_,
@@ -83,8 +78,13 @@ export function dragAndDrop(editor: Drawflow & { precanvas: HTMLElement }) {
 			)
 		}
 
-		const id = items.find(o => o.GraphNodeID == key)
-		addNode(id?.GraphNodeID)
+		const id = items.find(o => o.GraphNodeID == key)?.GraphNodeID
+		if (!id) {
+			return console.warn(
+				'Drawflow: DragAndDrop - AddNode. id is undefined'
+			)
+		}
+		addNode(id)
 	}
 
 	return {
