@@ -4,7 +4,7 @@ import type ChapterBlock from './Index.svelte'
 import type { ChapterData } from 'src/routes/api/youtube/chapters/+server'
 import { get } from 'svelte/store'
 
-export function CreateChapterBlock(data: ChapterData) {
+export function CreateChapterBlocks(data: ChapterData) {
 	data.chapters
 		?.map(c => {
 			const _ = c.chapterRenderer
@@ -19,24 +19,27 @@ export function CreateChapterBlock(data: ChapterData) {
 			}
 		})
 		.forEach((props, i) => {
-			const placeholder = <const>{
-				name: 'graph-node',
-				connections: {
-					inputs: 1,
-					outputs: 1,
-				},
-				cords: {
-					x: 0 + i * 100,
-					y: 0 + i * 100,
-				},
-				data: {},
-				node: {
-					classoverride: 'graph-node',
-					html: DrawflowBlocks.ChapterBlock.GraphNodeID,
-					typenode: 'svelte',
-					props,
-				},
-			}
-			get(ctx).editor.addNode(placeholder)
+			CreateChapterBlock(i, props)
 		})
+}
+export function CreateChapterBlock(i = 0, props: ChapterBlock) {
+	const placeholder = <const>{
+		name: 'graph-node',
+		connections: {
+			inputs: 1,
+			outputs: 1,
+		},
+		cords: {
+			x: 0 + i * 100,
+			y: 0 + i * 100,
+		},
+		data: {},
+		node: {
+			classoverride: 'graph-node',
+			html: DrawflowBlocks.ChapterBlock.GraphNodeID,
+			typenode: 'svelte',
+			props,
+		},
+	}
+	get(ctx).editor.addNode(placeholder)
 }
