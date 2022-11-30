@@ -1,6 +1,6 @@
 import { cssData } from '../paths'
 import { ObserveIframesAndDelployYTPlayers } from '../../observer/yt-gif'
-import { UI } from '../yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 function pushMasterObserverWithTargetClass(classToObserve: string) {
@@ -43,13 +43,14 @@ export const targets = {
 		...base,
 		...rm_base.video,
 		page: 'video' as TGifTarget,
-		BinaryDomUI: () => UI.deploymentStyle.deployment_style_video,
+		BinaryDomUI: () => UIStore.get().deploymentStyle.deployment_style_video,
 	},
 	yt_gif: {
 		...base,
 		...rm_base.yt_gif,
 		page: 'yt-gif' as TGifTarget,
-		BinaryDomUI: () => UI.deploymentStyle.deployment_style_yt_gif,
+		BinaryDomUI: () =>
+			UIStore.get().deploymentStyle.deployment_style_yt_gif,
 	},
 	both: {
 		...deploy,
@@ -59,7 +60,7 @@ export const targets = {
 			rm_base.video.classToObserve,
 			rm_base.yt_gif.classToObserve,
 		],
-		BinaryDomUI: () => UI.deploymentStyle.deployment_style_both,
+		BinaryDomUI: () => UIStore.get().deploymentStyle.deployment_style_both,
 		runMasterObservers: function () {
 			this.classesToObserve.forEach(c =>
 				pushMasterObserverWithTargetClass(c)

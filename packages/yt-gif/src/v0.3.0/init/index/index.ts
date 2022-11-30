@@ -51,11 +51,11 @@ export async function Ready() {
 
 	// FlipBindAttr() // RTM runtime
 
-	// UpdateOnScroll_RTM(UI.range.timestamp_display_scroll_offset)
-	// UpdateOnScroll_RTM(UI.range.end_loop_sound_volume)
-	// UpdateOnScroll_RTM(UI.range.iframe_buffer_slider)
+	// UpdateOnScroll_RTM(UIStore.get().range.timestamp_display_scroll_offset)
+	// UpdateOnScroll_RTM(UIStore.get().range.end_loop_sound_volume)
+	// UpdateOnScroll_RTM(UIStore.get().range.iframe_buffer_slider)
 
-	// ToggleThumbnails(getOption(UI.experience.xp_options, 'thumbnail_as_bg'))
+	// ToggleThumbnails(getOption(UIStore.get().experience.xp_options, 'thumbnail_as_bg'))
 
 	// navigateToSettingsPageInSidebar()
 	// ToggleTheme()

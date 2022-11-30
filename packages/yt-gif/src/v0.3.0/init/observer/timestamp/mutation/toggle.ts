@@ -1,7 +1,7 @@
 import { ChangeElementType, toggleClasses } from '$lib/utils'
 import { getOption } from '../../../../lib/backend-frontend/option'
 import { cssData } from '../../../config/paths'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { ToggleTimestampShortcuts } from '../shortcut'
 import { cleanAndSetUp_TimestampEmulation } from '../emulation/index'
 import { timestampObj } from '../types'
@@ -25,7 +25,8 @@ export async function toggleTimestampEmulation(
 		await StopEmulation()
 		await ToogleTimestampSetUp(true, observer)
 		ToggleTimestampShortcuts(
-			getOption(UI.timestamps.tm_options, 'shortcuts').selected,
+			getOption(UIStore.get().timestamps.tm_options, 'shortcuts')
+				.selected,
 			keyupEventHandler
 		)
 	}

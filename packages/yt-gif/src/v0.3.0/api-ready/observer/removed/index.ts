@@ -4,7 +4,7 @@ import {
 	allVideoParameters,
 } from '$v3/lib/types/config'
 import { getOption } from '$v3/lib/backend-frontend/option'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { DeactivateTimestampsInHierarchy } from '$v3/init/timestamp/hierarchy'
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
 
@@ -23,7 +23,7 @@ export function RemovedFromDom(o: {
 		allVideoParameters.delete(o.newId)
 	}
 
-	if (!UI.timestamps.tm_recovery.checked) {
+	if (!UIStore.get().timestamps.tm_recovery.checked) {
 		DeactivateTimestampsInHierarchy(rm_container, o.wrapper)
 	}
 
@@ -35,9 +35,9 @@ export function RemovedFromDom(o: {
 	}
 
 	if (!isRendered(rm_container)) {
-		getOption(UI.timestamps.tm_options, 'anchor').removeEventListener(
-			'customChange',
-			o.that.switchTimestampObsOnAchor
-		)
+		getOption(
+			UIStore.get().timestamps.tm_options,
+			'anchor'
+		)?.removeEventListener('customChange', o.that.switchTimestampObsOnAchor)
 	}
 }

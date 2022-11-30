@@ -1,11 +1,11 @@
-import { UI } from '../../init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 
 export async function ClickOnTimestamp<T extends IBtnArrObj>(
 	target: IBtn,
 	override = <TClickEventOverride>{}
 ) {
 	const seekToMessage =
-		UI.timestamps.tm_seek_to.value == 'soft'
+		UIStore.get().timestamps.tm_seek_to.value == 'soft'
 			? 'seekTo-soft'
 			: 'seekTo-strict'
 
@@ -14,7 +14,7 @@ export async function ClickOnTimestamp<T extends IBtnArrObj>(
 		...(<MouseEvent>{}),
 		currentTarget: target,
 		which: 1,
-		mute: UI.timestamps.tm_seek_action.value == 'mute',
+		mute: UIStore.get().timestamps.tm_seek_action.value == 'mute',
 		simMessage: override.simMessage || '',
 		seekToMessage: override.seekToMessage || seekToMessage,
 	}

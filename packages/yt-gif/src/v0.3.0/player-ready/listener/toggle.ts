@@ -1,5 +1,6 @@
 import { isElementVisible } from '$lib/utils'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
+import type { PubSubProxy } from '$v3/init/config/UIStore/proxy'
 import type { TQueryResult } from '../setup/GetQuery'
 import { AnyPlayOnHover } from '../lib/anyValidInAndOutKey'
 import { playIs, muteIs } from '../lib/IFR'
@@ -11,21 +12,13 @@ import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 export function* FlipStyleGenerator(o: TStyleCallbacks) {
 	let bol = true
 	while (true) {
-		UI.playerSettings.play_style = Flip(
-			UI.playerSettings.play_style,
-			bol,
-			o.play
-		)
-		UI.playerSettings.mute_style = Flip(
-			UI.playerSettings.mute_style,
-			bol,
-			o.mute
-		)
-		UI.display.yt_playback_speed = Flip(
-			UI.display.yt_playback_speed,
-			bol,
-			o.playback
-		)
+		// FIXME: html elements behave weird when removing listeners... it should be straight forward this way
+		// UIStore.get().playerSettings.play_style =
+		Flip(UIStore.get().playerSettings.play_style, bol, o.play)
+		// UIStore.get().playerSettings.mute_style =
+		Flip(UIStore.get().playerSettings.mute_style, bol, o.mute)
+		// UIStore.get().display.yt_playback_speed =
+		Flip(UIStore.get().display.yt_playback_speed, bol, o.playback)
 		bol = yield bol
 	}
 }
@@ -72,23 +65,25 @@ function GetFuncPlayback(
 	local: ILocal
 ) {
 	return function () {
-		const value = UI.display.yt_playback_speed.value
+		const value = UIStore.get().display.yt_playback_speed.value
 		const speed = value == 'Default' ? map.speed.value : Number(value)
 		local.update.tickOffset = 1000 / speed
 		t.setPlaybackRate(speed)
 	}
 }
 function Flip(
-	binaryInput: HTMLSelectElement,
+	binaryInput: PubSubProxy,
 	bol = false,
 	cb = () => {
 		/* empty */
 	}
 ) {
-	if (binaryInput?.tagName) {
-		if (bol) binaryInput.addEventListener('change', cb)
-		else binaryInput.removeEventListener('change', cb)
-	}
+	// FIXME: html elements behave weird when removing listeners... it should be straight forward this way
 
-	return binaryInput
+	// if (binaryInput?.tagName) {
+	if (bol) binaryInput.addEventListener('change', cb)
+	else binaryInput.removeEventListener('change', cb)
+	// }
+
+	// return binaryInput
 }

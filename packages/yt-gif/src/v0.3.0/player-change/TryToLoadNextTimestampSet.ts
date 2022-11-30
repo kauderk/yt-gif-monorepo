@@ -1,4 +1,4 @@
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import {
 	isRendered,
 	closest_container_request,
@@ -11,7 +11,7 @@ export function ReloadFlow(o: IReload) {
 	if (
 		o.activeIdx === -1 && // din't find any active
 		// and ( only on active or there are no targets)
-		(UI.timestamps.tm_loop_hierarchy.value == 'active' ||
+		(UIStore.get().timestamps.tm_loop_hierarchy.value == 'active' ||
 			o.targets.length == 0)
 	) {
 		return <const>{ message: 'reload-this' }
@@ -43,10 +43,10 @@ export function QueryTimestampObj(
 	rm_container: Element
 ) {
 	const options = Array.from(
-		UI.timestamps.tm_loop_options.selectedOptions
+		UIStore.get().timestamps.tm_loop_options.selectedOptions
 	).map(o => o.value) // skip - include_player
 
-	const page = UI.timestamps.tm_loop_to.value || 'start'
+	const page = UIStore.get().timestamps.tm_loop_to.value || 'start'
 	const sel = `[timestamp-set][timestamp-style="${page}"]`
 	const boundedSel = `${sel}:not([out-of-bounds])`
 	const tmSel = options.includes('skip') ? boundedSel : sel // Skip if target is missing or if it is out of bounds

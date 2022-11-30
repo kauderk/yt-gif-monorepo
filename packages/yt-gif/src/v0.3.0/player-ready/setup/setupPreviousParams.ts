@@ -1,5 +1,5 @@
 import { lastBlockIDParameters } from '$v3/lib/types/config'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import type { TVideoParams } from '$v3/lib/types/video-types'
 import type { ILocal } from '../lib/TStat'
 import type { TQueryResult } from './GetQuery'
@@ -11,7 +11,7 @@ export function setupPreviousParams(o: ILocal, q: TQueryResult) {
 		return
 	}
 
-	const { url_boundaries, url_volume } = UI.playerSettings
+	const { url_boundaries, url_volume } = UIStore.get().playerSettings
 
 	// TODO: add noun types: strict | soft
 	// prettier-ignore

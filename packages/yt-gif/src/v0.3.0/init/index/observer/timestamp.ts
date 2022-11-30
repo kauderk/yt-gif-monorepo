@@ -1,5 +1,5 @@
 import { getOption } from '../../../lib/backend-frontend/option'
-import { UI } from '../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { toggleTimestampEmulation } from '../../observer/timestamp/mutation/toggle'
 import { ChangeTimestampsDisplay } from '../../observer/timestamp/display'
 import { ToggleTimestampShortcuts } from '../../observer/timestamp/shortcut'
@@ -19,11 +19,11 @@ export async function KickstartTimestampObserver(
 	{ timestampObserver, keyupEventHandler } = SrrGlobal.YT_GIF_OBSERVERS
 ) {
 	await toggleTimestampEmulation(
-		UI.display.simulate_roam_research_timestamps.checked,
+		UIStore.get().display.simulate_roam_research_timestamps.checked,
 		timestampObserver!,
 		keyupEventHandler
 	)
-	UI.display.simulate_roam_research_timestamps.addEventListener(
+	UIStore.get().display.simulate_roam_research_timestamps.addEventListener(
 		'change',
 		async e =>
 			toggleTimestampEmulation(
@@ -33,10 +33,10 @@ export async function KickstartTimestampObserver(
 			)
 	)
 	addCustomChangeListener(
-		getOption(UI.timestamps.tm_options, 'shortcuts'),
+		getOption(UIStore.get().timestamps.tm_options, 'shortcuts'),
 		e => ToggleTimestampShortcuts(e.detail.currentValue, keyupEventHandler)
 	)
-	UI.timestamps.tm_workflow_display.addEventListener('change', e =>
+	UIStore.get().timestamps.tm_workflow_display.addEventListener('change', e =>
 		ChangeTimestampsDisplay(
 			(e.currentTarget as HTMLSelectElement).value as keyof Itime
 		)

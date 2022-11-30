@@ -3,7 +3,7 @@ import { getYouTubeVideoID } from '$lib/utils'
 import { tryToGetUrlDuration } from '../../../../lib/backend-frontend/url-duration'
 import { isSelected } from '../../../../lib/backend-frontend/option'
 import { getMap_smart } from '../../../../lib/backend-frontend/get-maps'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { getWrapperInHierarchyObj } from '../../../../lib/dom/roam'
 import type { IArrObj } from '../types'
 import { fmtTimestamp } from '$v3/init/timestamp/utils'
@@ -14,7 +14,7 @@ export async function durationObj(
 	// gain some performance
 	const obj = { getDuration: () => -1 }
 
-	if (!isSelected(UI.timestamps.tm_options, 'YT_API_KEY_V3')) {
+	if (!isSelected(UIStore.get().timestamps.tm_options, 'YT_API_KEY_V3')) {
 		return obj
 	}
 

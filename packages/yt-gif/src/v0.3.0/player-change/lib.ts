@@ -1,4 +1,5 @@
-import { UI, setCurrentFullscreenPlayer } from '$v3/init/config/yt-gif-init'
+import { setCurrentFullscreenPlayer } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { exitFullscreen, isValidUrl, mapRange, sleep } from '$lib/utils'
 import { ClickResetWrapper } from '$v3/lib/event/ClickResetWrapper'
 import { ClickOnTimestamp } from '$v3/lib/event/ClickOnTimestamp'
@@ -43,7 +44,7 @@ export function TryToPlayEndSound() {
 		const audio = new Audio() // create audio wo/ src
 		audio.preload = 'auto' // intend to play through
 		audio.volume = mapRange(
-			Number(UI.range.end_loop_sound_volume.value),
+			Number(UIStore.get().range.end_loop_sound_volume.value),
 			0,
 			100,
 			0,

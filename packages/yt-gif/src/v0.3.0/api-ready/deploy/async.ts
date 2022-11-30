@@ -2,7 +2,7 @@ import { lastBlockIDParameters } from '$v3/lib/types/config'
 import { toggleClasses, removeIMGbg, simHover, applyIMGbg } from '$lib/utils'
 import { isSelected } from '$v3/lib/backend-frontend/option'
 import { cssData } from '$v3/init/config/paths'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 import { AssertParamsClickTimestamp } from '../observer/timestamp-recovery/click'
@@ -26,7 +26,7 @@ export function DeployAsync(
 
 	const mainAnimation = setUpWrapperAwaitingAnimation()
 
-	const { awaiting_input_type } = UI.experience
+	const { awaiting_input_type } = UIStore.get().experience
 	let interactionType =
 		awaiting_input_type.value == 'mousedown' ? 'mousedown' : 'mouseenter' // huga buga
 
@@ -146,7 +146,7 @@ export function DeployAsync(
 
 		const mainAnimation = awaitingAnimationThumbnail
 
-		if (isSelected(UI.experience.xp_options, 'thumbnail_as_bg'))
+		if (isSelected(UIStore.get().experience.xp_options, 'thumbnail_as_bg'))
 			applyIMGbg(wrapper, url)
 
 		toggleClasses(true, mainAnimation, wrapper)

@@ -1,5 +1,5 @@
 import { sleep, updateBlock } from '$lib/utils-roam-alpha-api'
-import { UI } from '../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { getTimestampObj_smart } from '../../timestamp/formats'
 import { getCurrentInputBlock } from '../../../lib/dom/roam'
 
@@ -8,8 +8,9 @@ export async function addBlockTimestamp_smart_local(pageRefSufx: startEnd) {
 	const timestampObj = await getTimestampObj_smart(pageRefSufx)
 	const uid = timestampObj.uid
 	const component =
-		timestampObj[UI.timestamps.tm_workflow_grab.value as keyof Itime]
-			?.fmt ?? ''
+		timestampObj[
+			UIStore.get().timestamps.tm_workflow_grab.value as keyof Itime
+		]?.fmt ?? ''
 
 	if (!uid)
 		return console.warn(
@@ -17,7 +18,9 @@ export async function addBlockTimestamp_smart_local(pageRefSufx: startEnd) {
 		)
 	if (!component)
 		return console.warn(
-			`YT GIF Timestamps: couldn't find values with the keyword "${UI.timestamps.tm_workflow_grab.value}" from ((${uid}))`
+			`YT GIF Timestamps: couldn't find values with the keyword "${
+				UIStore.get().timestamps.tm_workflow_grab.value
+			}" from ((${uid}))`
 		)
 
 	const { updatedString, el } = concatStringAtCaret(

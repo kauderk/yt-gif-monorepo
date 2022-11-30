@@ -1,4 +1,4 @@
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { isSelected } from '$v3/lib/backend-frontend/option'
 import type { TQueryResult } from '../../setup/GetQuery'
 import {
@@ -30,7 +30,7 @@ export function GetHoverStates(q: TQueryResult) {
 		play() {
 			if (
 				isSelected(
-					UI.playerSettings.ps_options,
+					UIStore.get().playerSettings.ps_options,
 					'mantain_last_active_player'
 				)
 			)

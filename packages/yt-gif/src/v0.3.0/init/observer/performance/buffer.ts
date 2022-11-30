@@ -1,7 +1,7 @@
 import { isElementVisible } from '$lib/utils'
 import { attrInfo } from '../../config/paths'
 import { getOption } from '../../../lib/backend-frontend/option'
-import { UI } from '../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { CleanAndBrandNewWrapper } from '../../../lib/utils'
 import { SrrGlobal } from '$lib/global/SrrGlobal'
 
@@ -85,7 +85,7 @@ export function FitBuffer_OffScreen(
 	return arr
 }
 export function toggle_buffers_overflow(bol: boolean) {
-	const modes = UI.experience.initialize_mode
+	const modes = UIStore.get().experience.initialize_mode
 	const input_x_buffer = getOption(modes, 'input_x_buffer')
 
 	input_x_buffer.disabled = bol
