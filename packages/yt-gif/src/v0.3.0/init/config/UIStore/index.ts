@@ -31,7 +31,7 @@ export const UIStore = createWritableStore('UIStore', {
 	display: {
 		fmt_options: createSelectStore(),
 		ms_options: createCustomSelectStore(
-			['simulate_url_formatter'],
+			['simulate_url_formatter', 'clip_lifespan_format'],
 			['multiple', 'custom']
 		),
 		simulate_roam_research_timestamps: createInputStore(),
@@ -62,7 +62,7 @@ export const UIStore = createWritableStore('UIStore', {
 		tm_loop_hierarchy: createSelectStore(),
 		tm_loop_options: createSelectStore(),
 		tm_loop_to: createSelectStore(),
-		tm_options: createSelectStore(['anchor', 'shortcuts']),
+		tm_options: createSelectStore(['anchor', 'shortcuts', 'YT_API_KEY_V3']),
 		tm_recovery: createInputStore(),
 		tm_reset_on_removal: createSelectStore(),
 		tm_restore: createSelectStore(),

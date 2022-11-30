@@ -36,7 +36,7 @@ export function GetFullscreenCallbacks(q: TQueryResult, t: YT_TargetWrapper) {
 				q.parent.others.toggleActive()
 			} else if (playIs('all_visible')) {
 				UIStore.get().playerSettings.play_style.dispatchEvent(
-					new Event('change')
+					new CustomEvent('change')
 				)
 			}
 		},

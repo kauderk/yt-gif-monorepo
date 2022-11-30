@@ -92,5 +92,5 @@ export function toggle_buffers_overflow(bol: boolean) {
 	if (!bol) input_x_buffer.selected = false
 
 	getOption(modes, 'overflow').selected = bol
-	modes.dispatchEvent(new Event('customBind'))
+	modes.dispatchEvent(new CustomEvent('customBind'))
 }

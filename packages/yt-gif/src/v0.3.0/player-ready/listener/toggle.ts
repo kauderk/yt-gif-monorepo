@@ -1,6 +1,6 @@
 import { isElementVisible } from '$lib/utils'
 import { UIStore } from '$v3/init/config/UIStore'
-import type { PubSubProxy } from '$v3/init/config/UIStore/proxy'
+import type { PubSubProxy } from '$v3/init/config/UIStore/types'
 import type { TQueryResult } from '../setup/GetQuery'
 import { AnyPlayOnHover } from '../lib/anyValidInAndOutKey'
 import { playIs, muteIs } from '../lib/IFR'

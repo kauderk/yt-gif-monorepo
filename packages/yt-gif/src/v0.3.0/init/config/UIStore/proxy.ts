@@ -1,8 +1,11 @@
-function PubSub() {
+import type { OptionProxy, SELProxy } from './types'
+
+type cb = (this: SELProxy, payload: CustomEvent<SELProxy>) => void
+export function PubSub() {
 	return {
-		dispatchEvent(event: Event) {},
-		addEventListener(eventName: s, callback: Function) {},
-		removeEventListener(eventName: s, callback: Function) {},
+		dispatchEvent(event: CustomEvent<any>) {},
+		addEventListener(eventName: s, cb: cb) {},
+		removeEventListener(eventName: s, cb: cb) {},
 	}
 }
 export function createInputStore() {
@@ -12,7 +15,7 @@ export function createInputStore() {
 		...PubSub(),
 	}
 }
-function createOptionStore<S extends string>(value: S) {
+export function createOptionStore<S extends string>(value: S) {
 	return {
 		value,
 		selected: false,
@@ -54,13 +57,3 @@ export function createCustomSelectStore<S extends string>(
 		})),
 	}
 }
-
-export type SelectProxy<S extends string> = ReturnType<
-	typeof createSelectStore<S>
->
-export type CustomSelectProxy<S extends string> = ReturnType<
-	typeof createCustomSelectStore<S>
->
-export type InputProxy = ReturnType<typeof createInputStore>
-export type OptionProxy = ReturnType<typeof createOptionStore>
-export type PubSubProxy = ReturnType<typeof PubSub>

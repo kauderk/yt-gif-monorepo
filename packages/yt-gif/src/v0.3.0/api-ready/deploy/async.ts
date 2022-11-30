@@ -6,6 +6,7 @@ import { UIStore } from '$v3/init/config/UIStore'
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 import { AssertParamsClickTimestamp } from '../observer/timestamp-recovery/click'
+import type { SELProxy } from '$v3/init/config/UIStore/types'
 
 // 8.0
 export function DeployAsync(
@@ -122,7 +123,7 @@ export function DeployAsync(
 	function RemoveInteractionEventListener() {
 		wrapper.removeEventListener(interactionType, MouseListener)
 	}
-	function changeMouseEvents(this: HTMLSelectElement) {
+	function changeMouseEvents(this: SELProxy) {
 		if (!isRendered(wrapper)) {
 			return RemoveAllListeners()
 		}

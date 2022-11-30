@@ -4,7 +4,7 @@ import type { T_SettingsAny } from '$v3/settings-page/types'
 import { smart_LoadCSS } from './fetch'
 import { cssData } from '$v3/init/config/paths'
 import { UIStore } from '$v3/init/config/UIStore'
-import type { InputProxy } from '$v3/init/config/UIStore/proxy'
+import type { InputProxy } from '$v3/init/config/UIStore/types'
 
 /* ************* */
 export function ToggleTheme(
