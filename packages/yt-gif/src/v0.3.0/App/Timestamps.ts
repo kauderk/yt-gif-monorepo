@@ -35,6 +35,7 @@ export const recoveryOptions = <const>{
 	tooltip:
 		'After editing YT GIF Blocks remember active timestamps boundaries else deactivate them',
 	name: 'Timestamp Recovery',
+	value: false,
 }
 export const seekTo = <const>{
 	label: {

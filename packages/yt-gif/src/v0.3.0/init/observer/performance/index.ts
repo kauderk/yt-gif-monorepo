@@ -28,7 +28,7 @@ export function ifBuffer_ShiftOldest() {
 
 	// work in progress | by shifting/removing the first entry, you clean the most irrelevant YT GIF, and give space to new ones (to load, thus autoplay on mouseenter) when intersecting the website
 	let arr = SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer
-	const cap = parseInt(UIStore.get().range.iframe_buffer_slider.value, 10)
+	const cap = Number(UIStore.get().range.iframe_buffer_slider.value)
 	const { displaced, buffer } = attrInfo.creation
 
 	if (isIntersection_selectedValid()) {

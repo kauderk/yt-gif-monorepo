@@ -1,7 +1,7 @@
 import type {
 	createSelectStore,
 	createCustomSelectStore,
-	createInputStore,
+	createRangeStore,
 	createOptionStore,
 	PubSub,
 } from './proxy'
@@ -12,7 +12,7 @@ export type SelectProxy<S extends Lookup> = ReturnType<
 export type CustomSelectProxy<S extends Lookup> = ReturnType<
 	typeof createCustomSelectStore<S>
 >
-export type InputProxy = ReturnType<typeof createInputStore>
+export type InputProxy = ReturnType<typeof createRangeStore>
 export type OptionProxy = ReturnType<typeof createOptionStore>
 export type PubSubProxy = ReturnType<typeof PubSub>
 
@@ -38,3 +38,11 @@ type DeepReadonly<TObj> = {
 }
 
 export type ReadLookup = DeepReadonly<Lookup>
+
+//
+type InputModule = typeof import('./inputs')
+export type InputModules = InputModule[keyof InputModule]
+
+export interface Inputs {
+	value: boolean | number
+}

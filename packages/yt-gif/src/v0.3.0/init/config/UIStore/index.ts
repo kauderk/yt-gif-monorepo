@@ -1,13 +1,16 @@
 import { createWritableStore } from '$lib/local-storage-store'
 import * as l from './lookups'
+import * as n from './inputs'
 import {
-	createInputStore,
+	createRangeStore,
 	createSelectStore,
 	createCustomSelectStore,
+	createBinaryStore,
 } from './proxy'
 
 const SelectStore = (o: { options: o }) =>
 	// typescript!!!
+	// @ts-ignore
 	createSelectStore(o)
 
 export const UIStore = createWritableStore('UIStore', {
@@ -27,20 +30,25 @@ export const UIStore = createWritableStore('UIStore', {
 		override_simulate_url_to_video_component: '',
 	},
 	deploymentStyle: {
-		deploy_yt_gifs: createInputStore(),
-		deployment_style_both: createInputStore(),
-		deployment_style_video: createInputStore(),
-		deployment_style_yt_gif: createInputStore(),
-		suspend_yt_gif_deployment: createInputStore(),
+		deploy_yt_gifs: createBinaryStore(n.deploy_yt_gifs),
+		deployment_style_both: createBinaryStore(n.deployment_style_both),
+		deployment_style_video: createBinaryStore(n.deployment_style_video),
+		deployment_style_yt_gif: createBinaryStore(n.deployment_style_yt_gif),
+		suspend_yt_gif_deployment: createBinaryStore(
+			n.suspend_yt_gif_deployment
+		),
 	},
 	display: {
 		fmt_options: SelectStore(l.formatterOptions),
+		// @ts-ignore
 		ms_options: createCustomSelectStore(l.options, ['multiple', 'custom']),
-		simulate_roam_research_timestamps: createInputStore(),
+		simulate_roam_research_timestamps: createBinaryStore(
+			n.simulate_roam_research_timestamps
+		),
 		yt_playback_speed: SelectStore(l.yt_playback_speed),
 	},
 	dropdownMenu: {
-		ddm_css_theme_input: createInputStore(),
+		ddm_css_theme_input: createBinaryStore(n.ddm_css_theme_input),
 	},
 	experience: {
 		awaiting_input_type: SelectStore(l.awaiting_input_type),
@@ -56,16 +64,18 @@ export const UIStore = createWritableStore('UIStore', {
 		url_volume: SelectStore(l.url_volume),
 	},
 	range: {
-		end_loop_sound_volume: createInputStore(),
-		iframe_buffer_slider: createInputStore(),
-		timestamp_display_scroll_offset: createInputStore(),
+		end_loop_sound_volume: createRangeStore(n.end_loop_sound_volume_input),
+		iframe_buffer_slider: createRangeStore(n.iframe_buffer_slider_input),
+		timestamp_display_scroll_offset: createRangeStore(
+			n.timestamp_display_scroll_offset_input
+		),
 	},
 	timestamps: {
 		tm_loop_hierarchy: SelectStore(l.loopTimestamps),
 		tm_loop_options: SelectStore(l.LoopOptions),
 		tm_loop_to: SelectStore(l.startEndOptions),
 		tm_options: SelectStore(l.featuresOptions),
-		tm_recovery: createInputStore(),
+		tm_recovery: createBinaryStore(n.recoveryOptions),
 		tm_reset_on_removal: SelectStore(l.reset),
 		tm_restore: SelectStore(l.restore),
 		tm_seek_action: SelectStore(l.seekToActions),

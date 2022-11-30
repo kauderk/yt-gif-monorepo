@@ -1,5 +1,4 @@
-import type { S } from '.svelte-kit/types/src/sveltekit-zero-api'
-import type { OptionProxy, SELProxy, Lookup } from './types'
+import type { OptionProxy, SELProxy, Lookup, Inputs } from './types'
 
 type cb = (this: SELProxy, payload: CustomEvent<SELProxy>) => void
 export function PubSub() {
@@ -15,11 +14,17 @@ export function PubSub() {
 		},
 	}
 }
-export function createInputStore() {
+export function createRangeStore(input: Inputs) {
 	return {
-		value: '',
-		checked: false,
 		...PubSub(),
+		value: input.value as n | s,
+	}
+}
+export function createBinaryStore(input: Inputs) {
+	return {
+		...PubSub(),
+		checked: input.value as b,
+		value: input.value as b,
 	}
 }
 export function createOptionStore<S extends string>(value: S) {
