@@ -30,7 +30,6 @@ export function CreateRecordID(o: {
 	url: string
 	accUrlIndex: number
 }) {
-	debugger
 	const record = new T_YT_RECORD()
 	sessionIDs.uid = o.uid
 	const blockID =

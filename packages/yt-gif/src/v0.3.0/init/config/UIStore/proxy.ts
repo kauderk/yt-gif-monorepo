@@ -1,11 +1,18 @@
-import type { OptionProxy, SELProxy } from './types'
+import type { S } from '.svelte-kit/types/src/sveltekit-zero-api'
+import type { OptionProxy, SELProxy, Lookup } from './types'
 
 type cb = (this: SELProxy, payload: CustomEvent<SELProxy>) => void
 export function PubSub() {
 	return {
-		dispatchEvent(event: CustomEvent<any>) {},
-		addEventListener(eventName: s, cb: cb) {},
-		removeEventListener(eventName: s, cb: cb) {},
+		dispatchEvent(event: CustomEvent<any>) {
+			console.trace('dispatchEvent')
+		},
+		addEventListener(eventName: s, cb: cb) {
+			console.trace('addEventListener')
+		},
+		removeEventListener(eventName: s, cb: cb) {
+			console.trace('removeEventListener')
+		},
 	}
 }
 export function createInputStore() {
@@ -18,7 +25,7 @@ export function createInputStore() {
 export function createOptionStore<S extends string>(value: S) {
 	return {
 		value,
-		selected: false,
+		selected: true,
 		disabled: false,
 		...PubSub(),
 	}
@@ -32,20 +39,25 @@ function Attributes(attributes: attrs[] = []) {
 		},
 	}
 }
-export function createSelectStore<S extends string>(options: S[]) {
+export function createSelectStore<L extends Lookup>(lookup: L) {
+	const keys = Object.keys(lookup.options)
+	const isSelected = (k: s) => lookup.options[k].selected
+	const value = keys.reduce((prev, crr) => {
+		return isSelected(crr) ? crr : prev
+	}, '')
 	return {
-		value: <typeof options[number]>{},
-		options: options.map(s => createOptionStore(s)),
+		value,
+		options: keys.filter(isSelected).map(createOptionStore),
 		selectedOptions: new Array<OptionProxy>(),
 		//
 		...PubSub(),
 	}
 }
-export function createCustomSelectStore<S extends string>(
-	options: S[],
+export function createCustomSelectStore<L extends Lookup>(
+	lookup: L,
 	attributes: attrs[]
 ) {
-	const store = createSelectStore(options)
+	const store = createSelectStore(lookup)
 	const newStore = Object.assign(store, Attributes(attributes))
 
 	return {

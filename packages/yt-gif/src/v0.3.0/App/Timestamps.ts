@@ -66,6 +66,7 @@ export const restore = <const>{
 			'data-tooltip':
 				'Match the displayed value inside the {{[[yt-gif/start|end]]}} component',
 			name: 'Match',
+			selected: true,
 		},
 		any: {
 			'data-tooltip': `Any timestamp with it's previous position/index`,
@@ -84,6 +85,7 @@ export const reset = <const>{
 			'data-tooltip':
 				'Recommended with recovery mode on | When the container is removed',
 			name: 'Container',
+			selected: true,
 		},
 		block: {
 			'data-tooltip': `Recommended with recovery mode off | When block content is removed/editing`,
@@ -106,6 +108,7 @@ export const seekToActions = <const>{
 			'data-tooltip':
 				'Recommended with recovery mode on | When the container is removed',
 			name: 'Mute',
+			selected: true,
 		},
 		pause: {
 			'data-tooltip': `Recommended with recovery mode off | When block content is removed/editing`,
@@ -150,6 +153,7 @@ export const displayTm = <const>{
 		lessHMS: {
 			'data-tooltip': `Show few digits as possible. E.g. 1s - 59s - 1:30 - 2:30:10`,
 			name: 'Less HMS',
+			selected: true,
 		},
 		HMS: {
 			'data-tooltip': `Show time with the HH:MM:SS format`,

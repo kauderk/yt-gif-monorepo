@@ -29,7 +29,6 @@ import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 
 export async function onPlayerReady(event: YT) {
 	// setup
-	debugger
 	const t = new YT_TargetWrapper(event.target)
 	const key = t.GetIframeID()
 	const l = GetElementsObj(key, t)

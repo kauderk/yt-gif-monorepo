@@ -33,7 +33,10 @@ export class YT_TargetWrapper {
 	}
 	GetIframeID: FString = () =>
 		this.t.i?.id || this.t.g?.id || this.t.getIframe()?.id
-	GetVideoID: FString = () => this.t.j.i.videoId
+	GetVideoID: FString = () =>
+		this.t?.i?.h?.videoId ??
+		this.t.playerInfo.videoData.video_id ??
+		JSON.parse(this.t.playerInfo?.debugText ?? '{}')?.debug_videoId
 	GetVars: () => {
 		start: number
 		end: number
