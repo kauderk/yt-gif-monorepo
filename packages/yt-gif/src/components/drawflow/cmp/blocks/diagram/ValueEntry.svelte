@@ -6,8 +6,8 @@
     export let extra: String[];
 </script>
 
-<div class="d-flex flex-row justify-content-between">
-    <div class="d-flex flex-row" >
+<div style="display: flex; flex-direction: row; justify-content: space-between;">
+    <div style="display: flex; flex-direction: row;" >
         <div class='type {className}'>{typeLetter}</div>
         {#if brackets == "1"}
             <div class='type purple-type'>[]</div>
@@ -15,7 +15,7 @@
         <div class="mb-1 value">{valueName}</div>
     </div>
     {#if extra.length > 0}
-        <div class="d-flex flex-row">            
+        <div style="display: flex; flex-direction: row;">            
             <div class="value">{extra[0]}</div>
             <div class='type green-type-2'>{extra[1]}</div>
         </div>
