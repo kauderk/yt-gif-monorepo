@@ -83,10 +83,10 @@
 		.connection .main-path {
 			cursor: pointer;
 			fill: none;
-			stroke-width: 3px;
+			stroke-width: 2.5px;
 			stroke-dasharray: 10px;
 			stroke-dashoffset: 20px;
-			animation: stroke 0.2s linear infinite;
+			animation: stroke 0.4s linear infinite;
 
 			stroke: #c0c0c0bb;
 			&:hover {
