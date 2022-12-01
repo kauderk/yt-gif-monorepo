@@ -18,7 +18,7 @@ import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function SetupTimestampObserver(grandParentBlock: Element, uid: string) {
 	const rm_container = closest_container(grandParentBlock)
-	rm_container?.setAttribute('yt-gif-block-uid', uid)
+	rm_container?.setAttribute('data-yt-gif-block-uid', uid)
 	return rm_container
 }
 export function GetNewID() {
@@ -60,17 +60,22 @@ export function CheckFalsePositive(o: {
 	}
 	return false
 }
-export function CreateYTGIFElement(o: {
-	wrapper: HTMLElement
-	customSpan: s
-
+export interface CreateYTGIF {
 	targetClass: string
 	dataCreation: string
-
 	url: string
 	accUrlIndex: number
 	newId: string
-}) {
+	customSpan?: string
+}
+/**
+ * @deprecated
+ */
+export function CreateYTGIFElement(
+	o: {
+		wrapper: HTMLElement
+	} & CreateYTGIF
+) {
 	let wrapper = o.wrapper
 
 	if (wrapper.tagName != 'DIV') {

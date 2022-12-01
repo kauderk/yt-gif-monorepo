@@ -517,6 +517,9 @@ export interface DrawflowModuleData {
 }
 
 export interface DrawflowNode {
+	//FIXME:
+	open?: boolean
+	order?: number
 	class: string
 	data: any
 	html: string

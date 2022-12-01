@@ -9,12 +9,12 @@ export async function getRelevantWrapperObjFunc1(
 	{ tmSetObj, uid }: IClickInput
 ) {
 	const yuid = (el: QrySearch) => el?.getAttribute('yt-gif-anchor-container')
-	const buid = (el: QrySearch) => el?.getAttribute('yt-gif-block-uid')
+	const buid = (el: QrySearch) => el?.getAttribute('data-yt-gif-block-uid')
 
 	let anchorUid
 	if (isSelected(UIStore.get().timestamps.tm_options, 'anchor'))
 		anchorUid =
-			buid(tEl?.closest('[yt-gif-block-uid]')) ||
+			buid(tEl?.closest('[data-yt-gif-block-uid]')) ||
 			yuid(closest_anchor_container(tmSetObj.self.targetNode))
 
 	const m_uid = anchorUid || uid

@@ -50,10 +50,10 @@ export async function onYouTubePlayerAPIReady(params: {
 	// })
 
 	// Observe children containers and recover active timestamps respectively
-	// const rm_container = SetupTimestampObserver(grandParentBlock, uid)
+	const rm_container = SetupTimestampObserver(grandParentBlock, uid)
 
-	// const base = { rm_container, grandParentBlock, blockID }
-	// const that = TimestampRecovery(base)
+	const base = { rm_container, grandParentBlock, blockID }
+	const that = TimestampRecovery(base)
 	// const instance = { wrapper, ...base, ...uidResult }
 
 	// Set up btns

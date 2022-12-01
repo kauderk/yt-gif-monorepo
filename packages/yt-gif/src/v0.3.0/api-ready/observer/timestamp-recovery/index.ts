@@ -10,7 +10,10 @@ export function TrySetUpTimestampRecovery(
 	that: ILocalWrapper,
 	rm_container: El
 ) {
-	if (!rm_container || rm_container?.hasAttribute('timestamp-observer')) {
+	if (
+		!rm_container ||
+		rm_container?.hasAttribute('data-timestamp-observer')
+	) {
 		return <const>{
 			getCrrContainer: () => rm_container!,
 			switchTimestampObsOnAchor: (e: Event) => {},
@@ -18,7 +21,7 @@ export function TrySetUpTimestampRecovery(
 	}
 	const { delObsTimestmp, getTargetWrapper, getObsTimestamp } = that
 
-	rm_container.setAttribute('timestamp-observer', '')
+	rm_container.setAttribute('data-timestamp-observer', '')
 	rm_container.addEventListener('customDelObsTimestmp', delObsTimestmp)
 
 	// @ts-ignore

@@ -54,12 +54,26 @@
 	 data-video-url="https://youtu.be/{id}"
 	 yt-gif-timestamp
 	*/
+	let repaint = 0
 </script>
 
 <div class="dwn-yt-gif-player-container" id="F">
 	<div class="dropdown-content" id="F">
-		<F bind:wrapper />
+		<!-- container state -->
+		<div
+			class="roam-block-container"
+			data-yt-gif-block-uid={'0123456789'}
+			id="yt-gif-block"
+			data-timestamp-observer={undefined}>
+			<!-- input -->
+			<div class="rm-block__input" id="input-block">
+				{#key repaint}
+					<F bind:wrapper />
+				{/key}
+			</div>
+		</div>
 	</div>
 </div>
 
-<button style="margin-left: 2px;" on:click={Fire}>Fire</button>
+<button on:click={Fire}>Fire</button>
+<button on:click={() => repaint + 1}>Repaint</button>

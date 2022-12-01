@@ -46,7 +46,7 @@ export function closest_anchor_container(el: QrySearch) {
 
 	const yuid = (el: QrySearch) => el?.getAttribute('yt-gif-anchor-container')
 
-	const buid = (el: QrySearch) => el?.getAttribute('yt-gif-block-uid')
+	const buid = (el: QrySearch) => el?.getAttribute('data-yt-gif-block-uid')
 
 	const rm = closest_container(el) as Element
 	const yt = anc(el)

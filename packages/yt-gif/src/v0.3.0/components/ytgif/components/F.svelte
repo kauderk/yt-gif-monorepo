@@ -1,16 +1,27 @@
 <script lang="ts">
+	import { getYouTubeVideoID } from '$lib/utils'
+	import type { CreateYTGIF } from '$v3/api-ready/setup/query'
 	export let wrapper: HTMLDivElement
+	export let attr: CreateYTGIF = {
+		targetClass: 'rm-xparser-default-yt-gif',
+		dataCreation: 'null',
+		url: 'https://youtu.be/qTgPSKKjfVg',
+		accUrlIndex: 0,
+		newId: 'string',
+		customSpan: undefined,
+	}
+	$: id = getYouTubeVideoID(attr.url)
 </script>
 
 <span class="yt-gif-wrapper-parent snipcss-4qNoP">
 	<div
 		class="yt-gif-wrapper dont-focus-block yt-gif-awaiting-palyer--pulse-animation yt-gif-awaiting-for-user-input yt-gif-awaiting-for-user-input-with-thumbnail"
-		data-target="rm-xparser-default-yt-gif"
-		data-creation="null"
-		data-video-url="https://youtu.be/qTgPSKKjfVg"
-		data-video-index="0"
+		data-target={attr.targetClass}
+		data-creation={attr.dataCreation}
+		data-video-url={attr.url}
+		data-video-index={attr.accUrlIndex}
 		bind:this={wrapper}
-		style="background-image: url(&quot;https://img.youtube.com/vi/qTgPSKKjfVg/hqdefault.jpg&quot;);">
+		style="background-image: url(&quot;https://img.youtube.com/vi/{id}/hqdefault.jpg&quot;);">
 		<div class="yt-gif-iframe-wrapper">
 			<div id="player_1" class="yt-gif-player" />
 		</div>

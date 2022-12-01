@@ -41,6 +41,8 @@ function GetPreSelector() {
 		].map(s => '.' + s),
 		'.yt-gif-wrapper',
 	]
+		.flat(Infinity)
+		.filter(s => !!s) as s[]
 }
 function GetIsDmmTutorial(el: Element) {
 	return (<const>{
