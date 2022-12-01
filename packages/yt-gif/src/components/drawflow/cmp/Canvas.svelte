@@ -83,8 +83,12 @@
 		.connection .main-path {
 			cursor: pointer;
 			fill: none;
-			stroke-width: 5px;
-			stroke: #838383bb;
+			stroke-width: 3px;
+			stroke-dasharray: 10px;
+			stroke-dashoffset: 20px;
+			animation: stroke 0.2s linear infinite;
+
+			stroke: #c0c0c0bb;
 			&:hover {
 				stroke: #46b0b4;
 			}
@@ -96,6 +100,11 @@
 				stroke: #4d46b4;
 				stroke-width: 2px;
 				fill: rgba(156, 152, 152, 1);
+			}
+		}
+		@keyframes stroke {
+			to {
+				stroke-dashoffset: 0;
 			}
 		}
 	}
