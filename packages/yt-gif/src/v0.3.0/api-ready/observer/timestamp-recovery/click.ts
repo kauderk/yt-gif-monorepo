@@ -1,5 +1,5 @@
 import { HMSToSecondsOnly, sleep } from '$lib/utils'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
 import { TryToRecoverActiveTimestamp } from './flow/query'
 
@@ -10,8 +10,8 @@ export async function AssertParamsClickTimestamp(
 ) {
 	const lastActive = getObsTimestamp()
 	if (
-		!UI.display.simulate_roam_research_timestamps.checked ||
-		!UI.timestamps.tm_recovery.checked ||
+		!UIStore.get().display.simulate_roam_research_timestamps.checked ||
+		!UIStore.get().timestamps.tm_recovery.checked ||
 		!lastActive
 	) {
 		return

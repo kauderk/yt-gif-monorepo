@@ -83,15 +83,15 @@ export function createNodeComponents(editor: Drawflow) {
 				...partial.connections,
 			},
 			cords: {
-				y: 600,
-				x: 210,
+				y: 150,
+				x: 600,
 				...partial.cords,
 			},
 			// this could be troublesome
 			data: { ...partial.data },
 			node: {
 				classoverride: 'graph-node',
-				html: DrawflowBlocks.ApiBlock.GraphNodeID,
+				html: DrawflowBlocks.YTGIFBlock.GraphNodeID,
 				typenode: 'svelte',
 				...partial.node,
 			},

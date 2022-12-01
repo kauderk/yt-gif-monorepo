@@ -1,7 +1,7 @@
 import { properBlockIDSufix } from '../utils'
 import { isSelected } from '../backend-frontend/option'
 import { attrInfo } from '../../init/config/paths'
-import { UI } from '../../init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 
 export { properBlockIDSufix }
 export function toggleAttribute(
@@ -36,7 +36,7 @@ export function getUidFromBlock(el: QrySearch, closest = false) {
 	return block?.id?.slice(-9) as s
 }
 export function closest_container_request(el?: Element) {
-	if (isSelected(UI.timestamps.tm_options, 'anchor'))
+	if (isSelected(UIStore.get().timestamps.tm_options, 'anchor'))
 		return closest_anchor_container(el!)
 	else return closest_container(el!)
 }

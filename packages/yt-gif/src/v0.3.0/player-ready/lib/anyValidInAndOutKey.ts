@@ -1,4 +1,4 @@
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { playIs } from './IFR'
 
 //#region hover/interactions utils
@@ -9,7 +9,8 @@ export function anyValidInAndOutKey(e: MouseEvent) {
 	}
 
 	return (
-		UI.defaultValues.InAndOutKeys.split(',')
+		UIStore.get()
+			.defaultValues.InAndOutKeys.split(',')
 			.map(s => s.trim())
 			.filter(s => !!s)
 			// @ts-ignore

@@ -1,7 +1,7 @@
 import { fmtTimestamp } from '../../../timestamp/utils'
 import { floatParam } from '../../../../lib/utils'
 import { stopEvents } from '../../../../lib/helpers'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 
 export type Tfmt_tm = {
 	page?: Tpage
@@ -29,9 +29,9 @@ export const btnNames: Array<Tpage> = [
 	'start|end',
 ]
 function getFmtPage(p: s, url: s) {
-	return fmtTimestamp(UI.timestamps.tm_workflow_grab.value as keyof Itime)(
-		floatParam(p, url) || '0'
-	)
+	return fmtTimestamp(
+		UIStore.get().timestamps.tm_workflow_grab.value as keyof Itime
+	)(floatParam(p, url) || '0')
 } // javascript is crazy!
 
 export function startTm(url: s) {

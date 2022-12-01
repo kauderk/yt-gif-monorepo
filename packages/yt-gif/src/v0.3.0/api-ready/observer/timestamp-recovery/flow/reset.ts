@@ -1,5 +1,5 @@
 import { assertSelector } from '$lib/utils'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { ClickResetWrapper } from '$v3/lib/event/ClickResetWrapper'
 import type { TMutationObj } from '../mutation'
 
@@ -12,7 +12,7 @@ export async function TryToReset(
 	)
 	const activeMatch =
 		!!removedActiveObj &&
-		UI.timestamps.tm_reset_on_removal.value != 'disabled'
+		UIStore.get().timestamps.tm_reset_on_removal.value != 'disabled'
 
 	if (activeMatch) {
 		MutationObj.removed.length = 0
@@ -23,11 +23,13 @@ export async function TryToReset(
 	return activeMatch
 
 	function canReset(id: s) {
-		if ('block' == UI.timestamps.tm_reset_on_removal.value) {
+		if ('block' == UIStore.get().timestamps.tm_reset_on_removal.value) {
 			id = assertSelector(id)
 			if (!document.querySelector('div.rm-block__input#' + id))
 				return true
-		} else if ('container' == UI.timestamps.tm_reset_on_removal.value) {
+		} else if (
+			'container' == UIStore.get().timestamps.tm_reset_on_removal.value
+		) {
 			if (!document.getElementById(id)) return true
 		}
 	}

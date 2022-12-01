@@ -42,48 +42,49 @@ export async function onYouTubePlayerAPIReady(params: {
 	const { blockID, record } = CreateRecordID(uidResult)
 
 	// the div that the YTiframe will replace
-	wrapper = CreateYTGIFElement({
-		...params,
-		...uidResult,
-		customSpan: configParams.sp.value,
-		newId,
-	})
+	// wrapper = CreateYTGIFElement({
+	// 	...params,
+	// 	...uidResult,
+	// 	customSpan: configParams.sp.value,
+	// 	newId,
+	// })
 
 	// Observe children containers and recover active timestamps respectively
-	const rm_container = SetupTimestampObserver(grandParentBlock, uid)
+	// const rm_container = SetupTimestampObserver(grandParentBlock, uid)
 
-	const base = { rm_container, grandParentBlock, blockID }
-	const that = TimestampRecovery(base)
-	const instance = { wrapper, ...base, ...uidResult }
+	// const base = { rm_container, grandParentBlock, blockID }
+	// const that = TimestampRecovery(base)
+	// const instance = { wrapper, ...base, ...uidResult }
 
 	// Set up btns
-	tryToInsertControls(instance, record)
+	//tryToInsertControls(instance, record)
 
 	// On removed from DOM clear Uid2Url map and deactivate timestamps
-	RemovedElementObserver({
-		el: grandParentBlock?.querySelector('span'),
-		OnRemovedFromDom_cb: () =>
-			RemovedFromDom({
-				...instance,
-				deployed: () => deployed,
-				that,
-				blockID,
-				newId,
-			}),
-	})
+	// RemovedElementObserver({
+	// 	el: grandParentBlock?.querySelector('span'),
+	// 	OnRemovedFromDom_cb: () =>
+	// 		RemovedFromDom({
+	// 			...instance,
+	// 			deployed: () => deployed,
+	// 			that,
+	// 			blockID,
+	// 			newId,
+	// 		}),
+	// })
 
 	// Interaction
-	if (AsyncDeployment(params.dataCreation)) {
-		DeployAsync(that, {
-			wrapper,
-			url,
-			configParams,
-			deploy,
-		})
-	} else {
-		await AssertParamsClickTimestamp(that, configParams)
-		deploy()
-	}
+	// if (AsyncDeployment(params.dataCreation)) {
+	// 	DeployAsync(that, {
+	// 		wrapper,
+	// 		url,
+	// 		configParams,
+	// 		deploy,
+	// 	})
+	// } else {
+	// 	await AssertParamsClickTimestamp(that, configParams)
+	// 	deploy()
+	// }
+	deploy()
 
 	return wrapper
 

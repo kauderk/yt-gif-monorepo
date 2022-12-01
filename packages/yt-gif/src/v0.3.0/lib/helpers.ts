@@ -98,7 +98,7 @@ export function assertTmParams(url: string, fmt_?: string) {
 
 			float: false,
 			// @ts-ignore
-			fmt: fmt_ ?? UI.timestamps.tm_workflow_grab.value,
+			fmt: fmt_ ?? UIStore.get().timestamps.tm_workflow_grab.value,
 		})
 	url = fmt('t', floatParam('t', url))
 	url = fmt('end', floatParam('end', url))

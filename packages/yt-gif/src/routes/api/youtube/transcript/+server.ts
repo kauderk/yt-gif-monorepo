@@ -46,12 +46,12 @@ async function getPlaylistTranscripts(params: TQuery) {
 	).then(ParseUniqueIDs)
 
 	return await Promise.all(
-		ids.map(async id => ({ id, ...(await fetchTranscript(params)) }))
+		ids.map(async id => ({ id, ...(await fetchTranscript(params, id)) }))
 	)
 }
 type TRes = Awaited<ReturnType<typeof fetchTranscript>>
-async function fetchTranscript(params: TQuery) {
-	const transcript = await YoutubeTranscript.fetchTranscript(params.id!)
+async function fetchTranscript(params: TQuery, id?: s) {
+	const transcript = await YoutubeTranscript.fetchTranscript(params.id ?? id!)
 	return {
 		transcript: !params.sum ? transcript : null,
 		//

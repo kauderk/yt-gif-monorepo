@@ -27,6 +27,7 @@ import {
 import { KickStartMasterObserver } from './observer/ytgif'
 import { LoadCSS, LoadHTML } from './fetch'
 import { RunTutorialsObserver } from './observer/tutorial'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export async function Ready() {
 	// TODO: set timestampRecovery.seekTo.currentTime
@@ -35,35 +36,38 @@ export async function Ready() {
 	ResetMasterObservers()
 
 	// 1. fetch
-	await LoadCSS() // UCS - user customizations
-	await LoadHTML() // DDM - drop down menu
+	// @DDM
+	// await LoadCSS() // UCS - user customizations
+	// await LoadHTML() // DDM - drop down menu
 
 	// 2. assign direct values to the main object | UI - user inputs
-	DDM_to_UI_variables() // filtering baseKey & prompts and transforming them from objs to values or dom els - it is not generic and only serves for the first indent level (from parent to child keys)
-	SaveSettingsOnChanges() // the settings page script is responsible for everything, these are just events
+	// @DDM?
+	// DDM_to_UI_variables() // filtering baseKey & prompts and transforming them from objs to values or dom els - it is not generic and only serves for the first indent level (from parent to child keys)
+	// SaveSettingsOnChanges() // the settings page script is responsible for everything, these are just events
 
 	// 3. set up events
-	DDMHover()
+	// @DDM
+	// DDMHover()
 
-	FlipBindAttr() // RTM runtime
+	// FlipBindAttr() // RTM runtime
 
-	UpdateOnScroll_RTM(UI.range.timestamp_display_scroll_offset)
-	UpdateOnScroll_RTM(UI.range.end_loop_sound_volume)
-	UpdateOnScroll_RTM(UI.range.iframe_buffer_slider)
+	// UpdateOnScroll_RTM(UIStore.get().range.timestamp_display_scroll_offset)
+	// UpdateOnScroll_RTM(UIStore.get().range.end_loop_sound_volume)
+	// UpdateOnScroll_RTM(UIStore.get().range.iframe_buffer_slider)
 
-	ToggleThumbnails(getOption(UI.experience.xp_options, 'thumbnail_as_bg'))
+	// ToggleThumbnails(getOption(UIStore.get().experience.xp_options, 'thumbnail_as_bg'))
 
-	navigateToSettingsPageInSidebar()
-	ToggleTheme()
+	// navigateToSettingsPageInSidebar()
+	// ToggleTheme()
 
-	initialize_modes_synergy()
+	// initialize_modes_synergy()
 
 	// 3.1 pre startup - anchors
-	assignFirstAnchorWave()
-	SetupAnchorObserver()
+	// assignFirstAnchorWave()
+	// SetupAnchorObserver()
 
 	// 3.2 pre startup - iframes
-	togglePlayPauseStyles()
+	// togglePlayPauseStyles()
 
 	// 4. run extension and events - set up
 	await MasterObserver_UCS_RTM() // listening for changes | change the behavior RTM // BIG BOI FUNCTION
@@ -75,7 +79,7 @@ export async function Ready() {
 	SetUpTutorials_smartNotification()
 
 	// 6. Emulate -> slash menu, timestamps + shortcuts
-	window.YT_GIF_OBSERVERS.timestampObserver = ClearTimestampObserver()
+	SrrGlobal.YT_GIF_OBSERVERS.timestampObserver = ClearTimestampObserver()
 	// 6.1 cleanAndSetUp_TimestampEmulation -> PlayPauseOnClicks
 	// 6.2 run timestampObserver
 	// 6.3 registerKeyCombinations (keyupEventHandler)

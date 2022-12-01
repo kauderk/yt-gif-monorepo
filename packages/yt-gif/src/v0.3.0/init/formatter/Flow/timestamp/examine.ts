@@ -1,6 +1,6 @@
 import { isSelected } from '../../../../lib/backend-frontend/option'
 import { getConcatS } from '../../../../lib/helpers'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { ExtractParamsFromUrl } from '../../query/extract'
 import { UrlBtnAction2InfoObj } from '../../query/match-info'
 import {
@@ -55,7 +55,7 @@ export async function ExamineResObj(resObj: TResObjUrlBtn) {
 	//
 	else if (['start', 'end'].some(p => p == from.page)) {
 		// append pear content
-		if (isSelected(UI.display.fmt_options, 'lift_pears')) {
+		if (isSelected(UIStore.get().display.fmt_options, 'lift_pears')) {
 			const pearCaptureObj = await RemovePearFromString(from, resObj)
 			matchObj.match = await tryFmt_timestamp_pear(
 				pearCaptureObj?.matchObj?.match,
@@ -136,5 +136,5 @@ function GetUrl({ type }: TIndexPair, _match: string) {
 
 function SelectedRelyOnHierarchy() {
 	// try to keep running the logic, if there isn't a match exit
-	return isSelected(UI.display.fmt_options, 'rely_on_hierarchy')
+	return isSelected(UIStore.get().display.fmt_options, 'rely_on_hierarchy')
 }

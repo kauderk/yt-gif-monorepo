@@ -14,6 +14,7 @@ import {
 import { T_YT_RECORD } from '$v3/lib/types/yt-types'
 import { isInput_selectedValid } from '$v3/lib/dom/select/isInputSelected'
 import { ExtractParamsFromUrl } from '$v3/init/formatter/query/extract'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function SetupTimestampObserver(grandParentBlock: Element, uid: string) {
 	const rm_container = closest_container(grandParentBlock)
@@ -21,7 +22,7 @@ export function SetupTimestampObserver(grandParentBlock: Element, uid: string) {
 	return rm_container
 }
 export function GetNewID() {
-	return iframeIDprfx + Number(++window.YT_GIF_OBSERVERS.creationCounter)
+	return iframeIDprfx + Number(++SrrGlobal.YT_GIF_OBSERVERS.creationCounter)
 }
 export function CreateRecordID(o: {
 	uid: string
@@ -90,8 +91,10 @@ export function CreateYTGIFElement(o: {
 	wrapper.setAttribute(attrInfo.creation.name, o.dataCreation)
 	wrapper.setAttribute(attrInfo.url.path, o.url)
 	wrapper.setAttribute(attrInfo.url.index, o.accUrlIndex.toString())
-	wrapper.innerHTML = ''
-	wrapper.insertAdjacentHTML('afterbegin', links.html.fetched.playerControls)
+	// FIXME: window
+	//wrapper.innerHTML = ''
+	//wrapper.insertAdjacentHTML('afterbegin', links.html.fetched.playerControls)
+	debugger
 	wrapper.querySelector('.yt-gif-player')!.id = o.newId
 	return wrapper
 }

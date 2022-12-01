@@ -1,3 +1,4 @@
+import YTGIF from './YTGIF.svelte'
 import Api from './Api.svelte'
 import Chapter from './chapter/Index.svelte'
 import Transcript from './transcript/Index.svelte'
@@ -21,6 +22,11 @@ type Block = {
 }
 
 export const DrawflowBlocks: Block = <const>{
+	YTGIFBlock: {
+		GraphNodeID: 'YTGIFBlock',
+		cmp: YTGIF,
+		provider: true,
+	},
 	ApiBlock: {
 		GraphNodeID: 'ApiBlock',
 		cmp: Api,

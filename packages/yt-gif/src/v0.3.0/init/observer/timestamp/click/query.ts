@@ -1,6 +1,6 @@
 import { isSelected } from '../../../../lib/backend-frontend/option'
 import { closest_anchor_container } from '../../../../lib/dom/elements-yt-gif-parent'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { _getYTwrapperRootObj, getYTwrapperRootObj } from '../query'
 import type { IClickInput } from '../types'
 
@@ -12,7 +12,7 @@ export async function getRelevantWrapperObjFunc1(
 	const buid = (el: QrySearch) => el?.getAttribute('yt-gif-block-uid')
 
 	let anchorUid
-	if (isSelected(UI.timestamps.tm_options, 'anchor'))
+	if (isSelected(UIStore.get().timestamps.tm_options, 'anchor'))
 		anchorUid =
 			buid(tEl?.closest('[yt-gif-block-uid]')) ||
 			yuid(closest_anchor_container(tmSetObj.self.targetNode))

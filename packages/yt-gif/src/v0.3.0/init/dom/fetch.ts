@@ -6,6 +6,7 @@ import {
 	RemoveElsEventListeners,
 } from '$lib/utils'
 import { cssData } from '../config/paths'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 //#region 1. looks - fetch css html
 export async function smart_LoadCSS(cssURL: s, id: s) {
@@ -64,7 +65,7 @@ export async function smart_Load_DDM_onTopbar(dropDownMenu: s) {
 		.querySelector('.bp3-icon-more')
 		?.closest('.rm-topbar .rm-topbar__spacer-sm + .bp3-popover-wrapper')
 	const htmlText =
-		window.YT_GIF_OBSERVERS.dmm_html ?? (await FetchText(dropDownMenu))
+		SrrGlobal.YT_GIF_OBSERVERS.dmm_html ?? (await FetchText(dropDownMenu))
 	const previousList = DDM_Els()
 	if (previousList?.length > 0) {
 		for (const el of previousList) {

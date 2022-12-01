@@ -1,10 +1,11 @@
 import { convertHMS, HMSToSecondsOnly, seconds2time } from '$lib/utils'
-import { UI } from '../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 
 //DAMN!!!
 type sn = string | number
 export function fmtTimestamp<T extends number | string = string>(
-	value: keyof Itime = UI.timestamps.tm_workflow_display.value as keyof Itime
+	value: keyof Itime = UIStore.get().timestamps.tm_workflow_display
+		.value as keyof Itime
 ) {
 	const str2sec = (str: sn) => HMSToSecondsOnly(str.toString())
 	let fmt = (tms: sn): T => tms.toString() as T

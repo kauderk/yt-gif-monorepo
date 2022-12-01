@@ -1,6 +1,6 @@
 import { pushSame } from '$lib/utils'
 import { attrInfo } from '../../config/paths'
-import { UI } from '../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import {
 	isInputSelected,
 	isIntersection_selectedValid,
@@ -10,11 +10,12 @@ import {
 	FitBuffer,
 	toggle_buffers_overflow,
 } from './buffer'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function PushNew_ShiftAllOlder_IframeBuffer(parentCssPath: string) {
 	if (parentCssPath)
-		window.YT_GIF_OBSERVERS.masterIframeBuffer = pushSame(
-			window.YT_GIF_OBSERVERS.masterIframeBuffer,
+		SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer = pushSame(
+			SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer,
 			parentCssPath
 		)
 
@@ -26,8 +27,8 @@ export function ifBuffer_ShiftOldest() {
 		return null
 
 	// work in progress | by shifting/removing the first entry, you clean the most irrelevant YT GIF, and give space to new ones (to load, thus autoplay on mouseenter) when intersecting the website
-	let arr = window.YT_GIF_OBSERVERS.masterIframeBuffer
-	const cap = parseInt(UI.range.iframe_buffer_slider.value, 10)
+	let arr = SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer
+	const cap = Number(UIStore.get().range.iframe_buffer_slider.value)
 	const { displaced, buffer } = attrInfo.creation
 
 	if (isIntersection_selectedValid()) {
@@ -48,5 +49,5 @@ export function ifBuffer_ShiftOldest() {
 	}
 
 	// 3. pass by value
-	return (window.YT_GIF_OBSERVERS.masterIframeBuffer = arr)
+	return (SrrGlobal.YT_GIF_OBSERVERS.masterIframeBuffer = arr)
 }

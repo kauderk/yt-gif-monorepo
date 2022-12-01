@@ -1,4 +1,4 @@
-<script context="module">
+<script context="module" lang="ts">
 	let count = -1
 	let available = [
 		'oBM4Ip3ibjo',
@@ -12,115 +12,54 @@
 	]
 </script>
 
-<div class="outter">
-	<div class="wrapper dont-focus-block" data-anim="pulse input thumbnail">
-		<!-- @ts-ignore -->
-		<div class="iframe-wrapper" />
-		<div class="controls">
-			<slot />
-		</div>
+<script lang="ts">
+	import { onMount } from 'svelte'
+	import parse from '$v3/api-ready/parse'
+	import { Deploy } from '$v3/api-ready/query'
+	import { load } from '$v3/api-ready/setup/load-yt-iframe'
+	import { CreateXload } from '$lib/dom'
+	import { onYouTubePlayerAPIReady } from '$v3/api-ready'
+	import F from './F.svelte'
+
+	count += 1
+	const id = 'yt-gif-player-' + count
+
+	onMount(async () => {
+		if (!window.YT) {
+			await CreateXload('https://www.youtube.com/iframe_api')
+			// @ts-ignore
+			//window.onYouTubeIframeAPIReady
+		}
+	})
+
+	export let videoId = ''
+	export let type: 'click' | 'hover' = 'click'
+	$: handler = type === 'click' ? Fire : null
+
+	if (!videoId) {
+		videoId = available[Math.floor(Math.random() * available.length)]
+	}
+
+	const Fire = () => {
+		onYouTubePlayerAPIReady({
+			wrapper,
+			dataCreation: 'force-awaiting',
+			targetClass: 'yt-gif-ddm-tutorial',
+			message: 'testing manual ty gif tutorial',
+		})
+	}
+	let wrapper: HTMLDivElement
+	/*
+	 .rm-block__input
+	 data-video-url="https://youtu.be/{id}"
+	 yt-gif-timestamp
+	*/
+</script>
+
+<div class="dwn-yt-gif-player-container" id="F">
+	<div class="dropdown-content" id="F">
+		<F bind:wrapper />
 	</div>
 </div>
 
-<style lang="scss">
-	@import 'https://unpkg.com/open-props';
-
-	.outter {
-		--brand1-light: var(--orange-6);
-		--brand2-light: var(--orange-7);
-		--brand3-light: var(--orange-8);
-		--text1-light: var(--gray-8);
-		--text2-light: var(--gray-7);
-		--surface1-light: var(--gray-0);
-		--surface2-light: var(--gray-1);
-		--surface3-light: var(--gray-2);
-		--surface4-light: var(--gray-3);
-		--surface5-light: var(--gray-4);
-	}
-
-	.outter > .wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	// IFRAME
-	.iframe-wrapper :global(iframe) {
-		width: 100%;
-		height: 100%;
-	}
-	// location: mid center
-	.controls {
-		height: fit-content;
-		width: 100%;
-		display: flex;
-		gap: var(--size-3);
-		position: absolute;
-		bottom: 20%; // Y axis
-		//transform: translateY(15px);
-
-		justify-content: center;
-		align-items: center;
-
-		cursor: initial;
-
-		z-index: var(--layer-4);
-	}
-	// ---------------------------------------------
-	.wrapper,
-	.iframe-wrapper {
-		display: -webkit-inline-box;
-	}
-	// supported target components
-	.outter > :is(.rm-xparser-default-yt-gif,.rm-video-player__spacing-wrapper),
-	// video size
-	.wrapper,
-	.iframe-wrapper {
-		height: 100%;
-		aspect-ratio: var(--ratio-widescreen);
-	}
-	// Hmmm yes go on
-	.wrapper {
-		// multiple videos are annoying and too bright
-		filter: brightness(0.75);
-		position: relative;
-		// &.dont-focus-block {
-		// 	margin: 2px;
-		// }
-	}
-	.outter {
-		height: 100%;
-		aspect-ratio: var(--ratio-widescreen);
-		cursor: initial;
-	}
-	// ----------------------
-	// initialize_yt_gif_on_mouseenter feature
-	[data-anim*='input'] {
-		background: var(--surface4);
-		border-radius: var(--radius-2);
-	}
-	[data-anim*='thumbnail'] {
-		background-image: url();
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-	}
-	[data-anim*='pulse'] {
-		cursor: pointer;
-		animation: pulse 6s infinite;
-		transition: 0.5s all ease;
-		&:hover {
-			animation: none;
-		}
-	}
-	@keyframes pulse {
-		0% {
-			box-shadow: inset 0 0 2px 1px var(--surface3);
-		}
-		50% {
-			box-shadow: inset 0 0 8px 4px var(--surface3);
-		}
-		100% {
-			box-shadow: inset 0 0 2px 1px var(--surface3);
-		}
-	}
-</style>
+<button on:click={Fire}>Fire</button>

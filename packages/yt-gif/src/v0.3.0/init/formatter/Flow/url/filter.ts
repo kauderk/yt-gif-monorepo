@@ -4,7 +4,7 @@ import {
 	assertTmParams,
 	getAnyTmParamType,
 } from '../../../../lib/helpers'
-import { UI } from '../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { ExtractUrlsObj } from '../../query/extract'
 import { UrlBtnAction2InfoObj } from '../../query/match-info'
 
@@ -29,7 +29,7 @@ export async function ExamineResObj(resObj: TResObjExtraVals) {
 			)?.[2],
 		p: resObj.from.param,
 
-		fmt: UI.timestamps.tm_workflow_grab.value as keyof Itime,
+		fmt: UIStore.get().timestamps.tm_workflow_grab.value as keyof Itime,
 
 		float: resObj.from.float ?? false,
 	})

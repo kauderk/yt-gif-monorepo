@@ -1,4 +1,4 @@
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { ElementsPerBlock } from '$v3/lib/dom/ytgif'
 import type { T_tmRecord } from '../mutation'
 import { TryToRecoverActiveTimestamp } from './query'
@@ -8,7 +8,8 @@ export async function TryToRestore(
 	added: T_tmRecord[]
 ) {
 	const commonObj = added.find(a => OkObservedTimestamp(getObsTimestamp, a))
-	const restoreMath = !!commonObj && UI.timestamps.tm_recovery.checked
+	const restoreMath =
+		!!commonObj && UIStore.get().timestamps.tm_recovery.checked
 	if (!restoreMath) {
 		return false
 	}
@@ -23,7 +24,7 @@ export async function TryToRestore(
 	const equals = GetEquals(getObsTimestamp, block)
 
 	// cleanup - since it's a rendered mismatch
-	if (UI.timestamps.tm_restore.value == 'match' && !equals()) {
+	if (UIStore.get().timestamps.tm_restore.value == 'match' && !equals()) {
 		delObsTimestmp()
 		return true
 	}

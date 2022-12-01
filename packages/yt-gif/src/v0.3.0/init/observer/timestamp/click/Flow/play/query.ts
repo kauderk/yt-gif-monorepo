@@ -1,4 +1,4 @@
-import { UI } from '../../../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import type { T_YT_RECORD } from '$v3/lib/types/yt-types'
 import type { PulseObj } from '$v3/init/timestamp/lib'
 import type { tryGetRecordBoundary } from '../../record/record'
@@ -11,8 +11,8 @@ export function TryDispatchCustomPlayerReady({
 	const detail: ICustomPlayerReady = {
 		...timestampObj,
 		updateTime: timestampObj.currentTime ?? timestampObj.seekTo,
-		playRightAway: UI.timestamps.tm_seek_action.value == 'play',
-		mute: UI.timestamps.tm_seek_action.value == 'mute',
+		playRightAway: UIStore.get().timestamps.tm_seek_action.value == 'play',
+		mute: UIStore.get().timestamps.tm_seek_action.value == 'mute',
 		obsTimestamp,
 	}
 	targetWrapper?.dispatchEvent(
@@ -56,8 +56,10 @@ export function CanGoOn({
 	return true
 }
 export function TryMutePausePlayer(record: T_YT_RECORD | undefined) {
-	record?.isSoundingFine(UI.timestamps.tm_seek_action.value != 'mute')
-	record?.togglePlay(UI.timestamps.tm_seek_action.value != 'pause')
+	record?.isSoundingFine(
+		UIStore.get().timestamps.tm_seek_action.value != 'mute'
+	)
+	record?.togglePlay(UIStore.get().timestamps.tm_seek_action.value != 'pause')
 }
 type TFlow = ITryPlayInput['boundaryObj']
 export interface ITryPlayInput {

@@ -1,6 +1,6 @@
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
 import { toggleAttribute } from '$lib/utils'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { isSelected } from '$v3/lib/backend-frontend/option'
 import type { TQueryResult } from '$v3/player-ready/setup/GetQuery'
 import type { IExtendedVideoParams } from '$v3/lib/types/video-types'
@@ -43,7 +43,9 @@ export function TimeTargetObj(
 		toggleAttribute(offsetClip, 'offset', l.timeDisplayEnd)
 
 		// timeDisplay.textContent = '00:00/00:00'
-		if (isSelected(UI.display.ms_options, 'clip_lifespan_format')) {
+		if (
+			isSelected(UIStore.get().display.ms_options, 'clip_lifespan_format')
+		) {
 			// 'bounded tick'/'clip end'
 			const boundedTick = Math.abs(span - (map.end.value - q.tick()))
 			const validEnd = offsetClip ? map.end.value : span
@@ -66,11 +68,19 @@ export function TimeTargetObj(
 				q.tick() +
 				Math.sign(e.deltaY) *
 					Math.round(
-						Number(UI.range.timestamp_display_scroll_offset.value)
+						Number(
+							UIStore.get().range.timestamp_display_scroll_offset
+								.value
+						)
 					) *
 					-1
 
-			if (isSelected(UI.display.ms_options, 'clip_lifespan_format')) {
+			if (
+				isSelected(
+					UIStore.get().display.ms_options,
+					'clip_lifespan_format'
+				)
+			) {
 				if (dir <= map.start.value) {
 					dir = map.end.value - 1 //can go beyond that
 				}
