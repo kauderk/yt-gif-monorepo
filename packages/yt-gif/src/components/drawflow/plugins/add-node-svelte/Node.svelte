@@ -36,6 +36,19 @@
 	onMount(() => dataNode?.task.resolve())
 
 	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
+
+    var classTopName = "drawflow_node_top";
+    var classBodyName = "";
+
+    if (Slot?.GraphNodeID == "InputBlock"){
+        classTopName = "top_cyan";
+        classBodyName = "body_cyan";
+    }
+    else if (Slot?.GraphNodeID == "TitleNoteBlock") {
+        classTopName = "top_blue";
+        classBodyName = "body_blue";
+    }
+
 </script>
 
 <div
@@ -44,7 +57,7 @@
 	on:wheel|preventDefault|stopPropagation>
 	<div
 		id="node-{id}"
-		class="drawflow-node template selected {className}"
+		class="drawflow-node template selected {className} {classBodyName}"
 		style="top: {top}px; left: {left}px; background-color: {$nodeBG};">
 		{#if dataNode}
 			<CreateConnections {dataNode} />
@@ -52,7 +65,7 @@
 			<Connection {...inputs} bind:json={inputs.json} />
 		{/if}
 		<div class="drawflow_content_node" bind:this={content}>
-			<div class="drawflow_node_top">
+			<div class="drawflow_node_top {classTopName}">
 				<button
 					aria-label="Open/Close modal"
 					on:click={() =>
@@ -127,6 +140,22 @@
 		padding: 5px;
 	}
 
+    .top_blue{
+        background-color: #0081ae !important;
+    }
+
+    .body_blue{
+        background-color: #00a6da !important;
+    }
+
+    .top_cyan{
+        background-color: #00b2b3 !important;
+    }
+
+    .body_cyan{
+        background-color: #00d9da !important;
+    }
+    
 	.drawflow_node_title {
 		font-weight: 600;
 		margin-left: 5px;

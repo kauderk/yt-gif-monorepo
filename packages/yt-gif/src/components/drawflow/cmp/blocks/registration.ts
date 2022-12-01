@@ -96,6 +96,18 @@ export function createNodeComponents(editor: Drawflow) {
 		},
 	})
 	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.InputBlock.GraphNodeID,
+		},
+	})
+	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
+		},
+	})
+	addNode({
 		cords: { x: 1000, y: 50 },
 		node: {
 			html: DrawflowBlocks.MyBlock.GraphNodeID,

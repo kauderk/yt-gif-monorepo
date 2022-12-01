@@ -18,6 +18,8 @@ import Organization from './diagram/Organization.svelte'
 import OrganizationType from './diagram/OrganizationType.svelte'
 import User from './diagram/User.svelte'
 import OrganizationProfile from './diagram/OrganizationProfile.svelte'
+import Input from './diagram/Input.svelte'
+import TitleNote from './diagram/TitleNote.svelte'
 
 type Block = {
 	[key: s]: {
@@ -116,5 +118,15 @@ export const DrawflowBlocks: Block = <const>{
 		GraphNodeID: 'OrganizationProfileBlock',
         title: "Create Organization Profile",
 		cmp: OrganizationProfile,
+	},
+	Input: {
+		GraphNodeID: 'InputBlock',
+        title: "Input",
+		cmp: Input,
+	},
+	TitleNote: {
+		GraphNodeID: 'TitleNoteBlock',
+        title: "",
+		cmp: TitleNote,
 	},
 }
