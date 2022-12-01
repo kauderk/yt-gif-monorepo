@@ -66,6 +66,36 @@ export function createNodeComponents(editor: Drawflow) {
 		},
 	})
 	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.AddressBlock.GraphNodeID,
+		},
+	})
+	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.OrganizationBlock.GraphNodeID,
+		},
+	})
+	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.UserBlock.GraphNodeID,
+		},
+	})
+	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.OrganizationTypeBlock.GraphNodeID,
+		},
+	})
+	addNode({
+		cords: { x: 600, y: 50 },
+		node: {
+			html: DrawflowBlocks.OrganizationProfileBlock.GraphNodeID,
+		},
+	})
+	addNode({
 		cords: { x: 1000, y: 50 },
 		node: {
 			html: DrawflowBlocks.MyBlock.GraphNodeID,

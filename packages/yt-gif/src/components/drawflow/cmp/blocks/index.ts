@@ -13,6 +13,11 @@ import Video from './Video.svelte'
 import MyBlock from './MyBlock.svelte'
 import Ytvid from './Ytvid.svelte'
 import ContactDetails from './diagram/ContactDetails.svelte'
+import Address from './diagram/Address.svelte'
+import Organization from './diagram/Organization.svelte'
+import OrganizationType from './diagram/OrganizationType.svelte'
+import User from './diagram/User.svelte'
+import OrganizationProfile from './diagram/OrganizationProfile.svelte'
 
 type Block = {
 	[key: s]: {
@@ -86,5 +91,30 @@ export const DrawflowBlocks: Block = <const>{
 		GraphNodeID: 'ContactDetailsBlock',
         title: "Create Contact Details",
 		cmp: ContactDetails,
+	},
+	AddressBlock: {
+		GraphNodeID: 'AddressBlock',
+        title: "Create Address",
+		cmp: Address,
+	},
+	OrganizationBlock: {
+		GraphNodeID: 'OrganizationBlock',
+        title: "Create Organization",
+		cmp: Organization,
+	},
+	UserBlock: {
+		GraphNodeID: 'UserBlock',
+        title: "Create User",
+		cmp: User,
+	},
+	OrganizationTypeBlock: {
+		GraphNodeID: 'OrganizationTypeBlock',
+        title: "Create Organization Type",
+		cmp: OrganizationType,
+	},
+	OrganizationProfileBlock: {
+		GraphNodeID: 'OrganizationProfileBlock',
+        title: "Create Organization Profile",
+		cmp: OrganizationProfile,
 	},
 }

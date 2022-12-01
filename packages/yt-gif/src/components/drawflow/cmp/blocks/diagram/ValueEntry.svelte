@@ -43,6 +43,10 @@
         background: linear-gradient(180deg, #02b8f9, #018cc7);
     }
 
+    .orange-type{
+        background: linear-gradient(180deg, #f59800, #bf7600);
+    }
+
     .green-type{
         background: var(--green-type);
     }
