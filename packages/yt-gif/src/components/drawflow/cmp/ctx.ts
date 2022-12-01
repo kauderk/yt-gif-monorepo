@@ -19,7 +19,7 @@ const AutoItems = ObjectValues(DrawflowBlocks).map((o, i) => {
 		id: uuid(),
 		icon: knownIcons[i % knownIcons.length],
 		...o,
-		title: o.GraphNodeID,
+		title: o.title != undefined ? o.title : o.GraphNodeID,
 	}
 })
 export const items = AutoItems

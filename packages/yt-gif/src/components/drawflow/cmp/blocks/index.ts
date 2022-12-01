@@ -12,12 +12,14 @@ import Tools from './Tools.svelte'
 import Video from './Video.svelte'
 import MyBlock from './MyBlock.svelte'
 import Ytvid from './Ytvid.svelte'
+import ContactDetails from './diagram/ContactDetails.svelte'
 
 type Block = {
 	[key: s]: {
 		GraphNodeID: s
 		cmp: any
 		provider?: boolean
+        title?: string
 	}
 }
 
@@ -79,5 +81,10 @@ export const DrawflowBlocks: Block = <const>{
 	YtvidBlock: {
 		GraphNodeID: 'YtvidBlock',
 		cmp: Ytvid,
+	},
+	ContactDetailsBlock: {
+		GraphNodeID: 'ContactDetailsBlock',
+        title: "Create Contact Details",
+		cmp: ContactDetails,
 	},
 }

@@ -52,7 +52,7 @@
 			<Connection {...inputs} bind:json={inputs.json} />
 		{/if}
 		<div class="drawflow_content_node" bind:this={content}>
-			<div class="drawflow_node_title">
+			<div class="drawflow_node_top">
 				<button
 					aria-label="Open/Close modal"
 					on:click={() =>
@@ -64,6 +64,7 @@
 						})}>
 					<i class="fa-solid fa-x" style="font-size: 12px;" />
 				</button>
+				<span class="drawflow_node_title">{Slot?.title}</span>
 			</div>
 
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
@@ -120,11 +121,16 @@
 		}
 	}
 
-	.drawflow_node_title {
+	.drawflow_node_top {
 		border-radius: 0.5em 0.5em 0 0;
 		background-color: #1a1a1a;
 		padding: 5px;
 	}
+
+	.drawflow_node_title {
+		font-weight: 600;
+	}
+
 	.drawflow_node_body {
 		padding: 10px;
 	}
