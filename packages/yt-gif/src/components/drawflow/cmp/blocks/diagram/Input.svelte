@@ -3,4 +3,7 @@
 </div>
 
 <style>
+    .wrapper{
+        width: 58px;
+    }
 </style>

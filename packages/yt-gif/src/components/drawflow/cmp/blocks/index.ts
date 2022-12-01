@@ -119,12 +119,12 @@ export const DrawflowBlocks: Block = <const>{
         title: "Create Organization Profile",
 		cmp: OrganizationProfile,
 	},
-	Input: {
+	InputBlock: {
 		GraphNodeID: 'InputBlock',
         title: "Input",
 		cmp: Input,
 	},
-	TitleNote: {
+	TitleNoteBlock: {
 		GraphNodeID: 'TitleNoteBlock',
         title: "",
 		cmp: TitleNote,

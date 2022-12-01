@@ -4,7 +4,81 @@ import { ObjectValues } from '$lib/utils'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
-	return addNode()
+	
+	addNode({
+		cords: { x: 31, y: 349.5 },
+		node: {
+			html: DrawflowBlocks.InputBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 32.5, y: 479 },
+		node: {
+			html: DrawflowBlocks.InputBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 32, y: 611 },
+		node: {
+			html: DrawflowBlocks.InputBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 52, y: 157.7 },
+		node: {
+			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 801, y: 431.4 },
+		node: {
+			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 1246.4, y: 736.7 },
+		node: {
+			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 603.4, y: 92 },
+		node: {
+			html: DrawflowBlocks.ContactDetailsBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 233, y: 328.5 },
+		node: {
+			html: DrawflowBlocks.AddressBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 633, y: 615.4 },
+		node: {
+			html: DrawflowBlocks.OrganizationBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 1134, y: 131.4 },
+		node: {
+			html: DrawflowBlocks.UserBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 1599.5, y: 376.5 },
+		node: {
+			html: DrawflowBlocks.OrganizationProfileBlock.GraphNodeID,
+		}
+	})
+	addNode({
+		cords: { x: 1139, y: 502.7 },
+		node: {
+			html: DrawflowBlocks.OrganizationTypeBlock.GraphNodeID,
+		}
+	})
+
+    return undefined
 
 	return ObjectValues(DrawflowBlocks).forEach((o, i) => {
 		addNode({
@@ -17,108 +91,6 @@ export function createNodeComponents(editor: Drawflow) {
 
 	return undefined
 
-	addNode({
-		cords: { x: 1100, y: 715 },
-		node: {
-			html: DrawflowBlocks.PlayerBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 100, y: 715 },
-		node: {
-			html: DrawflowBlocks.PlayerBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 1000, y: 215 },
-		node: {
-			html: DrawflowBlocks.ShadowBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 500, y: 315 },
-		node: {
-			html: DrawflowBlocks.SocialMediaPost.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 550, y: 715 },
-		node: {
-			html: DrawflowBlocks.SquareTagsBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 50, y: 50 },
-		node: {
-			html: DrawflowBlocks.ToolsBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.VideoBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.ContactDetailsBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.AddressBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.OrganizationBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.UserBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.OrganizationTypeBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.OrganizationProfileBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.InputBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 600, y: 50 },
-		node: {
-			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 1000, y: 50 },
-		node: {
-			html: DrawflowBlocks.MyBlock.GraphNodeID,
-		},
-	})
-	addNode({
-		cords: { x: 100, y: 100 },
-		node: {
-			html: DrawflowBlocks.YtvidBlock.GraphNodeID,
-		},
-	})
 	type RecursivePartial<T> = {
 		[P in keyof T]?: RecursivePartial<T[P]>
 	}
