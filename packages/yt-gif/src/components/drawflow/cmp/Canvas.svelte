@@ -32,9 +32,9 @@
 	}
 	// style
 	#drawflow {
-		--bg: #212226;
-		--o: #121313 4px;
-		--i: #1a1b1c 3px;
+		--bg: #180032;
+		--o: #121313 1.5px;
+		--i: rgb(31, 31, 31) 1px;
 
 		background-color: var(--bg) !important;
 		background:
@@ -47,10 +47,10 @@
 
 		background-size:
 			//
-			20px 20px, 20px 20px,
+			25px 25px, 25px 25px,
 			//
-			100px 100px,
-			100px 100px;
+			125px 125px,
+			125px 125px;
 	}
 	#drawflow .vignette {
 		display: block;

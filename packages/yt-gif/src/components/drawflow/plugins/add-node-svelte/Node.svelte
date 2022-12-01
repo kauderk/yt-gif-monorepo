@@ -52,21 +52,23 @@
 			<Connection {...inputs} bind:json={inputs.json} />
 		{/if}
 		<div class="drawflow_content_node" bind:this={content}>
-			<button
-				aria-label="Open/Close modal"
-				on:click={() =>
-					($nodeTransition = {
-						id,
-						prev: id,
-						GraphNodeID,
-						state: 'modal',
-					})}>
-				<i class="fa-solid fa-x" />
-			</button>
+			<div class="drawflow_node_title">
+				<button
+					aria-label="Open/Close modal"
+					on:click={() =>
+						($nodeTransition = {
+							id,
+							prev: id,
+							GraphNodeID,
+							state: 'modal',
+						})}>
+					<i class="fa-solid fa-x" style="font-size: 12px;" />
+				</button>
+			</div>
 
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 			<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
-			<div>
+			<div class="drawflow_node_body">
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider condition={Slot.provider}>
@@ -99,7 +101,7 @@
 
 		// contrast
 		backdrop-filter: blur(4px);
-		box-shadow: 0px 2px 15px 2px rgba(71, 71, 71, 0.123);
+		box-shadow: 4px 6px 10px 2px rgba(0, 0, 0, 0.434);
 
 		background-color: #27282c !important;
 
@@ -118,8 +120,26 @@
 		}
 	}
 
+	.drawflow_node_title {
+		border-radius: 0.5em 0.5em 0 0;
+		background-color: #1a1a1a;
+		padding: 5px;
+	}
+	.drawflow_node_body {
+		padding: 10px;
+	}
+
 	.drawflow_content_node {
 		width: -webkit-fill-available;
+	}
+
+	.drawflow_node_body button {
+		background: linear-gradient(180deg, #b2f104, #6e9600);
+		border-radius: 0 0.6em 0.6em 0;
+		color: black;
+		font-weight: 550;
+		padding: 0px 5px 0px 5px;
+		margin: 3px 0 3px 0;
 	}
 
 	// runtime

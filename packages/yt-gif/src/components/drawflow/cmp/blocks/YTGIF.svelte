@@ -8,7 +8,6 @@
 
 <style>
 	div {
-		width: 500px;
 		aspect-ratio: 16 / 9;
 	}
 </style>

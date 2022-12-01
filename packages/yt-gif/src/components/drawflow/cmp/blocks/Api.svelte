@@ -49,6 +49,10 @@
 </div>
 
 <style>
+	.title-box {
+		margin-bottom: 8px;
+	}
+
 	.flex {
 		display: flex;
 		gap: 1em;
@@ -57,6 +61,8 @@
 		align-items: flex-end;
 	}
 	input {
-		color: black;
+		color: rgb(224, 224, 224);
+		background-color: rgba(255, 255, 255, 0.099);
+		padding: 2px;
 	}
 </style>

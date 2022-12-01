@@ -62,4 +62,4 @@
 	</div>
 </div>
 
-<button on:click={Fire}>Fire</button>
+<button style="margin-left: 2px;" on:click={Fire}>Fire</button>
