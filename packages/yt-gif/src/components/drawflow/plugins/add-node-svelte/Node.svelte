@@ -129,6 +129,7 @@
 
 	.drawflow_node_title {
 		font-weight: 600;
+		margin-left: 5px;
 	}
 
 	.drawflow_node_body {
