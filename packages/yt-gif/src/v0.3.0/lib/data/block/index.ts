@@ -1,5 +1,5 @@
 import { SrrGlobal } from '$lib/global/SrrGlobal'
-import { getBlockInfoByUID } from '../block-info'
+import { getBlockInfoByUID } from '../proxy/block-info'
 import { generateUID, sleep, sortObjectsByOrder, Unhandled } from '../utils'
 
 export const updateBlock = async (
