@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getBlockInfoByUID } from '$v3/lib/data/drawflow-roam-api-proxy'
 
-	let value = 7
+	let value = 6
 	let res: ReturnType<typeof getBlockInfoByUID>
 </script>
 

@@ -11,39 +11,61 @@ export const getBlockInfoByUID = async (
 ): Promise<TBlockInfoRec[][] | null> => {
 	debugger
 	const node = getNodeByID(uid)!
-	const outputs = getOutputs(node!) // should fail
-	const children = outputs
-		.map(getNodeByID)
-		.filter(c => !!c)
-		.map(o => getBlockInterface(o!))
 
-	const x = REC({ node, arr: [getBlockInterface(node)] })
-	return [x]
+	const res = REC({ node, trace: [], row: 0 })
+	return [[res]]
 }
-function getOutputs(node: DrawflowNode) {
-	return node?.outputs?.output_1?.connections?.map(o => o.node) ?? []
+function getOutputs(node: DrawflowNode, row: n) {
+	// FIXME: window
+	// should start at 0
+	return (
+		node?.outputs?.[`output_${row + 1}`]?.connections?.map(o => o.node) ??
+		[]
+	)
 }
 
-// @ts-ignore
-function REC(next: { node: DrawflowNode; arr: TBlockInfoRec[] }) {
-	const outputs = getOutputs(next.node)
+interface Nest {
+	node: DrawflowNode
+	/**
+	 * Avoid stack overflows
+	 */
+	trace: ID[]
+	/**
+	 * siblings
+	 */
+	row: n
+}
+function REC(next: Nest) {
+	// lookups
+	const children = Array<TBlockInfoRec>()
+	const outputs = getOutputs(next.node, next.row)
+	next.trace.push(next.node.id)
+
+	/**
+	 * map the uid to a valid node
+	 * then trace it to avoid stack overflows
+	 * then walk down the children hierarchy
+	 */
 	for (const uid of outputs) {
 		const nextNode = getNodeByID(uid)
+		// once you are in, clear the way for others
+		if (nextNode && !next.trace.includes(uid)) {
+			next.trace = []
+			next.row = 0
 
-		if (nextNode) {
-			const outputs = getOutputs(nextNode)
-			const children = outputs
-				.map(getNodeByID)
-				.filter(c => !!c)
-				.map(o => getBlockInterface(o!))
-			next.arr.push({
-				...getBlockInterface(nextNode),
-				children,
-			})
-			next.arr = REC({ node: nextNode, arr: next.arr })
+			const rec = REC({ ...next, node: nextNode })
+
+			next.trace.push(uid)
+			next.row += 1
+
+			children.push(rec)
 		}
 	}
-	return next.arr
+
+	return {
+		...getBlockInterface(next.node),
+		children,
+	}
 }
 
 function getNodeByID(id: ID): DrawflowNode | undefined {
@@ -57,6 +79,7 @@ function getBlockInterface(node: DrawflowNode) {
 		order: node.order ?? 0,
 		string: node.name,
 		uid: node.id.toString(),
+		children: [],
 	}
 }
 //#region TODO

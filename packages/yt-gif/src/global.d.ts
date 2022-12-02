@@ -150,7 +150,7 @@ declare global {
 		uid: s
 	}
 	interface TBlockInfoRec extends TBlockInfo {
-		children?: TBlockInfoRec[]
+		children: TBlockInfoRec[]
 		// useful when reading recursive data
 		title?: s
 		overrideKey?: s
