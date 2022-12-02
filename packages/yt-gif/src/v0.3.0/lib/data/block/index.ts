@@ -120,6 +120,7 @@ export const getBlockParentUids = async (uid: s) => {
 				]
 			},
 		})
+
 		return UIDS
 
 		//return getPageNamesFromBlockUidList(UIDS) // if I fail. I fail.

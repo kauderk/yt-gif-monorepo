@@ -68,7 +68,9 @@ export function ReduceQuery<P extends ReduceQuery>(params: P) {
 	const proxy = ObjectValues(params.connection)[0]!.proxy
 
 	function reduceNest(array: TBlockInfoRec[]) {
-		return array.reduce((acc, crrNest) => {
+		return array.reduce((acc, crrNest, i) => {
+			// unable to create separate branches, so focus on first one
+			if (i > 0) return acc
 			// stack the next query
 			acc.push(params.query(crrNest))
 			// do you have nested blocks?

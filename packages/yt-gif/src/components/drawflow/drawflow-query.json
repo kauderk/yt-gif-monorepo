@@ -11,11 +11,23 @@
 							"parents": [
 								{
 									"uid": "13",
-									"parents": [{ "uid": "6", "parents": [] }]
+									"parents": [
+										{ 
+											"uid": "6",
+											"parents": []
+										}
+									]
 								}
 							]
 						},
-						{ "uid": "18", "parents": [{ "uid": "13" }] }
+						{ 
+							"uid": "18",
+							"parents": [
+								{ 
+									"uid": "13" 
+								}
+							]
+						}
 					]
 				}
 			]
