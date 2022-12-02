@@ -6,30 +6,52 @@ export const getBlockInfoByUID = async (
 	withChildren?: boolean,
 	withParents?: boolean
 ): Promise<TBlockInfoRec[][] | null> => {
-	const module = 'Other'
+	debugger
+	const params: Params = {
+		module: 'Other',
+		uid,
+		connection: 'outputs', // children
+	}
 
 	if (withChildren) {
-		//if(withParents)
-		return [[getBLockWithChildren(uid, module)]]
+		const search = getNestedBlocks(params)
+		if (withParents) {
+			const parents = getNestedBlocks({ ...params, connection: 'inputs' })
+			return [
+				[
+					{
+						...search,
+						parents: parents.children,
+					},
+				],
+			]
+		}
+		return [[search]]
 	} else {
-		return [[getBlockInterface(getNodeByID(uid, module)!)]]
+		return [[getBlockInterface(getNodeByID(params)!)]]
 	}
 }
-function getBLockWithChildren(uid: ID, module: Nest['module']) {
+interface Params {
+	uid: ID
+	module: 'Home' | 'Other'
+	connection: 'inputs' | 'outputs'
+}
+
+function getNestedBlocks(params: Params) {
 	return REC({
-		rootUid: uid,
-		node: getNodeByID(uid, module)!,
-		module,
+		rootUid: params.uid,
+		node: getNodeByID(params)!,
+		params,
 	})
 }
 
-function getOutputRows(node: DrawflowNode) {
-	// FIXME: window
-	// should start at 0
-
+function getConnectionRow(
+	node: DrawflowNode,
+	channel: Params['connection']
+): s[][] {
 	return (
-		Object.values(node?.outputs).map(out =>
-			out.connections.map(o => o.node)
+		Object.values(node?.[channel]).map(out =>
+			out.connections.map((o: any) => o.node)
 		) ?? []
 	)
 }
@@ -37,12 +59,13 @@ function getOutputRows(node: DrawflowNode) {
 interface Nest {
 	node: DrawflowNode
 	rootUid: ID
-	module: 'Home' | 'Other'
+
+	params: Params
 }
 function REC(step: Nest) {
 	// lookups
 	const children = Array<TBlockInfoRec>()
-	const outputRows = getOutputRows(step.node)
+	const outputRows = getConnectionRow(step.node, step.params.connection)
 
 	/**
 	 * blocks can have multiple outputs
@@ -56,7 +79,7 @@ function REC(step: Nest) {
 		 * then walk down the children hierarchy
 		 */
 		for (const uid of row) {
-			const nextNode = getNodeByID(uid, step.module)
+			const nextNode = getNodeByID({ ...step.params, uid })
 			const canWalkDown = !trace.includes(uid) && step.rootUid != uid
 
 			// once you are in, block the way for your possible self
@@ -80,9 +103,9 @@ function REC(step: Nest) {
 	}
 }
 
-function getNodeByID(id: ID, module: s): DrawflowNode | undefined {
+function getNodeByID({ uid, module }: Params): DrawflowNode | undefined {
 	// @ts-ignore
-	return data.drawflow[module].data[id]
+	return data.drawflow[module].data[uid]
 }
 
 function getBlockInterface(node: DrawflowNode) {

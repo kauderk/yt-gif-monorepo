@@ -7,7 +7,7 @@
 
 <form
 	on:submit|preventDefault={async () =>
-		(res = await getBlockInfoByUID(value, true))}>
+		(res = await getBlockInfoByUID(value, true, true))}>
 	<label for="text" id="text">getBlockInfoByUID</label>
 	<input type="text" placeholder="7" bind:value />
 	<button type="submit">submit</button>
