@@ -3,15 +3,21 @@ import type { DrawflowNode, ID } from '$cmp/drawflow/src/drawflow/types'
 import type { RequireAtLeastOne } from '$lib/types/utilities'
 import { ObjectKeys } from '$lib/utils'
 
+type Proxy = Partial<TBlockInfoRec>
 export const getBlockInfoByUID = async (
 	uid: ID,
 	withChildren?: boolean,
 	withParents?: boolean
-): Promise<TBlockInfoRec[][] | null> => {
+): Promise<Proxy[][] | null> => {
 	const params: Params = {
-		module: 'Other',
+		module: 'Home',
 		uid,
-		connection: { outputs: { proxy: 'children' } }, // children
+		connection: { inputs: { proxy: 'parents' } },
+		query(node) {
+			return {
+				uid: node.id.toString(),
+			}
+		},
 	}
 
 	if (withChildren) {
@@ -28,16 +34,24 @@ export const getBlockInfoByUID = async (
 		const children = getNestedBlocks(params)
 		return [[children]]
 	} else {
-		return [[getBlockInterface(getNodeByID(params)!)]]
+		return [[params.query(getNodeByID(params)!)]]
 	}
 }
+type connection = {
+	inputs: { proxy: 'parents' }
+	outputs: { proxy: 'children' }
+}
+type proxyProperties = connection[keyof connection]['proxy']
 interface Params {
 	uid: ID
 	module?: 'Home' | 'Other'
-	connection: RequireAtLeastOne<{
-		inputs: { proxy: 'parents' }
-		outputs: { proxy: 'children' }
-	}>
+	connection: RequireAtLeastOne<connection>
+	/**
+	 * @return RequireAtLeastOne property
+	 */
+	query: (
+		node: DrawflowNode
+	) => RequireAtLeastOne<Partial<Omit<TBlockInfoRec, proxyProperties>>>
 }
 
 function getNestedBlocks(params: Params) {
@@ -98,14 +112,14 @@ function REC(step: Nest) {
 				}
 				// you found your self, show the properties but not the children
 				else if (nextNode && !canWalkDown) {
-					iterator.branch.push(getBlockInterface(nextNode))
+					iterator.branch.push(step.params.query(nextNode))
 				}
 			}
 		}
 	}
 
 	return {
-		...getBlockInterface(step.node),
+		...step.params.query(step.node),
 		...connections.reduce((acc, crr) => {
 			return {
 				...acc,
@@ -116,7 +130,7 @@ function REC(step: Nest) {
 }
 
 function createConnectionLookup(step: Nest, connection: 'inputs' | 'outputs') {
-	const branch = Array<TBlockInfoRec>()
+	const branch = Array<Proxy>()
 	const rows = getConnectionRow(step.node, connection)
 	const key = step.params.connection[connection]?.proxy!
 	return { rows, branch, key }
@@ -139,14 +153,4 @@ function getNodeByID({
 			// @ts-ignore
 			.find(o => o.id == uid)
 	)
-}
-
-function getBlockInterface(node: DrawflowNode) {
-	return {
-		open: node.open ?? false,
-		order: node.order ?? 0,
-		string: node.name,
-		uid: node.id.toString(),
-		children: [],
-	}
 }
