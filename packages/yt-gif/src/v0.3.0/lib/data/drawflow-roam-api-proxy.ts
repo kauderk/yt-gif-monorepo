@@ -1,4 +1,5 @@
 export { getBlockInfoByUID } from './proxy/block-info'
+export { getBlockParentUids } from './block'
 
 // : typeof rap['getBlockInfoByUIDM']
 

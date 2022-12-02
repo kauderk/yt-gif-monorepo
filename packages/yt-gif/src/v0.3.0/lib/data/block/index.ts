@@ -1,4 +1,3 @@
-import { SrrGlobal } from '$lib/global/SrrGlobal'
 import { getBlockInfoByUID } from '../proxy/block-info'
 import { getNestedBlocks, ReduceQuery } from '../proxy/recursive'
 import { generateUID, sleep, sortObjectsByOrder, Unhandled } from '../utils'
@@ -107,38 +106,31 @@ export const getBlockParentUids = async (uid: s) => {
 			query(node) {
 				return {
 					uid: node.id.toString(),
+					string: node.name,
 				}
 			},
 		})
 		const UIDS = ReduceQuery({
-			nested: parentUIDsQuery.parents!,
+			nest: parentUIDsQuery,
 			connection: { inputs: { proxy: 'parents' } },
-			query(nest) {
-				return nest.uid.toString()
+			query(block: typeof this.nest) {
+				return [
+					{ uid: block.uid, string: block.string },
+					{ title: 'missing', uid: 'missing' },
+				]
 			},
 		})
+		return UIDS
 
-		return getPageNamesFromBlockUidList(UIDS) // if I fail. I fail.
+		//return getPageNamesFromBlockUidList(UIDS) // if I fail. I fail.
 	} catch (e) {
 		return null
 	}
 }
 
+/**
+ * @deprecated
+ */
 export const getPageNamesFromBlockUidList = async (blockUidList: string[]) => {
-	//blockUidList ex ['sdfsd', 'ewfawef']
-	const rule =
-		'[[(ancestor ?b ?a)[?a :block/children ?b]][(ancestor ?b ?a)[?parent :block/children ?b ](ancestor ?parent ?a) ]]'
-	const query = `[:find  (pull ?block [:block/uid :block/string])(pull ?page [:node/title :block/uid])
-									 :in $ [?block_uid_list ...] %
-									 :where
-									  [?block :block/uid ?block_uid_list]
-									 [?page :node/title]
-									 (ancestor ?block ?page)]`
-
-	const results: THierarchy[] = await SrrGlobal.roamAlphaAPI.q(
-		query,
-		blockUidList,
-		rule
-	)
-	return results
+	return <THierarchy>{}
 }

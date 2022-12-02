@@ -25,9 +25,12 @@ export interface Nest {
 	params: Params
 }
 export interface ReduceQuery {
-	nested: TBlockInfoRec[]
+	nest: Partial<TBlockInfoRec>
 	connection: RequireOnlyOne<connection>
+	/**
+	 * 	FIXME how do you grab ReduceQuery["nest"] to type query(block: ReduceQuery["nest"])
+	 */
 	query: (
-		block: TBlockInfoRec
-	) => RequireAtLeastOne<Partial<TBlockInfoRec>> | PropertyKey
+		block: any
+	) => unknown | RequireAtLeastOne<Partial<TBlockInfoRec>> | PropertyKey
 }

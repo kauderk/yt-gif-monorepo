@@ -77,8 +77,11 @@ export function ReduceQuery<P extends ReduceQuery>(params: P) {
 				acc = acc.concat(reduceNest(crrNest[proxy]!))
 			}
 			return acc
-			// start with the query return type
+			// start with an array
 		}, [] as any[])
 	}
-	return reduceNest(params.nested) as ReturnType<P['query']>[]
+	const array = reduceNest(params.nest[proxy]!)
+	// add yourself to the beginning
+	array.unshift(params.query(params.nest))
+	return array as ReturnType<P['query']>[]
 }
