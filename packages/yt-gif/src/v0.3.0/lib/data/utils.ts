@@ -7,8 +7,11 @@ export function Unhandled(caller: Function, ...optionalParams: any[]) {
 }
 export const sleep = (ms: n) => new Promise(resolve => setTimeout(resolve, ms))
 
-export const generateUID = async () =>
-	new Date().getTime().toString().slice(0, 9)
+export const generateUID = async () => createUid()
+
+export const createUid = () => {
+	return new Date().getTime().toString().slice(0, 9)
+}
 
 export const sortObjectsByOrder = (o: any) => {
 	//@ts-ignore
