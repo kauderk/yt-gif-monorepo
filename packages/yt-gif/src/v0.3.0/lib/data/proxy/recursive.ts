@@ -1,13 +1,20 @@
+import type { RequireAtLeastOne, RequireOnlyOne } from '$lib/types/utilities'
+import { ObjectValues } from '$lib/utils'
 import { getNodeByID, getConnections } from './data'
-import type { Nest, Params } from './types'
+import type { ReduceQuery, Nest, Params } from './types'
 
-export function getNestedBlocks(params: Params) {
+export function getNestedBlocks<P extends Params>(params: P) {
+	type connections = P['connection'][keyof P['connection']]
+	type proxy = connections[keyof connections] extends PropertyKey
+		? connections[keyof connections]
+		: never
+
 	return REC({
 		rootUid: params.uid,
 		node: getNodeByID(params)!,
 		params,
 		trace: { children: [], parents: [] },
-	})
+	}) as ReturnType<P['query']> & { [key in proxy]?: TBlockInfoRec[] }
 }
 
 function REC(step: Nest) {
@@ -55,4 +62,23 @@ function REC(step: Nest) {
 			}
 		}, {}),
 	}
+}
+
+export function ReduceQuery<P extends ReduceQuery>(params: P) {
+	const proxy = ObjectValues(params.connection)[0]!.proxy
+
+	function reduceNest(array: TBlockInfoRec[]) {
+		return array.reduce((acc, crrNest) => {
+			// stack the next query
+			acc.push(params.query(crrNest))
+			// do you have nested blocks?
+			if (crrNest[proxy] && Array.isArray(crrNest[proxy])) {
+				// https://stackoverflow.com/a/33921160/13914180
+				acc = acc.concat(reduceNest(crrNest[proxy]!))
+			}
+			return acc
+			// start with the query return type
+		}, [] as any[])
+	}
+	return reduceNest(params.nested) as ReturnType<P['query']>[]
 }

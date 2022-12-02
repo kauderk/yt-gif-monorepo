@@ -36,3 +36,8 @@ export const getBlockInfoByUID = async (
 		return [[params.query(getNodeByID(params)!)]]
 	}
 }
+
+export const queryDrawflow = (params: Params) => {
+	const search = getNestedBlocks(params)
+	return search
+}

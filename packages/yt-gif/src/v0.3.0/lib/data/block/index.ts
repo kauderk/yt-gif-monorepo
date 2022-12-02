@@ -1,5 +1,6 @@
 import { SrrGlobal } from '$lib/global/SrrGlobal'
 import { getBlockInfoByUID } from '../proxy/block-info'
+import { getNestedBlocks, ReduceQuery } from '../proxy/recursive'
 import { generateUID, sleep, sortObjectsByOrder, Unhandled } from '../utils'
 
 export const updateBlock = async (
@@ -99,12 +100,24 @@ type THierarchy = [
 type ParentUid = { parents: [{ uid: s }] }
 export const getBlockParentUids = async (uid: s) => {
 	try {
-		const parentUIDs = (await SrrGlobal.roamAlphaAPI.q(
-			`[:find (pull ?block [{:block/parents [:block/uid]}]) :in $ [?block-uid ...] :where [?block :block/uid ?block-uid]]`,
-			[uid]
-		)[0][0]) as ParentUid
-		const UIDS = parentUIDs.parents.map(e => e.uid)
-		UIDS.shift()
+		const parentUIDsQuery = getNestedBlocks({
+			module: 'Home',
+			uid,
+			connection: { inputs: { proxy: 'parents' } },
+			query(node) {
+				return {
+					uid: node.id.toString(),
+				}
+			},
+		})
+		const UIDS = ReduceQuery({
+			nested: parentUIDsQuery.parents!,
+			connection: { inputs: { proxy: 'parents' } },
+			query(nest) {
+				return nest.uid.toString()
+			},
+		})
+
 		return getPageNamesFromBlockUidList(UIDS) // if I fail. I fail.
 	} catch (e) {
 		return null
