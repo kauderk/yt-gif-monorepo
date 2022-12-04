@@ -53,29 +53,13 @@ export const getBlockParentUids = async (uid: s) => {
 
 					if (!fallbackNode.children?.length) {
 						branches.push(branch)
-						branch = []
-						indexes[indexPosition - 1]++
-						indexPosition = 0
-						indexes.pop()
-						currentNode = node
-					} else {
-						// branch = []
-						// indexPosition--
-						// indexes[indexPosition]++
-						// indexes.pop()
-
-						// currentNode = node
-						// for (let i = 0; i < indexes.length - 1; i++) {
-						// 	currentNode = currentNode.children?.[
-						// 		indexes[i]
-						// 	] as Node
-						// }
-						branch = []
-						indexes[indexPosition - 1]++
-						indexPosition = 0
-						indexes.pop()
-						currentNode = node
 					}
+
+					branch = []
+					indexes[indexPosition - 1]++
+					indexPosition = 0
+					indexes.pop()
+					currentNode = node
 				}
 				//previousNode = tmpCurrentNode
 			}
