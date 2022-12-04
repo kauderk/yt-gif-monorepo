@@ -41,10 +41,10 @@ export const getBlockParentUids = async (uid: s) => {
 				currentNode = currentNode.children?.[currentIndex] as Node
 				//
 				if (currentNode) {
-					if (indexes[indexPosition + 1]) {
+					if (indexes[indexPosition + 1] == undefined) {
 						indexes.push(0)
-						indexPosition++
 					}
+					indexPosition++
 				} else {
 					if (indexPosition == 0) {
 						debugger
@@ -59,16 +59,22 @@ export const getBlockParentUids = async (uid: s) => {
 						indexes.pop()
 						currentNode = node
 					} else {
-						indexPosition--
-						indexes[indexPosition]++
-						indexes.pop()
+						// branch = []
+						// indexPosition--
+						// indexes[indexPosition]++
+						// indexes.pop()
 
+						// currentNode = node
+						// for (let i = 0; i < indexes.length - 1; i++) {
+						// 	currentNode = currentNode.children?.[
+						// 		indexes[i]
+						// 	] as Node
+						// }
+						branch = []
+						indexes[indexPosition - 1]++
+						indexPosition = 0
+						indexes.pop()
 						currentNode = node
-						for (let i = 0; i < indexes.length - 1; i++) {
-							currentNode = currentNode.children?.[
-								indexes[i]
-							] as Node
-						}
 					}
 				}
 				//previousNode = tmpCurrentNode
