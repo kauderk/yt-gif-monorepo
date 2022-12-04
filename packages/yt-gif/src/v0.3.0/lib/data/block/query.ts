@@ -1,4 +1,7 @@
-import { getFlatNodeConnections } from '../proxy/flat-connections'
+import {
+	getFlatNodeConnections,
+	getMultipleFlatNodeConnections,
+} from '../proxy/flat-connections'
 import { getNestedBlocks } from '../proxy/recursive'
 
 export const getBlockParentUids = async (uid: s) => {
@@ -22,7 +25,14 @@ export const getBlockParentUids = async (uid: s) => {
 				inputs: { proxy: 'parents' },
 			},
 		})
+		const y = getMultipleFlatNodeConnections({
+			nest: parentUIDsQuery,
+			connection: {
+				inputs: { proxy: 'parents' },
+			},
+		})
 		debugger
+		//const z = y.get("children")
 	} catch (e) {
 		return null
 	}

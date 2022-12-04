@@ -24,10 +24,14 @@ export interface Nest {
 	trace: { children: ID[]; parents: ID[] }
 	params: Params
 }
-
-export interface UnidirectionalNest {
-	nest: Partial<TBlockInfoRec>
+interface DirectionalNest {
+	nest: Partial<TBlockInfoRec> & RequireAtLeastOne<Partial<TBlockInfoRec>>
+}
+export interface UnidirectionalNest extends DirectionalNest {
 	connection: RequireOnlyOne<connection>
+}
+export interface MultiDirectionalNest extends DirectionalNest {
+	connection: RequireAtLeastOne<connection>
 }
 
 export interface ReduceQuery extends UnidirectionalNest {
@@ -38,4 +42,14 @@ export interface ReduceQuery extends UnidirectionalNest {
 		block: any,
 		parent?: any
 	) => unknown | RequireAtLeastOne<Partial<TBlockInfoRec>> | PropertyKey
+}
+
+export function getTypeofProxy<
+	P extends { connection: RequireAtLeastOne<connection> }
+>() {
+	type connections = P['connection'][keyof P['connection']]
+	type proxy = connections[keyof connections] extends PropertyKey
+		? connections[keyof connections]
+		: never
+	return <proxy>{}
 }

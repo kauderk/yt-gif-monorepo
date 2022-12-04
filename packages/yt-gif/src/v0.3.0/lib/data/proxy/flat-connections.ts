@@ -1,5 +1,25 @@
-import { ObjectValues } from '$lib/utils'
-import type { UnidirectionalNest } from './types'
+import { ObjectEntries, ObjectValues } from '$lib/utils'
+import type {
+	getTypeofProxy,
+	MultiDirectionalNest,
+	UnidirectionalNest,
+} from './types'
+
+export function getMultipleFlatNodeConnections<N extends MultiDirectionalNest>(
+	params: N
+) {
+	type proxy = ReturnType<typeof getTypeofProxy<N>>
+	let ops: { [key in proxy]: N['nest'][][] } = <any>{}
+
+	for (const [key, obj] of ObjectEntries(params.connection)) {
+		ops[key] = getFlatNodeConnections({
+			...params,
+			connection: { [key]: obj },
+		})
+	}
+
+	return ops
+}
 
 export function getFlatNodeConnections<N extends UnidirectionalNest>(
 	params: N
@@ -59,5 +79,5 @@ export function getFlatNodeConnections<N extends UnidirectionalNest>(
 			currentNode = params.nest
 		}
 	}
-	return branches
+	return branches as N['nest'][][]
 }

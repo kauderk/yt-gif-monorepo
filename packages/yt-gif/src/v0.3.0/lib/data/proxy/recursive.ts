@@ -1,14 +1,10 @@
 import type { RequireAtLeastOne, RequireOnlyOne } from '$lib/types/utilities'
 import { ObjectValues } from '$lib/utils'
 import { getNodeByID, getConnections } from './data'
-import type { ReduceQuery, Nest, Params } from './types'
+import type { ReduceQuery, Nest, Params, getTypeofProxy } from './types'
 
 export function getNestedBlocks<P extends Params>(params: P) {
-	type connections = P['connection'][keyof P['connection']]
-	type proxy = connections[keyof connections] extends PropertyKey
-		? connections[keyof connections]
-		: never
-
+	type proxy = ReturnType<typeof getTypeofProxy<P>>
 	return REC({
 		rootUid: params.uid,
 		node: getNodeByID(params)!,
