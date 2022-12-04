@@ -1,8 +1,11 @@
+import { ObjectValues } from '$lib/utils'
 import type { UnidirectionalNest } from './types'
 
 export function getFlatNodeConnections<N extends UnidirectionalNest>(
 	params: N
 ) {
+	const proxy = ObjectValues(params.connection)[0]!.proxy
+
 	/**
 	 * Each time you walk down, track the current index
 	 * then you'll create your connection branch
@@ -11,7 +14,7 @@ export function getFlatNodeConnections<N extends UnidirectionalNest>(
 	let indexes = [0]
 	let currentNode = params.nest
 	/**
-	 * Each node's direct children is a branch
+	 * Each node's direct proxy is a branch
 	 */
 	let branches: N['nest'][][] = []
 	let branch: N['nest'][] = []
@@ -23,10 +26,10 @@ export function getFlatNodeConnections<N extends UnidirectionalNest>(
 		let currentIndex = indexes[indexPosition]
 		let fallbackNode = currentNode
 		branch.push(currentNode)
-		currentNode = currentNode.children?.[currentIndex] as N['nest']
+		currentNode = currentNode[proxy]?.[currentIndex] as N['nest']
 		/**
 		 * if this node exist and the path is valid
-		 * push the direct children's index path
+		 * push the direct proxy's index path
 		 */
 		if (currentNode) {
 			if (indexes[indexPosition + 1] == undefined) {
@@ -41,7 +44,7 @@ export function getFlatNodeConnections<N extends UnidirectionalNest>(
 			/**
 			 * Death end, push this branch to the stack
 			 */
-			if (!fallbackNode.children?.length) {
+			if (!fallbackNode[proxy]?.length) {
 				branches.push(branch)
 			}
 

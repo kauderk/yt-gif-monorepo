@@ -1,16 +1,12 @@
 import { getFlatNodeConnections } from '../proxy/flat-connections'
 import { getNestedBlocks } from '../proxy/recursive'
 
-type THierarchy = [
-	{ uid: string; string: string },
-	{ title: string; uid: string }
-]
 export const getBlockParentUids = async (uid: s) => {
 	try {
 		const parentUIDsQuery = getNestedBlocks({
 			uid,
 			connection: {
-				outputs: { proxy: 'children' },
+				inputs: { proxy: 'parents' },
 			},
 			query(node) {
 				return {
@@ -23,14 +19,19 @@ export const getBlockParentUids = async (uid: s) => {
 		const x = getFlatNodeConnections({
 			nest: parentUIDsQuery,
 			connection: {
-				outputs: { proxy: 'children' },
+				inputs: { proxy: 'parents' },
 			},
 		})
+		debugger
 	} catch (e) {
 		return null
 	}
 }
 
+type THierarchy = [
+	{ uid: string; string: string },
+	{ title: string; uid: string }
+]
 /**
  * @deprecated
  */
