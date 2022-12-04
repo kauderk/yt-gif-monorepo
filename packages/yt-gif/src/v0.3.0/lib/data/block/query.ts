@@ -26,24 +26,34 @@ export const getBlockParentUids = async (uid: s) => {
 
 		debugger
 		function walkDownTree(node: Node) {
-			let nextNode = node
+			let currentNode = node
+			//let previousNode = node
 			let indexPosition = 0
 
-			while (nextNode) {
+			while (currentNode) {
 				//
 				let currentIndex = indexes[indexPosition]
-				let previousNode = nextNode
-				nextNode = nextNode.children?.[currentIndex] as Node
+				//let tmpCurrentNode = currentNode
+				currentNode = currentNode.children?.[currentIndex] as Node
 				//
-				if (nextNode) {
+				if (currentNode) {
 					indexes.push(0)
 					indexPosition++
 				} else {
+					if (indexPosition == 0) {
+						debugger
+						break
+					}
 					indexPosition--
 					indexes[indexPosition]++
 					indexes.pop()
-					nextNode = previousNode
+
+					currentNode = node
+					for (let i = 0; i < indexes.length - 1; i++) {
+						currentNode = currentNode.children?.[indexes[i]] as Node
+					}
 				}
+				//previousNode = tmpCurrentNode
 			}
 			return
 		}
