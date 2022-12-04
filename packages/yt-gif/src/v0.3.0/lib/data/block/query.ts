@@ -8,7 +8,7 @@ type ParentUid = { parents: [{ uid: s }] }
 export const getBlockParentUids = async (uid: s) => {
 	try {
 		const parentUIDsQuery = getNestedBlocks({
-			module: 'Home',
+			//module: 'Other',
 			uid,
 			connection: {
 				//inputs: { proxy: 'parents' },
