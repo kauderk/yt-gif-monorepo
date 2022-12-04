@@ -515,7 +515,15 @@ export interface DrawflowModuleData {
 		[nodeKey: ID]: DrawflowNode
 	}
 }
-
+type InputConnection = {
+	input: string
+	node: string
+}
+type OutputConnection = {
+	output: string
+	node: string
+}
+export type ConnectionTypes = InputConnection | OutputConnection
 export interface DrawflowNode {
 	//FIXME:
 	open?: boolean
@@ -524,25 +532,9 @@ export interface DrawflowNode {
 	data: any
 	html: string
 	id: ID
-	inputs: Record<
-		string,
-		{
-			connections: {
-				input: string
-				node: string
-			}[]
-		}
-	>
+	inputs: Record<string, { connections: InputConnection[] }>
 	name: string
-	outputs: Record<
-		string,
-		{
-			connections: {
-				output: string
-				node: string
-			}[]
-		}
-	>
+	outputs: Record<string, { connections: OutputConnection[] }>
 	pos_x: number
 	pos_y: number
 	typenode: boolean | 'svelte' | 'vue'

@@ -9,30 +9,28 @@ export const getBlockParentUids = async (uid: s) => {
 		const parentUIDsQuery = getNestedBlocks({
 			uid,
 			connection: {
-				inputs: { proxy: 'parents' },
+				outputs: { proxy: 'children' },
 			},
-			query(node) {
+			query(node, payload) {
 				return {
 					uid: node.id.toString(),
-					string: node.name,
 				}
 			},
 		})
-
+		debugger
 		const x = getFlatNodeConnections({
 			nest: parentUIDsQuery,
 			connection: {
-				inputs: { proxy: 'parents' },
+				outputs: { proxy: 'children' },
 			},
 		})
 		const y = getMultipleFlatNodeConnections({
 			nest: parentUIDsQuery,
 			connection: {
 				inputs: { proxy: 'parents' },
+				outputs: { proxy: 'children' },
 			},
 		})
-		debugger
-		//const z = y.get("children")
 	} catch (e) {
 		return null
 	}

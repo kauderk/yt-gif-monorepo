@@ -15,14 +15,32 @@ export interface Params {
 	 * @return RequireAtLeastOne property
 	 */
 	query: (
-		node: DrawflowNode
+		node: DrawflowNode,
+		payload: Payload
 	) => RequireAtLeastOne<Partial<Omit<TBlockInfoRec, proxyProperties>>>
 }
 export interface Nest {
+	payload: Payload
 	node: DrawflowNode
 	rootUid: ID
 	trace: { children: ID[]; parents: ID[] }
 	params: Params
+}
+export type Payload = {
+	/**
+	 * Incoming - Origin
+	 */
+	plug: {
+		uid: s
+		connection: s
+	}
+	/**
+	 * Target - Destination
+	 */
+	outlet: {
+		uid: s
+		connection: s
+	}
 }
 interface DirectionalNest {
 	nest: Partial<TBlockInfoRec> & RequireAtLeastOne<Partial<TBlockInfoRec>>

@@ -1,32 +1,57 @@
 import type { RequireAtLeastOne, RequireOnlyOne } from '$lib/types/utilities'
-import { ObjectValues } from '$lib/utils'
-import { getNodeByID, getConnections } from './data'
+import { ObjectKeys, ObjectValues } from '$lib/utils'
+import { getNodeByID, getConnectionIterator, getConnectionRow } from './data'
 import type { ReduceQuery, Nest, Params, getTypeofProxy } from './types'
 
 export function getNestedBlocks<P extends Params>(params: P) {
 	type proxy = ReturnType<typeof getTypeofProxy<P>>
+
+	const node = getNodeByID(params)!
+	const payloads = ObjectKeys(params.connection).map(c =>
+		getConnectionRow(node, c)
+	)
+	debugger
+	const payload = payloads[0][0][0]
 	return REC({
 		rootUid: params.uid,
-		node: getNodeByID(params)!,
+		node,
 		params,
 		trace: { children: [], parents: [] },
-	}) as ReturnType<P['query']> & { [key in proxy]?: TBlockInfoRec[] }
+		payload,
+	}) as ReturnType<P['query']> & {
+		[key in proxy]: (TBlockInfoRec | undefined)[]
+	}
 }
 
 function REC(step: Nest) {
-	const connections = getConnections(step)
+	const connectionIterator = getConnectionIterator(step)
 
-	for (const iterator of connections) {
+	for (const iterator of connectionIterator) {
 		/**
 		 * blocks can have multiple outputs
 		 */
-		for (const row of iterator.rows) {
+		for (const [idx, row] of Object.entries(iterator.rows)) {
+			/**
+			 * Since a single outlet/plug can have multiple connections
+			 * create a fresh connection array for each row
+			 */
+			const connections = (iterator.branch[Number(idx)] ??= [])
+
+			/**
+			 * respect the block outlet/plug order
+			 * if the current row is empty, make it explicit
+			 */
+			if (!row.length) {
+				connections.push(undefined)
+			}
+
 			/**
 			 * map the uid to a valid node
 			 * then trace it to avoid stack overflows
 			 * then walk down the children hierarchy
 			 */
-			for (const uid of row) {
+			for (const payload of row) {
+				const { uid } = payload.plug
 				const nextNode = getNodeByID({ ...step.params, uid })
 				const canWalkDown =
 					!step.trace[iterator.key].includes(uid) &&
@@ -37,27 +62,31 @@ function REC(step: Nest) {
 					// track potential recursive nodes
 					step.trace[iterator.key].push(uid)
 
-					const rec = REC({ ...step, node: nextNode })
+					const rec = REC({ ...step, payload, node: nextNode })
 
 					// release them so others can check for themselves
 					step.trace[iterator.key].pop()
 
-					iterator.branch.push(rec)
+					connections.push(rec)
 				}
 				// you found your self, show the properties but not the children
 				else if (nextNode && !canWalkDown) {
-					iterator.branch.push(step.params.query(nextNode))
+					connections.push(step.params.query(nextNode, payload))
 				}
 			}
 		}
 	}
 
 	return {
-		...step.params.query(step.node),
-		...connections.reduce((acc, crr) => {
-			return {
-				...acc,
-				[crr.key]: crr.branch,
+		...step.params.query(step.node, step.payload),
+		...connectionIterator.reduce((acc, crr) => {
+			if (crr.branch?.length) {
+				return {
+					...acc,
+					[crr.key]: crr.branch,
+				}
+			} else {
+				return acc
 			}
 		}, {}),
 	}
