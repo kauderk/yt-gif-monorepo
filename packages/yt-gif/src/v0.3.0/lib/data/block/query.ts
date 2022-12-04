@@ -29,36 +29,54 @@ export const getBlockParentUids = async (uid: s) => {
 			let currentNode = node
 			//let previousNode = node
 			let indexPosition = 0
+			let branches = []
+			let branch = []
 
 			while (currentNode) {
 				//
+
 				let currentIndex = indexes[indexPosition]
-				//let tmpCurrentNode = currentNode
+				let fallbackNode = currentNode
+				branch.push(currentNode)
 				currentNode = currentNode.children?.[currentIndex] as Node
 				//
 				if (currentNode) {
-					indexes.push(0)
-					indexPosition++
+					if (indexes[indexPosition + 1]) {
+						indexes.push(0)
+						indexPosition++
+					}
 				} else {
 					if (indexPosition == 0) {
 						debugger
 						break
 					}
-					indexPosition--
-					indexes[indexPosition]++
-					indexes.pop()
 
-					currentNode = node
-					for (let i = 0; i < indexes.length - 1; i++) {
-						currentNode = currentNode.children?.[indexes[i]] as Node
+					if (!fallbackNode.children?.length) {
+						branches.push(branch)
+						branch = []
+						indexes[indexPosition - 1]++
+						indexPosition = 0
+						indexes.pop()
+						currentNode = node
+					} else {
+						indexPosition--
+						indexes[indexPosition]++
+						indexes.pop()
+
+						currentNode = node
+						for (let i = 0; i < indexes.length - 1; i++) {
+							currentNode = currentNode.children?.[
+								indexes[i]
+							] as Node
+						}
 					}
 				}
 				//previousNode = tmpCurrentNode
 			}
+			debugger
 			return
 		}
 		walkDownTree(parentUIDsQuery)
-		debugger
 		// const UIDS = ReduceQuery({
 		// 	nest: parentUIDsQuery,
 		// 	connection: { inputs: { proxy: 'parents' } },
