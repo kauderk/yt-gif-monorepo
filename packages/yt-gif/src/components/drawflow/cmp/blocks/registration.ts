@@ -4,81 +4,86 @@ import { ObjectValues } from '$lib/utils'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
-	
 	addNode({
 		cords: { x: 31, y: 349.5 },
 		node: {
 			html: DrawflowBlocks.InputBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 32.5, y: 479 },
 		node: {
 			html: DrawflowBlocks.InputBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 32, y: 611 },
 		node: {
 			html: DrawflowBlocks.InputBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 52, y: 157.7 },
 		node: {
 			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 801, y: 431.4 },
 		node: {
 			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 1246.4, y: 736.7 },
 		node: {
 			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 603.4, y: 92 },
 		node: {
 			html: DrawflowBlocks.ContactDetailsBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 233, y: 328.5 },
 		node: {
 			html: DrawflowBlocks.AddressBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 633, y: 615.4 },
 		node: {
 			html: DrawflowBlocks.OrganizationBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 1134, y: 131.4 },
 		node: {
 			html: DrawflowBlocks.UserBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 1599.5, y: 376.5 },
 		node: {
 			html: DrawflowBlocks.OrganizationProfileBlock.GraphNodeID,
-		}
+		},
 	})
 	addNode({
 		cords: { x: 1139, y: 502.7 },
 		node: {
 			html: DrawflowBlocks.OrganizationTypeBlock.GraphNodeID,
-		}
+		},
+	})
+	addNode({
+		cords: { x: 1200, y: 700.7 },
+		node: {
+			html: DrawflowBlocks.simplePlayer.GraphNodeID,
+		},
 	})
 
-    return undefined
+	return undefined
 
 	return ObjectValues(DrawflowBlocks).forEach((o, i) => {
 		addNode({
