@@ -24,9 +24,13 @@ export interface Nest {
 	trace: { children: ID[]; parents: ID[] }
 	params: Params
 }
-export interface ReduceQuery {
+
+export interface UnidirectionalNest {
 	nest: Partial<TBlockInfoRec>
 	connection: RequireOnlyOne<connection>
+}
+
+export interface ReduceQuery extends UnidirectionalNest {
 	/**
 	 * 	FIXME how do you grab ReduceQuery["nest"] to type query(block: ReduceQuery["nest"])
 	 */
