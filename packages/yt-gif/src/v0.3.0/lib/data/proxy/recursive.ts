@@ -24,7 +24,6 @@ function REC(step: Nest) {
 		/**
 		 * blocks can have multiple outputs
 		 */
-		//step.trace: s[] = [] // this resets, and only tracks the last one, yet it still works...
 		for (const row of iterator.rows) {
 			/**
 			 * map the uid to a valid node
@@ -39,9 +38,13 @@ function REC(step: Nest) {
 
 				// once you are in, block the way for your possible self
 				if (nextNode && canWalkDown) {
+					// track potential recursive nodes
 					step.trace[iterator.key].push(uid)
 
 					const rec = REC({ ...step, node: nextNode })
+
+					// release them so others can check for themselves
+					step.trace[iterator.key].pop()
 
 					iterator.branch.push(rec)
 				}
