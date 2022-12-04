@@ -67,23 +67,24 @@ function REC(step: Nest) {
 export function ReduceQuery<P extends ReduceQuery>(params: P) {
 	const proxy = ObjectValues(params.connection)[0]!.proxy
 
-	function reduceNest(array: TBlockInfoRec[]) {
-		return array.reduce((acc, crrNest, i) => {
-			// unable to create separate branches, so focus on first one
-			if (i > 0) return acc
+	function reduceNest(parentObj: Partial<TBlockInfoRec>) {
+		return parentObj.parents?.reduce((acc, crrNest) => {
 			// stack the next query
-			acc.push(params.query(crrNest))
+			acc.push(params.query(crrNest, parentObj))
 			// do you have nested blocks?
 			if (crrNest[proxy] && Array.isArray(crrNest[proxy])) {
 				// https://stackoverflow.com/a/33921160/13914180
-				acc = acc.concat(reduceNest(crrNest[proxy]!))
+				acc = acc.concat(reduceNest(crrNest))
 			}
 			return acc
 			// start with an array
-		}, [] as any[])
+		}, [] as any[]) as ReturnType<P['query']>[]
 	}
-	const array = reduceNest(params.nest[proxy]!)
+
+	const array = reduceNest(params.nest!)
 	// add yourself to the beginning
-	array.unshift(params.query(params.nest))
+	// @ts-ignore
+	array?.unshift(params.query(params.nest))
+
 	return array as ReturnType<P['query']>[]
 }

@@ -31,6 +31,7 @@ export interface ReduceQuery {
 	 * 	FIXME how do you grab ReduceQuery["nest"] to type query(block: ReduceQuery["nest"])
 	 */
 	query: (
-		block: any
+		block: any,
+		parent?: any
 	) => unknown | RequireAtLeastOne<Partial<TBlockInfoRec>> | PropertyKey
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getBlockParentUids } from '$v3/lib/data/drawflow-roam-api-proxy'
 
-	let value = 3
+	let value = 6
 	let res: Awaited<ReturnType<typeof getBlockParentUids>>
 	$: console.log(res)
 	$: console.log(JSON.stringify(res))
