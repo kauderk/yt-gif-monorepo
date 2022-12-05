@@ -11,13 +11,13 @@ export const getBlockParentUids = async (uid: s) => {
 			connection: {
 				outputs: { proxy: 'children' },
 			},
+			walk: 'flat',
 			query(node, payload) {
 				return {
 					uid: node.id.toString(),
 				}
 			},
 		})
-		debugger
 		const x = getFlatNodeConnections({
 			nest: parentUIDsQuery,
 			connection: {

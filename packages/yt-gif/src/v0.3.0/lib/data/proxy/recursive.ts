@@ -7,20 +7,17 @@ export function getNestedBlocks<P extends Params>(params: P) {
 	type proxy = ReturnType<typeof getTypeofProxy<P>>
 
 	const node = getNodeByID(params)!
-	const payloads = ObjectKeys(params.connection).map(c =>
-		getConnectionRow(node, c)
-	)
-	debugger
-	const payload = payloads[0][0][0]
+
 	return REC({
 		rootUid: params.uid,
 		node,
 		params,
 		trace: { children: [], parents: [] },
-		payload,
-	}) as ReturnType<P['query']> & {
-		[key in proxy]: (TBlockInfoRec | undefined)[]
-	}
+		//FIXME: these types could turn rogue
+	}) as ReturnType<P['query']> &
+		(P['walk'] extends 'flat'
+			? { [key in proxy]?: TBlockInfoRec[] }
+			: { [key in proxy]: (TBlockInfoRec | undefined)[] })
 }
 
 function REC(step: Nest) {
@@ -30,20 +27,12 @@ function REC(step: Nest) {
 		/**
 		 * blocks can have multiple outputs
 		 */
-		for (const [idx, row] of Object.entries(iterator.rows)) {
-			/**
-			 * Since a single outlet/plug can have multiple connections
-			 * create a fresh connection array for each row
-			 */
-			const connections = (iterator.branch[Number(idx)] ??= [])
-
-			/**
-			 * respect the block outlet/plug order
-			 * if the current row is empty, make it explicit
-			 */
-			if (!row.length) {
-				connections.push(undefined)
-			}
+		for (const row of iterator.rows) {
+			const connections = createConnectionRowArrayByReference(
+				iterator,
+				row,
+				step
+			)
 
 			/**
 			 * map the uid to a valid node
@@ -90,6 +79,32 @@ function REC(step: Nest) {
 			}
 		}, {}),
 	}
+}
+
+function createConnectionRowArrayByReference<
+	I extends ReturnType<typeof getConnectionIterator>[number]
+>(iterator: I, row: I['rows'][number], step: Nest) {
+	if (step.params.walk == 'flat')
+		return iterator.branch as Partial<TBlockInfoRec>[]
+
+	const index = iterator.rows.indexOf(row)
+
+	/**
+	 * Since a single outlet/plug can have multiple connections
+	 * create a fresh connection array for each row
+	 */
+	const connections = (iterator.branch[Number(index)] ??= []) as Partial<
+		TBlockInfoRec | undefined
+	>[]
+
+	/**
+	 * respect the block outlet/plug order
+	 * if the current row is empty, make it explicit
+	 */
+	if (!row.length) {
+		connections.push(undefined)
+	}
+	return connections
 }
 
 export function ReduceQuery<P extends ReduceQuery>(params: P) {

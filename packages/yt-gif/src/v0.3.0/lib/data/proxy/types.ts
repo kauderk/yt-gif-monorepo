@@ -10,17 +10,18 @@ export type proxyProperties = connection[keyof connection]['proxy']
 export interface Params {
 	uid: ID
 	module?: 'Home' | 'Other'
+	walk: 'flat' | 'explicit'
 	connection: RequireAtLeastOne<connection>
 	/**
 	 * @return RequireAtLeastOne property
 	 */
 	query: (
 		node: DrawflowNode,
-		payload: Payload
+		payload?: Payload
 	) => RequireAtLeastOne<Partial<Omit<TBlockInfoRec, proxyProperties>>>
 }
 export interface Nest {
-	payload: Payload
+	payload?: Payload
 	node: DrawflowNode
 	rootUid: ID
 	trace: { children: ID[]; parents: ID[] }

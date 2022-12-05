@@ -6,16 +6,13 @@ import type { Nest, Params, Payload, Proxy } from './types'
 import data from '$cmp/drawflow/data.json'
 import { ObjectKeys } from '$lib/utils'
 
-export function getConnectionIterator(step: Nest) {
-	return ObjectKeys(step.params.connection).map(c =>
-		createConnectionLookup(step, c)
-	)
-}
-function createConnectionLookup(step: Nest, connection: 'inputs' | 'outputs') {
-	const branch: (Proxy | undefined)[][] = []
-	const rows = getConnectionRow(step.node, connection)
-	const key = step.params.connection[connection]?.proxy!
-	return { rows, branch, key }
+export function getConnectionIterator<N extends Nest>(step: N) {
+	return ObjectKeys(step.params.connection).map(connection => {
+		const branch: Proxy[] | (Proxy | undefined)[][] = []
+		const rows = getConnectionRow(step.node, connection)
+		const key = step.params.connection[connection]?.proxy!
+		return { rows, branch, key }
+	})
 }
 
 export function getNodeByID({
