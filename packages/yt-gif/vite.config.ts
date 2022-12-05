@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { resolve } from 'path'
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,8 +16,13 @@ export default defineConfig({
 	},
 	optimizeDeps: {
 		include: ['svelvet'],
+		esbuildOptions: {
+			plugins: [
+				esbuildCommonjs(['@tiptap/extension-bubble-menu', 'tippy.js']),
+			],
+		},
 	},
-	plugins: [sveltekit()],
+	plugins: [viteCommonjs(), sveltekit()],
 	build: {
 		target: ['es2020'],
 		sourcemap: true,
