@@ -26,11 +26,11 @@ type Block = {
 		GraphNodeID: s
 		cmp: any
 		provider?: boolean
-        title?: string
+		title?: string
 	}
 }
 
-export const DrawflowBlocks: Block = <const>{
+export const DrawflowBlocks = <const>{
 	YTGIFBlock: {
 		GraphNodeID: 'YTGIFBlock',
 		cmp: YTGIF,
@@ -91,42 +91,42 @@ export const DrawflowBlocks: Block = <const>{
 	},
 	ContactDetailsBlock: {
 		GraphNodeID: 'ContactDetailsBlock',
-        title: "Create Contact Details",
+		title: 'Create Contact Details',
 		cmp: ContactDetails,
 	},
 	AddressBlock: {
 		GraphNodeID: 'AddressBlock',
-        title: "Create Address",
+		title: 'Create Address',
 		cmp: Address,
 	},
 	OrganizationBlock: {
 		GraphNodeID: 'OrganizationBlock',
-        title: "Create Organization",
+		title: 'Create Organization',
 		cmp: Organization,
 	},
 	UserBlock: {
 		GraphNodeID: 'UserBlock',
-        title: "Create User",
+		title: 'Create User',
 		cmp: User,
 	},
 	OrganizationTypeBlock: {
 		GraphNodeID: 'OrganizationTypeBlock',
-        title: "Create Organization Type",
+		title: 'Create Organization Type',
 		cmp: OrganizationType,
 	},
 	OrganizationProfileBlock: {
 		GraphNodeID: 'OrganizationProfileBlock',
-        title: "Create Organization Profile",
+		title: 'Create Organization Profile',
 		cmp: OrganizationProfile,
 	},
 	Input: {
 		GraphNodeID: 'InputBlock',
-        title: "Input",
+		title: 'Input',
 		cmp: Input,
 	},
 	TitleNote: {
 		GraphNodeID: 'TitleNoteBlock',
-        title: "",
+		title: '',
 		cmp: TitleNote,
 	},
 }

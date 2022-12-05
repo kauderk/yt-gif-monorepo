@@ -2,22 +2,10 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
 import type { DeepPartial } from '$lib/types/utilities'
 import { ObjectValues } from '$lib/utils'
+import { recursiveAssign } from '$lib/utils/object'
 import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
-	return addNode()
-
-	return ObjectValues(DrawflowBlocks).forEach((o, i) => {
-		addNode({
-			cords: { x: 0 + i * 100, y: 0 + i * 100 },
-			node: {
-				html: o.GraphNodeID,
-			},
-		})
-	})
-
-	return undefined
-
 	addNode({
 		cords: { x: 1100, y: 715 },
 		node: {
@@ -99,13 +87,13 @@ export function createNodeComponents(editor: Drawflow) {
 	addNode({
 		cords: { x: 600, y: 50 },
 		node: {
-			html: DrawflowBlocks.InputBlock.GraphNodeID,
+			html: DrawflowBlocks.Input.GraphNodeID,
 		},
 	})
 	addNode({
 		cords: { x: 600, y: 50 },
 		node: {
-			html: DrawflowBlocks.TitleNoteBlock.GraphNodeID,
+			html: DrawflowBlocks.TitleNote.GraphNodeID,
 		},
 	})
 	addNode({
@@ -122,29 +110,28 @@ export function createNodeComponents(editor: Drawflow) {
 	})
 
 	function addNode(partial: DeepPartial<AddNodeProps> = {}) {
-		const placeholder = <const>{
+		const placeholder = {
 			name: 'graph-node',
 			connections: {
 				inputs: 1,
 				outputs: 1,
-				...partial.connections,
 			},
 			cords: {
 				y: 150,
 				x: 600,
-				...partial.cords,
 			},
 			// this could be troublesome
-			data: { ...partial.data },
+			data: {},
 			node: {
 				classoverride: 'graph-node',
 				html: DrawflowBlocks.YTGIFBlock.GraphNodeID,
 				typenode: 'svelte',
-				...partial.node,
 			},
 		}
+		// @ts-ignore
+		const config = recursiveAssign(placeholder, partial) as AddNodeProps
 		// how do you spread nested cursive object without loosing placeholder properties?
-		editor.addNode(placeholder)
+		editor.addNode(config)
 	}
 }
 
