@@ -28,7 +28,7 @@ const config = {
 			},
 		},
 	},
-	plugins: [require('daisyui')],
+	plugins: [require('daisyui'), require('tailwindcss-all')],
 	daisyui: {
 		darkTheme: 'black',
 		logs: false,
