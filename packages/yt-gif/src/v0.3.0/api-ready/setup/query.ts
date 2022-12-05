@@ -65,7 +65,7 @@ export interface CreateYTGIF {
 	dataCreation: string
 	url: string
 	accUrlIndex: number
-	newId: string
+	playerID: string
 	customSpan?: string
 }
 /**
@@ -100,7 +100,7 @@ export function CreateYTGIFElement(
 	//wrapper.innerHTML = ''
 	//wrapper.insertAdjacentHTML('afterbegin', links.html.fetched.playerControls)
 	debugger
-	wrapper.querySelector('.yt-gif-player')!.id = o.newId
+	wrapper.querySelector('.yt-gif-player')!.id = o.playerID
 	return wrapper
 }
 export function AsyncDeployment(dataCreation: string) {

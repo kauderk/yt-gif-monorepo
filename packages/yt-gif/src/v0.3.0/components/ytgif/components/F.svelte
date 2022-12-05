@@ -7,7 +7,7 @@
 		dataCreation: 'null',
 		url: 'https://youtu.be/qTgPSKKjfVg',
 		accUrlIndex: 0,
-		newId: 'string',
+		playerID: 'player_1',
 		customSpan: undefined,
 	}
 	$: id = getYouTubeVideoID(attr.url)
@@ -23,7 +23,7 @@
 		bind:this={wrapper}
 		style="background-image: url(&quot;https://img.youtube.com/vi/{id}/hqdefault.jpg&quot;);">
 		<div class="yt-gif-iframe-wrapper">
-			<div id="player_1" class="yt-gif-player" />
+			<div id={attr.playerID} class="yt-gif-player" />
 		</div>
 		<div class="yt-gif-controls">
 			<span class="yt-gif-invisible-element yt-gif-btn" data-tooltip="">

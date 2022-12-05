@@ -40,7 +40,7 @@ export async function TryFreezeAutoplay(
 		TryToPauseAfterASecond(q, play)
 	} //
 	else {
-		await t.WhileApiHolds(iframe, 200)
+		await t.WhileApiHolds(iframe, 300)
 		const humanInteraction = t.ytgif.globalHumanInteraction
 
 		// or if mouse is inside parent
