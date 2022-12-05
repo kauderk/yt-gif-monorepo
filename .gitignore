@@ -68,7 +68,6 @@ dist/**
 
 # ignore pnpm files
 .pnpm-debug.log
-pnpm-lock.yaml
 
 # misc
 .DS_Store

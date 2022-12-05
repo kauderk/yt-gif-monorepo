@@ -1,64 +1,55 @@
-<script lang="ts">
-	import Editor from 'cl-editor'
+<script>
+	import { onMount, onDestroy } from 'svelte'
+	import { Editor } from '@tiptap/core'
+	import StarterKit from '@tiptap/starter-kit'
 
-	export let id: s
+	let element
+	let editor
 
-	const createEditor = (target: HTMLElement) => {
-		// Initialize editor
-		const editor = new Editor({
-			// <HTMLElement> required
-			target,
-			// optional
-			props: {
-				// <Array[string | Object]> string if overwriting, object if customizing/creating
-				// available actions:
-				// 'viewHtml', 'undo', 'redo', 'b', 'i', 'u', 'strike', 'sup', 'sub', 'h1', 'h2', 'p', 'blockquote',
-				// 'ol', 'ul', 'hr', 'left', 'right', 'center', 'justify', 'a', 'image', 'forecolor', 'backcolor', 'removeFormat'
-				actions: [
-					'b',
-					'i',
-					'u',
-					'strike',
-					'ul',
-					'ol',
-					{
-						name: 'copy', // required
-						icon: '<b>C</b>', // string or html string (ex. <svg>...</svg>)
-						title: 'Copy',
-						result: () => {
-							// copy current selection or whole editor content
-							const selection = window.getSelection()
-							if (selection && !selection.toString().length) {
-								const range = document.createRange()
-								range.selectNodeContents(editor.refs.editor)
-								selection.removeAllRanges()
-								selection.addRange(range)
-							}
-							editor.exec('copy')
-						},
-					},
-					'h1',
-					'h2',
-					'p',
-				],
-				// default 300px
-				height: '150px',
-				// initial html
-				html: '',
-				// remove format action clears formatting, but also removes some html tags.
-				// you can specify which tags you want to be removed.
-				// removeFormatTags: ['h1', 'h2', 'blackquote'], // default
+	onMount(() => {
+		editor = new Editor({
+			element: element,
+			extensions: [StarterKit],
+			content: '<p>Hello World! 🌍️ </p>',
+			onTransaction: () => {
+				// force re-render so `editor.isActive` works as expected
+				editor = editor
 			},
 		})
-	}
+	})
+
+	onDestroy(() => {
+		if (editor) {
+			editor.destroy()
+		}
+	})
 </script>
 
-<div class="all-initial">
-	<div {id} use:createEditor />
-</div>
+{#if editor}
+	<button
+		on:click={() =>
+			editor.chain().focus().toggleHeading({ level: 1 }).run()}
+		class:active={editor.isActive('heading', { level: 1 })}>
+		H1
+	</button>
+	<button
+		on:click={() =>
+			editor.chain().focus().toggleHeading({ level: 2 }).run()}
+		class:active={editor.isActive('heading', { level: 2 })}>
+		H2
+	</button>
+	<button
+		on:click={() => editor.chain().focus().setParagraph().run()}
+		class:active={editor.isActive('paragraph')}>
+		P
+	</button>
+{/if}
+
+<div bind:this={element} />
 
 <style>
-	.all-initial > div {
-		padding: 2em;
+	button.active {
+		background: black;
+		color: white;
 	}
 </style>
