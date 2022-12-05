@@ -7,7 +7,6 @@
 	//#region imports
 	import { CreateXload } from '$lib/dom'
 	import { onMount } from 'svelte'
-	import { URLResults } from '$v3/api-ready/setup/url-result'
 	import {
 		CheckFalsePositive,
 		CreateConfigParams,
@@ -16,6 +15,7 @@
 	} from '$v3/api-ready/setup/query'
 	import { playerConfig } from '$v3/api-ready/deploy/config'
 	import F from './F.svelte'
+	import { createState } from './store'
 	onMount(async () => {
 		if (!window.YT) {
 			await CreateXload('https://www.youtube.com/iframe_api')
@@ -23,40 +23,51 @@
 	})
 	//#endregion
 
+	export let uid = ''
 	export let videoId = ''
 
 	if (!videoId) {
 		newVideoId()
 	}
 
-	let playerID: s
+	export let idPrefix = 'player'
+	const state = createState(idPrefix)
 
 	const Fire = async () => {
-		// search and get urlIndex and uid
-		const uidResult = await URLResults(wrapper)
-		const { url } = uidResult
+		const search = {
+			uid: 'irrelvant-uid',
+			preUrlIndex: 0,
+			accUrlIndex: 0,
+			url: atributes.url,
+			grandParentBlock,
+			nestedComponentMap: <Trm_map>{},
+			earlyReturnKey: '',
+		}
 
 		// don't add up false positives
-		if (CheckFalsePositive({ ...uidResult, wrapper })) return null
-
-		// OnPlayerReady video params point of reference
-		const configParams = CreateConfigParams(playerID, url)
-
-		// target's point of reference
-		const { record } = CreateRecordID(uidResult)
+		if (CheckFalsePositive({ ...search, wrapper })) {
+			state.setPartial({ state: 'invalid' })
+			return
+		}
 
 		deploy()
 
-		return wrapper
-
 		function deploy() {
+			// YT API player
+			const { playerID } = atributes
+			const { record } = CreateRecordID(search)
+			// OnPlayerReady video params point of reference
+			const config = CreateConfigParams(playerID, search.url)
+
 			record.wTarget = new window.YT.Player(
 				playerID,
-				playerConfig(configParams)
+				playerConfig(config)
 			)
+			state.setPartial({ state: 'loading' })
 		}
 	}
 
+	let grandParentBlock: HTMLDivElement
 	let wrapper: HTMLDivElement
 	let repaint = 0
 
@@ -64,24 +75,27 @@
 		return (videoId =
 			available[Math.floor(Math.random() * available.length)])
 	}
-	function newPlayerID() {
-		return (playerID = GetNewID())
+
+	let atributes = {
+		targetClass: 'rm-xparser-default-yt-gif',
+		dataCreation: 'null',
+		url: `https://youtu.be/${newVideoId()}`,
+		accUrlIndex: 0,
+		playerID: GetNewID(),
+		customSpan: undefined,
+	}
+	function newAttributes() {
+		atributes.url = `https://youtu.be/${newVideoId()}`
+		atributes.playerID = GetNewID()
+
+		return atributes
 	}
 </script>
 
 <div class="dwn-yt-gif-player-container" id="F">
-	<div class="dropdown-content" id="F">
+	<div class="dropdown-content" bind:this={grandParentBlock} id="F">
 		{#key repaint}
-			<F
-				bind:wrapper
-				attr={{
-					targetClass: 'rm-xparser-default-yt-gif',
-					dataCreation: 'null',
-					url: `https://youtu.be/${newVideoId()}`,
-					accUrlIndex: 0,
-					playerID: newPlayerID(),
-					customSpan: undefined,
-				}} />
+			<F bind:wrapper attr={newAttributes()} />
 		{/key}
 	</div>
 </div>

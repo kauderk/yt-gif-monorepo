@@ -1,5 +1,6 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
+import type { DeepPartial } from '$lib/types/utilities'
 import { ObjectValues } from '$lib/utils'
 import { DrawflowBlocks } from './index'
 
@@ -119,10 +120,8 @@ export function createNodeComponents(editor: Drawflow) {
 			html: DrawflowBlocks.YtvidBlock.GraphNodeID,
 		},
 	})
-	type RecursivePartial<T> = {
-		[P in keyof T]?: RecursivePartial<T[P]>
-	}
-	function addNode(partial: RecursivePartial<AddNodeProps> = {}) {
+
+	function addNode(partial: DeepPartial<AddNodeProps> = {}) {
 		const placeholder = <const>{
 			name: 'graph-node',
 			connections: {

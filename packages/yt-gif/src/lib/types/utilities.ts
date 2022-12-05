@@ -16,3 +16,9 @@ export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
 	{
 		[K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
 	}[Keys]
+
+export type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>
+	  }
+	: T

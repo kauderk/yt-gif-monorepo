@@ -44,7 +44,7 @@ function GetPreSelector() {
 		.flat(Infinity)
 		.filter(s => !!s) as s[]
 }
-function GetIsDmmTutorial(el: Element) {
+export function GetIsDmmTutorial(el: Element) {
 	return (<const>{
 		uid: 'irrelevant-uid',
 		url: '',
