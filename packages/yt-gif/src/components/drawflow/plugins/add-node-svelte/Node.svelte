@@ -37,18 +37,16 @@
 
 	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
 
-    var classTopName = "drawflow_node_top";
-    var classBodyName = "";
+	var classTopName = 'drawflow_node_top'
+	var classBodyName = ''
 
-    if (Slot?.GraphNodeID == "InputBlock"){
-        classTopName = "top_cyan";
-        classBodyName = "body_cyan";
-    }
-    else if (Slot?.GraphNodeID == "TitleNoteBlock") {
-        classTopName = "top_blue";
-        classBodyName = "body_blue";
-    }
-
+	if (Slot?.GraphNodeID == 'InputBlock') {
+		classTopName = 'top_cyan'
+		classBodyName = 'body_cyan'
+	} else if (Slot?.GraphNodeID == 'TitleNoteBlock') {
+		classTopName = 'top_blue'
+		classBodyName = 'body_blue'
+	}
 </script>
 
 <div
@@ -140,22 +138,22 @@
 		padding: 5px;
 	}
 
-    .top_blue{
-        background-color: #0081ae !important;
-    }
+	.top_blue {
+		background-color: #0081ae !important;
+	}
 
-    .body_blue{
-        background-color: #00a6da !important;
-    }
+	.body_blue {
+		background-color: #00a6da !important;
+	}
 
-    .top_cyan{
-        background-color: #00b2b3 !important;
-    }
+	.top_cyan {
+		background-color: #00b2b3 !important;
+	}
 
-    .body_cyan{
-        background-color: #00d9da !important;
-    }
-    
+	.body_cyan {
+		background-color: #00d9da !important;
+	}
+
 	.drawflow_node_title {
 		font-weight: 600;
 		margin-left: 5px;
@@ -167,15 +165,6 @@
 
 	.drawflow_content_node {
 		width: -webkit-fill-available;
-	}
-
-	.drawflow_node_body button {
-		background: linear-gradient(180deg, #b2f104, #6e9600);
-		border-radius: 0 0.6em 0.6em 0;
-		color: black;
-		font-weight: 550;
-		padding: 0px 5px 0px 5px;
-		margin: 3px 0 3px 0;
 	}
 
 	// runtime

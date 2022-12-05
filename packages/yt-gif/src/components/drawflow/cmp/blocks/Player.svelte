@@ -1,47 +1,53 @@
-<div class="music-player">
-	<!--<div style="background-image: url(https://i.imgur.com/yqB0erk.jpg);" class="album"></div>-->
+<script>
+	import Node from './node/Node.svelte'
+</script>
 
-	<div class="info">
-		<div class="left">
-			<a href="javascript:;" class="icon-shuffle" />
-			<a href="javascript:;" class="icon-heart" />
+<Node>
+	<div class="music-player" slot="player">
+		<!--<div style="background-image: url(https://i.imgur.com/yqB0erk.jpg);" class="album"></div>-->
+	
+		<div class="info">
+			<div class="left">
+				<a href="javascript:;" class="icon-shuffle" />
+				<a href="javascript:;" class="icon-heart" />
+			</div>
+	
+			<div class="center">
+				<div class="jp-playlist">
+					<ul>
+						<li />
+					</ul>
+				</div>
+			</div>
+	
+			<div class="right">
+				<a href="javascript:;" class="icon-repeat" />
+				<a href="javascript:;" class="icon-share" />
+			</div>
+	
+			<div class="progress" />
 		</div>
-
-		<div class="center">
-			<div class="jp-playlist">
-				<ul>
-					<li />
-				</ul>
+	
+		<div class="controls">
+			<div class="current jp-current-time">00:00</div>
+			<div class="play-controls">
+				<a
+					href="javascript:;"
+					class="icon-previous jp-previous"
+					title="previous" />
+				<a href="javascript:;" class="icon-play jp-play" title="play" />
+				<a href="javascript:;" class="icon-pause jp-pause" title="pause" />
+				<a href="javascript:;" class="icon-next jp-next" title="next" />
+			</div>
+			<div class="volume-level">
+				<a href="javascript:;" class="icon-volume-up" title="max volume" />
+				<a href="javascript:;" class="icon-volume-down" title="mute" />
 			</div>
 		</div>
-
-		<div class="right">
-			<a href="javascript:;" class="icon-repeat" />
-			<a href="javascript:;" class="icon-share" />
-		</div>
-
-		<div class="progress" />
+	
+		<div id="jquery_jplayer" class="jp-jplayer" />
 	</div>
-
-	<div class="controls">
-		<div class="current jp-current-time">00:00</div>
-		<div class="play-controls">
-			<a
-				href="javascript:;"
-				class="icon-previous jp-previous"
-				title="previous" />
-			<a href="javascript:;" class="icon-play jp-play" title="play" />
-			<a href="javascript:;" class="icon-pause jp-pause" title="pause" />
-			<a href="javascript:;" class="icon-next jp-next" title="next" />
-		</div>
-		<div class="volume-level">
-			<a href="javascript:;" class="icon-volume-up" title="max volume" />
-			<a href="javascript:;" class="icon-volume-down" title="mute" />
-		</div>
-	</div>
-
-	<div id="jquery_jplayer" class="jp-jplayer" />
-</div>
+</Node>
 
 <style lang="sass">
 

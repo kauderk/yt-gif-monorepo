@@ -74,7 +74,7 @@
 		user-select: none;
 		border: 1px rgba(0, 183, 255, 0.63) dotted;
 		// paths
-		svg {
+		svg.connection {
 			z-index: 0;
 			position: absolute;
 			overflow: visible !important;
