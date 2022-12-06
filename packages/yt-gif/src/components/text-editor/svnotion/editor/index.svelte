@@ -1,4 +1,5 @@
 <script lang="ts">
+	import dataToImport from '$cmp/drawflow/data.json'
 	import { moduleStore } from './store'
 	import { onMount, onDestroy } from 'svelte'
 	import { browser } from '$app/environment'
@@ -84,7 +85,15 @@
 	let element: HTMLElement
 	let editor: Readable<Editor>
 
+	export let GraphNodeID = ''
+
 	onMount(() => {
+		GraphNodeID =
+			GraphNodeID || element.closest('.drawflow-node')?.id?.substring(5)
+		try {
+			content =
+				dataToImport.drawflow.Home.data[GraphNodeID].data.tiptapEditor
+		} catch (error) {}
 		if (browser) {
 			editor = createEditor({
 				editorProps: {
@@ -125,6 +134,7 @@
 			$editor.destroy()
 		}
 	})
+	let showUI = false
 </script>
 
 <div class="prose prose-slate sm:prose-xl lg:prose-3xl" bind:clientWidth={w}>
@@ -135,12 +145,14 @@
 
 <svelte:window
 	on:keydown={e => {
+		console.log(e.key == 'y' && e.altKey)
 		if (e.key == 'y' && e.altKey) {
+			showUI = !showUI
 			$moduleStore.showExtraUI = !$moduleStore.showExtraUI
 		}
 	}} />
 
-{#if $moduleStore.showExtraUI}
+{#if showUI}
 	<div class="sm:flex my-4">
 		<button
 			on:click={() => {

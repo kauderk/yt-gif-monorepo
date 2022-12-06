@@ -2,53 +2,143 @@
 	"drawflow": {
 		"Home": {
 			"data": {
-				"6": {
-					"name": "EditorPlayerBlock",
+				"12": {
+					"name": "YTGIFBlock",
 					"data": {},
-					"html": "EditorPlayerBlock",
+					"html": "YTGIFBlock",
 					"typenode": "svelte",
-					"id": 6,
-					"class": "EditorPlayerBlock",
-					"inputs": { "input_0": { "connections": [] } },
+					"id": 12,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "15", "input": "output_0" },
+								{ "node": "16", "input": "output_0" }
+							]
+						}
+					},
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 631,
-					"pos_y": 334
+					"pos_x": 1041,
+					"pos_y": 437
 				},
-				"7": {
+				"13": {
 					"name": "EditorPlayerBlock",
-					"data": {},
+					"data": {
+						"tiptapEditor": "<p>Este es un bloque en el que usuarios <br>pueden ingresar contenido relevante</p><p></p><p>Al escribir el comando \"/\"<br>Shitf+/ o Cmd+/<br><br>Un menu aparecera para añadir videos<br>dentro de este tipo de bloques<br>El que buscas es \"YTGIF\"</p>"
+					},
 					"html": "EditorPlayerBlock",
 					"typenode": "svelte",
-					"id": 7,
+					"id": 13,
 					"class": "EditorPlayerBlock",
 					"inputs": { "input_0": { "connections": [] } },
 					"outputs": {
 						"output_0": {
 							"connections": [
-								{ "node": "9", "output": "input_0" }
+								{ "node": "15", "output": "input_0" },
+								{ "node": "14", "output": "input_0" },
+								{ "node": "16", "output": "input_0" }
 							]
 						}
 					},
-					"pos_x": 1228,
-					"pos_y": 124
+					"pos_x": -68.75,
+					"pos_y": 311
 				},
-				"9": {
+				"14": {
 					"name": "EditorPlayerBlock",
-					"data": {},
+					"data": {
+						"tiptapEditor": "<p>El siguiente bloque es un \"nodo\" que contiene<br>un reproductor de video llamado YTGIF<br><br>Cuando presiones \"FIRE\" el, video estara listo para<br>ser visto cundo pongas tu mouse por encima.<br>Cuando te alejes, el video se pausará.</p>"
+					},
 					"html": "EditorPlayerBlock",
 					"typenode": "svelte",
-					"id": 9,
+					"id": 14,
 					"class": "EditorPlayerBlock",
 					"inputs": {
 						"input_0": {
 							"connections": [
-								{ "node": "7", "input": "output_0" }
+								{ "node": "13", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "10", "output": "input_0" },
+								{ "node": "17", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 503.25,
+					"pos_y": 80
+				},
+				"15": {
+					"name": "EditorPlayerBlock",
+					"data": {},
+					"html": "EditorPlayerBlock",
+					"typenode": "svelte",
+					"id": 15,
+					"class": "EditorPlayerBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "13", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "12", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 544.5,
+					"pos_y": 345.75
+				},
+				"16": {
+					"name": "EditorPlayerBlock",
+					"data": {
+						"tiptapEditor": "<p>Este es un bloque que contiene un editor de texto<br>y un reproductor de video<br></p><svelte-counter-component count=\"0\"></svelte-counter-component><p></p>"
+					},
+					"html": "EditorPlayerBlock",
+					"typenode": "svelte",
+					"id": 16,
+					"class": "EditorPlayerBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "13", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "12", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 408,
+					"pos_y": 508.5
+				},
+				"17": {
+					"name": "EditorPlayerBlock",
+					"data": {
+						"tiptapEditor": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
+					},
+					"html": "EditorPlayerBlock",
+					"typenode": "svelte",
+					"id": 17,
+					"class": "EditorPlayerBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "14", "input": "output_0" }
 							]
 						}
 					},
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 1971,
-					"pos_y": 450
+					"pos_x": 1011.25,
+					"pos_y": -14
 				}
 			}
 		}

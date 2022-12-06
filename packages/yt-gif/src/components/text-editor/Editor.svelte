@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Editor from '$cmp/text-editor/svnotion/editor/index.svelte'
+	export let GraphNodeID = ''
 	const content = {
 		type: 'doc',
 		content: [
@@ -12,7 +13,7 @@
 </script>
 
 <div>
-	<Editor {content} />
+	<Editor {content} {GraphNodeID} />
 </div>
 
 <style>

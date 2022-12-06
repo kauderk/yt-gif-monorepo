@@ -47,6 +47,7 @@
 		classTopName = 'top_blue'
 		classBodyName = 'body_blue'
 	}
+	const props = { ...GraphNodeProps, GraphNodeID: id }
 </script>
 
 <div
@@ -85,9 +86,7 @@
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider condition={Slot.provider}>
-							<svelte:component
-								this={Slot.cmp}
-								{...GraphNodeProps} />
+							<svelte:component this={Slot.cmp} {...props} />
 						</SvelteQueryProvider>
 					</div>
 				{/if}
