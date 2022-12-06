@@ -20,21 +20,21 @@ import User from './diagram/User.svelte'
 import OrganizationProfile from './diagram/OrganizationProfile.svelte'
 import Input from './diagram/Input.svelte'
 import TitleNote from './diagram/TitleNote.svelte'
-
-type Block = {
-	[key: s]: {
-		GraphNodeID: s
-		cmp: any
-		provider?: boolean
-		title?: string
-	}
-}
+import EditorPlayer from '$cmp/text-editor/Editor.svelte'
 
 export const DrawflowBlocks = <const>{
 	YTGIFBlock: {
 		GraphNodeID: 'YTGIFBlock',
 		cmp: YTGIF,
 		provider: true,
+	},
+	PlayerBlock: {
+		GraphNodeID: 'PlayerBlock',
+		cmp: Player,
+	},
+	EditorPlayerBlock: {
+		GraphNodeID: 'EditorPlayerBlock',
+		cmp: EditorPlayer,
 	},
 	ApiBlock: {
 		GraphNodeID: 'ApiBlock',
@@ -56,10 +56,6 @@ export const DrawflowBlocks = <const>{
 	SimpleBlock: {
 		GraphNodeID: 'SimpleBlock',
 		cmp: Simple,
-	},
-	PlayerBlock: {
-		GraphNodeID: 'PlayerBlock',
-		cmp: Player,
 	},
 	ShadowBlock: {
 		GraphNodeID: 'ShadowBlock',

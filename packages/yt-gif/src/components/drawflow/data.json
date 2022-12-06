@@ -2,95 +2,55 @@
 	"drawflow": {
 		"Home": {
 			"data": {
-				"14": {
-					"id": 14,
-					"name": "multiple",
+				"6": {
+					"name": "YTGIFBlock",
 					"data": {},
-					"class": "multiple",
-					"html": "\n            <div>\n              <div class=\"box\">\n                Multiple!\n              </div>\n            </div>\n            ",
-					"typenode": false,
-					"inputs": {
-						"input_1": { "connections": [] },
-						"input_2": { "connections": [] },
-						"input_3": { "connections": [] }
-					},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 6,
+					"class": "YTGIFBlock",
+					"inputs": { "input_0": { "connections": [] } },
+					"outputs": { "output_0": { "connections": [] } },
+					"pos_x": 631,
+					"pos_y": 334
+				},
+				"7": {
+					"name": "YTGIFBlock",
+					"data": {},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 7,
+					"class": "YTGIFBlock",
+					"inputs": { "input_0": { "connections": [] } },
 					"outputs": {
-						"output_1": {
+						"output_0": {
 							"connections": [
-								{ "node": "20", "output": "input_2" }
-							]
-						},
-						"output_2": { "connections": [] },
-						"output_3": {
-							"connections": [
-								{ "node": "21", "output": "input_3" },
-								{ "node": "20", "output": "input_2" }
-							]
-						},
-						"output_4": {
-							"connections": [
-								{ "node": "20", "output": "input_2" }
+								{ "node": "9", "output": "input_0" }
 							]
 						}
 					},
-					"pos_x": 1396,
-					"pos_y": 542
+					"pos_x": 1228,
+					"pos_y": 124
 				},
-				"20": {
-					"id": 20,
-					"name": "multiple",
+				"9": {
+					"name": "YTGIFBlock",
 					"data": {},
-					"class": "multiple",
-					"html": "\n            <div>\n              <div class=\"box\">\n                Multiple!\n              </div>\n            </div>\n            ",
-					"typenode": false,
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 9,
+					"class": "YTGIFBlock",
 					"inputs": {
-						"input_1": { "connections": [] },
-						"input_2": {
+						"input_0": {
 							"connections": [
-								{ "node": "14", "input": "output_1" },
-								{ "node": "14", "input": "output_2" },
-								{ "node": "14", "input": "output_3" },
-								{ "node": "14", "input": "output_4" }
-							]
-						},
-						"input_3": { "connections": [] }
-					},
-					"outputs": {
-						"output_1": { "connections": [] },
-						"output_2": { "connections": [] },
-						"output_3": { "connections": [] },
-						"output_4": { "connections": [] }
-					},
-					"pos_x": 1790,
-					"pos_y": 531
-				},
-				"21": {
-					"id": 21,
-					"name": "multiple",
-					"data": {},
-					"class": "multiple",
-					"html": "\n            <div>\n              <div class=\"box\">\n                Multiple!\n              </div>\n            </div>\n            ",
-					"typenode": false,
-					"inputs": {
-						"input_1": { "connections": [] },
-						"input_2": { "connections": [] },
-						"input_3": {
-							"connections": [
-								{ "node": "14", "input": "output_3" }
+								{ "node": "7", "input": "output_0" }
 							]
 						}
 					},
-					"outputs": {
-						"output_1": { "connections": [] },
-						"output_2": { "connections": [] },
-						"output_3": { "connections": [] },
-						"output_4": { "connections": [] }
-					},
-					"pos_x": 1769,
-					"pos_y": 666
+					"outputs": { "output_0": { "connections": [] } },
+					"pos_x": 1971,
+					"pos_y": 450
 				}
 			}
-		},
-		"Other": { "data": {} }
+		}
 	}
 }
