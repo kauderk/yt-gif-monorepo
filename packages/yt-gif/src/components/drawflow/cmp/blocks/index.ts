@@ -21,6 +21,7 @@ import OrganizationProfile from './diagram/OrganizationProfile.svelte'
 import Input from './diagram/Input.svelte'
 import TitleNote from './diagram/TitleNote.svelte'
 import simplePlayer from './diagram/simpleplayer.svelte'
+import MyBlockLino from './MyBlockLino.svelte'
 
 type Block = {
 	[key: s]: {
@@ -86,6 +87,10 @@ export const DrawflowBlocks: Block = <const>{
 		GraphNodeID: 'MyBlock',
 		cmp: MyBlock,
 	},
+    MyBlockLino: {
+        GraphNodeID: 'MyBlockLino',
+        cmp: MyBlockLino,
+    },
 	YtvidBlock: {
 		GraphNodeID: 'YtvidBlock',
 		cmp: Ytvid,
