@@ -1,14 +1,17 @@
 <script>
+	// import Editor from '$cmp/text-editor/svnotion/index.svelte'
 	import Editor from '$cmp/text-editor/Editor.svelte'
 </script>
 
-{#each new Array(1).fill(0).map((_, i) => i) as i}
-	<div />
-{/each}
-<Editor />
+<div>
+	<Editor />
+</div>
 
 <style>
 	div {
+		margin: auto;
 		padding: 2em;
+		max-width: 700px;
+		height: 50vh;
 	}
 </style>

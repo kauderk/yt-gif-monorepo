@@ -11,12 +11,19 @@
 		editor = createEditor({
 			extensions: [StarterKit, SvelteCounterExtension],
 			content: `
-        <p>This is still the text editor you’re used to, but enriched with node views.</p>
+        <p>This is a prerendered HTML Content</p>
         <svelte-counter-component count="0"></svelte-counter-component>
-        <p>Did you see that? That’s a Svelte component. We are really living in the future.</p>
+        <p>By using web compoents we're able to serialize svelte components</p>
       `,
 		})
 	})
 </script>
 
-<EditorContent editor={$editor} />
+<div>
+	<EditorContent editor={$editor} />
+</div>
+
+<style>
+	div {
+	}
+</style>

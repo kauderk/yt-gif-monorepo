@@ -2,6 +2,7 @@
 	import type { NodeViewProps } from '@tiptap/core'
 	import cx from 'classnames'
 	import { NodeViewWrapper } from 'svelte-tiptap'
+	import Player from '$cmp/drawflow/cmp/blocks/YTGIF.svelte'
 
 	export let node: NodeViewProps['node']
 	export let updateAttributes: NodeViewProps['updateAttributes']
@@ -13,11 +14,13 @@
 </script>
 
 <NodeViewWrapper class={cx('svelte-component', { selected })}>
-	<span class="label">Svelte Component</span>
-
-	<div class="content">
-		<button on:click={handleClick} type="button">
-			This button has been clicked {node.attrs.count} times.
-		</button>
+	<div>
+		<Player />
 	</div>
 </NodeViewWrapper>
+
+<style>
+	div {
+		max-width: 500px;
+	}
+</style>
