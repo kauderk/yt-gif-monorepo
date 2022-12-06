@@ -3,6 +3,7 @@ import { addInputs } from './add-inputs'
 import { AssertContentElement, getUUID, injectNodeCycle } from './query'
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
+import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
 
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
@@ -13,7 +14,7 @@ import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
  * @returns An overridden addNode function, bound to "this".
  */
 export function createAddNode(this: Drawflow, flush: (() => void)[]) {
-	function addNode(params: AddNodeProps) {
+	function addNode(this: Drawflow, params: AddNodeProps) {
 		const newId = getUUID.bind(this)()
 
 		const node = new Node({
@@ -23,7 +24,7 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 				GraphNodeProps: params.node.props ?? {},
 
 				id: newId,
-				classoverride: params.node.classoverride,
+				className: params.node.classoverride,
 
 				left: params.cords.x,
 				top: params.cords.y,
@@ -62,7 +63,11 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		return injectNodeCycle.bind(this)(node.parent, json)
 	}
 	// TODO: unify API parameters
-	async function addNodeImport(dataNode: any, precanvas: any) {
+	async function addNodeImport(
+		this: Drawflow,
+		dataNode: DrawflowNode,
+		precanvas: any
+	) {
 		let task = Task()
 
 		const node = new Node({
@@ -72,10 +77,14 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 				className: dataNode.class,
 				top: dataNode.pos_y,
 				left: dataNode.pos_x,
-				inputs: { length: dataNode.inputs, json: {}, type: 'input' },
+				inputs: {
+					length: Object.keys(dataNode.inputs).length,
+					json: {},
+					type: 'input',
+				},
 				outputs: {
 					length: Object.keys(dataNode.outputs).length,
-					offset: 1, // man...
+					offset: 0, // man...
 					json: {},
 					type: 'output',
 				},

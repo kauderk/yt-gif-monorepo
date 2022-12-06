@@ -69,16 +69,21 @@
 		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
-		//await $ctx.editor.import(dataToImport)
+		await $ctx.editor.import(dataToImport)
 
-		createNodeComponents($ctx.editor)
+		//createNodeComponents($ctx.editor)
 
 		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
 
 		return flush.map(create => create())
 	})
+	function exportGraph() {
+		console.log(JSON.stringify($ctx.editor.export()))
+	}
 </script>
+
+<svelte:window on:keydown={e => e.key == 'e' && e.altKey && exportGraph()} />
 
 <div class="wrapper">
 	<Views />
