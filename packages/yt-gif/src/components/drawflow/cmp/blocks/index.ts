@@ -23,18 +23,18 @@ import TitleNote from './diagram/TitleNote.svelte'
 import EditorPlayer from '$cmp/text-editor/Editor.svelte'
 
 export const DrawflowBlocks = <const>{
-	YTGIFBlock: {
-		GraphNodeID: 'YTGIFBlock',
-		cmp: YTGIF,
-		provider: true,
+	EditorPlayerBlock: {
+		GraphNodeID: 'EditorPlayerBlock',
+		cmp: EditorPlayer,
 	},
 	PlayerBlock: {
 		GraphNodeID: 'PlayerBlock',
 		cmp: Player,
 	},
-	EditorPlayerBlock: {
-		GraphNodeID: 'EditorPlayerBlock',
-		cmp: EditorPlayer,
+	YTGIFBlock: {
+		GraphNodeID: 'YTGIFBlock',
+		cmp: YTGIF,
+		provider: true,
 	},
 	ApiBlock: {
 		GraphNodeID: 'ApiBlock',

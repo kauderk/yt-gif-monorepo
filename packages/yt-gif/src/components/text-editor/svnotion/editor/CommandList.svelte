@@ -29,16 +29,10 @@
 	{#if slashVisible}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
-			class="w-full absolute h-screen top-0 wrapper w-96"
+			class="w-full fixed h-screen top-0 wrapper w-96"
 			on:click={() => store.slashVisible.set(false)} />
 		<div
-			class="absolute shadow-xl w-96 h-auto max-w-full rounded-lg outter s-scrollbar"
-			style="left: 0px; top: {slashLocaltion.y +
-				slashLocaltion.height +
-				0 >
-			height
-				? slashLocaltion.y - slashLocaltion.height - 0
-				: slashLocaltion.y + slashLocaltion.height}px;">
+			class="absolute shadow-xl w-96 h-auto max-w-full rounded-lg outter s-scrollbar">
 			<div class="p-2 text-sm text-slate-500 slate">BLOCKS</div>
 			{#each slashItems as { title, subtitle, command }, i}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -68,15 +62,16 @@
 		overflow: auto;
 	}
 	.slate {
-		background: blue;
+		background: black;
 		color: inherit;
 	}
 	.title {
-		background: darkblue;
+		background: #2a2a2a;
 		color: inherit;
 	}
 	.subtitle {
-		background: darkblue;
+		opacity: 0.5;
+		background: #242424;
 		color: inherit;
 	}
 </style>
