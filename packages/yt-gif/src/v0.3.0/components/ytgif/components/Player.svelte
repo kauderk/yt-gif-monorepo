@@ -102,3 +102,11 @@
 
 <button on:click={Fire}>Fire</button>
 <button on:click={() => (repaint += 1)}>Repaint</button>
+
+<style>
+	button {
+		border: 1px dotted black;
+		padding: 0.25em 0.5em;
+		background: rgba(128, 128, 128, 0.238);
+	}
+</style>

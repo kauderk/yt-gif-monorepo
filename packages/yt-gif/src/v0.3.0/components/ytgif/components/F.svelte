@@ -338,7 +338,7 @@
 	}
 
 	:root {
-		--yt-gif-player-span: 50%;
+		--yt-gif-player-span: 100%;
 		--ddm-tooltip-arrow-size: 2ch;
 		--ddm-scale-tooltip: 0;
 		--ddm-tooltip-traslate-y: 0;
