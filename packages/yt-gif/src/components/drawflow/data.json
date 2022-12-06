@@ -3,24 +3,24 @@
 		"Home": {
 			"data": {
 				"6": {
-					"name": "YTGIFBlock",
+					"name": "EditorPlayerBlock",
 					"data": {},
-					"html": "YTGIFBlock",
+					"html": "EditorPlayerBlock",
 					"typenode": "svelte",
 					"id": 6,
-					"class": "YTGIFBlock",
+					"class": "EditorPlayerBlock",
 					"inputs": { "input_0": { "connections": [] } },
 					"outputs": { "output_0": { "connections": [] } },
 					"pos_x": 631,
 					"pos_y": 334
 				},
 				"7": {
-					"name": "YTGIFBlock",
+					"name": "EditorPlayerBlock",
 					"data": {},
-					"html": "YTGIFBlock",
+					"html": "EditorPlayerBlock",
 					"typenode": "svelte",
 					"id": 7,
-					"class": "YTGIFBlock",
+					"class": "EditorPlayerBlock",
 					"inputs": { "input_0": { "connections": [] } },
 					"outputs": {
 						"output_0": {
@@ -33,12 +33,12 @@
 					"pos_y": 124
 				},
 				"9": {
-					"name": "YTGIFBlock",
+					"name": "EditorPlayerBlock",
 					"data": {},
-					"html": "YTGIFBlock",
+					"html": "EditorPlayerBlock",
 					"typenode": "svelte",
 					"id": 9,
-					"class": "YTGIFBlock",
+					"class": "EditorPlayerBlock",
 					"inputs": {
 						"input_0": {
 							"connections": [

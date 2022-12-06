@@ -4,6 +4,16 @@ export default {
 	items: ({ query }) => {
 		return [
 			{
+				title: 'YTGIF',
+				subtitle: 'Create a YTGIF (Enhanced YouTube video Player)',
+				command: ({ editor, range }) => {
+					editor.commands.deleteRange(range)
+					editor.commands.insertContent(
+						'<svelte-counter-component count="0"></svelte-counter-component><p></p>'
+					)
+				},
+			},
+			{
 				title: 'To Dos',
 				subtitle: 'Create a to do list with checkboxes',
 				command: ({ editor, range }) => {

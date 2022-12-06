@@ -1,6 +1,6 @@
 <script>
-	// import Editor from '$cmp/text-editor/svnotion/index.svelte'
-	import Editor from '$cmp/text-editor/Editor.svelte'
+	import Editor from '$cmp/text-editor/svnotion/index.svelte'
+	//import Editor from '$cmp/text-editor/Editor.svelte'
 </script>
 
 <div>

@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import { moduleStore } from './store'
 	import { onMount, onDestroy } from 'svelte'
 	import { browser } from '$app/environment'
-	import { Editor } from '@tiptap/core'
+
 	import StarterKit from '@tiptap/starter-kit'
 	import Placeholder from '@tiptap/extension-placeholder'
 	import TaskList from '@tiptap/extension-task-list'
@@ -11,6 +11,8 @@
 	import suggestion from './suggestion'
 	import Commands from './command'
 	import CommandList from './CommandList.svelte'
+	import { SvelteCounterExtension } from '../../tiptap/extension/counter'
+
 	import {
 		slashVisible,
 		slashItems,
@@ -69,16 +71,19 @@
 			//editor.chain().focus().toggleBold().run();
 			//return console.log(item);
 			let range = $slashProps.range
-			item.command({ editor, range })
+			item.command({ editor: $editor, range })
 		}
 	}
+	import { createEditor, EditorContent, type Editor } from 'svelte-tiptap'
+	import type { Readable } from 'svelte/store'
+	import Element from './Element.svelte'
 
-	let element, editor, w
+	let element, w
 
+	let editor: Readable<Editor>
 	onMount(() => {
 		if (browser) {
-			editor = new Editor({
-				element: element,
+			editor = createEditor({
 				editorProps: {
 					attributes: {
 						class: 'focus:outline-none flex flex-col items-center px-3 md:px-0',
@@ -86,6 +91,7 @@
 				},
 				extensions: [
 					StarterKit,
+					SvelteCounterExtension,
 					Placeholder,
 					TaskList,
 					TaskItem,
@@ -97,7 +103,12 @@
 				content,
 				onTransaction: () => {
 					// force re-render so `editor.isActive` works as expected
-					editor = editor
+					// svelte-tip does this already
+					// try {
+					// 	$editor = $editor
+					// } catch (error) {
+					// 	console.log(error)
+					// }
 				},
 				onUpdate: ({ editor }) => {
 					// send the content to an API here
@@ -107,14 +118,14 @@
 	})
 
 	onDestroy(() => {
-		if (editor) {
-			editor.destroy()
+		if ($editor) {
+			$editor.destroy()
 		}
 	})
 </script>
 
 <div class="prose prose-slate sm:prose-xl lg:prose-3xl" bind:clientWidth={w}>
-	<div bind:this={element} on:keydown|capture={handleKeydown} />
+	<Element editor={$editor} bind:element on:keydownCapture={handleKeydown} />
 </div>
 
 <CommandList {selectedIndex} />
@@ -130,7 +141,7 @@
 	<div class="sm:flex my-4">
 		<button
 			on:click={() => {
-				output = editor.getJSON()
+				output = $editor.getJSON()
 				outputType = 'json'
 			}}
 			class="m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
@@ -139,7 +150,7 @@
 				: ''}">See JSON Output</button>
 		<button
 			on:click={() => {
-				output = editor.getHTML()
+				output = $editor.getHTML()
 				outputType = 'html'
 			}}
 			class=" m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
