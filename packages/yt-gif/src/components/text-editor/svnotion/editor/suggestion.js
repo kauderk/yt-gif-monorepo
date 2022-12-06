@@ -1,6 +1,4 @@
-import { slashVisible, slashItems, slashLocaltion, slashProps } from '../stores'
-
-export default {
+export const createSuggestion = store => ({
 	items: ({ query }) => {
 		return [
 			{
@@ -89,30 +87,30 @@ export default {
 				let editor = props.editor
 				let range = props.range
 				let location = props.clientRect()
-				slashProps.set({ editor, range })
-				slashVisible.set(true)
-				slashLocaltion.set({
+				store.slashProps.set({ editor, range })
+				store.slashVisible.set(true)
+				store.slashLocaltion.set({
 					x: location.x,
 					y: location.y,
 					height: location.height,
 				})
-				slashItems.set(props.items)
+				store.slashItems.set(props.items)
 			},
 
 			onUpdate(props) {
-				slashItems.set(props.items)
+				store.slashItems.set(props.items)
 			},
 
 			onKeyDown(props) {
 				if (props.event.key === 'Escape') {
-					slashVisible.set(false)
+					store.slashVisible.set(false)
 					return true
 				}
 			},
 
 			onExit() {
-				slashVisible.set(false)
+				store.slashVisible.set(false)
 			},
 		}
 	},
-}
+})

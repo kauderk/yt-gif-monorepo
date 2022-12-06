@@ -8,28 +8,30 @@
 	import TaskList from '@tiptap/extension-task-list'
 	import TaskItem from '@tiptap/extension-task-item'
 	import Link from '@tiptap/extension-link'
-	import suggestion from './suggestion'
+	import { createSuggestion } from './suggestion'
 	import Commands from './command'
 	import CommandList from './CommandList.svelte'
 	import { SvelteCounterExtension } from '../../tiptap/extension/counter'
 
-	import {
-		slashVisible,
-		slashItems,
-		slashProps,
-		editorWidth,
-	} from '../stores'
+	import { createStore } from '../stores'
+	import { get } from 'svelte/store'
+	export let store = createStore()
 
-	export let content
-	let output = false
-	let outputType
+	export let content: any
+	let output: any = false
+	let outputType: any
 
 	let selectedIndex = 0
-	$: selectedIndex = $slashVisible ? selectedIndex : 0
-	$: $editorWidth = w ? w : '0'
+	$: selectedIndex = get(store.slashVisible) ? selectedIndex : 0
 
-	function handleKeydown(event) {
-		if (!$slashVisible) return
+	let w: n
+
+	$: {
+		store.editorWidth.set(w ? w : '0')
+	}
+
+	function handleKeydown(event: any) {
+		if (!get(store.slashVisible)) return
 		if (event.key === 'ArrowUp') {
 			event.preventDefault()
 
@@ -54,33 +56,34 @@
 
 	function upHandler() {
 		selectedIndex =
-			(selectedIndex + $slashItems.length - 1) % $slashItems.length
+			(selectedIndex + get(store.slashItems).length - 1) %
+			get(store.slashItems).length
 	}
 
 	function downHandler() {
-		selectedIndex = (selectedIndex + 1) % $slashItems.length
+		selectedIndex = (selectedIndex + 1) % get(store.slashItems).length
 	}
 
 	function enterHandler() {
 		selectItem(selectedIndex)
 	}
-	function selectItem(index) {
-		const item = $slashItems[index]
+	function selectItem(index: n) {
+		const item = get(store.slashItems)[index]
 
 		if (item) {
 			//editor.chain().focus().toggleBold().run();
 			//return console.log(item);
-			let range = $slashProps.range
+			let range = get(store.slashProps).range
 			item.command({ editor: $editor, range })
 		}
 	}
-	import { createEditor, EditorContent, type Editor } from 'svelte-tiptap'
+	import { createEditor, type Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
 
-	let element, w
-
+	let element: HTMLElement
 	let editor: Readable<Editor>
+
 	onMount(() => {
 		if (browser) {
 			editor = createEditor({
@@ -97,7 +100,7 @@
 					TaskItem,
 					Link,
 					Commands.configure({
-						suggestion,
+						suggestion: createSuggestion(store),
 					}),
 				],
 				content,
@@ -128,7 +131,7 @@
 	<Element editor={$editor} bind:element on:keydownCapture={handleKeydown} />
 </div>
 
-<CommandList {selectedIndex} />
+<CommandList {store} {selectedIndex} />
 
 <svelte:window
 	on:keydown={e => {
