@@ -621,6 +621,7 @@ importers:
       '@rollup/plugin-node-resolve': ^14.1.0
       '@rollup/plugin-typescript': ^8.5.0
       '@sveltejs/adapter-auto': next
+      '@sveltejs/adapter-netlify': 1.0.0-next.84
       '@sveltejs/kit': next
       '@sveltejs/vite-plugin-svelte': ^1.0.2
       '@sveltestack/svelte-query': ^1.6.0
@@ -770,6 +771,7 @@ importers:
       '@rollup/plugin-node-resolve': 14.1.0_rollup@2.79.1
       '@rollup/plugin-typescript': 8.5.0_hafrwlgfjmvsm7253l3bfjzhnq
       '@sveltejs/adapter-auto': 1.0.0-next.90
+      '@sveltejs/adapter-netlify': 1.0.0-next.84
       '@sveltejs/kit': 1.0.0-next.572_svelte@3.52.0+vite@3.2.1
       '@sveltejs/vite-plugin-svelte': 1.1.0_svelte@3.52.0+vite@3.2.1
       '@sveltestack/svelte-query': 1.6.0
@@ -3732,7 +3734,7 @@ packages:
       svelte: 3.52.0
       tiny-glob: 0.2.9
       undici: 5.13.0
-      vite: 3.2.1
+      vite: 3.2.1_sass@1.55.0
     transitivePeerDependencies:
       - diff-match-patch
       - supports-color
@@ -3793,7 +3795,7 @@ packages:
       magic-string: 0.26.7
       svelte: 3.52.0
       svelte-hmr: 0.15.1_svelte@3.52.0
-      vite: 3.2.1
+      vite: 3.2.1_sass@1.55.0
       vitefu: 0.2.2_vite@3.2.1
     transitivePeerDependencies:
       - supports-color
@@ -5148,7 +5150,7 @@ packages:
   /axios/1.1.3:
     resolution: {integrity: sha512-00tXVRwKx/FZr/IDVFt4C+f9FYairX517WoGCL6dpOntqLkZofjhu43F/Xl44UOpqa+9sLFDrG/XAnFsUYgkDA==}
     dependencies:
-      follow-redirects: 1.15.2_debug@2.6.9
+      follow-redirects: 1.15.2
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -7970,6 +7972,16 @@ packages:
     resolution: {integrity: sha512-uyrAmLZrPnUItQY5wTdg31TO9GGZRGsh/jmohUg9oLmLi/sw5y7LlTV/mwyd6rvbxIOGwmRiv6LcTS8w7Bk9NQ==}
     dev: true
 
+  /follow-redirects/1.15.2:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: true
+
   /follow-redirects/1.15.2_debug@2.6.9:
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
     engines: {node: '>=4.0'}
@@ -7980,6 +7992,7 @@ packages:
         optional: true
     dependencies:
       debug: 2.6.9
+    dev: false
 
   /for-in/1.0.2:
     resolution: {integrity: sha512-7EwmXrOjyL+ChxMhmG5lnW9MPt1aIeZEwKhQzoBUdTV0N3zuwWDZYVJatDvZ2OyzPUvdIAZDsCetk3coyMfcnQ==}
@@ -15138,7 +15151,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 3.2.1
+      vite: 3.2.1_sass@1.55.0
     dev: true
 
   /vscode-css-languageservice/6.1.1:

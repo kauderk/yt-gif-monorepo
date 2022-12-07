@@ -1,4 +1,5 @@
 import { svelteConfig } from '@packages/config'
+import adapter from '@sveltejs/adapter-netlify'
 
 import { watchAPI } from 'sveltekit-zero-api'
 if (process.env.NODE_ENV !== 'production') {
@@ -16,6 +17,9 @@ const config = {
 		handler(warning)
 	},
 	...svelteConfig,
+	kit: {
+		adapter: adapter(),
+	},
 }
 
 export default config
