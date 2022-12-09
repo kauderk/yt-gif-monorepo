@@ -9,7 +9,7 @@
 	import { items } from '$cmp/drawflow/cmp/ctx'
 	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
-	import InlineProcess from '$cmp/providers/InlineProcess.svelte'
+	import Editor from '$cmp/text-editor/svnotion/editor/index.svelte'
 
 	export let id: ID
 	export let className = ''
@@ -40,7 +40,6 @@
 
 	var classTopName = 'drawflow_node_top'
 	var classBodyName = ''
-
 	if (Slot?.GraphNodeID == 'InputBlock') {
 		classTopName = 'top_cyan'
 		classBodyName = 'body_cyan'
@@ -48,7 +47,7 @@
 		classTopName = 'top_blue'
 		classBodyName = 'body_blue'
 	}
-	const props = { ...GraphNodeProps, GraphNodeID: id }
+	const props = { ...GraphNodeProps, GraphNodeID, id }
 </script>
 
 <div
@@ -87,7 +86,7 @@
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider async={Slot.provider}>
-							<svelte:component this={Slot.cmp} {...props} />
+							<Editor {...props} />
 							{@const _ = dataNode?.task.resolve()}
 						</SvelteQueryProvider>
 					</div>

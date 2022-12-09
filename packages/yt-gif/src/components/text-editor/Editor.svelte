@@ -13,7 +13,7 @@
 </script>
 
 <div>
-	<Editor {content} {GraphNodeID} />
+	<Editor {content} {id} />
 </div>
 
 <style>

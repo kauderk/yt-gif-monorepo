@@ -3,42 +3,38 @@
 		"Home": {
 			"data": {
 				"1": {
+					"name": "YTGIFBlock",
+					"data": {},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 1,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": []
+						}
+					},
+					"outputs": { "output_0": { "connections": [] } },
+					"pos_x": 1041,
+					"pos_y": 437
+				},
+				"2": {
 					"name": "ApiBlock",
 					"data": {
 						"tiptapEditor": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
 					},
 					"html": "ApiBlock",
 					"typenode": "svelte",
-					"id": 1,
-					"class": "ApiBlock",
-					"inputs": { "input_0": { "connections": [] } },
-					"outputs": {
-						"output_0": {
-							"connections": [
-								{ "node": "2", "output": "input_0" }
-							]
-						}
-					},
-					"pos_x": 198,
-					"pos_y": 226
-				},
-				"2": {
-					"name": "graph-node",
-					"data": {},
-					"html": "ApiBlock",
-					"typenode": "svelte",
 					"id": 2,
-					"class": "graph-node",
+					"class": "ApiBlock",
 					"inputs": {
 						"input_0": {
-							"connections": [
-								{ "node": "1", "input": "output_0" }
-							]
+							"connections": []
 						}
 					},
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 842,
-					"pos_y": 216
+					"pos_x": 1011.25,
+					"pos_y": -14
 				}
 			}
 		}

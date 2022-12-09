@@ -1,20 +1,28 @@
-export const createSuggestion = store => ({
-	items: ({ query }) => {
-		return [
-			{
-				title: 'YTGIF',
-				subtitle: 'Create a YTGIF (Enhanced YouTube video Player)',
-				command: ({ editor, range }) => {
-					editor.commands.deleteRange(range)
-					editor.commands.insertContent(
-						'<svelte-counter-component count="0"></svelte-counter-component><p></p>'
-					)
-				},
+import type { getComponentExtensions } from '$cmp/text-editor/tiptap/extension/create'
+import type { createStore } from '../stores'
+
+export const createSuggestion = (
+	store: ReturnType<typeof createStore>,
+	localExtension: ReturnType<typeof getComponentExtensions>
+) => ({
+	items: ({ query }: any) => {
+		const localExtensionSuggestions = localExtension.map(block => ({
+			title: block.Slot.title,
+			subtitle: `Create a ${block.Slot.title} (Enhanced YouTube video Player)`,
+			command: ({ editor, range }: any) => {
+				editor.commands.deleteRange(range)
+				// rely on the default attributes
+				editor.commands.insertContent(
+					`<${block.tag}></${block.tag}><p></p>`
+				)
 			},
+		}))
+		return [
+			...localExtensionSuggestions,
 			{
 				title: 'To Dos',
 				subtitle: 'Create a to do list with checkboxes',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor.commands.deleteRange(range)
 					editor.commands.insertContent(
 						'<ul data-type="taskList"><li data-checked="false"><li>&#8203</li></ul>'
@@ -24,7 +32,7 @@ export const createSuggestion = store => ({
 			{
 				title: 'Heading 1',
 				subtitle: 'BIG heading',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor
 						.chain()
 						.focus()
@@ -36,7 +44,7 @@ export const createSuggestion = store => ({
 			{
 				title: 'Heading 2',
 				subtitle: 'Less Big heading',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor
 						.chain()
 						.focus()
@@ -48,7 +56,7 @@ export const createSuggestion = store => ({
 			{
 				title: 'Heading 3',
 				subtitle: 'Medium big heading',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor
 						.chain()
 						.focus()
@@ -60,7 +68,7 @@ export const createSuggestion = store => ({
 			{
 				title: 'Bullet List',
 				subtitle: 'Pew pew pew',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor.commands.deleteRange(range)
 					editor.commands.toggleBulletList()
 				},
@@ -68,7 +76,7 @@ export const createSuggestion = store => ({
 			{
 				title: 'Numbered List',
 				subtitle: '1, 2, 3, 4...',
-				command: ({ editor, range }) => {
+				command: ({ editor, range }: any) => {
 					editor.commands.deleteRange(range)
 
 					editor.commands.toggleOrderedList()
@@ -83,7 +91,7 @@ export const createSuggestion = store => ({
 
 	render: () => {
 		return {
-			onStart: props => {
+			onStart(props: any) {
 				let editor = props.editor
 				let range = props.range
 				let location = props.clientRect()
@@ -97,11 +105,11 @@ export const createSuggestion = store => ({
 				store.slashItems.set(props.items)
 			},
 
-			onUpdate(props) {
+			onUpdate(props: any) {
 				store.slashItems.set(props.items)
 			},
 
-			onKeyDown(props) {
+			onKeyDown(props: any) {
 				if (props.event.key === 'Escape') {
 					store.slashVisible.set(false)
 					return true

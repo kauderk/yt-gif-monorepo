@@ -12,7 +12,7 @@
 	import { createSuggestion } from './suggestion'
 	import Commands from './command'
 	import CommandList from './CommandList.svelte'
-	import { SvelteCounterExtension } from '../../tiptap/extension/counter'
+	import { getComponentExtensions } from '../../tiptap/extension/create'
 
 	import { createStore } from '../stores'
 	import { get } from 'svelte/store'
@@ -81,20 +81,20 @@
 	import { createEditor, type Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
+	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 
 	let element: HTMLElement
 	let editor: Readable<Editor>
 
-	export let GraphNodeID = ''
+	export let id: ID = ''
 
 	onMount(() => {
-		GraphNodeID =
-			GraphNodeID || element.closest('.drawflow-node')?.id?.substring(5)
+		id = id || element.closest('.drawflow-node')?.id?.substring(5)
 		try {
-			content =
-				dataToImport.drawflow.Home.data[GraphNodeID].data.tiptapEditor
+			content = dataToImport.drawflow.Home.data[id].data.tiptapEditor
 		} catch (error) {}
 		if (browser) {
+			const localExtensions = getComponentExtensions()
 			editor = createEditor({
 				editorProps: {
 					attributes: {
@@ -103,13 +103,13 @@
 				},
 				extensions: [
 					StarterKit,
-					SvelteCounterExtension,
+					...localExtensions.map(o => o.tipTapNode),
 					Placeholder,
 					TaskList,
 					TaskItem,
 					Link,
 					Commands.configure({
-						suggestion: createSuggestion(store),
+						suggestion: createSuggestion(store, localExtensions),
 					}),
 				],
 				content,

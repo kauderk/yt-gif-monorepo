@@ -20,17 +20,9 @@ import User from './diagram/User.svelte'
 import OrganizationProfile from './diagram/OrganizationProfile.svelte'
 import Input from './diagram/Input.svelte'
 import TitleNote from './diagram/TitleNote.svelte'
-import EditorPlayer from '$cmp/text-editor/Editor.svelte'
+// import EditorPlayer from '$cmp/text-editor/Editor.svelte'
 
 export const DrawflowBlocks = <const>{
-	EditorPlayerBlock: {
-		GraphNodeID: 'EditorPlayerBlock',
-		cmp: EditorPlayer,
-	},
-	PlayerBlock: {
-		GraphNodeID: 'PlayerBlock',
-		cmp: Player,
-	},
 	YTGIFBlock: {
 		GraphNodeID: 'YTGIFBlock',
 		cmp: YTGIF,
@@ -125,4 +117,10 @@ export const DrawflowBlocks = <const>{
 		title: '',
 		cmp: TitleNote,
 	},
+}
+
+export type TDrawflowBlocks = {
+	GraphNodeID: s
+	cmp: ConstructorOfATypedSvelteComponent
+	provider?: boolean
 }
