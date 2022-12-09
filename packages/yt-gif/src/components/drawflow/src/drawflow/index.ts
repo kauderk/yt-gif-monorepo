@@ -49,8 +49,6 @@ export default class Drawflow extends DrawFlowDefault {
 		this.container.onpointercancel = this.pointerup_handler.bind(this)
 		this.container.onpointerout = this.pointerup_handler.bind(this)
 		this.container.onpointerleave = this.pointerup_handler.bind(this)
-
-		await this.load()
 	}
 	async load() {
 		let promises = []

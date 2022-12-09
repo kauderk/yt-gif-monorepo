@@ -72,8 +72,11 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 
 		const node = new Node({
 			target: precanvas,
+
 			props: {
+				GraphNodeID: dataNode.html,
 				id: dataNode.id,
+
 				className: dataNode.class,
 				top: dataNode.pos_y,
 				left: dataNode.pos_x,
@@ -95,12 +98,6 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 		})
 		await task.promise
 		// flush.push(() => node.$destroy)
-
-		AssertContentElement.bind(this)(
-			node.content,
-			dataNode.html,
-			dataNode.typenode
-		)
 
 		addInputs(dataNode.data, node.content)
 	}

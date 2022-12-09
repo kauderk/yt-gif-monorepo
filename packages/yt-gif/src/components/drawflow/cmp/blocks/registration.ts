@@ -7,9 +7,9 @@ import { DrawflowBlocks } from './index'
 
 export function createNodeComponents(editor: Drawflow) {
 	addNode({
-		cords: { x: 300, y: 300 },
+		cords: { x: 300, y: 700 },
 		node: {
-			html: DrawflowBlocks.PlayerBlock.GraphNodeID,
+			html: DrawflowBlocks.ApiBlock.GraphNodeID,
 		},
 	})
 

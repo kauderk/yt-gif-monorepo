@@ -2,143 +2,43 @@
 	"drawflow": {
 		"Home": {
 			"data": {
-				"12": {
-					"name": "YTGIFBlock",
-					"data": {},
-					"html": "YTGIFBlock",
-					"typenode": "svelte",
-					"id": 12,
-					"class": "YTGIFBlock",
-					"inputs": {
-						"input_0": {
-							"connections": [
-								{ "node": "15", "input": "output_0" },
-								{ "node": "16", "input": "output_0" }
-							]
-						}
-					},
-					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 1041,
-					"pos_y": 437
-				},
-				"13": {
-					"name": "EditorPlayerBlock",
+				"1": {
+					"name": "ApiBlock",
 					"data": {
-						"tiptapEditor": "<p>Este es un bloque en el que usuarios <br>pueden ingresar contenido relevante</p><p></p><p>Al escribir el comando \"/\"<br>Shitf+/ o Cmd+/<br><br>Un menu aparecera para añadir videos<br>dentro de este tipo de bloques<br>El que buscas es \"YTGIF\"</p>"
+						"tiptapEditor": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
 					},
-					"html": "EditorPlayerBlock",
+					"html": "ApiBlock",
 					"typenode": "svelte",
-					"id": 13,
-					"class": "EditorPlayerBlock",
+					"id": 1,
+					"class": "ApiBlock",
 					"inputs": { "input_0": { "connections": [] } },
 					"outputs": {
 						"output_0": {
 							"connections": [
-								{ "node": "15", "output": "input_0" },
-								{ "node": "14", "output": "input_0" },
-								{ "node": "16", "output": "input_0" }
+								{ "node": "2", "output": "input_0" }
 							]
 						}
 					},
-					"pos_x": -68.75,
-					"pos_y": 311
+					"pos_x": 198,
+					"pos_y": 226
 				},
-				"14": {
-					"name": "EditorPlayerBlock",
-					"data": {
-						"tiptapEditor": "<p>El siguiente bloque es un \"nodo\" que contiene<br>un reproductor de video llamado YTGIF<br><br>Cuando presiones \"FIRE\" el, video estara listo para<br>ser visto cundo pongas tu mouse por encima.<br>Cuando te alejes, el video se pausará.</p>"
-					},
-					"html": "EditorPlayerBlock",
-					"typenode": "svelte",
-					"id": 14,
-					"class": "EditorPlayerBlock",
-					"inputs": {
-						"input_0": {
-							"connections": [
-								{ "node": "13", "input": "output_0" }
-							]
-						}
-					},
-					"outputs": {
-						"output_0": {
-							"connections": [
-								{ "node": "10", "output": "input_0" },
-								{ "node": "17", "output": "input_0" }
-							]
-						}
-					},
-					"pos_x": 503.25,
-					"pos_y": 80
-				},
-				"15": {
-					"name": "EditorPlayerBlock",
+				"2": {
+					"name": "graph-node",
 					"data": {},
-					"html": "EditorPlayerBlock",
+					"html": "ApiBlock",
 					"typenode": "svelte",
-					"id": 15,
-					"class": "EditorPlayerBlock",
+					"id": 2,
+					"class": "graph-node",
 					"inputs": {
 						"input_0": {
 							"connections": [
-								{ "node": "13", "input": "output_0" }
-							]
-						}
-					},
-					"outputs": {
-						"output_0": {
-							"connections": [
-								{ "node": "12", "output": "input_0" }
-							]
-						}
-					},
-					"pos_x": 544.5,
-					"pos_y": 345.75
-				},
-				"16": {
-					"name": "EditorPlayerBlock",
-					"data": {
-						"tiptapEditor": "<p>Este es un bloque que contiene un editor de texto<br>y un reproductor de video<br></p><svelte-counter-component count=\"0\"></svelte-counter-component><p></p>"
-					},
-					"html": "EditorPlayerBlock",
-					"typenode": "svelte",
-					"id": 16,
-					"class": "EditorPlayerBlock",
-					"inputs": {
-						"input_0": {
-							"connections": [
-								{ "node": "13", "input": "output_0" }
-							]
-						}
-					},
-					"outputs": {
-						"output_0": {
-							"connections": [
-								{ "node": "12", "output": "input_0" }
-							]
-						}
-					},
-					"pos_x": 408,
-					"pos_y": 508.5
-				},
-				"17": {
-					"name": "EditorPlayerBlock",
-					"data": {
-						"tiptapEditor": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
-					},
-					"html": "EditorPlayerBlock",
-					"typenode": "svelte",
-					"id": 17,
-					"class": "EditorPlayerBlock",
-					"inputs": {
-						"input_0": {
-							"connections": [
-								{ "node": "14", "input": "output_0" }
+								{ "node": "1", "input": "output_0" }
 							]
 						}
 					},
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 1011.25,
-					"pos_y": -14
+					"pos_x": 842,
+					"pos_y": 216
 				}
 			}
 		}

@@ -9,6 +9,7 @@
 	import { items } from '$cmp/drawflow/cmp/ctx'
 	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
+	import InlineProcess from '$cmp/providers/InlineProcess.svelte'
 
 	export let id: ID
 	export let className = ''
@@ -33,7 +34,7 @@
 	 */
 	export let dataNode: any = undefined
 
-	onMount(() => dataNode?.task.resolve())
+	//onMount(() => {()})
 
 	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
 
@@ -85,8 +86,9 @@
 			<div class="drawflow_node_body">
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
-						<SvelteQueryProvider condition={Slot.provider}>
+						<SvelteQueryProvider async={Slot.provider}>
 							<svelte:component this={Slot.cmp} {...props} />
+							{@const _ = dataNode?.task.resolve()}
 						</SvelteQueryProvider>
 					</div>
 				{/if}
