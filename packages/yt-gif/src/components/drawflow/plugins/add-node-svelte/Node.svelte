@@ -5,17 +5,18 @@
 	import CreateConnections from './CreateConnections.svelte'
 	import { nodeBG } from '../../cmp/store'
 	import { nodeTransition, receive, send } from './transition'
-	import { items, type ItemSlot } from '$cmp/drawflow/cmp/ctx'
+	import { items, type TItemCtx, type ItemSlot } from '$cmp/drawflow/cmp/ctx'
 	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
 	import Editor from '$cmp/text-editor/svnotion/editor/index.svelte'
 	import dataToImport from '$cmp/drawflow/data.json'
 	import type { Content } from '@tiptap/core'
+	import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
 
 	export let id: ID
 	export let className = ''
 
-	export let GraphNodeID = ''
+	export let GraphNodeID = <TItemCtx['GraphNodeID']>{}
 	export let GraphNodeProps = {}
 
 	export let top: number
@@ -54,6 +55,10 @@
 	export let content: Content =
 		// @ts-ignore
 		dataToImport.drawflow.Home?.data?.[id]?.data.content
+
+	if (!content && GraphNodeID) {
+		content = createTiptapContent(GraphNodeID, GraphNodeProps)
+	}
 </script>
 
 <div
@@ -91,7 +96,7 @@
 			<div class="drawflow_node_body">
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
-						<SvelteQueryProvider async={Slot.provider}>
+						<SvelteQueryProvider async={Slot.provider && !!content}>
 							<Editor {content} />
 							{@const _ = dataNode?.task.resolve()}
 						</SvelteQueryProvider>

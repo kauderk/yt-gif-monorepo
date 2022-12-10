@@ -537,7 +537,8 @@ export interface DrawflowNode {
 	outputs: Record<string, { connections: OutputConnection[] }>
 	pos_x: number
 	pos_y: number
-	typenode: boolean | 'svelte' | 'vue'
+	//FIXME: how do you import a json file as const, I just need 'svelte' | 'vue'
+	typenode: boolean | 'svelte' | 'vue' | string
 }
 
 export interface DrawflowConnectionDetail {

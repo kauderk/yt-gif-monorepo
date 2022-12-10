@@ -42,5 +42,5 @@ export const createTiptapContent = (
 	const el = document.createElement(tag)
 	el.setAttribute('props', props)
 	// prettier-ignore
-	return el.outerHTML as `<svelte-tiptap-tag props="${ReturnType<typeof tryPropsToAttribute>}"></svelte-tiptap-tag><p></p>`
+	return `${el.outerHTML}<p></p>` as `<svelte-tiptap-tag props="${ReturnType<typeof tryPropsToAttribute>}"></svelte-tiptap-tag><p></p>`
 }

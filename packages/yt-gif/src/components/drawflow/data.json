@@ -5,7 +5,7 @@
 				"2": {
 					"name": "ApiBlock",
 					"data": {
-						"content": "<svelte--api-block></svelte--api-block>"
+						"content": "<svelte--api-block></svelte--api-block><p></p>"
 					},
 					"html": "ApiBlock",
 					"typenode": "svelte",
