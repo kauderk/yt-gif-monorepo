@@ -3,8 +3,14 @@ import { DrawflowStore as ctx } from '../../store'
 import type ChapterBlock from './Index.svelte'
 import type { ChapterData } from 'src/routes/api/youtube/chapters/+server'
 import { get } from 'svelte/store'
+import { getComponentExtensions } from '$cmp/text-editor/tiptap/extension/create'
+import type { Content } from '@tiptap/core'
 
 export function CreateChapterBlocks(data: ChapterData) {
+	const localExtension = getComponentExtensions().find(
+		o => o.Slot.GraphNodeID == 'ChapterBlock'
+	)!
+
 	data.chapters
 		?.map(c => {
 			const _ = c.chapterRenderer
@@ -18,11 +24,18 @@ export function CreateChapterBlocks(data: ChapterData) {
 				},
 			}
 		})
-		.forEach((props, i) => {
-			CreateChapterBlock(i, props)
+		.forEach((propsObj, i) => {
+			const { tag } = localExtension
+			const props = JSON.stringify(propsObj).replace(/'/g, "\\'")
+			const content = `<${tag} props='${props}'></${tag}><p></p>`
+			CreateChapterBlock(i, content)
 		})
 }
-export function CreateChapterBlock(i = 0, props: ChapterBlock['$$prop_def']) {
+export function CreateChapterBlock(
+	i = 0,
+
+	content: Content
+) {
 	const placeholder = <const>{
 		name: 'ChapterBlock',
 		connections: {
@@ -38,8 +51,8 @@ export function CreateChapterBlock(i = 0, props: ChapterBlock['$$prop_def']) {
 			classoverride: 'ChapterBlock',
 			html: DrawflowBlocks.ChapterBlock.GraphNodeID,
 			typenode: 'svelte',
-			props,
 		},
+		content,
 	}
 	get(ctx).editor.addNode(placeholder)
 }

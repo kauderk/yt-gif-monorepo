@@ -107,20 +107,24 @@ export const DrawflowBlocks = <const>{
 		title: 'Create Organization Profile',
 		cmp: OrganizationProfile,
 	},
-	Input: {
+	InputBlock: {
 		GraphNodeID: 'InputBlock',
 		title: 'Input',
 		cmp: Input,
 	},
-	TitleNote: {
+	TitleNoteBlock: {
 		GraphNodeID: 'TitleNoteBlock',
 		title: '',
 		cmp: TitleNote,
 	},
 }
 
+type Slots = typeof DrawflowBlocks
+export type drawflowSvelteNodeProps<C extends keyof Slots = keyof Slots> =
+	Slots[C]['cmp']['prototype']['$$prop_def']
 export type TDrawflowBlocks = {
 	GraphNodeID: s
 	cmp: ConstructorOfATypedSvelteComponent
+
 	provider?: boolean
 }

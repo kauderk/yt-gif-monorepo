@@ -24,8 +24,8 @@
 	export let inputs: Tconection
 	export let outputs: Tconection
 
-	export let drawflowContentNode: HTMLElement | undefined = undefined
-	export let drawflowParentNode: HTMLElement | undefined = undefined
+	export let drawflowContentNode: HTMLElement
+	export let drawflowParentNode: HTMLElement
 
 	/**
 	 * if provided, it will create conections,
@@ -51,7 +51,7 @@
 	}
 	const props = { ...GraphNodeProps, GraphNodeID, id }
 
-	const content: Content =
+	export let content: Content =
 		// @ts-ignore
 		dataToImport.drawflow.Home?.data?.[id]?.data.content
 </script>

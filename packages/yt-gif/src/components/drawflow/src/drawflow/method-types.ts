@@ -1,3 +1,4 @@
+import type { Content } from '@tiptap/core'
 import type { ID, DrawflowNode } from './types'
 
 // FIXME: there are too many ways to describe a node
@@ -16,6 +17,8 @@ export interface AddNodeProps {
 	}
 
 	data: any
+
+	content: Content
 
 	node: {
 		classoverride: string

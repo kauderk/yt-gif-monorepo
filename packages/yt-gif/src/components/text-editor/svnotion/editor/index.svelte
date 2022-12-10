@@ -84,7 +84,6 @@
 	import { createEditor, type Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
-	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 
 	let element: HTMLElement
 	let editor: Readable<Editor>
@@ -92,6 +91,8 @@
 	onMount(() => {
 		if (browser) {
 			const localExtensions = getComponentExtensions()
+			const extensions = localExtensions.map(o => o.tipTapNode)
+
 			editor = createEditor({
 				editorProps: {
 					attributes: {
@@ -100,7 +101,7 @@
 				},
 				extensions: [
 					StarterKit,
-					...localExtensions.map(o => o.tipTapNode),
+					...extensions,
 					Placeholder,
 					TaskList,
 					TaskItem,

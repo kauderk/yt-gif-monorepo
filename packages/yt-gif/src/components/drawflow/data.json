@@ -2,39 +2,19 @@
 	"drawflow": {
 		"Home": {
 			"data": {
-				"1": {
-					"name": "YTGIFBlock",
-					"data": {},
-					"html": "YTGIFBlock",
-					"typenode": "svelte",
-					"id": 1,
-					"class": "YTGIFBlock",
-					"inputs": {
-						"input_0": {
-							"connections": []
-						}
-					},
-					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 1041,
-					"pos_y": 437
-				},
 				"2": {
 					"name": "ApiBlock",
 					"data": {
-						"content": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
+						"content": "<svelte--api-block></svelte--api-block>"
 					},
 					"html": "ApiBlock",
 					"typenode": "svelte",
 					"id": 2,
 					"class": "ApiBlock",
-					"inputs": {
-						"input_0": {
-							"connections": []
-						}
-					},
+					"inputs": { "input_0": { "connections": [] } },
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 1011.25,
-					"pos_y": -14
+					"pos_x": 543,
+					"pos_y": 223
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 import { items } from '$cmp/drawflow/cmp/ctx'
 import { Node, mergeAttributes } from '@tiptap/core'
 import { SvelteNodeViewRenderer } from 'svelte-tiptap'
+import type { drawflowSvelteNodeProps } from '$cmp/drawflow/cmp/blocks'
 
 import TipTapExtensionWrapper from './Wrapper.svelte'
 
@@ -25,6 +26,9 @@ export const getComponentExtensions = () =>
 				}, {})
 				return {
 					...keyDefault,
+					props: {
+						default: '{}',
+					},
 					count: { default: 0 },
 				}
 			},
