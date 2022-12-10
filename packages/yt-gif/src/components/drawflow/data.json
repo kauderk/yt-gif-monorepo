@@ -21,7 +21,7 @@
 				"2": {
 					"name": "ApiBlock",
 					"data": {
-						"tiptapEditor": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
+						"content": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
 					},
 					"html": "ApiBlock",
 					"typenode": "svelte",

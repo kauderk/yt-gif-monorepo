@@ -39,6 +39,7 @@
 		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
+		// @ts-ignore
 		await $ctx.editor.import(dataToImport)
 
 		//createNodeComponents($ctx.editor)

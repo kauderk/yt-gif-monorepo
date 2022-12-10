@@ -40,8 +40,8 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 					type: 'output',
 				},
 
-				content: <HTMLElement>{},
-				parent: <HTMLElement>{},
+				drawflowContentNode: <HTMLElement>{},
+				drawflowParentNode: <HTMLElement>{},
 			},
 		})
 		// flush.push(() => node.$destroy)
@@ -60,6 +60,7 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 			pos_y: params.cords.y,
 		}
 
+		// @ts-expect-error
 		return injectNodeCycle.bind(this)(node.parent, json)
 	}
 	// TODO: unify API parameters
@@ -91,8 +92,8 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 					json: {},
 					type: 'output',
 				},
-				content: <HTMLElement>{},
-				parent: <HTMLElement>{},
+				drawflowContentNode: <HTMLElement>{},
+				drawflowParentNode: <HTMLElement>{},
 				dataNode: { ...dataNode, precanvas, task },
 			},
 		})

@@ -22,9 +22,9 @@ export function CreateChapterBlocks(data: ChapterData) {
 			CreateChapterBlock(i, props)
 		})
 }
-export function CreateChapterBlock(i = 0, props: ChapterBlock) {
+export function CreateChapterBlock(i = 0, props: ChapterBlock['$$prop_def']) {
 	const placeholder = <const>{
-		name: 'graph-node',
+		name: 'ChapterBlock',
 		connections: {
 			inputs: 1,
 			outputs: 1,
@@ -35,7 +35,7 @@ export function CreateChapterBlock(i = 0, props: ChapterBlock) {
 		},
 		data: {},
 		node: {
-			classoverride: 'graph-node',
+			classoverride: 'ChapterBlock',
 			html: DrawflowBlocks.ChapterBlock.GraphNodeID,
 			typenode: 'svelte',
 			props,

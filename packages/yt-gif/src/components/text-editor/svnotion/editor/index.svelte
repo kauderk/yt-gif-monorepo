@@ -18,7 +18,9 @@
 	import { get } from 'svelte/store'
 	export let store = createStore()
 
-	export let content: any
+	import type { Content } from '@tiptap/core'
+
+	export let content: Content = null
 	let output: any = false
 	let outputType: any
 
@@ -28,7 +30,7 @@
 	let w: n
 
 	$: {
-		store.editorWidth.set(w ? w : '0')
+		store.editorWidth.set(w ? w : 0)
 	}
 
 	function handleKeydown(event: any) {
@@ -75,6 +77,7 @@
 			//editor.chain().focus().toggleBold().run();
 			//return console.log(item);
 			let range = get(store.slashProps).range
+			// @ts-expect-error
 			item.command({ editor: $editor, range })
 		}
 	}
@@ -86,13 +89,7 @@
 	let element: HTMLElement
 	let editor: Readable<Editor>
 
-	export let id: ID = ''
-
 	onMount(() => {
-		id = id || element.closest('.drawflow-node')?.id?.substring(5)
-		try {
-			content = dataToImport.drawflow.Home.data[id].data.tiptapEditor
-		} catch (error) {}
 		if (browser) {
 			const localExtensions = getComponentExtensions()
 			editor = createEditor({

@@ -1,15 +1,16 @@
 <svelte:options accessors />
 
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import Connection, { type Tconection } from './Connection.svelte'
 	import CreateConnections from './CreateConnections.svelte'
 	import { nodeBG } from '../../cmp/store'
 	import { nodeTransition, receive, send } from './transition'
-	import { items } from '$cmp/drawflow/cmp/ctx'
+	import { items, type ItemSlot } from '$cmp/drawflow/cmp/ctx'
 	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
 	import Editor from '$cmp/text-editor/svnotion/editor/index.svelte'
+	import dataToImport from '$cmp/drawflow/data.json'
+	import type { Content } from '@tiptap/core'
 
 	export let id: ID
 	export let className = ''
@@ -23,8 +24,8 @@
 	export let inputs: Tconection
 	export let outputs: Tconection
 
-	export let content: HTMLElement
-	export let parent: HTMLElement
+	export let drawflowContentNode: HTMLElement | undefined = undefined
+	export let drawflowParentNode: HTMLElement | undefined = undefined
 
 	/**
 	 * if provided, it will create conections,
@@ -34,9 +35,10 @@
 	 */
 	export let dataNode: any = undefined
 
-	//onMount(() => {()})
-
-	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
+	// @ts-ignore
+	const Slot: ItemSlot | undefined = items.find(
+		o => o.GraphNodeID == GraphNodeID
+	)
 
 	var classTopName = 'drawflow_node_top'
 	var classBodyName = ''
@@ -48,11 +50,15 @@
 		classBodyName = 'body_blue'
 	}
 	const props = { ...GraphNodeProps, GraphNodeID, id }
+
+	const content: Content =
+		// @ts-ignore
+		dataToImport.drawflow.Home?.data?.[id]?.data.content
 </script>
 
 <div
 	class="parent-node"
-	bind:this={parent}
+	bind:this={drawflowParentNode}
 	on:wheel|preventDefault|stopPropagation>
 	<div
 		id="node-{id}"
@@ -63,7 +69,7 @@
 		{:else}
 			<Connection {...inputs} bind:json={inputs.json} />
 		{/if}
-		<div class="drawflow_content_node" bind:this={content}>
+		<div class="drawflow_content_node" bind:this={drawflowContentNode}>
 			<div class="drawflow_node_top {classTopName}">
 				<button
 					aria-label="Open/Close modal"
@@ -86,7 +92,7 @@
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider async={Slot.provider}>
-							<Editor {...props} />
+							<Editor {content} />
 							{@const _ = dataNode?.task.resolve()}
 						</SvelteQueryProvider>
 					</div>

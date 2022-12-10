@@ -1,5 +1,5 @@
 import { ObjectValues } from '$lib/utils'
-import { DrawflowBlocks } from './blocks/index'
+import { DrawflowBlocks, type TDrawflowBlocks } from './blocks/index'
 
 let count = 0
 const uuid = () => (count += 1)
@@ -14,12 +14,18 @@ const knownIcons = [
 	'tag_faces',
 	'info',
 ]
+export type ItemSlot = TDrawflowBlocks & {
+	uid: n
+	icon: s
+	title: s
+}
 const AutoItems = ObjectValues(DrawflowBlocks).map((o, i) => {
 	return {
 		id: uuid(),
 		icon: knownIcons[i % knownIcons.length],
 		...o,
-		title: o.title != undefined ? o.title : o.GraphNodeID,
+		//@ts-ignore
+		title: o.title ?? o.GraphNodeID,
 	}
 })
 export const items = AutoItems
