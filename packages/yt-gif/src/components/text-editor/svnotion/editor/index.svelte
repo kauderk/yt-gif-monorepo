@@ -110,6 +110,7 @@
 						suggestion: createSuggestion(store, localExtensions),
 					}),
 				],
+				// FIXME: the '	39	apostrophe is causing trouble when passing this variable to the svelte component
 				content,
 				onTransaction: () => {
 					// force re-render so `editor.isActive` works as expected

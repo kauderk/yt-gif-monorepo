@@ -1,13 +1,15 @@
 import { DrawflowBlocks } from '../index'
 import { DrawflowStore as ctx } from '../../store'
-import type ChapterBlock from './Index.svelte'
-import type { ChapterData } from 'src/routes/api/youtube/chapters/+server'
+
 import { get } from 'svelte/store'
 import type { TranscriptData } from 'src/routes/api/youtube/transcript/+server'
+import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
 
 export function CreateTranscriptBlock(data: TranscriptData) {
+	const GraphNodeID = 'TranscriptBlock'
+
 	const placeholder = <const>{
-		name: 'graph-node',
+		name: GraphNodeID,
 		connections: {
 			inputs: 1,
 			outputs: 1,
@@ -18,11 +20,13 @@ export function CreateTranscriptBlock(data: TranscriptData) {
 		},
 		data: {},
 		node: {
-			classoverride: 'graph-node',
+			classoverride: GraphNodeID,
 			html: DrawflowBlocks.TranscriptBlock.GraphNodeID,
 			typenode: 'svelte',
-			props: { transcript: data.id?.transcript },
 		},
+		content: createTiptapContent(GraphNodeID, {
+			transcript: data.id?.transcript ?? undefined,
+		}),
 	}
 	get(ctx).editor.addNode(placeholder)
 }

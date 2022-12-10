@@ -5,6 +5,7 @@ import type { ChapterData } from 'src/routes/api/youtube/chapters/+server'
 import { get } from 'svelte/store'
 import { getComponentExtensions } from '$cmp/text-editor/tiptap/extension/create'
 import type { Content } from '@tiptap/core'
+import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
 
 export function CreateChapterBlocks(data: ChapterData) {
 	const localExtension = getComponentExtensions().find(
@@ -25,17 +26,11 @@ export function CreateChapterBlocks(data: ChapterData) {
 			}
 		})
 		.forEach((propsObj, i) => {
-			const { tag } = localExtension
-			const props = JSON.stringify(propsObj).replace(/'/g, "\\'")
-			const content = `<${tag} props='${props}'></${tag}><p></p>`
+			const content = createTiptapContent('ChapterBlock', propsObj)
 			CreateChapterBlock(i, content)
 		})
 }
-export function CreateChapterBlock(
-	i = 0,
-
-	content: Content
-) {
+export function CreateChapterBlock(i = 0, content: Content) {
 	const placeholder = <const>{
 		name: 'ChapterBlock',
 		connections: {

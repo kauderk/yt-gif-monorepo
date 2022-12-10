@@ -4,11 +4,9 @@
 	import { NodeViewWrapper } from 'svelte-tiptap'
 
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
-	import type {
-		drawflowSvelteNodeProps,
-		TDrawflowBlocks,
-	} from '$cmp/drawflow/cmp/blocks'
+	import type { TDrawflowBlocks } from '$cmp/drawflow/cmp/blocks'
 	import { items } from '$cmp/drawflow/cmp/ctx'
+	import { tryAttributeToProps } from './parse'
 
 	export let node: NodeViewProps['node']
 	export let updateAttributes: NodeViewProps['updateAttributes']
@@ -18,15 +16,7 @@
 		o => o.GraphNodeID == node.attrs.GraphNodeID
 	) as TDrawflowBlocks
 
-	let props: drawflowSvelteNodeProps
-	try {
-		props = JSON.parse(node.attrs.props)
-	} catch (error) {
-		console.warn(
-			`TIPTAP NodeViewWrapper: Invalid props "${node.attrs.props}". Should be a stringify json object`
-		)
-		props = {}
-	}
+	const props = tryAttributeToProps(node.attrs.props)
 </script>
 
 <NodeViewWrapper class={cx('svelte-component', { selected })}>
