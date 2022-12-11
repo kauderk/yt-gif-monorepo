@@ -1,4 +1,8 @@
 <script lang="ts">
+	import type { Scroller } from '$cmp/drawflow/cmp/ctx'
+	import { ObjectEntries } from '$lib/utils'
+	import { createEventDispatcher, tick } from 'svelte'
+
 	// https://github.com/nicolasmgaray/svelte-horizontal-scroller/blob/master/src/Component.svelte
 	// https://github.com/mpsb/horizontal-on-vertical-scroll-exp/blob/main/src/routes/index.svelte
 	// https://github.com/Muhammad-Rubel/Plexar-Horizontal-Scroll-Page/blob/main/src/routes/index.svelte
@@ -43,6 +47,8 @@
 	// ----------- WHEEL ------------
 	let deltaY = 0
 
+	const dispatch = createEventDispatcher()
+
 	function scroll(event: WheelEvent) {
 		if (event.deltaY >= -1) {
 			deltaY -= event.deltaY
@@ -51,10 +57,26 @@
 			deltaY += event.deltaY
 			scroller.scroll({ left: deltaY, behavior: 'smooth' })
 		}
+		const scrollValues: Scroller = {
+			scrollLeft: scroller.scrollLeft,
+			scrollTop: scroller.scrollTop,
+			deltaY,
+		}
+		dispatch('update', scrollValues)
+	}
+	export let scrollValues: Scroller
+
+	let enabled = false
+	const start = (el: HTMLElement) => {
+		el.scrollLeft = scrollValues.scrollLeft
+		deltaY = scrollValues.deltaY
+		enabled = true
 	}
 </script>
 
 <div
+	use:start
+	class:enabled
 	class="HorizontalScroller"
 	on:mousedown={mouseDownHandler}
 	bind:this={scroller}
@@ -69,8 +91,11 @@
 		cursor: grab;
 		scroll-snap-type: x mandatory;
 		-webkit-overflow-scrolling: touch;
-		scroll-behavior: smooth;
 		overflow-x: auto;
+		&.enabled {
+			scroll-behavior: smooth;
+		}
+
 		padding: var(--horizontal-scroller-padding);
 		display: flex;
 		gap: var(--horizontal-scroller-gap, 0.5em);
@@ -81,11 +106,11 @@
 			flex-grow: 0;
 			flex-shrink: 0;
 		}
-	}
-	// ----------- WHEEL ------------
-	.HorizontalScroller {
-		transition: 0.2s ease;
-		overflow-x: hidden;
-		white-space: nowrap;
+		// ----------- WHEEL ------------
+		&.enabled {
+			transition: 0.2s ease;
+			overflow-x: hidden;
+			white-space: nowrap;
+		}
 	}
 </style>

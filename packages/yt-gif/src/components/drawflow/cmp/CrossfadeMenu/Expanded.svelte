@@ -4,21 +4,27 @@
 	import { flip } from 'svelte/animate'
 	import { type TItem, getContext, defCrossfade } from './store'
 	import Item from './Item.svelte'
-	import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher, onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
+	import type { TItemCtx, Scroller } from '../ctx'
+	import { get, type Writable } from 'svelte/store'
 
-	const items = getContext()
 	const dispatch = createEventDispatcher()
 
 	export let opened: TItem
 	export let [send, receive] = defCrossfade
+
+	export let LevelsOfItems: TItemCtx[][]
+	export let scrollValues: Writable<Scroller[]>
 </script>
 
 <!-- {#key opened.id} -->
 {#each [opened] as _ (opened.id)}
 	<div class="layout-2">
-		<HorizontalScroller>
-			<div class="s-menu">
+		{#each LevelsOfItems as items, i}
+			<HorizontalScroller
+				scrollValues={get(scrollValues)[i]}
+				on:update={e => ($scrollValues[i] = e.detail)}>
 				{#each items as item (item.id)}
 					{#if opened.id !== item.id}
 						<div
@@ -42,11 +48,9 @@
 								expanded={true} />
 						</div>
 					{/if}
-				{:else}
-					Hello
 				{/each}
-			</div>
-		</HorizontalScroller>
+			</HorizontalScroller>
+		{/each}
 
 		<div class="content">
 			<div

@@ -37,3 +37,11 @@ export interface TItemCtx {
 	cmp: any
 	title: string
 }
+
+export type Scroller = {
+	//scrollHeight: number
+	deltaY: number
+	scrollLeft: number
+	scrollTop: number
+	//scrollWidth: number
+}
