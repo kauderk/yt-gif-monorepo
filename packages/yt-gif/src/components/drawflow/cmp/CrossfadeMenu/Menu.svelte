@@ -43,19 +43,14 @@
 	)
 </script>
 
-{#key $opened}
-	{#if !$opened}
-		<Grid
-			{send}
-			{receive}
-			on:click={event => ($opened = event.detail.item)} />
-	{:else}
-		<Expanded
-			bind:LevelsOfItems
-			bind:scrollValues
-			{send}
-			{receive}
-			opened={$opened}
-			on:click={event => ($opened = event.detail.item)} />
-	{/if}
-{/key}
+{#if !$opened}
+	<Grid {send} {receive} on:click={event => ($opened = event.detail.item)} />
+{:else}
+	<Expanded
+		bind:LevelsOfItems
+		bind:scrollValues
+		{send}
+		{receive}
+		opened={$opened}
+		on:click={event => ($opened = event.detail.item)} />
+{/if}

@@ -7,7 +7,7 @@
 	import { createEventDispatcher, onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import type { TItemCtx, Scroller } from '../ctx'
-	import { get, type Writable } from 'svelte/store'
+	import type { Writable } from 'svelte/store'
 
 	const dispatch = createEventDispatcher()
 
@@ -19,56 +19,53 @@
 </script>
 
 <!-- {#key opened.id} -->
-{#each [opened] as _ (opened.id)}
-	<div class="layout-2">
-		{#each LevelsOfItems as items, i}
-			<HorizontalScroller
-				scrollValues={get(scrollValues)[i]}
-				on:update={e => ($scrollValues[i] = e.detail)}>
-				{#each items as item (item.id)}
-					{#if opened.id !== item.id}
-						<div
-							class="item"
-							class:selected={opened.id == item.id}
-							in:receive={{ key: item.id }}
-							out:send={{ key: item.id }}>
-							<Item
-								hue={item.id * 35}
-								title={item.title}
-								icon={item.icon}
-								cmp={item.cmp}
-								on:click={() => dispatch('click', { item })} />
-						</div>
-					{:else if opened.id === item.id}
-						<div class="item" transition:fade>
-							<Item
-								hue={item.id * 35}
-								icon={item.icon}
-								title={item.title}
-								expanded={true} />
-						</div>
-					{/if}
-				{/each}
-			</HorizontalScroller>
-		{/each}
 
-		<div class="content">
-			<div
-				class="item"
-				in:receive={{ key: opened.id }}
-				out:send={{ key: opened.id }}>
-				<Item
-					hue={opened.id * 35}
-					icon={opened.icon}
-					expanded
-					cmp={opened.cmp}
-					GraphNodeID={opened.GraphNodeID}>
-					{opened.title}
-				</Item>
-			</div>
+<div class="layout-2">
+	{#each LevelsOfItems as items, i}
+		<HorizontalScroller bind:scrollValues={$scrollValues[i]}>
+			{#each items as item}
+				{#if opened.id !== item.id}
+					<div
+						class="item"
+						class:selected={opened.id == item.id}
+						in:receive={{ key: item.id }}
+						out:send={{ key: item.id }}>
+						<Item
+							hue={item.id * 35}
+							title={item.title}
+							icon={item.icon}
+							cmp={item.cmp}
+							on:click={() => dispatch('click', { item })} />
+					</div>
+				{:else if opened.id === item.id}
+					<div class="item" transition:fade>
+						<Item
+							hue={item.id * 35}
+							icon={item.icon}
+							title={item.title}
+							expanded={true} />
+					</div>
+				{/if}
+			{/each}
+		</HorizontalScroller>
+	{/each}
+
+	<div class="content">
+		<div
+			class="item"
+			in:receive={{ key: opened.id }}
+			out:send={{ key: opened.id }}>
+			<Item
+				hue={opened.id * 35}
+				icon={opened.icon}
+				expanded
+				cmp={opened.cmp}
+				GraphNodeID={opened.GraphNodeID}>
+				{opened.title}
+			</Item>
 		</div>
 	</div>
-{/each}
+</div>
 
 <style lang="scss">
 	.layout-2 {

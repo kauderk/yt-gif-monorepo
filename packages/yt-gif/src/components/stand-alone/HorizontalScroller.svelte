@@ -57,14 +57,17 @@
 			deltaY += event.deltaY
 			scroller.scroll({ left: deltaY, behavior: 'smooth' })
 		}
-		const scrollValues: Scroller = {
-			scrollLeft: scroller.scrollLeft,
-			scrollTop: scroller.scrollTop,
-			deltaY,
-		}
-		dispatch('update', scrollValues)
 	}
+
 	export let scrollValues: Scroller
+	const _scrollValues = Object.freeze({ ...scrollValues })
+	$: {
+		scrollValues = {
+			scrollLeft: scroller?.scrollLeft || _scrollValues.scrollLeft,
+			scrollTop: scroller?.scrollTop || _scrollValues.scrollTop,
+			deltaY: deltaY || _scrollValues.deltaY,
+		}
+	}
 
 	let enabled = false
 	const start = (el: HTMLElement) => {
