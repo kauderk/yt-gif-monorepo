@@ -9,28 +9,37 @@
 	export let expanded = false
 	export let cmp: any = null
 	export let GraphNodeID: string = 'missing'
+	export let title = ''
 
 	const ctx = getContext()
+	$: component = expanded && cmp
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="item" class:expanded style="--hue: {hue}" on:click>
+<div class="item" class:expanded style="--hue: {hue}" class:component on:click>
 	<div class="controls">
-		{#if expanded}
-			<Controls />
+		{#if !component}
+			<!-- top-picker -->
+			<span class="top-picker">
+				<span class="title">{title}</span>
+				<i class="icon material-icons">{icon}</i>
+			</span>
 		{:else}
-			<i class="icon material-icons">{icon}</i>
+			<!-- bottom-component -->
+			<Controls />
 		{/if}
 	</div>
 	{#if expanded}
-		{#if cmp}
+		{#if !cmp}
+			<!-- top-picker -->
+			<slot />
+		{:else}
+			<!-- bottom-component -->
 			<div class="whole" use:ScaleToFitParent>
 				<Drag {...$ctx.dnd} name={GraphNodeID}>
 					<svelte:component this={cmp} />
 				</Drag>
 			</div>
-		{:else}
-			<slot />
 		{/if}
 	{/if}
 </div>
@@ -41,8 +50,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		width: 5rem;
-		aspect-ratio: 1 / 1;
 
 		border-width: 0.1em;
 		border-style: solid;
@@ -59,23 +66,32 @@
 		-webkit-user-select: none;
 		text-align: center;
 
-		// icon
-		&:not(.expanded):hover {
-			background-color: hsl(var(--hue), 100%, 40%);
-			border-color: hsl(var(--hue), 100%, 40%);
-			color: hsl(var(--hue), 100%, 95%);
+		padding: 0.5em;
+
+		&:not(.component) {
+			width: auto;
+			height: 2em;
+			.top-picker {
+				display: flex;
+				.title {
+					font-size: medium;
+				}
+			}
+			&:hover {
+				background-color: hsl(var(--hue), 100%, 40%);
+				border-color: hsl(var(--hue), 100%, 40%);
+				color: hsl(var(--hue), 100%, 95%);
+			}
 		}
-		// component
-		&.expanded {
+		&.component {
 			width: 100%;
 			height: 100%;
-			padding: 0.5em;
-			border-style: dashed;
-			gap: 0.5em;
 
-			.icon {
-				font-size: 5rem;
-			}
+			gap: 0.5em;
+			aspect-ratio: 1 / 1;
+		}
+		&.expanded {
+			border-style: dashed;
 		}
 
 		// BG

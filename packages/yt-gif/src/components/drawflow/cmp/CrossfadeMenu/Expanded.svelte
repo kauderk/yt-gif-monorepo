@@ -5,6 +5,7 @@
 	import { type TItem, getContext, defCrossfade } from './store'
 	import Item from './Item.svelte'
 	import { createEventDispatcher } from 'svelte'
+	import { fade } from 'svelte/transition'
 
 	const items = getContext()
 	const dispatch = createEventDispatcher()
@@ -18,19 +19,31 @@
 	<div class="layout-2">
 		<HorizontalScroller>
 			<div class="s-menu">
-				{#each items.filter( ({ id }) => (opened ? opened.id !== id : true) ) as item (item.id)}
-					<div
-						class="item"
-						class:selected={opened.id == item.id}
-						in:receive={{ key: item.id }}
-						out:send={{ key: item.id }}
-						animate:flip>
-						<Item
-							hue={item.id * 35}
-							icon={item.icon}
-							cmp={item.cmp}
-							on:click={() => dispatch('click', { item })} />
-					</div>
+				{#each items as item (item.id)}
+					{#if opened.id !== item.id}
+						<div
+							class="item"
+							class:selected={opened.id == item.id}
+							in:receive={{ key: item.id }}
+							out:send={{ key: item.id }}>
+							<Item
+								hue={item.id * 35}
+								title={item.title}
+								icon={item.icon}
+								cmp={item.cmp}
+								on:click={() => dispatch('click', { item })} />
+						</div>
+					{:else if opened.id === item.id}
+						<div class="item" transition:fade>
+							<Item
+								hue={item.id * 35}
+								icon={item.icon}
+								title={item.title}
+								expanded={true} />
+						</div>
+					{/if}
+				{:else}
+					Hello
 				{/each}
 			</div>
 		</HorizontalScroller>
