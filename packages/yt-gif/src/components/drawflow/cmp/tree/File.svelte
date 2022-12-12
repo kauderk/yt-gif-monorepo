@@ -24,10 +24,13 @@
 </script>
 
 <script lang="ts">
-	export let name: string
-	export let id: TFile['id']
 	export let isActive = ''
 	$: type = name.slice(name.lastIndexOf('.') + 1)
+
+	import type FolderView from './FolderView.svelte'
+
+	export let query: ReturnType<FolderView['query']>
+	$: name = query.name
 
 	export let expandSimilar: () => void
 	export let expandAncestors: () => void
@@ -36,9 +39,9 @@
 
 	const ctx = getContext()
 	const focusCanvasOnNode = () => {
-		const node = (position_x = get(ctx).editor.canvas_x)
-		position_y = get(ctx).editor.canvas_y
-		zoom = get(ctx).editor.zoom
+		//const node = (position_x = get(ctx).editor.canvas_x)
+		//position_y = get(ctx).editor.canvas_y
+		//zoom = get(ctx).editor.zoom
 	}
 </script>
 
