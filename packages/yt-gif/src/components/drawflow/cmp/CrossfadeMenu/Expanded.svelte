@@ -31,18 +31,16 @@
 						out:send={{ key: item.id }}>
 						<Item
 							hue={item.id * 35}
-							title={item.title}
-							icon={item.icon}
-							cmp={item.cmp}
+							{...item}
+							type={['label', 'draggable']}
 							on:click={() => dispatch('click', { item })} />
 					</div>
 				{:else if opened.id === item.id}
 					<div class="item" transition:fade>
 						<Item
 							hue={item.id * 35}
-							icon={item.icon}
-							title={item.title}
-							expanded={true} />
+							{...opened}
+							type={['label', 'draggable', 'expanded']} />
 					</div>
 				{/if}
 			{/each}
@@ -59,10 +57,8 @@
 				out:send={{ key: opened.id }}>
 				<Item
 					hue={opened.id * 35}
-					icon={opened.icon}
-					expanded
-					cmp={opened.cmp}
-					GraphNodeID={opened.GraphNodeID}>
+					{...opened}
+					type={['component', 'draggable', 'expanded']}>
 					{opened.title}
 				</Item>
 			</div>

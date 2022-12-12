@@ -12,25 +12,24 @@
 
 <div class="crossfade-container">
 	<main class="relative">
-		<div>
-			{#each items as item (item.id)}
-				<div
-					class="crossfade"
-					in:receive={{ key: item.id }}
-					out:send={{ key: item.id }}
-					animate:flip>
-					<Item
-						hue={item.id * 35}
-						{...item}
-						on:click={() => dispatch('click', { item })} />
-				</div>
-			{/each}
-		</div>
+		{#each items as item (item.id)}
+			<div
+				class="crossfade"
+				in:receive={{ key: item.id }}
+				out:send={{ key: item.id }}
+				animate:flip>
+				<Item
+					hue={item.id * 35}
+					{...item}
+					type={['label', 'draggable']}
+					on:click={() => dispatch('click', { item })} />
+			</div>
+		{/each}
 	</main>
 </div>
 
 <style lang="scss">
-	.relative > div {
+	.crossfade-container > main {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;

@@ -6,42 +6,46 @@
 
 	export let hue = 0
 	export let icon = 'info'
-	export let expanded = false
 	export let cmp: any = null
 	export let GraphNodeID: string = 'missing'
 	export let title = ''
+	export let type: ('draggable' | 'label' | 'component' | 'expanded')[]
 
 	const ctx = getContext()
-	$: component = expanded && cmp
+
+	$: component = type.includes('component')
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="item " class:expanded style="--hue: {hue}" class:component on:click>
+<div
+	class="item "
+	class:expanded={type.includes('expanded')}
+	class:component
+	draggable="false"
+	style="--hue: {hue}"
+	on:click>
 	<div class="controls">
-		{#if !component}
+		{#if type.includes('label')}
 			<!-- top-picker -->
-			<span class="top-picker">
-				<span class="title">{title}</span>
-				<i class="icon material-icons">{icon}</i>
-			</span>
-		{:else}
+			<Drag {...$ctx.dnd} name={GraphNodeID}>
+				<span class="top-picker">
+					<span class="title">{title}</span>
+					<i class="icon material-icons">{icon}</i>
+				</span>
+			</Drag>
+		{:else if component}
 			<!-- bottom-component -->
 			<Controls />
 		{/if}
 	</div>
 	<main class="s-scrollbar">
-		{#if expanded}
-			{#if !cmp}
-				<!-- top-picker -->
-				<slot />
-			{:else}
-				<!-- bottom-component -->
-				<div class="draggable-component-container">
-					<Drag {...$ctx.dnd} name={GraphNodeID}>
-						<svelte:component this={cmp} />
-					</Drag>
-				</div>
-			{/if}
+		{#if component}
+			<!-- bottom-component -->
+			<div class="draggable-component-container">
+				<Drag {...$ctx.dnd} name={GraphNodeID}>
+					<svelte:component this={cmp} />
+				</Drag>
+			</div>
 		{/if}
 	</main>
 </div>

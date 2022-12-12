@@ -76,6 +76,7 @@
 		gap: 0.75rem;
 		border-radius: 0.75em;
 		padding: 0.5em;
+		user-select: none;
 		> .header-row {
 			display: flex;
 			align-items: center;
