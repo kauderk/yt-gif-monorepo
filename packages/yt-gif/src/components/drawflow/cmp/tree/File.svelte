@@ -22,18 +22,37 @@
 	export let name: string
 	export let isActive = ''
 	$: type = name.slice(name.lastIndexOf('.') + 1)
+
+	export let expandSimilar: () => void
+	export let expandAncestors: () => void
+
+	const outline = (b: b) => (b ? 'duotone' : 'thin')
 </script>
 
-<span class:active={isActive === name}>
-	{name}
+<span class="node">
+	<span class="actions">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<i
+			on:click={expandSimilar}
+			class="fa-{outline(isActive === name)} fa-diagram-nested" />
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<i
+			on:click={expandAncestors}
+			class="fa-{outline(isActive === name)} fa-chart-gantt" />
+	</span>
+
+	<span class="title" class:active={isActive === name}>
+		{name}
+	</span>
 </span>
 
 <style>
-	span {
-		padding: 0 0 0 1.5em;
-		background: 0 0.1em no-repeat;
-		background-size: 1em 1em;
-		background: url(./icons/file.svg) 0 0.1em no-repeat;
+	* {
+		user-select: none;
+	}
+
+	.title {
+		cursor: help;
 	}
 	.active {
 		color: orange;

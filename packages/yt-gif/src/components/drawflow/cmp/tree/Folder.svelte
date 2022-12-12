@@ -2,13 +2,14 @@
 	import { isActive } from './store'
 	import File, { type TFile } from './File.svelte'
 	import { setContext } from 'svelte'
+	import { writable } from 'svelte/store'
 
-	export let expanded = false
+	export let expanded = writable(false)
 	export let name: string
 	export let children: TFile[]
 
 	function toggle(e: MouseEvent) {
-		expanded = !expanded
+		$expanded = !$expanded
 		activate(name)
 	}
 
@@ -19,39 +20,43 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<span class:expanded on:click={toggle}
-	><File {name} isActive={$isActive} /></span>
+<span class="controls">
+	<span class="actions">
+		<i
+			on:click={toggle}
+			class="expand fa-solid fa-chevron-{$expanded ? 'down' : 'right'}" />
+	</span>
 
-{#if expanded}
+	<File
+		{name}
+		isActive={$isActive}
+		expandSimilar={() => activate(name)}
+		expandAncestors={() => activate(name)} />
+</span>
+
+<!-- children -->
+{#if $expanded}
 	<ul>
 		{#each children as nested}
 			<li>
 				{#if nested.children?.length}
 					<svelte:self {...nested} />
 				{:else}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div on:click={() => activate(nested.name)}>
-						<File {...nested} isActive={$isActive} />
-					</div>
+					<File
+						{...nested}
+						isActive={$isActive}
+						expandSimilar={() => activate(nested.name)}
+						expandAncestors={() => activate(name)} />
 				{/if}
 			</li>
 		{/each}
 	</ul>
 {/if}
 
-<style>
-	span {
-		padding: 0 0 0 1.5em;
-		background: url(./icons/folder.svg) 0 0.1em no-repeat;
-		background-size: 1em 1em;
-		font-weight: bold;
-		cursor: pointer;
+<style lang="scss">
+	* {
+		user-select: none;
 	}
-
-	.expanded {
-		background-image: url(./icons/folder-open.svg);
-	}
-
 	ul {
 		padding: 0.2em 0 0 0.5em;
 		margin: 0 0 0 0.5em;

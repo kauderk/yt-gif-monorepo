@@ -3,6 +3,8 @@
 // Definitions by: Benjamin Maisonneuve <https://github.com/BobBDE>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+import type { Content } from '@tiptap/core'
+
 // Declare the workflow module to be able to used it in typescript
 // this file must be defined in the include in tsconfig.json
 
@@ -529,7 +531,10 @@ export interface DrawflowNode {
 	open?: boolean
 	order?: number
 	class: string
-	data: any
+	data: {
+		content?: Content
+		expanded?: boolean
+	}
 	html: string
 	id: ID
 	inputs: Record<string, { connections: InputConnection[] }>
