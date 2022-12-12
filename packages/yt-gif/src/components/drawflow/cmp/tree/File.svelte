@@ -2,6 +2,7 @@
 	type base = {
 		type: string
 		name: string
+		expanded?: boolean
 	}
 	type folder = base & {
 		files?: undefined

@@ -2,19 +2,143 @@
 	"drawflow": {
 		"Home": {
 			"data": {
-				"2": {
-					"name": "ApiBlock",
-					"data": {
-						"content": "<svelte--api-block></svelte--api-block><p></p>"
+				"1": {
+					"name": "YTGIFBlock",
+					"data": {},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 1,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "4", "input": "output_0" },
+								{ "node": "5", "input": "output_0" }
+							]
+						}
 					},
-					"html": "ApiBlock",
+					"outputs": { "output_0": { "connections": [] } },
+					"pos_x": 1041,
+					"pos_y": 437
+				},
+				"2": {
+					"name": "YTGIFBlock",
+					"data": {
+						"content": "<p>Este es un bloque en el que usuarios <br>pueden ingresar contenido relevante</p><p></p><p>Al escribir el comando \"/\"<br>Shitf+/ o Cmd+/<br><br>Un menu aparecera para añadir videos<br>dentro de este tipo de bloques<br>El que buscas es \"YTGIF\"</p>"
+					},
+					"html": "YTGIFBlock",
 					"typenode": "svelte",
 					"id": 2,
-					"class": "ApiBlock",
+					"class": "YTGIFBlock",
 					"inputs": { "input_0": { "connections": [] } },
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "4", "output": "input_0" },
+								{ "node": "3", "output": "input_0" },
+								{ "node": "5", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": -68.75,
+					"pos_y": 311
+				},
+				"3": {
+					"name": "YTGIFBlock",
+					"data": {
+						"content": "<p>El siguiente bloque es un \"nodo\" que contiene<br>un reproductor de video llamado YTGIF<br><br>Cuando presiones \"FIRE\" el, video estara listo para<br>ser visto cundo pongas tu mouse por encima.<br>Cuando te alejes, el video se pausará.</p>"
+					},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 3,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "2", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "10", "output": "input_0" },
+								{ "node": "6", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 503.25,
+					"pos_y": 80
+				},
+				"4": {
+					"name": "YTGIFBlock",
+					"data": {},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 4,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "2", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "1", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 544.5,
+					"pos_y": 345.75
+				},
+				"5": {
+					"name": "YTGIFBlock",
+					"data": {
+						"content": "<p>Este es un bloque que contiene un editor de texto<br>y un reproductor de video<br></p><p></p>"
+					},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 5,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "2", "input": "output_0" }
+							]
+						}
+					},
+					"outputs": {
+						"output_0": {
+							"connections": [
+								{ "node": "1", "output": "input_0" }
+							]
+						}
+					},
+					"pos_x": 408,
+					"pos_y": 508.5
+				},
+				"6": {
+					"name": "YTGIFBlock",
+					"data": {
+						"content": "<p>En la barra superior izuierda, el boton <br>numero tres abre una ventana que <br>permite seleccionar (bloques pequeños) <br>y arrastrar los componentes a el área de trabajo</p>"
+					},
+					"html": "YTGIFBlock",
+					"typenode": "svelte",
+					"id": 6,
+					"class": "YTGIFBlock",
+					"inputs": {
+						"input_0": {
+							"connections": [
+								{ "node": "3", "input": "output_0" }
+							]
+						}
+					},
 					"outputs": { "output_0": { "connections": [] } },
-					"pos_x": 543,
-					"pos_y": 223
+					"pos_x": 1011.25,
+					"pos_y": -3
 				}
 			}
 		}

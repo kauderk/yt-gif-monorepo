@@ -16,7 +16,7 @@
 	export let id: ID
 	export let className = ''
 
-	export let GraphNodeID = <TItemCtx['GraphNodeID']>{}
+	export let GraphNodeID = <TItemCtx['GraphNodeID'] | null>null
 	export let GraphNodeProps = {}
 
 	export let top: number
