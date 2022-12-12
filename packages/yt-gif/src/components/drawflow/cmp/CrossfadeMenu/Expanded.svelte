@@ -53,7 +53,7 @@
 	</aside>
 
 	<div class="crossfade-container">
-		<main class="relative-">
+		<main class="relative">
 			{#key opened}
 				<div
 					class="crossfade"
@@ -76,8 +76,8 @@
 <style lang="scss">
 	.crossfade-container {
 		position: absolute;
-		width: 100%;
-		> main {
+		width: 23.5em;
+		> main.relative {
 			padding: 0.5em;
 			> .crossfade {
 				position: absolute;

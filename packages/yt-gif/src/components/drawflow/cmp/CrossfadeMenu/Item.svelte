@@ -16,7 +16,12 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="item" class:expanded style="--hue: {hue}" class:component on:click>
+<div
+	class="item s-scrollbar"
+	class:expanded
+	style="--hue: {hue}"
+	class:component
+	on:click>
 	<div class="controls">
 		{#if !component}
 			<!-- top-picker -->
@@ -35,7 +40,7 @@
 			<slot />
 		{:else}
 			<!-- bottom-component -->
-			<div class="whole" use:ScaleToFitParent>
+			<div class="draggable-component-container">
 				<Drag {...$ctx.dnd} name={GraphNodeID}>
 					<svelte:component this={cmp} />
 				</Drag>
@@ -49,7 +54,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
 
 		border-width: 0.1em;
 		border-style: solid;
@@ -84,25 +88,19 @@
 			}
 		}
 		&.component {
-			width: 100%;
-			height: 100%;
-
+			width: 380px;
+			overflow-x: auto;
 			gap: 0.5em;
-			aspect-ratio: 1 / 1;
 		}
 		&.expanded {
 			border-style: dashed;
 		}
 
 		// BG
-		.whole {
-			height: 100%;
-			width: 100%;
-			display: block;
-
+		.draggable-component-container {
 			// open props
 			border-radius: var(--radius-3);
-			padding: var(--size-fluid-3);
+
 			box-shadow: var(--shadow-2);
 
 			&:hover {
