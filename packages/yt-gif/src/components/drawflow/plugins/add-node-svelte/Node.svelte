@@ -88,7 +88,7 @@
 					<i class="fa-solid fa-x" style="font-size: 12px;" />
 				</button>
 				<span class="drawflow_node_title"
-					>{Slot?.title ?? `Node: ${id}`}</span>
+					>{`Node: ${Slot?.title} ${id}`}</span>
 			</div>
 
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->

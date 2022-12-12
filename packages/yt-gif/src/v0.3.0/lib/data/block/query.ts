@@ -16,7 +16,7 @@ export const getBlockParentUids = async (uid: s) => {
 			walk: 'flat',
 			query(node, payload) {
 				return {
-					uid: node.id.toString(),
+					name: `${node.name} #${node.id}`,
 				}
 			},
 		})
@@ -28,6 +28,7 @@ export const getBlockParentUids = async (uid: s) => {
 			nest,
 			connection,
 		})
+		console
 	} catch (e) {
 		debugger
 		return null

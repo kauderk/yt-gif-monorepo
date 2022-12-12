@@ -1,17 +1,16 @@
 <script lang="ts" context="module">
 	type base = {
-		type: string
 		name: string
 		expanded?: boolean
 	}
 	type folder = base & {
-		files?: undefined
+		children?: undefined
 	}
 	export type TFile =
 		| (base & {
-				files: (
+				children: (
 					| (base & {
-							files: base[]
+							children: base[]
 					  })
 					| folder
 				)[]

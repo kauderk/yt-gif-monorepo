@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { isActive } from './store'
 	import File, { type TFile } from './File.svelte'
+	import { setContext } from 'svelte'
 
 	export let expanded = false
 	export let name: string
-	export let files: TFile[]
+	export let children: TFile[]
 
-	function toggle() {
+	function toggle(e: MouseEvent) {
 		expanded = !expanded
+		activate(name)
 	}
 
 	function activate(event: s) {
@@ -17,18 +19,19 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<span class:expanded on:click={toggle}>{name}</span>
+<span class:expanded on:click={toggle}
+	><File {name} isActive={$isActive} /></span>
 
 {#if expanded}
 	<ul>
-		{#each files as file}
+		{#each children as nested}
 			<li>
-				{#if file.type === 'folder'}
-					<svelte:self {...file} />
+				{#if nested.children?.length}
+					<svelte:self {...nested} />
 				{:else}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div on:click={() => activate(file.name)}>
-						<File {...file} isActive={$isActive} />
+					<div on:click={() => activate(nested.name)}>
+						<File {...nested} isActive={$isActive} />
 					</div>
 				{/if}
 			</li>
