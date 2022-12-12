@@ -41,9 +41,9 @@
 	const ctx = getContext()
 	const focusCanvasOnNode = () => {
 		const node = getNodeByID({ uid: query.id, module: 'Home' })
-		if (!node) return console.log('hello')
+		if (!node) return console.log('Unable to Focus on node')
 
-		const size = window.getComputedStyle($ctx.editor.precanvas!)
+		//const size = window.getComputedStyle($ctx.editor.precanvas!)
 
 		//let x = node.pos_x + parseFloat(size.width) / 2
 		//let y = node.pos_y - parseFloat(size.height) / 3.15

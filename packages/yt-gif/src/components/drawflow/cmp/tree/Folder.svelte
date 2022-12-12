@@ -13,7 +13,6 @@
 	}
 
 	function activate(event: s) {
-		console.log(event)
 		$isActive = event
 	}
 	$: name = query.name

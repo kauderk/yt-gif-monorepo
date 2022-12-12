@@ -73,6 +73,10 @@
 
 		//createNodeComponents($ctx.editor)
 
+		const refreshModules = () =>
+			($ctx.editor.drawflow = $ctx.editor.drawflow)
+		$ctx.editor.on('moduleCreated', refreshModules)
+
 		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
 

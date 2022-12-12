@@ -2813,6 +2813,12 @@ export default class Drawflow extends DrawFlowDefault {
 	}
 
 	addModule(name: s) {
+		//FIXME: should be renamed to 'tryAddModule'
+		if (typeof this.drawflow.drawflow[name]?.data == 'object') {
+			this.dispatch('moduleAlreadyExist', name)
+			return
+		}
+
 		this.drawflow.drawflow[name] = { data: {} }
 		this.dispatch('moduleCreated', name)
 	}

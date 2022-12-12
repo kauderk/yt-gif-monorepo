@@ -2,26 +2,22 @@
 	import { getNestedBlocks } from '$v3/lib/data/proxy/recursive'
 
 	import Folder from './Folder.svelte'
-	import { getContext } from '../store'
 	import type {
-		DrawflowExport,
+		DrawflowModuleData,
 		DrawflowNode,
 	} from '$cmp/drawflow/src/drawflow/types'
 	import { createWritable } from '$lib/local-storage-store'
 
-	const ctx = getContext()
-
-	type modules = 'Home'
+	export let Module = 'Home'
+	export let ModuleData: DrawflowModuleData['data']
 	export const query = (node: DrawflowNode) => {
 		return {
 			expanded: createWritable(node.data.expanded ?? false),
 			name: `${node.name} #${node.id}`,
-			id: <typeof node.id | modules>node.id,
+			id: <typeof node.id>node.id,
 		}
 	}
-	export const children = Object.entries(
-		$ctx.editor.drawflow.drawflow.Home.data
-	).map(([uid, node]) => {
+	export const children = Object.entries(ModuleData).map(([uid]) => {
 		const connection = <const>{ outputs: { proxy: 'children' } }
 
 		const nest = getNestedBlocks({
@@ -33,11 +29,11 @@
 
 		return nest
 	})
-	const home: ReturnType<typeof query> = {
+	const ModuleQuery: ReturnType<typeof query> = {
 		expanded: createWritable(true),
-		name: 'Home',
-		id: 'Home',
+		name: Module,
+		id: Module,
 	}
 </script>
 
-<Folder query={home} {children} />
+<Folder query={ModuleQuery} {children} />

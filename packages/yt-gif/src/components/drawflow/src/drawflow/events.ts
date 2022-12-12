@@ -112,6 +112,12 @@ type Modules = {
 	 * @param eventName
 	 * @param callback (event: name of Module)
 	 */
+	(eventName: 'moduleAlreadyExist', callback: (event: string) => void): void
+	/**
+	 *
+	 * @param eventName
+	 * @param callback (event: name of Module)
+	 */
 	(eventName: 'moduleCreated', callback: (event: string) => void): void
 	/**
 	 *
