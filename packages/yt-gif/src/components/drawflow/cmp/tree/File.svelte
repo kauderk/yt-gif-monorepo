@@ -1,6 +1,11 @@
 <script lang="ts" context="module">
+	import type { ID } from '$cmp/drawflow/src/drawflow/types'
+	import { get } from 'svelte/store'
+	import { getContext } from '../store'
+
 	type base = {
 		name: string
+		id?: ID
 		expanded?: boolean
 	}
 	type folder = base & {
@@ -20,6 +25,7 @@
 
 <script lang="ts">
 	export let name: string
+	export let id: TFile['id']
 	export let isActive = ''
 	$: type = name.slice(name.lastIndexOf('.') + 1)
 
@@ -27,6 +33,13 @@
 	export let expandAncestors: () => void
 
 	const outline = (b: b) => (b ? 'duotone' : 'thin')
+
+	const ctx = getContext()
+	const focusCanvasOnNode = () => {
+		const node = (position_x = get(ctx).editor.canvas_x)
+		position_y = get(ctx).editor.canvas_y
+		zoom = get(ctx).editor.zoom
+	}
 </script>
 
 <span class="node">
@@ -41,7 +54,11 @@
 			class="fa-{outline(isActive === name)} fa-chart-gantt" />
 	</span>
 
-	<span class="title" class:active={isActive === name}>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<span
+		on:click={focusCanvasOnNode}
+		class="title"
+		class:active={isActive === name}>
 		{name}
 	</span>
 </span>

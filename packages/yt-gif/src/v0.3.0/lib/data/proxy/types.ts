@@ -18,7 +18,7 @@ export interface Params {
 	query: (
 		node: DrawflowNode,
 		payload?: Payload
-	) => RequireAtLeastOne<Partial<Omit<TBlockInfoRec, proxyProperties>>>
+	) => RequireAtLeastOne<Partial<Omit<any, proxyProperties>>>
 }
 export interface Nest {
 	payload?: Payload

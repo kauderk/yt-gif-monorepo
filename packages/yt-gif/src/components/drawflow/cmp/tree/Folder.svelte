@@ -3,10 +3,12 @@
 	import File, { type TFile } from './File.svelte'
 	import { setContext } from 'svelte'
 	import { writable } from 'svelte/store'
+	import type FolderView from './FolderView.svelte'
 
 	export let expanded = writable(false)
 	export let name: string
-	export let children: TFile[]
+	export let id: TFile['id'] = undefined
+	export let children: FolderView['children']
 
 	function toggle(e: MouseEvent) {
 		$expanded = !$expanded
@@ -28,6 +30,7 @@
 	</span>
 
 	<File
+		{id}
 		{name}
 		isActive={$isActive}
 		expandSimilar={() => activate(name)}

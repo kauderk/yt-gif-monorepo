@@ -8,6 +8,10 @@ export function getNestedBlocks<P extends Params>(params: P) {
 
 	const node = getNodeByID(params)!
 
+	type Recursive<T> = T & {
+		[key in proxy]?: Recursive<T>[]
+	}
+
 	return REC({
 		rootUid: params.uid,
 		node,
@@ -16,8 +20,13 @@ export function getNestedBlocks<P extends Params>(params: P) {
 		//FIXME: these types could turn rogue
 	}) as ReturnType<P['query']> &
 		(P['walk'] extends 'flat'
-			? { [key in proxy]?: TBlockInfoRec[] }
-			: { [key in proxy]: (TBlockInfoRec | undefined)[] })
+			? { [key in proxy]?: Recursive<ReturnType<P['query']>>[] }
+			: {
+					[key in proxy]: (
+						| Recursive<ReturnType<P['query']>>
+						| undefined
+					)[]
+			  })
 }
 
 function REC(step: Nest) {
