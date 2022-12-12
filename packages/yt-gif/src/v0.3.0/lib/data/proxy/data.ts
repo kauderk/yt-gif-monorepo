@@ -18,7 +18,7 @@ export function getConnectionIterator<N extends Nest>(step: N) {
 export function getNodeByID({
 	uid,
 	module = 'Home',
-}: Params): DrawflowNode | undefined {
+}: Pick<Params, 'module' | 'uid'>): DrawflowNode | undefined {
 	// @ts-ignore
 	if (module) return data.drawflow[module].data[uid]
 

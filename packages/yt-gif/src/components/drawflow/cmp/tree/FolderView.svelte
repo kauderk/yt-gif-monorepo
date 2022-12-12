@@ -3,15 +3,20 @@
 
 	import Folder from './Folder.svelte'
 	import { getContext } from '../store'
-	import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
+	import type {
+		DrawflowExport,
+		DrawflowNode,
+	} from '$cmp/drawflow/src/drawflow/types'
 	import { createWritable } from '$lib/local-storage-store'
 
 	const ctx = getContext()
 
+	type modules = 'Home'
 	export const query = (node: DrawflowNode) => {
 		return {
 			expanded: createWritable(node.data.expanded ?? false),
 			name: `${node.name} #${node.id}`,
+			id: <typeof node.id | modules>node.id,
 		}
 	}
 	export const children = Object.entries(
@@ -31,6 +36,7 @@
 	const home: ReturnType<typeof query> = {
 		expanded: createWritable(true),
 		name: 'Home',
+		id: 'Home',
 	}
 </script>
 

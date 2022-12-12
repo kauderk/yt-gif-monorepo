@@ -53,7 +53,7 @@ export function createWritable<T>(startValue: T) {
 			store.set(newValue)
 		},
 		setFrom(previousHandler: (value: T) => T) {
-			previousHandler(read())
+			write(previousHandler(read()))
 		},
 		get: read,
 	}
