@@ -44,13 +44,36 @@
 </script>
 
 {#if !$opened}
-	<Grid {send} {receive} on:click={event => ($opened = event.detail.item)} />
+	<div class="layout">
+		<Grid
+			{send}
+			{receive}
+			on:click={event => ($opened = event.detail.item)} />
+	</div>
 {:else}
-	<Expanded
-		bind:LevelsOfItems
-		bind:scrollValues
-		{send}
-		{receive}
-		opened={$opened}
-		on:click={event => ($opened = event.detail.item)} />
+	<div class="layout">
+		<Expanded
+			bind:LevelsOfItems
+			bind:scrollValues
+			{send}
+			{receive}
+			opened={$opened}
+			on:click={event => ($opened = event.detail.item)} />
+	</div>
 {/if}
+
+<style lang="scss">
+	.layout {
+		width: 100%;
+		position: absolute;
+		// horizontal scrollable component won't work with flex
+		// display: flex;
+		justify-content: start;
+		// padding: 0.5rem;
+
+		// horizontal
+		flex-direction: column;
+		align-items: center;
+		align-content: center;
+	}
+</style>
