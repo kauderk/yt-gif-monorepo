@@ -74,11 +74,17 @@
 </div>
 
 <style lang="scss">
+	.scrollers {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		padding: 0.5em;
+	}
 	.crossfade-container {
 		position: absolute;
-		width: 23.5em;
+		width: auto;
+		padding: 0.5em;
 		> main.relative {
-			padding: 0.5em;
 			> .crossfade {
 				position: absolute;
 				height: auto;

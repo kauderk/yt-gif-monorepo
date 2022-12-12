@@ -16,12 +16,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-	class="item s-scrollbar"
-	class:expanded
-	style="--hue: {hue}"
-	class:component
-	on:click>
+<div class="item " class:expanded style="--hue: {hue}" class:component on:click>
 	<div class="controls">
 		{#if !component}
 			<!-- top-picker -->
@@ -34,19 +29,21 @@
 			<Controls />
 		{/if}
 	</div>
-	{#if expanded}
-		{#if !cmp}
-			<!-- top-picker -->
-			<slot />
-		{:else}
-			<!-- bottom-component -->
-			<div class="draggable-component-container">
-				<Drag {...$ctx.dnd} name={GraphNodeID}>
-					<svelte:component this={cmp} />
-				</Drag>
-			</div>
+	<main class="s-scrollbar">
+		{#if expanded}
+			{#if !cmp}
+				<!-- top-picker -->
+				<slot />
+			{:else}
+				<!-- bottom-component -->
+				<div class="draggable-component-container">
+					<Drag {...$ctx.dnd} name={GraphNodeID}>
+						<svelte:component this={cmp} />
+					</Drag>
+				</div>
+			{/if}
 		{/if}
-	{/if}
+	</main>
 </div>
 
 <style lang="scss">
@@ -62,20 +59,14 @@
 		border-color: hsl(var(--hue), 100%, 30%);
 		color: hsl(var(--hue), 100%, 30%);
 
-		font-size: 14px;
-		font-weight: bold;
-
-		cursor: pointer;
-		user-select: none;
-		-webkit-user-select: none;
-		text-align: center;
-
 		padding: 0.5em;
 
 		&:not(.component) {
 			width: auto;
 			height: 2em;
 			.top-picker {
+				user-select: none;
+
 				display: flex;
 				.title {
 					font-size: medium;
@@ -88,9 +79,13 @@
 			}
 		}
 		&.component {
-			width: 380px;
-			overflow-x: auto;
 			gap: 0.5em;
+			// because it's absolute, start counting with the additional padding
+			// make it even by shaving it off
+			width: calc(24.25em - 0.5em);
+			main {
+				overflow-x: auto;
+			}
 		}
 		&.expanded {
 			border-style: dashed;

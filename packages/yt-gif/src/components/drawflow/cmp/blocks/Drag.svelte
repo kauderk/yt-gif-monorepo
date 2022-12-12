@@ -15,3 +15,12 @@
 	data-node={name}>
 	<slot />
 </div>
+
+<style lang="scss">
+	div {
+		&:active {
+			cursor: grabbing;
+		}
+		cursor: grab;
+	}
+</style>
