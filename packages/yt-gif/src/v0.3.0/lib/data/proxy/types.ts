@@ -9,7 +9,7 @@ export type connection = {
 export type proxyProperties = connection[keyof connection]['proxy']
 export interface Params {
 	uid: ID
-	module?: 'Home' | 'Other'
+	module: 'Home' | string
 	walk: 'flat' | 'explicit'
 	connection: RequireAtLeastOne<connection>
 	/**

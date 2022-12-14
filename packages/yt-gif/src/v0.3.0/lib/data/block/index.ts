@@ -1,5 +1,5 @@
 import { getBlockInfoByUID } from '../proxy/block-info'
-import { getNestedBlocks, ReduceQuery } from '../proxy/recursive'
+import { tryGetNestedBlocks, ReduceQuery } from '../proxy/recursive'
 import { generateUID, sleep, sortObjectsByOrder, Unhandled } from '../utils'
 
 /**

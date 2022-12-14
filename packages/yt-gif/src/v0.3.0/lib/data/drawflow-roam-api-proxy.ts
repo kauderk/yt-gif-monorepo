@@ -40,7 +40,7 @@ export { getBlockParentUids } from './block/query'
 
 // 	return connections?.reduce(
 // 		(array, output): n => {
-// 			const node = getNodeByID(output?.node)
+// 			const node = tryGetNodeByID(output?.node)
 // 			if (!node) {
 // 				return 0
 // 			}
