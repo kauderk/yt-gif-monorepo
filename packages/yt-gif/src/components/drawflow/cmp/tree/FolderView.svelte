@@ -22,13 +22,26 @@
 			module: Module,
 			id: <typeof node.id>node.id,
 			actions: {
-				expandSimilar() {
-					activate(name)
+				expandSimilar: {
+					iconName: 'diagram-nested',
+					action() {
+						activate(name)
+					},
 				},
-				expandAncestors() {
-					activate(name)
+				expandAncestors: {
+					iconName: 'chart-gantt',
+					action() {
+						activate(name)
+					},
 				},
-				delete() {},
+				delete: {
+					iconName: 'xmark',
+					action() {
+						$ctx.editor.removeNodeId(`node-${node.id}`)
+					},
+				},
+			},
+			events: {
 				focus() {
 					$ctx.editor.canvas_x = node.pos_x
 					$ctx.editor.canvas_y = node.pos_y
@@ -43,13 +56,26 @@
 		module: Module,
 		id: Module,
 		actions: {
-			expandSimilar() {
-				activate(Module)
+			expandSimilar: {
+				iconName: 'diagram-nested',
+				action() {
+					activate(Module)
+				},
 			},
-			expandAncestors() {
-				activate(Module)
+			expandAncestors: {
+				iconName: 'chart-gantt',
+				action() {
+					activate(Module)
+				},
 			},
-			delete() {},
+			delete: {
+				iconName: 'xmark',
+				action() {
+					$ctx.editor.removeModule(Module)
+				},
+			},
+		},
+		events: {
 			focus() {
 				$ctx.editor
 					.changeModule(Module)
@@ -58,6 +84,10 @@
 					)
 			},
 		},
+	}
+	if (Module == 'Home') {
+		// @ts-ignore the only case where it doesn't make sense to mess up the drawflow API
+		delete ModuleQuery.actions.delete
 	}
 
 	export const children = Object.entries(ModuleData).map(([uid]) => {

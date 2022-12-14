@@ -13,12 +13,15 @@
 		})
 	)
 
-	let value: s
+	let value: s | undefined
 </script>
 
 <svelte:component this={Wrapper} active="Explorer">
 	<form
-		on:submit|preventDefault={() => $ctx.editor.addModule(value)}
+		on:submit|preventDefault={() => {
+			if (value) $ctx.editor.addModule(value)
+			value = undefined
+		}}
 		class="add-module">
 		<input
 			type="text"
@@ -29,7 +32,7 @@
 			<i class="fa-light fa-plus" />
 		</button>
 	</form>
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
+
 	{#key Modules}
 		{#each Modules as entry}
 			<div class="folder-view">

@@ -33,25 +33,19 @@
 <div class="controls">
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
-		on:click={query.actions.focus}
+		on:click={query.events.focus}
 		class="badge"
 		class:active={$isActive === name}>
 		{name}
 	</div>
 
 	<span class="actions dark">
-		<FileAction
-			iconName="diagram-nested"
-			active={$isActive == name}
-			on:click={query.actions.expandSimilar} />
-		<FileAction
-			iconName="chart-gantt"
-			active={$isActive == name}
-			on:click={query.actions.expandAncestors} />
-		<FileAction
-			iconName="xmark"
-			active={$isActive == name}
-			on:click={query.actions.delete} />
+		{#each Object.values(query.actions) as item}
+			<FileAction
+				iconName={item.iconName}
+				active={$isActive == name}
+				on:click={item.action} />
+		{/each}
 	</span>
 </div>
 

@@ -2838,7 +2838,7 @@ export default class Drawflow extends DrawFlowDefault {
 		await this.import(this.drawflow, false)
 	}
 
-	async removeModule(name) {
+	async removeModule(name: s) {
 		if (this.module === name) {
 			await this.changeModule('Home')
 		}

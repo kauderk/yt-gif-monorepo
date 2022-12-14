@@ -23,6 +23,8 @@
 	import { onMount, setContext } from 'svelte'
 	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
 	import { writable } from 'svelte/store'
+	import type { EventNames } from './src/drawflow/events'
+	import { listenAndRefreshEditor } from './lib/refresh'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
@@ -73,11 +75,10 @@
 
 		//createNodeComponents($ctx.editor)
 
-		const refreshModules = () =>
-			($ctx.editor.drawflow = $ctx.editor.drawflow)
-		$ctx.editor.on('moduleCreated', refreshModules)
-		$ctx.editor.on('moduleChanged', refreshModules)
-		// $ctx.editor.on('moduleRemoved', refreshModules)
+		listenAndRefreshEditor(
+			ctx,
+			() => ($ctx.editor.drawflow = $ctx.editor.drawflow)
+		)
 
 		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
