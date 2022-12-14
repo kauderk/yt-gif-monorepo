@@ -3,28 +3,21 @@
 	import dataToImport from './data.json'
 
 	import { undoRedo } from './plugins/conection-undo-redo'
-	import { rerouteSquare } from './plugins/reroute-square'
-	import { dragAndDrop, AssignEvents } from './plugins/drag-drop'
+
+	import { dragAndDrop } from './plugins/drag-drop'
 	import { selectMultiple } from './plugins/select-mulitple'
 	import { multiDrag } from './plugins/multi-drag'
 	import { draggableCancelation } from './plugins/draggable-cancelation'
 	import { zoomToPointer } from './plugins/zoom-to-pointer'
-	import { createAddNode } from './plugins/add-node-svelte'
-	import { DrawflowMinimap } from './plugins/minimap'
+	import { type Actions, createAddNode } from './plugins/add-node-svelte'
 
 	import Views from './cmp/views/index.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import {
-		createNodeComponents,
-		registerNodeComponents,
-	} from './cmp/blocks/registration'
-	import Minimap from './cmp/Minimap.svelte'
+	import { registerNodeComponents } from './cmp/blocks/registration'
 
 	import { onMount, setContext } from 'svelte'
 	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
 	import { writable } from 'svelte/store'
-	import type { EventNames } from './src/drawflow/events'
-	import { listenAndRefreshEditor } from './lib/refresh'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
@@ -33,6 +26,10 @@
 	export let props = DefaultProps
 	setContext('DrawflowProps', writable(props))
 
+	let actions: Actions = {
+		onUpdate(html: s) {},
+	}
+
 	onMount(async () => {
 		//
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
@@ -40,7 +37,7 @@
 		// modify the API to work with svelte components
 		const { addNode, addNodeImport } = createAddNode.bind(
 			Drawflow.prototype
-		)(flush)
+		)(actions)
 
 		Drawflow.prototype.addNode = addNode
 		Drawflow.prototype.addNodeImport = addNodeImport
@@ -75,11 +72,6 @@
 
 		//createNodeComponents($ctx.editor)
 
-		listenAndRefreshEditor(
-			ctx,
-			() => ($ctx.editor.drawflow = $ctx.editor.drawflow)
-		)
-
 		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
 
@@ -95,7 +87,6 @@
 <div class="wrapper">
 	<Views />
 	<Canvas />
-	<Minimap />
 </div>
 
 <style global lang="scss">

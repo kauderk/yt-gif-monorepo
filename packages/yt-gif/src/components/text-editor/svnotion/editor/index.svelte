@@ -1,6 +1,4 @@
 <script lang="ts">
-	import dataToImport from '$cmp/drawflow/data.json'
-	import { moduleStore } from './store'
 	import { onMount, onDestroy } from 'svelte'
 	import { browser } from '$app/environment'
 
@@ -21,8 +19,6 @@
 	import type { Content } from '@tiptap/core'
 
 	export let content: Content = null
-	let output: any = false
-	let outputType: any
 
 	let selectedIndex = 0
 	$: selectedIndex = get(store.slashVisible) ? selectedIndex : 0
@@ -84,9 +80,12 @@
 	import { createEditor, type Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
+	import type { Actions } from '$cmp/drawflow/plugins/add-node-svelte'
 
 	let element: HTMLElement
 	let editor: Readable<Editor>
+
+	export let actions: Actions
 
 	onMount(() => {
 		if (browser) {
@@ -112,17 +111,8 @@
 				],
 				// FIXME: the '	39	apostrophe is causing trouble when passing this variable to the svelte component
 				content,
-				onTransaction: () => {
-					// force re-render so `editor.isActive` works as expected
-					// svelte-tip does this already
-					// try {
-					// 	$editor = $editor
-					// } catch (error) {
-					// 	console.log(error)
-					// }
-				},
 				onUpdate: ({ editor }) => {
-					// send the content to an API here
+					actions.onUpdate(editor.getHTML())
 				},
 			})
 		}
@@ -133,7 +123,6 @@
 			$editor.destroy()
 		}
 	})
-	let showUI = false
 </script>
 
 <div class="prose prose-slate sm:prose-xl lg:prose-3xl" bind:clientWidth={w}>
@@ -141,55 +130,6 @@
 </div>
 
 <CommandList {store} {selectedIndex} />
-
-<svelte:window
-	on:keydown={e => {
-		console.log(e.key == 'y' && e.altKey)
-		if (e.key == 'y' && e.altKey) {
-			showUI = !showUI
-			$moduleStore.showExtraUI = !$moduleStore.showExtraUI
-		}
-	}} />
-
-{#if showUI}
-	<div class="sm:flex my-4">
-		<button
-			on:click={() => {
-				output = $editor.getJSON()
-				outputType = 'json'
-			}}
-			class="m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
-			'json'
-				? 'bg-blue-200'
-				: ''}">See JSON Output</button>
-		<button
-			on:click={() => {
-				output = $editor.getHTML()
-				outputType = 'html'
-			}}
-			class=" m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
-			'html'
-				? 'bg-blue-200'
-				: ''}">See HTML Output</button>
-	</div>
-{/if}
-
-{#if output}
-	<div class="sm:flex flex-row-reverse">
-		<button
-			class="underline font-semibold text-slate-700 hover:text-slate-800 cursor p-2"
-			on:click={() => (output = false)}>
-			Clear output
-		</button>
-		<button
-			class="underline font-semibold text-slate-700 hover:text-slate-800 cursor p-2"
-			on:click={() =>
-				navigator.clipboard.writeText(JSON.stringify(output))}>
-			Copy output
-		</button>
-	</div>
-	{JSON.stringify(output)}
-{/if}
 
 <style>
 	:global(h1, h2, h3, h4, h5, h6, p, ul, ol) {

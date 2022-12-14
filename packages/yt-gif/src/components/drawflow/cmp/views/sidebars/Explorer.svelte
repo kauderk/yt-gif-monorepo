@@ -1,12 +1,18 @@
 <script lang="ts">
 	import Wrapper from '../../basic/Side.svelte'
-	import YTAutocomplete from '../../../../../routes/Widgets/sort/YTAutocomplete.svelte'
 	import FolderView from '../../tree/FolderView.svelte'
 	import { getContext } from '../../store'
+	import { onMount } from 'svelte'
+	import { listenAndRefreshEditor } from '$cmp/drawflow/lib/refresh'
+	import type { DrawflowExport } from '$cmp/drawflow/src/drawflow/types'
 
 	const ctx = getContext()
 
-	$: Modules = Object.entries($ctx.editor?.drawflow?.drawflow ?? []).map(
+	let CopyModules: DrawflowExport
+	onMount(() => {
+		listenAndRefreshEditor(ctx, () => (CopyModules = $ctx.editor.drawflow))
+	})
+	$: Modules = Object.entries(CopyModules?.drawflow ?? []).map(
 		([key, { data }]) => ({
 			Module: key,
 			ModuleData: data,
@@ -20,6 +26,9 @@
 		// https://stackoverflow.com/a/72503071/13914180
 		let data: any
 		try {
+			// FIXME!
+			$ctx.editor.drawflow = $ctx.editor.drawflow
+			//
 			data = $ctx.editor.export()
 			const blob = new Blob([JSON.stringify(data)], {
 				type: 'application/json',
@@ -39,7 +48,7 @@
 
 <svelte:component this={Wrapper} active="Explorer">
 	<form
-		on:submit|preventDefault={() => {
+		on:submit|preventDefault={e => {
 			if (text) {
 				try {
 					const drawflow = JSON.parse(text)
@@ -57,8 +66,7 @@
 				bind:value={text}
 				type="text"
 				class="file-input file-input-bordered file-input-xs w-full max-w-xs" />
-			<button class="btn btn-xs" on:click={tryExportJSON} type="submit"
-				>Import</button>
+			<button class="btn btn-xs" type="submit">Import</button>
 			<button class="btn btn-xs" on:click={tryExportJSON}>Export</button>
 		</div>
 	</form>

@@ -12,7 +12,9 @@
 	import dataToImport from '$cmp/drawflow/data.json'
 	import type { Content } from '@tiptap/core'
 	import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
+	import type { Actions } from '.'
 
+	export let actions: Actions
 	export let id: ID
 	export let className = ''
 
@@ -97,7 +99,7 @@
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider async={Slot.provider && !!content}>
-							<Editor {content} />
+							<Editor {content} {actions} />
 							{@const _ = dataNode?.task.resolve()}
 						</SvelteQueryProvider>
 					</div>

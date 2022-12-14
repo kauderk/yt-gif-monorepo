@@ -5,6 +5,7 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
 import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
 
+export type Actions = { onUpdate: (html: s) => void }
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
  * Don't forget to register and add nodes using the same name/html.
@@ -13,13 +14,15 @@ import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
  * @param flush Svelte Components' destroy() method
  * @returns An overridden addNode function, bound to "this".
  */
-export function createAddNode(this: Drawflow, flush: (() => void)[]) {
+export function createAddNode(this: Drawflow, actions: Actions) {
 	function addNode(this: Drawflow, params: AddNodeProps) {
 		const newId = getUUID.bind(this)()
 
 		const node = new Node({
 			target: this.container,
 			props: {
+				actions,
+				// @ts-expect-error the types say this is an Element?
 				GraphNodeID: params.node.html,
 				GraphNodeProps: params.node.props ?? {},
 
@@ -75,6 +78,8 @@ export function createAddNode(this: Drawflow, flush: (() => void)[]) {
 			target: precanvas,
 
 			props: {
+				actions,
+				// @ts-expect-error the types say this is an Element?
 				GraphNodeID: dataNode.html,
 				id: dataNode.id,
 
