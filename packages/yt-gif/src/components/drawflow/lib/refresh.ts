@@ -12,6 +12,7 @@ export function listenAndRefreshEditor(
 		'moduleChanged',
 		'moduleRemoved',
 		'nodeRemoved',
+		'import',
 	]
 	events.forEach((e: any) => editor().on(e, refreshModules))
 }
