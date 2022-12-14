@@ -6,6 +6,7 @@ import type {
 	AddNodeProps,
 	DrawflowNode,
 } from '$cmp/drawflow/src/drawflow/types'
+import { Task } from '$cmp/drawflow/lib/task'
 
 export type Actions = { onUpdate: (html: s) => void }
 let actions: Actions = {
@@ -53,7 +54,6 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 				drawflowParentNode: <HTMLElement>{},
 			},
 		})
-		// flush.push(() => node.$destroy)
 
 		const jsonNode = {
 			...params,
@@ -64,11 +64,11 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 
 		return injectNodeCycle.bind(this)(node.drawflowParentNode, jsonNode)
 	}
-	// TODO: unify API parameters
+
 	async function addNodeImport(
 		this: Drawflow,
 		dataNode: DrawflowNode,
-		precanvas: any
+		precanvas: HTMLElement
 	) {
 		let task = Task()
 
@@ -96,25 +96,16 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 					type: 'output',
 				},
 
-				// drawflowContentNode: <HTMLElement>{},
-				// drawflowParentNode: <HTMLElement>{},
 				dataNode: { ...dataNode, precanvas, task },
 			},
 		})
 		await task.promise
-		// flush.push(() => node.$destroy)
 
 		addInputs(dataNode.data, node.drawflowContentNode)
 	}
 	return { addNode, addNodeImport }
 }
-function Task<T>() {
-	let resolve = (v: T) => {},
-		reject = () => {}
-
-	const promise = new Promise<T>(function (_resolve, _reject) {
-		resolve = _resolve
-		reject = _reject
-	})
-	return { resolve, reject, promise }
+export type DataNode = Pick<DrawflowNode, 'inputs' | 'outputs' | 'id'> & {
+	precanvas: HTMLElement
+	task: ReturnType<typeof Task>
 }

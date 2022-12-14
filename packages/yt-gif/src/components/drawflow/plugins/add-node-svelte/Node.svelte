@@ -12,7 +12,7 @@
 	import dataToImport from '$cmp/drawflow/data.json'
 	import type { Content } from '@tiptap/core'
 	import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
-	import type { Actions } from '.'
+	import type { Actions, DataNode } from '.'
 	import type { drawflowSvelteNodeProps } from '$cmp/drawflow/cmp/blocks'
 
 	export let actions: Actions
@@ -37,7 +37,7 @@
 	 * @example
 	 * outputs.length = Object.keys(dataNode.outputs).length
 	 */
-	export let dataNode: any = undefined
+	export let dataNode: DataNode | undefined = undefined
 
 	// @ts-ignore
 	const Slot: ItemSlot | undefined = items.find(
@@ -53,7 +53,6 @@
 		classTopName = 'top_blue'
 		classBodyName = 'body_blue'
 	}
-	const props = { ...GraphNodeProps, GraphNodeID, id }
 
 	export let content: Content =
 		// @ts-ignore
@@ -101,7 +100,7 @@
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider async={Slot.provider && !!content}>
 							<Editor {content} {actions} />
-							{@const _ = dataNode?.task.resolve()}
+							{@const _ = dataNode?.task.resolve('EditorLoaded')}
 						</SvelteQueryProvider>
 					</div>
 				{/if}
