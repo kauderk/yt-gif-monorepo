@@ -26,10 +26,6 @@
 	export let props = DefaultProps
 	setContext('DrawflowProps', writable(props))
 
-	let actions: Actions = {
-		onUpdate(html: s) {},
-	}
-
 	onMount(async () => {
 		//
 		$ctx.editor = new Drawflow($ctx.drawflowRoot)
@@ -37,7 +33,7 @@
 		// modify the API to work with svelte components
 		const { addNode, addNodeImport } = createAddNode.bind(
 			Drawflow.prototype
-		)(actions)
+		)()
 
 		Drawflow.prototype.addNode = addNode
 		Drawflow.prototype.addNodeImport = addNodeImport

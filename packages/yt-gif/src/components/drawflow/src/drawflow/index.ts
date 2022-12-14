@@ -2149,7 +2149,7 @@ export default class Drawflow extends DrawFlowDefault {
 	}
 
 	addNode(params: AddNodeProps) {
-		let { name, data } = params
+		let { id: name, data } = params
 		let { html, typenode, classoverride } = params.node
 		let { inputs: num_in, outputs: num_out } = params.connections
 		let { x: ele_pos_x, y: ele_pos_y } = params.cords

@@ -1,11 +1,9 @@
 import type { Content } from '@tiptap/core'
-import type { ID, DrawflowNode } from './types'
+import type { ID, DrawflowNode, DrawflowNodeBase } from './types'
 
 // FIXME: there are too many ways to describe a node
 type x = DrawflowNode
-export interface AddNodeProps {
-	name: ID
-
+export interface AddNodeProps extends DrawflowNodeBase {
 	connections: {
 		inputs: n
 		outputs: n
@@ -15,10 +13,6 @@ export interface AddNodeProps {
 		y: n
 		x: n
 	}
-
-	data: any
-
-	content: Content
 
 	node: {
 		classoverride: string

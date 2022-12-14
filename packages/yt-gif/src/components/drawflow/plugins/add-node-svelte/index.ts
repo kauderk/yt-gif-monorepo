@@ -6,6 +6,9 @@ import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
 import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
 
 export type Actions = { onUpdate: (html: s) => void }
+let actions: Actions = {
+	onUpdate(html: s) {},
+}
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
  * Don't forget to register and add nodes using the same name/html.
@@ -42,7 +45,7 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 					json: {},
 					type: 'output',
 				},
-				content: params.content,
+				content: params.data.content,
 
 				drawflowContentNode: <HTMLElement>{},
 				drawflowParentNode: <HTMLElement>{},
@@ -51,7 +54,7 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 		// flush.push(() => node.$destroy)
 
 		const json = {
-			name: params.name,
+			name: params.id,
 			data: params.data,
 			html: params.node.html,
 			typenode: params.node.typenode,

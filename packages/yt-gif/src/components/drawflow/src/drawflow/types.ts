@@ -526,17 +526,20 @@ type OutputConnection = {
 	node: string
 }
 export type ConnectionTypes = InputConnection | OutputConnection
-export interface DrawflowNode {
-	//FIXME:
-	open?: boolean
-	order?: number
-	class: string
+export interface DrawflowNodeBase {
+	id: ID
 	data: {
 		content?: Content
 		expanded?: boolean
 	}
+}
+export interface DrawflowNode extends DrawflowNodeBase {
+	//FIXME:
+	open?: boolean
+	order?: number
+	class: string
+
 	html: string
-	id: ID
 	inputs: Record<string, { connections: InputConnection[] }>
 	name: string
 	outputs: Record<string, { connections: OutputConnection[] }>
