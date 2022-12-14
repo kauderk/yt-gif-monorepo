@@ -13,13 +13,14 @@
 	import type { Content } from '@tiptap/core'
 	import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
 	import type { Actions } from '.'
+	import type { drawflowSvelteNodeProps } from '$cmp/drawflow/cmp/blocks'
 
 	export let actions: Actions
 	export let id: ID
 	export let className = ''
 
 	export let GraphNodeID = <TItemCtx['GraphNodeID'] | null>null
-	export let GraphNodeProps = {}
+	export let GraphNodeProps: drawflowSvelteNodeProps = {}
 
 	export let top: number
 	export let left: number

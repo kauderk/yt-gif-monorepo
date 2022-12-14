@@ -10,8 +10,17 @@
 
 	let CopyModules: DrawflowExport
 	onMount(() => {
-		listenAndRefreshEditor(ctx, () => (CopyModules = $ctx.editor.drawflow))
+		const unsub = ctx.subscribe(o => {
+			if ($ctx.editor?.drawflow) {
+				listenAndRefreshEditor(
+					ctx,
+					() => (CopyModules = $ctx.editor?.drawflow)
+				)
+				unsub()
+			}
+		})
 	})
+
 	$: Modules = Object.entries(CopyModules?.drawflow ?? []).map(
 		([key, { data }]) => ({
 			Module: key,

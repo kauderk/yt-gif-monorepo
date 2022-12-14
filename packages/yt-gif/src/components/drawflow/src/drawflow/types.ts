@@ -4,6 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 import type { Content } from '@tiptap/core'
+import type { drawflowSvelteNodeProps } from '$cmp/drawflow/cmp/blocks'
 
 // Declare the workflow module to be able to used it in typescript
 // this file must be defined in the include in tsconfig.json
@@ -527,28 +528,30 @@ type OutputConnection = {
 }
 export type ConnectionTypes = InputConnection | OutputConnection
 export interface DrawflowNodeBase {
-	id: ID
 	data: {
 		content?: Content
 		expanded?: boolean
+		props?: drawflowSvelteNodeProps
 	}
-}
-export interface DrawflowNode extends DrawflowNodeBase {
-	//FIXME:
-	open?: boolean
-	order?: number
-	class: string
-
-	html: string
-	inputs: Record<string, { connections: InputConnection[] }>
-	name: string
-	outputs: Record<string, { connections: OutputConnection[] }>
+	// cords
 	pos_x: number
 	pos_y: number
-	//FIXME: how do you import a json file as const, I just need 'svelte' | 'vue'
+
+	// node
+	class: string
+	html: string
+	name: string
 	typenode: boolean | 'svelte' | 'vue' | string
 }
-
+export interface DrawflowNode extends DrawflowNodeBase {
+	id: ID
+	inputs: Record<string, { connections: InputConnection[] }>
+	outputs: Record<string, { connections: OutputConnection[] }>
+}
+export interface AddNodeProps extends DrawflowNodeBase {
+	inputs: n
+	outputs: n
+}
 export interface DrawflowConnectionDetail {
 	input: string
 	node: string

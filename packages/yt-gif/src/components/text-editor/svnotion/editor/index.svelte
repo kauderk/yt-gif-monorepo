@@ -85,7 +85,7 @@
 	let element: HTMLElement
 	let editor: Readable<Editor>
 
-	export let actions: Actions
+	export let actions: Actions | undefined = undefined
 
 	onMount(() => {
 		if (browser) {
@@ -112,7 +112,7 @@
 				// FIXME: the '	39	apostrophe is causing trouble when passing this variable to the svelte component
 				content,
 				onUpdate: ({ editor }) => {
-					actions.onUpdate(editor.getHTML())
+					actions?.onUpdate(editor.getHTML())
 				},
 			})
 		}

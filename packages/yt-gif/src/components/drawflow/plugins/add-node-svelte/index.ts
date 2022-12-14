@@ -2,8 +2,10 @@ import Node from './Node.svelte'
 import { addInputs } from './add-inputs'
 import { AssertContentElement, getUUID, injectNodeCycle } from './query'
 import type Drawflow from '$cmp/drawflow/src/drawflow'
-import type { AddNodeProps } from '$cmp/drawflow/src/drawflow/method-types'
-import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
+import type {
+	AddNodeProps,
+	DrawflowNode,
+} from '$cmp/drawflow/src/drawflow/types'
 
 export type Actions = { onUpdate: (html: s) => void }
 let actions: Actions = {
@@ -19,7 +21,7 @@ let actions: Actions = {
  */
 export function createAddNode(this: Drawflow, actions: Actions) {
 	function addNode(this: Drawflow, params: AddNodeProps) {
-		const newId = getUUID.bind(this)()
+		const id = getUUID.bind(this)()
 
 		const node = new Node({
 			target: this.container,
@@ -27,21 +29,21 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 				actions,
 				// @ts-expect-error the types say this is an Element?
 				GraphNodeID: params.node.html,
-				GraphNodeProps: params.node.props ?? {},
+				GraphNodeProps: params.data.props ?? {},
 
-				id: newId,
-				className: params.node.classoverride,
+				id,
+				className: params.class,
 
-				left: params.cords.x,
-				top: params.cords.y,
+				left: params.pos_x,
+				top: params.pos_y,
 
 				inputs: {
-					length: params.connections.inputs,
+					length: params.inputs,
 					json: {},
 					type: 'input',
 				},
 				outputs: {
-					length: params.connections.outputs,
+					length: params.outputs,
 					json: {},
 					type: 'output',
 				},
@@ -53,21 +55,14 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 		})
 		// flush.push(() => node.$destroy)
 
-		const json = {
-			name: params.id,
-			data: params.data,
-			html: params.node.html,
-			typenode: params.node.typenode,
-
-			id: newId,
-			class: params.node.classoverride,
-			inputs: node.inputs.json,
-			outputs: node.outputs.json,
-			pos_x: params.cords.x,
-			pos_y: params.cords.y,
+		const jsonNode = {
+			...params,
+			id,
+			inputs: node.inputs.json as any,
+			outputs: node.outputs.json as any,
 		}
 
-		return injectNodeCycle.bind(this)(node.drawflowParentNode, json)
+		return injectNodeCycle.bind(this)(node.drawflowParentNode, jsonNode)
 	}
 	// TODO: unify API parameters
 	async function addNodeImport(
