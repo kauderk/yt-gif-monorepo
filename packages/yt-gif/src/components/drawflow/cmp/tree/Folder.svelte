@@ -1,21 +1,16 @@
 <script lang="ts">
-	import { isActive } from './store'
 	import File from './File.svelte'
 	import { Subscribe } from 'svelte-subscribe'
 	import type FolderView from './FolderView.svelte'
+	import { activate } from './store'
 
 	export let query: ReturnType<FolderView['query']>
 	export let children: FolderView['children']
 
-	function toggle(e: MouseEvent) {
+	function toggle(e: any) {
 		query.expanded.setFrom(b => !b)
 		activate(query.name)
 	}
-
-	function activate(event: s) {
-		$isActive = event
-	}
-	$: name = query.name
 </script>
 
 <Subscribe expanded={query.expanded} let:expanded>
@@ -24,16 +19,10 @@
 		<span class="actions">
 			<i
 				on:click={toggle}
-				class="expand fa-solid fa-chevron-{expanded
-					? 'down'
-					: 'right'}" />
+				class="fa-solid fa-chevron-{expanded ? 'down' : 'right'}" />
 		</span>
 
-		<File
-			{query}
-			isActive={$isActive}
-			expandSimilar={() => activate(name)}
-			expandAncestors={() => activate(name)} />
+		<File {query} />
 	</div>
 
 	<!-- children -->
@@ -46,11 +35,7 @@
 							query={{ ...nested }}
 							children={nested.children} />
 					{:else}
-						<File
-							query={nested}
-							isActive={$isActive}
-							expandSimilar={() => activate(nested.name)}
-							expandAncestors={() => activate(name)} />
+						<File query={nested} />
 					{/if}
 				</li>
 			{/each}
