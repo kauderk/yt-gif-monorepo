@@ -20,7 +20,7 @@
 
 <Subscribe expanded={query.expanded} let:expanded>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<span class="controls">
+	<div class="controls">
 		<span class="actions">
 			<i
 				on:click={toggle}
@@ -34,7 +34,7 @@
 			isActive={$isActive}
 			expandSimilar={() => activate(name)}
 			expandAncestors={() => activate(name)} />
-	</span>
+	</div>
 
 	<!-- children -->
 	{#if expanded}
@@ -61,6 +61,10 @@
 <style lang="scss">
 	* {
 		user-select: none;
+	}
+	.controls {
+		display: flex;
+		gap: 0.5em;
 	}
 	ul {
 		padding: 0.2em 0 0 0.5em;

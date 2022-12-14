@@ -58,9 +58,18 @@
 				)
 		} catch (error) {}
 	}
+	const Delete = () => {}
 </script>
 
-<span class="node">
+<div class="controls">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<span
+		on:click={focusCanvasOnNode}
+		class="title"
+		class:active={isActive === name}>
+		{name}
+	</span>
+
 	<span class="actions">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<i
@@ -70,18 +79,21 @@
 		<i
 			on:click={expandAncestors}
 			class="fa-{outline(isActive === name)} fa-chart-gantt" />
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<i on:click={Delete} class="fa-{outline(isActive === name)} fa-xmark" />
 	</span>
+</div>
 
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<span
-		on:click={focusCanvasOnNode}
-		class="title"
-		class:active={isActive === name}>
-		{name}
-	</span>
-</span>
-
-<style>
+<style lang="scss">
+	.controls {
+		width: 100%;
+		.actions {
+			opacity: 0;
+		}
+		&:hover .actions {
+			opacity: 1;
+		}
+	}
 	* {
 		user-select: none;
 	}

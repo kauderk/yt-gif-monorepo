@@ -6,7 +6,7 @@
 
 	const ctx = getContext()
 
-	$: Modules = Object.entries($ctx.editor.drawflow?.drawflow ?? []).map(
+	$: Modules = Object.entries($ctx.editor?.drawflow?.drawflow ?? []).map(
 		([key, { data }]) => ({
 			Module: key,
 			ModuleData: data,
@@ -30,11 +30,13 @@
 		</button>
 	</form>
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	{#each Modules as entry}
-		<div class="folder-view">
-			<FolderView {...entry} />
-		</div>
-	{/each}
+	{#key Modules}
+		{#each Modules as entry}
+			<div class="folder-view">
+				<FolderView {...entry} />
+			</div>
+		{/each}
+	{/key}
 </svelte:component>
 
 <style>
