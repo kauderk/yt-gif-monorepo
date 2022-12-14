@@ -76,6 +76,8 @@
 		const refreshModules = () =>
 			($ctx.editor.drawflow = $ctx.editor.drawflow)
 		$ctx.editor.on('moduleCreated', refreshModules)
+		$ctx.editor.on('moduleChanged', refreshModules)
+		// $ctx.editor.on('moduleRemoved', refreshModules)
 
 		// multi drag after load
 		$ctx.mul = multiDrag($ctx.editor)
