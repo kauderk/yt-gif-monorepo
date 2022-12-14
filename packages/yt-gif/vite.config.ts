@@ -12,13 +12,26 @@ export default defineConfig({
 			'dayjs',
 			'@popperjs+core',
 			'@sveltestack/svelte-query',
+			'popper.js',
 		],
 	},
 	optimizeDeps: {
-		include: ['svelvet'],
+		include: [
+			'svelvet',
+			'tippy.js',
+			'@popperjs/core',
+			'@popperjs+core',
+			'popper.js',
+		],
 		esbuildOptions: {
 			plugins: [
-				esbuildCommonjs(['@tiptap/extension-bubble-menu', 'tippy.js']),
+				esbuildCommonjs([
+					'@tiptap/extension-bubble-menu',
+					'tippy.js',
+					'popper.js',
+					'@popperjs/core',
+					'@popperjs+core',
+				]),
 			],
 		},
 	},
