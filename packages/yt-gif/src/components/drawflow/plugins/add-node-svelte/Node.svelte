@@ -1,5 +1,9 @@
 <svelte:options accessors />
 
+<script lang="ts" context="module">
+	let zIndex = 1
+</script>
+
 <script lang="ts">
 	//#region imports
 	import Connection from './Connection.svelte'
@@ -45,16 +49,23 @@
 	if (!content && GraphNodeID) {
 		content = createTiptapContent(GraphNodeID, node.data.props ?? {})
 	}
+
+	let _zIndex = (zIndex += 1)
+	const position = () => {
+		_zIndex = zIndex += 1
+	}
 </script>
 
 <div
 	class="parent-node"
 	bind:this={out.drawflowParentNode}
 	on:wheel|preventDefault|stopPropagation>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		id="node-{id}"
 		class="drawflow-node template selected {node.class}"
-		style="top: {node.pos_y}px; left: {node.pos_x}px; background-color: {$nodeBG};">
+		style="top: {node.pos_y}px; left: {node.pos_x}px; background-color: {$nodeBG}; z-index: {_zIndex};"
+		on:click={position}>
 		{#if dataNode}
 			<CreateConnections {dataNode} />
 		{:else}
