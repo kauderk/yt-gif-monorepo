@@ -37,15 +37,15 @@
 			<li class="menu-title">
 				<span>Nodes</span>
 			</li>
-			<li>
-				<button on:click={() => addNode()}
-					><span>Add Empty Node</span></button>
-			</li>
 			<li><span>Generate content</span></li>
 		{/if}
 		{#if placement == 'canvas'}
 			<li class="menu-title">
 				<span>Canvas</span>
+			</li>
+			<li>
+				<button on:click={() => addNode()}
+					><span>Add Empty Node</span></button>
 			</li>
 			<li>
 				<button

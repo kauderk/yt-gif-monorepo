@@ -112,7 +112,6 @@
 						suggestion: createSuggestion(store, localExtensions),
 					}),
 				],
-				// FIXME: the '	39	apostrophe is causing trouble when passing this variable to the svelte component
 				content,
 				onUpdate: ({ editor }) => {
 					actions?.onUpdate(editor.getHTML())
