@@ -1,35 +1,108 @@
 <script lang="ts">
+	import { tryGetNestedBlocks } from '$v3/lib/data/proxy/recursive'
 	import Folder from './Folder.svelte'
+	import type {
+		DrawflowModuleData,
+		DrawflowNode,
+	} from '$cmp/drawflow/src/drawflow/types'
+	import { createWritable } from '$lib/local-storage-store'
+	import { getContext } from '../store'
+	import { activate } from './store'
 
-	let root = [
-		{
-			type: 'folder',
-			name: 'Animal GIFs',
-			files: [
-				{
-					type: 'folder',
-					name: 'Dogs',
-					files: [
-						{ type: 'file', name: 'treadmill.gif' },
-						{ type: 'file', name: 'rope-jumping.gif' },
-					],
+	export let Module = 'Home'
+	export let ModuleData: DrawflowModuleData['data']
+
+	const ctx = getContext()
+
+	export const query = (node: DrawflowNode) => {
+		const name = `${node.name} #${node.id}`
+		return {
+			expanded: createWritable(node.data.expanded ?? false),
+			name,
+			module: Module,
+			id: <typeof node.id>node.id,
+			actions: {
+				expandSimilar: {
+					iconName: 'diagram-nested',
+					action() {
+						activate(name)
+					},
 				},
-				{
-					type: 'folder',
-					name: 'Goats',
-					files: [
-						{ type: 'file', name: 'parkour.gif' },
-						{ type: 'file', name: 'rampage.gif' },
-					],
+				expandAncestors: {
+					iconName: 'chart-gantt',
+					action() {
+						activate(name)
+					},
 				},
-				{ type: 'file', name: 'cat-roomba.gif' },
-				{ type: 'file', name: 'duck-shuffle.gif' },
-				{ type: 'file', name: 'monkey-on-a-pig.gif' },
-			],
+				delete: {
+					iconName: 'xmark',
+					action() {
+						$ctx.editor.removeNodeId(`node-${node.id}`)
+					},
+				},
+			},
+			events: {
+				focus() {
+					$ctx.editor.canvas_x = node.pos_x
+					$ctx.editor.canvas_y = node.pos_y
+					$ctx.editor.zoom_refresh()
+				},
+			},
+		}
+	}
+	const ModuleQuery: ReturnType<typeof query> = {
+		expanded: createWritable(true),
+		name: Module,
+		module: Module,
+		id: Module,
+		actions: {
+			expandSimilar: {
+				iconName: 'diagram-nested',
+				action() {
+					activate(Module)
+				},
+			},
+			expandAncestors: {
+				iconName: 'chart-gantt',
+				action() {
+					activate(Module)
+				},
+			},
+			delete: {
+				iconName: 'xmark',
+				action() {
+					$ctx.editor.removeModule(Module)
+				},
+			},
 		},
-		{ type: 'file', name: 'TODO.md' },
-		{ type: 'file', name: 'Readme.md' },
-	]
+		events: {
+			focus() {
+				$ctx.editor
+					.changeModule(Module)
+					.catch(() =>
+						console.error('Unable to Change Module', Module)
+					)
+			},
+		},
+	}
+	if (Module == 'Home') {
+		// @ts-ignore the only case where it doesn't make sense to mess up the drawflow API
+		delete ModuleQuery.actions.delete
+	}
+
+	export const children = Object.entries(ModuleData).map(([uid]) => {
+		const connection = <const>{ outputs: { proxy: 'children' } }
+
+		const nest = tryGetNestedBlocks({
+			module: Module,
+			uid,
+			connection,
+			walk: 'flat',
+			query,
+		})!
+
+		return nest
+	})
 </script>
 
-<Folder name="Home" files={root} expanded />
+<Folder query={ModuleQuery} {children} />

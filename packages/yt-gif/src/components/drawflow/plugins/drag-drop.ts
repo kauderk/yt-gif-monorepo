@@ -71,7 +71,7 @@ export function dragAndDrop(editor: Drawflow) {
 			)
 		}
 		editor.addNode({
-			name: id,
+			id: id,
 			connections: {
 				inputs: 1,
 				outputs: 1,

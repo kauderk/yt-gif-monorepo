@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		beforeUpdate,
 		createEventDispatcher,
@@ -6,8 +6,10 @@
 		onMount,
 		tick,
 	} from 'svelte'
-	export let element
-	export let editor
+	import type { Editor } from 'svelte-tiptap'
+	export let element: HTMLElement
+	export let editor: Editor
+
 	const init = async () => {
 		await tick()
 		if (!editor || !editor.options.element) {

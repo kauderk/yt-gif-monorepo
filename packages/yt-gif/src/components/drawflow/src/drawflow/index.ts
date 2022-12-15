@@ -1,9 +1,8 @@
 /* eslint-disable */
-import type { DrawflowExport, DrawflowNode, ID } from './types'
+import type { AddNodeProps, DrawflowExport, DrawflowNode, ID } from './types'
 import type { EventNames, OnEvents } from './events'
 import { DrawFlowDefault, type ET } from './properties'
 import { ObjectKeys } from '$lib/utils'
-import type { AddNodeProps } from './method-types'
 
 export default class Drawflow extends DrawFlowDefault {
 	//#region LifeCycle
@@ -49,8 +48,6 @@ export default class Drawflow extends DrawFlowDefault {
 		this.container.onpointercancel = this.pointerup_handler.bind(this)
 		this.container.onpointerout = this.pointerup_handler.bind(this)
 		this.container.onpointerleave = this.pointerup_handler.bind(this)
-
-		await this.load()
 	}
 	async load() {
 		let promises = []
@@ -2131,14 +2128,28 @@ export default class Drawflow extends DrawFlowDefault {
 		this.noderegister[name] = { html, props, options }
 	}
 
+	getNodeReferenceFromId(id: ID) {
+		var moduleName = this.getModuleFromNodeId(id)
+
+		try {
+			return this.drawflow.drawflow[moduleName!].data[id] as DrawflowNode
+		} catch (error) {
+			console.log(error)
+		}
+	}
 	getNodeFromId(id: ID) {
 		var moduleName = this.getModuleFromNodeId(id)
-		return JSON.parse(
-			JSON.stringify(this.drawflow.drawflow[moduleName].data[id])
-		)
+
+		try {
+			return JSON.parse(
+				JSON.stringify(this.drawflow.drawflow[moduleName!].data[id])
+			) as DrawflowNode
+		} catch (error) {
+			console.log(error)
+		}
 	}
 	getNodesFromName(name: s) {
-		var nodes: n[] = []
+		var nodes: ID[] = []
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			for (var node in editor[moduleName].data) {
@@ -2150,11 +2161,11 @@ export default class Drawflow extends DrawFlowDefault {
 		return nodes
 	}
 
-	addNode(params: AddNodeProps) {
-		let { name, data } = params
-		let { html, typenode, classoverride } = params.node
-		let { inputs: num_in, outputs: num_out } = params.connections
-		let { x: ele_pos_x, y: ele_pos_y } = params.cords
+	async addNode(params: AddNodeProps) {
+		let { id: name, data } = params
+		let { html, typenode, class: classoverride } = params
+		let { inputs: num_in, outputs: num_out } = params
+		let { pos_x: ele_pos_x, pos_y: ele_pos_y } = params
 
 		let newNodeId: ID
 		if (this.useuuid) {
@@ -2802,7 +2813,7 @@ export default class Drawflow extends DrawFlowDefault {
 
 	//#region Modules
 	getModuleFromNodeId(id: ID) {
-		var nameModule: ID | undefined
+		var nameModule: s | undefined
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			Object.keys(editor[moduleName].data).map(function (node, index2) {
@@ -2815,6 +2826,12 @@ export default class Drawflow extends DrawFlowDefault {
 	}
 
 	addModule(name: s) {
+		//FIXME: should be renamed to 'tryAddModule'
+		if (typeof this.drawflow.drawflow[name]?.data == 'object') {
+			this.dispatch('moduleAlreadyExist', name)
+			return
+		}
+
 		this.drawflow.drawflow[name] = { data: {} }
 		this.dispatch('moduleCreated', name)
 	}
@@ -2834,7 +2851,7 @@ export default class Drawflow extends DrawFlowDefault {
 		await this.import(this.drawflow, false)
 	}
 
-	async removeModule(name) {
+	async removeModule(name: s) {
 		if (this.module === name) {
 			await this.changeModule('Home')
 		}

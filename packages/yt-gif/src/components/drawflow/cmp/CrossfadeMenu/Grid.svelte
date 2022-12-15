@@ -10,41 +10,32 @@
 	const dispatch = createEventDispatcher()
 </script>
 
-<div class="layout-1">
-	<div class="menu">
+<div class="crossfade-container">
+	<main class="relative">
 		{#each items as item (item.id)}
 			<div
-				class="item"
+				class="crossfade"
 				in:receive={{ key: item.id }}
 				out:send={{ key: item.id }}
 				animate:flip>
 				<Item
 					hue={item.id * 35}
-					icon={item.icon}
-					cmp={item.cmp}
+					{...item}
+					type={['label', 'draggable']}
 					on:click={() => dispatch('click', { item })} />
 			</div>
 		{/each}
-	</div>
+	</main>
 </div>
 
 <style lang="scss">
-	.layout-1 {
-		position: absolute;
-		width: 100%;
-
+	.crossfade-container > main {
 		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
 		justify-content: center;
-
-		align-items: flex-start;
+		align-items: center;
+		gap: 0.5em;
 		padding: 0.5em;
-		> .menu {
-			display: grid;
-			grid-template-rows: repeat(3, auto);
-			grid-template-columns: repeat(3, 1fr);
-			justify-items: center;
-			align-items: center;
-			gap: 0.5em;
-		}
 	}
 </style>

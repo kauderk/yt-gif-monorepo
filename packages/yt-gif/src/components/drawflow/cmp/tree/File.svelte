@@ -1,16 +1,20 @@
 <script lang="ts" context="module">
+	import type { ID } from '$cmp/drawflow/src/drawflow/types'
+	import { isActive } from './store'
+
 	type base = {
-		type: string
 		name: string
+		id?: ID
+		expanded?: boolean
 	}
 	type folder = base & {
-		files?: undefined
+		children?: undefined
 	}
 	export type TFile =
 		| (base & {
-				files: (
+				children: (
 					| (base & {
-							files: base[]
+							children: base[]
 					  })
 					| folder
 				)[]
@@ -19,21 +23,48 @@
 </script>
 
 <script lang="ts">
-	export let name: string
-	export let isActive = ''
-	$: type = name.slice(name.lastIndexOf('.') + 1)
+	import type FolderView from './FolderView.svelte'
+	import FileAction from './FileAction.svelte'
+
+	export let query: ReturnType<FolderView['query']>
+	$: name = query.name
 </script>
 
-<span class:active={isActive === name}>
-	{name}
-</span>
+<div class="controls">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		on:click={query.events.focus}
+		class="badge"
+		class:active={$isActive === name}>
+		{name}
+	</div>
 
-<style>
-	span {
-		padding: 0 0 0 1.5em;
-		background: 0 0.1em no-repeat;
-		background-size: 1em 1em;
-		background: url(./icons/file.svg) 0 0.1em no-repeat;
+	<span class="actions dark">
+		{#each Object.values(query.actions) as item}
+			<FileAction
+				iconName={item.iconName}
+				active={$isActive == name}
+				on:click={item.action} />
+		{/each}
+	</span>
+</div>
+
+<style lang="scss">
+	.controls {
+		width: 100%;
+		.actions {
+			opacity: 0;
+		}
+		&:hover .actions {
+			opacity: 1;
+		}
+	}
+	* {
+		user-select: none;
+	}
+
+	.badge {
+		cursor: help;
 	}
 	.active {
 		color: orange;

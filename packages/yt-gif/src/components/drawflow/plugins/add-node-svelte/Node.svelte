@@ -1,70 +1,79 @@
 <svelte:options accessors />
 
 <script lang="ts">
-	import { onMount } from 'svelte'
-	import Connection, { type Tconection } from './Connection.svelte'
+	//#region imports
+	import Connection from './Connection.svelte'
 	import CreateConnections from './CreateConnections.svelte'
-	import { nodeBG } from '../../cmp/store'
+	import { DrawflowStore, getContext, nodeBG } from '../../cmp/store'
 	import { nodeTransition, receive, send } from './transition'
-	import { items } from '$cmp/drawflow/cmp/ctx'
-	import type { ID } from '$cmp/drawflow/src/drawflow/types'
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
+	import Editor from '$cmp/text-editor/svnotion/editor/index.svelte'
+	import { createTiptapContent } from '$cmp/text-editor/tiptap/extension/parse'
+	import { items, type TItemCtx, type ItemSlot } from '$cmp/drawflow/cmp/ctx'
+	import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
+	import type { Actions, DataNode } from '.'
+	import type { Task } from '$cmp/drawflow/lib/task'
+	import { zIndex } from './store'
+	import InlineProcess from '$cmp/providers/InlineProcess.svelte'
+	//#endregion
 
-	export let id: ID
-	export let className = ''
+	export let actions: Actions
 
-	export let GraphNodeID = ''
-	export let GraphNodeProps = {}
-
-	export let top: number
-	export let left: number
-
-	export let inputs: Tconection
-	export let outputs: Tconection
-
-	export let content: HTMLElement
-	export let parent: HTMLElement
-
-	/**
-	 * if provided, it will create conections,
-	 * it must be a companion to
-	 * @example
-	 * outputs.length = Object.keys(dataNode.outputs).length
-	 */
-	export let dataNode: any = undefined
-
-	onMount(() => dataNode?.task.resolve())
-
-	const Slot = items.find(o => o.GraphNodeID == GraphNodeID)
-
-	var classTopName = 'drawflow_node_top'
-	var classBodyName = ''
-
-	if (Slot?.GraphNodeID == 'InputBlock') {
-		classTopName = 'top_cyan'
-		classBodyName = 'body_cyan'
-	} else if (Slot?.GraphNodeID == 'TitleNoteBlock') {
-		classTopName = 'top_blue'
-		classBodyName = 'body_blue'
+	export let node: Omit<DrawflowNode, 'inputs' | 'outputs'> & {
+		inputs: n
+		outputs: n
 	}
-	const props = { ...GraphNodeProps, GraphNodeID: id }
+	export let dataNode: DataNode | undefined = undefined
+	export let task: ReturnType<typeof Task> | undefined = undefined
+
+	export let out = {
+		// connections
+		inputs: <DrawflowNode['inputs']>{},
+		outputs: <DrawflowNode['outputs']>{},
+		// elements
+		drawflowContentNode: <HTMLElement | undefined>undefined,
+		drawflowParentNode: <HTMLElement | undefined>undefined,
+	}
+
+	// @ts-ignore
+	const Slot: ItemSlot | undefined = items.find(
+		o => o.GraphNodeID == node.html
+	)
+	let GraphNodeID = Slot?.GraphNodeID as TItemCtx['GraphNodeID'] | undefined
+	let id = node.id
+
+	export let content = $DrawflowStore.editor.getNodeFromId?.(id)?.data.content
+
+	if (!content && GraphNodeID) {
+		content = createTiptapContent(GraphNodeID, node.data.props ?? {})
+	}
+
+	let _zIndex = ($zIndex += 1)
+	const position = () => {
+		_zIndex = $zIndex += 1
+	}
+	let asyncSubComponent = Slot?.provider && !!content
 </script>
 
 <div
 	class="parent-node"
-	bind:this={parent}
+	bind:this={out.drawflowParentNode}
 	on:wheel|preventDefault|stopPropagation>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		id="node-{id}"
-		class="drawflow-node template selected {className} {classBodyName}"
-		style="top: {top}px; left: {left}px; background-color: {$nodeBG};">
+		class="drawflow-node template selected {node.class}"
+		style:z-index={_zIndex}
+		style="top: {node.pos_y}px; left: {node.pos_x}px; background-color: {$nodeBG}; z-index: {_zIndex};"
+		on:click={position}>
 		{#if dataNode}
 			<CreateConnections {dataNode} />
 		{:else}
-			<Connection {...inputs} bind:json={inputs.json} />
+			<!-- prettier-ignore -->
+			<Connection type="input" rows={node.inputs} bind:json={out.inputs} />
 		{/if}
-		<div class="drawflow_content_node" bind:this={content}>
-			<div class="drawflow_node_top {classTopName}">
+		<div class="drawflow_content_node" bind:this={out.drawflowContentNode}>
+			<div class="drawflow_node_top">
 				<button
 					aria-label="Open/Close modal"
 					on:click={() =>
@@ -76,23 +85,24 @@
 						})}>
 					<i class="fa-solid fa-x" style="font-size: 12px;" />
 				</button>
-				<span class="drawflow_node_title"
-					>{Slot?.title ?? `Node: ${id}`}</span>
+				<span class="drawflow_node_title title-box"
+					>{`Node: ${Slot?.title} ${id}`}</span>
 			</div>
 
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 			<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
 			<div class="drawflow_node_body">
-				{#if $nodeTransition.id != id && Slot?.cmp}
+				{#if $nodeTransition.id != id}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
-						<SvelteQueryProvider condition={Slot.provider}>
-							<svelte:component this={Slot.cmp} {...props} />
+						<SvelteQueryProvider async={asyncSubComponent}>
+							<Editor {content} {actions} />
+							{@const _ = task?.resolve('LoadedSubComponent')}
 						</SvelteQueryProvider>
 					</div>
 				{/if}
 			</div>
 		</div>
-		<Connection {...outputs} bind:json={outputs.json} />
+		<Connection type="output" rows={node.outputs} bind:json={out.outputs} />
 	</div>
 </div>
 

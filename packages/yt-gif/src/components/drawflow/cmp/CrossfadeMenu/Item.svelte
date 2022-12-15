@@ -6,33 +6,48 @@
 
 	export let hue = 0
 	export let icon = 'info'
-	export let expanded = false
 	export let cmp: any = null
 	export let GraphNodeID: string = 'missing'
+	export let title = ''
+	export let type: ('draggable' | 'label' | 'component' | 'expanded')[]
 
 	const ctx = getContext()
+
+	$: component = type.includes('component')
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="item" class:expanded style="--hue: {hue}" on:click>
+<div
+	class="item "
+	class:expanded={type.includes('expanded')}
+	class:component
+	draggable="false"
+	style="--hue: {hue}"
+	on:click>
 	<div class="controls">
-		{#if expanded}
+		{#if type.includes('label')}
+			<!-- top-picker -->
+			<Drag {...$ctx.dnd} name={GraphNodeID}>
+				<span class="top-picker">
+					<span class="title">{title}</span>
+					<i class="icon material-icons">{icon}</i>
+				</span>
+			</Drag>
+		{:else if component}
+			<!-- bottom-component -->
 			<Controls />
-		{:else}
-			<i class="icon material-icons">{icon}</i>
 		{/if}
 	</div>
-	{#if expanded}
-		{#if cmp}
-			<div class="whole" use:ScaleToFitParent>
+	<main class="s-scrollbar">
+		{#if component}
+			<!-- bottom-component -->
+			<div class="draggable-component-container">
 				<Drag {...$ctx.dnd} name={GraphNodeID}>
 					<svelte:component this={cmp} />
 				</Drag>
 			</div>
-		{:else}
-			<slot />
 		{/if}
-	{/if}
+	</main>
 </div>
 
 <style lang="scss">
@@ -40,9 +55,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
-		width: 5rem;
-		aspect-ratio: 1 / 1;
 
 		border-width: 0.1em;
 		border-style: solid;
@@ -51,42 +63,43 @@
 		border-color: hsl(var(--hue), 100%, 30%);
 		color: hsl(var(--hue), 100%, 30%);
 
-		font-size: 14px;
-		font-weight: bold;
+		padding: 0.5em;
 
-		cursor: pointer;
-		user-select: none;
-		-webkit-user-select: none;
-		text-align: center;
+		&:not(.component) {
+			width: auto;
+			height: 2em;
+			.top-picker {
+				user-select: none;
 
-		// icon
-		&:not(.expanded):hover {
-			background-color: hsl(var(--hue), 100%, 40%);
-			border-color: hsl(var(--hue), 100%, 40%);
-			color: hsl(var(--hue), 100%, 95%);
-		}
-		// component
-		&.expanded {
-			width: 100%;
-			height: 100%;
-			padding: 0.5em;
-			border-style: dashed;
-			gap: 0.5em;
-
-			.icon {
-				font-size: 5rem;
+				display: flex;
+				.title {
+					font-size: medium;
+				}
 			}
+			&:hover {
+				background-color: hsl(var(--hue), 100%, 40%);
+				border-color: hsl(var(--hue), 100%, 40%);
+				color: hsl(var(--hue), 100%, 95%);
+			}
+		}
+		&.component {
+			gap: 0.5em;
+			// because it's absolute, start counting with the additional padding
+			// make it even by shaving it off
+			width: calc(24.25em - 0.5em);
+			main {
+				overflow-x: auto;
+			}
+		}
+		&.expanded {
+			border-style: dashed;
 		}
 
 		// BG
-		.whole {
-			height: 100%;
-			width: 100%;
-			display: block;
-
+		.draggable-component-container {
 			// open props
 			border-radius: var(--radius-3);
-			padding: var(--size-fluid-3);
+
 			box-shadow: var(--shadow-2);
 
 			&:hover {

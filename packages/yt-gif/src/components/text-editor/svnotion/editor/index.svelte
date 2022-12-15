@@ -1,6 +1,4 @@
 <script lang="ts">
-	import dataToImport from '$cmp/drawflow/data.json'
-	import { moduleStore } from './store'
 	import { onMount, onDestroy } from 'svelte'
 	import { browser } from '$app/environment'
 
@@ -12,15 +10,15 @@
 	import { createSuggestion } from './suggestion'
 	import Commands from './command'
 	import CommandList from './CommandList.svelte'
-	import { SvelteCounterExtension } from '../../tiptap/extension/counter'
+	import { getComponentExtensions } from '../../tiptap/extension/create'
 
 	import { createStore } from '../stores'
 	import { get } from 'svelte/store'
 	export let store = createStore()
 
-	export let content: any
-	let output: any = false
-	let outputType: any
+	import type { Content } from '@tiptap/core'
+
+	export let content: Content = null
 
 	let selectedIndex = 0
 	$: selectedIndex = get(store.slashVisible) ? selectedIndex : 0
@@ -28,7 +26,7 @@
 	let w: n
 
 	$: {
-		store.editorWidth.set(w ? w : '0')
+		store.editorWidth.set(w ? w : 0)
 	}
 
 	function handleKeydown(event: any) {
@@ -75,26 +73,28 @@
 			//editor.chain().focus().toggleBold().run();
 			//return console.log(item);
 			let range = get(store.slashProps).range
+			// @ts-expect-error
 			item.command({ editor: $editor, range })
 		}
 	}
 	import { createEditor, type Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
+	import type { Actions } from '$cmp/drawflow/plugins/add-node-svelte'
+	import BubbleMenu from '$cmp/text-editor/tiptap/plugins/BubbleMenu.svelte'
+	import FloatingMenu from '$cmp/text-editor/tiptap/plugins/FloatingMenu.svelte'
+	import { createActions } from '$cmp/text-editor/tiptap/plugins/lib/utils'
 
 	let element: HTMLElement
 	let editor: Readable<Editor>
 
-	export let GraphNodeID = ''
+	export let actions: Actions | undefined = undefined
 
 	onMount(() => {
-		GraphNodeID =
-			GraphNodeID || element.closest('.drawflow-node')?.id?.substring(5)
-		try {
-			content =
-				dataToImport.drawflow.Home.data[GraphNodeID].data.tiptapEditor
-		} catch (error) {}
 		if (browser) {
+			const localExtensions = getComponentExtensions()
+			const extensions = localExtensions.map(o => o.tipTapNode)
+
 			editor = createEditor({
 				editorProps: {
 					attributes: {
@@ -103,27 +103,18 @@
 				},
 				extensions: [
 					StarterKit,
-					SvelteCounterExtension,
+					...extensions,
 					Placeholder,
 					TaskList,
 					TaskItem,
 					Link,
 					Commands.configure({
-						suggestion: createSuggestion(store),
+						suggestion: createSuggestion(store, localExtensions),
 					}),
 				],
 				content,
-				onTransaction: () => {
-					// force re-render so `editor.isActive` works as expected
-					// svelte-tip does this already
-					// try {
-					// 	$editor = $editor
-					// } catch (error) {
-					// 	console.log(error)
-					// }
-				},
 				onUpdate: ({ editor }) => {
-					// send the content to an API here
+					actions?.onUpdate(editor.getHTML())
 				},
 			})
 		}
@@ -134,63 +125,16 @@
 			$editor.destroy()
 		}
 	})
-	let showUI = false
+	$: editorActions = createActions(editor)
 </script>
 
-<div class="prose prose-slate sm:prose-xl lg:prose-3xl" bind:clientWidth={w}>
+<div class="prose prose-slate sm:prose-sm lg:prose-lg" bind:clientWidth={w}>
 	<Element editor={$editor} bind:element on:keydownCapture={handleKeydown} />
+	<BubbleMenu {editor} actions={editorActions} />
+	<FloatingMenu {editor} actions={editorActions} />
 </div>
 
 <CommandList {store} {selectedIndex} />
-
-<svelte:window
-	on:keydown={e => {
-		console.log(e.key == 'y' && e.altKey)
-		if (e.key == 'y' && e.altKey) {
-			showUI = !showUI
-			$moduleStore.showExtraUI = !$moduleStore.showExtraUI
-		}
-	}} />
-
-{#if showUI}
-	<div class="sm:flex my-4">
-		<button
-			on:click={() => {
-				output = $editor.getJSON()
-				outputType = 'json'
-			}}
-			class="m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
-			'json'
-				? 'bg-blue-200'
-				: ''}">See JSON Output</button>
-		<button
-			on:click={() => {
-				output = $editor.getHTML()
-				outputType = 'html'
-			}}
-			class=" m-2 border rounded-full px-4 py-2 border-slate-500 {outputType ==
-			'html'
-				? 'bg-blue-200'
-				: ''}">See HTML Output</button>
-	</div>
-{/if}
-
-{#if output}
-	<div class="sm:flex flex-row-reverse">
-		<button
-			class="underline font-semibold text-slate-700 hover:text-slate-800 cursor p-2"
-			on:click={() => (output = false)}>
-			Clear output
-		</button>
-		<button
-			class="underline font-semibold text-slate-700 hover:text-slate-800 cursor p-2"
-			on:click={() =>
-				navigator.clipboard.writeText(JSON.stringify(output))}>
-			Copy output
-		</button>
-	</div>
-	{JSON.stringify(output)}
-{/if}
 
 <style>
 	:global(h1, h2, h3, h4, h5, h6, p, ul, ol) {

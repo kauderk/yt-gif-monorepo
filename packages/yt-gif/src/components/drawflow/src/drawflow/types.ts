@@ -3,6 +3,9 @@
 // Definitions by: Benjamin Maisonneuve <https://github.com/BobBDE>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
+import type { Content } from '@tiptap/core'
+import type { drawflowSvelteNodeProps } from '$cmp/drawflow/cmp/blocks'
+
 // Declare the workflow module to be able to used it in typescript
 // this file must be defined in the include in tsconfig.json
 
@@ -515,31 +518,42 @@ export interface DrawflowModuleData {
 		[nodeKey: ID]: DrawflowNode
 	}
 }
-type InputConnection = {
+export type InputConnection = {
 	input: string
 	node: string
 }
-type OutputConnection = {
+export type OutputConnection = {
 	output: string
 	node: string
 }
 export type ConnectionTypes = InputConnection | OutputConnection
-export interface DrawflowNode {
-	//FIXME:
-	open?: boolean
-	order?: number
-	class: string
-	data: any
-	html: string
-	id: ID
-	inputs: Record<string, { connections: InputConnection[] }>
-	name: string
-	outputs: Record<string, { connections: OutputConnection[] }>
+export interface DrawflowNodeBase {
+	data: {
+		content?: Content
+		expanded?: boolean
+		props?: drawflowSvelteNodeProps
+	}
+	// cords
 	pos_x: number
 	pos_y: number
-	typenode: boolean | 'svelte' | 'vue'
-}
 
+	// node
+	class: string
+	html: string
+	name: string
+	typenode: boolean | 'svelte' | 'vue' | string
+}
+export interface DrawflowNodeObject extends DrawflowNodeBase {
+	id: ID
+}
+export interface DrawflowNode extends DrawflowNodeObject {
+	inputs: Record<string, { connections: InputConnection[] }>
+	outputs: Record<string, { connections: OutputConnection[] }>
+}
+export interface AddNodeProps extends DrawflowNodeBase {
+	inputs: n
+	outputs: n
+}
 export interface DrawflowConnectionDetail {
 	input: string
 	node: string

@@ -1,7 +1,7 @@
 import type { ID } from '$cmp/drawflow/src/drawflow/types'
 import type { Params, Proxy } from './types'
-import { getNestedBlocks } from './recursive'
-import { getNodeByID } from './data'
+import { tryGetNestedBlocks } from './recursive'
+import { tryGetNodeByID } from './data'
 
 export const getBlockInfoByUID = async (
 	uid: ID,
@@ -21,7 +21,7 @@ export const getBlockInfoByUID = async (
 
 	if (withChildren) {
 		if (withParents) {
-			const parents = getNestedBlocks({
+			const parents = tryGetNestedBlocks({
 				...params,
 				connection: {
 					outputs: { proxy: 'children' },
@@ -30,14 +30,14 @@ export const getBlockInfoByUID = async (
 			})
 			return [[parents]]
 		}
-		const children = getNestedBlocks(params)
+		const children = tryGetNestedBlocks(params)
 		return [[children]]
 	} else {
-		return [[params.query(getNodeByID(params)!)]]
+		return [[params.query(tryGetNodeByID(params)!)]]
 	}
 }
 
 export const queryDrawflow = (params: Params) => {
-	const search = getNestedBlocks(params)
+	const search = tryGetNestedBlocks(params)
 	return search
 }

@@ -26,6 +26,12 @@ type LifeCycle = {
 	 * @param callback
 	 */
 	(eventName: 'nodeMoved', callback: (event: object) => void): void
+	/**
+	 *
+	 * @param eventName
+	 * @param callback
+	 */
+	(eventName: 'nodeUpdatedData', callback: (event: object) => void): void
 }
 type Selection = {
 	/**
@@ -107,6 +113,12 @@ type Connections = {
 	(eventName: 'removeReroute', callback: (event: number) => void): void
 }
 type Modules = {
+	/**
+	 *
+	 * @param eventName
+	 * @param callback (event: name of Module)
+	 */
+	(eventName: 'moduleAlreadyExist', callback: (event: string) => void): void
 	/**
 	 *
 	 * @param eventName

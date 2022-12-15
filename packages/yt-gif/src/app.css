@@ -8,8 +8,8 @@
 }
 
 @layer components {
-	.s-scrollbar {
-		overflow-y: scroll;
+	::-webkit-scrollbar-corner {
+		background-color: var(--surface2);
 	}
 	.s-scrollbar::-webkit-scrollbar-track {
 		box-shadow: inset 0 0 6px var(--surface2);
@@ -24,6 +24,6 @@
 	.s-scrollbar::-webkit-scrollbar-thumb {
 		border-radius: var(--radius-4);
 		box-shadow: inset 0 0 6px var(--surface3);
-		background-color: var(--surface2);
+		background-color: var(--surface1);
 	}
 }

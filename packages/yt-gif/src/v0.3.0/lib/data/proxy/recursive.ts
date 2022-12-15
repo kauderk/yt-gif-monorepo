@@ -1,12 +1,17 @@
 import type { RequireAtLeastOne, RequireOnlyOne } from '$lib/types/utilities'
 import { ObjectKeys, ObjectValues } from '$lib/utils'
-import { getNodeByID, getConnectionIterator, getConnectionRow } from './data'
+import { tryGetNodeByID, getConnectionIterator, getConnectionRow } from './data'
 import type { ReduceQuery, Nest, Params, getTypeofProxy } from './types'
 
-export function getNestedBlocks<P extends Params>(params: P) {
+export function tryGetNestedBlocks<P extends Params>(params: P) {
 	type proxy = ReturnType<typeof getTypeofProxy<P>>
 
-	const node = getNodeByID(params)!
+	const node = tryGetNodeByID(params)
+	if (!node) return
+
+	type Recursive<T> = T & {
+		[key in proxy]?: Recursive<T>[]
+	}
 
 	return REC({
 		rootUid: params.uid,
@@ -16,8 +21,13 @@ export function getNestedBlocks<P extends Params>(params: P) {
 		//FIXME: these types could turn rogue
 	}) as ReturnType<P['query']> &
 		(P['walk'] extends 'flat'
-			? { [key in proxy]?: TBlockInfoRec[] }
-			: { [key in proxy]: (TBlockInfoRec | undefined)[] })
+			? { [key in proxy]?: Recursive<ReturnType<P['query']>>[] }
+			: {
+					[key in proxy]: (
+						| Recursive<ReturnType<P['query']>>
+						| undefined
+					)[]
+			  })
 }
 
 function REC(step: Nest) {
@@ -41,7 +51,7 @@ function REC(step: Nest) {
 			 */
 			for (const payload of row) {
 				const { uid } = payload.plug
-				const nextNode = getNodeByID({ ...step.params, uid })
+				const nextNode = tryGetNodeByID({ ...step.params, uid })
 				const canWalkDown =
 					!step.trace[iterator.key].includes(uid) &&
 					step.rootUid != uid

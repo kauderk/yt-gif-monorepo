@@ -3,26 +3,22 @@
 	import dataToImport from './data.json'
 
 	import { undoRedo } from './plugins/conection-undo-redo'
-	import { rerouteSquare } from './plugins/reroute-square'
-	import { dragAndDrop, AssignEvents } from './plugins/drag-drop'
+
+	import { dragAndDrop } from './plugins/drag-drop'
 	import { selectMultiple } from './plugins/select-mulitple'
 	import { multiDrag } from './plugins/multi-drag'
 	import { draggableCancelation } from './plugins/draggable-cancelation'
 	import { zoomToPointer } from './plugins/zoom-to-pointer'
-	import { createAddNode } from './plugins/add-node-svelte'
-	import { DrawflowMinimap } from './plugins/minimap'
+	import { type Actions, createAddNode } from './plugins/add-node-svelte'
 
 	import Views from './cmp/views/index.svelte'
 	import Canvas from './cmp/Canvas.svelte'
-	import {
-		createNodeComponents,
-		registerNodeComponents,
-	} from './cmp/blocks/registration'
-	import Minimap from './cmp/Minimap.svelte'
+	import { registerNodeComponents } from './cmp/blocks/registration'
 
 	import { onMount, setContext } from 'svelte'
 	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
 	import { writable } from 'svelte/store'
+	import { contextMenu } from './plugins/context-menu'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
@@ -38,7 +34,7 @@
 		// modify the API to work with svelte components
 		const { addNode, addNodeImport } = createAddNode.bind(
 			Drawflow.prototype
-		)(flush)
+		)()
 
 		Drawflow.prototype.addNode = addNode
 		Drawflow.prototype.addNodeImport = addNodeImport
@@ -63,13 +59,16 @@
 		// zoom
 		zoomToPointer($ctx.editor)
 
+		// zoom
+		contextMenu($ctx.editor)
+
 		// kickstart API
 		await $ctx.editor.start()
 
 		registerNodeComponents($ctx.editor)
 
 		// add HTML nodes
-		await $ctx.editor.import(dataToImport)
+		await $ctx.editor.import(dataToImport, true)
 
 		//createNodeComponents($ctx.editor)
 
@@ -88,7 +87,6 @@
 <div class="wrapper">
 	<Views />
 	<Canvas />
-	<Minimap />
 </div>
 
 <style global lang="scss">
