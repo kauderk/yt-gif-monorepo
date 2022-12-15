@@ -86,7 +86,7 @@
 						})}>
 					<i class="fa-solid fa-x" style="font-size: 12px;" />
 				</button>
-				<span class="drawflow_node_title"
+				<span class="drawflow_node_title title-box"
 					>{`Node: ${Slot?.title} ${id}`}</span>
 			</div>
 
