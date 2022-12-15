@@ -83,6 +83,7 @@
 	import type { Actions } from '$cmp/drawflow/plugins/add-node-svelte'
 	import BubbleMenu from '$cmp/text-editor/tiptap/plugins/BubbleMenu.svelte'
 	import FloatingMenu from '$cmp/text-editor/tiptap/plugins/FloatingMenu.svelte'
+	import { createActions } from '$cmp/text-editor/tiptap/plugins/lib/utils'
 
 	let element: HTMLElement
 	let editor: Readable<Editor>
@@ -125,12 +126,13 @@
 			$editor.destroy()
 		}
 	})
+	$: editorActions = createActions(editor)
 </script>
 
 <div class="prose prose-slate sm:prose-sm lg:prose-lg" bind:clientWidth={w}>
 	<Element editor={$editor} bind:element on:keydownCapture={handleKeydown} />
-	<BubbleMenu {editor} />
-	<FloatingMenu {editor} />
+	<BubbleMenu {editor} actions={editorActions} />
+	<FloatingMenu {editor} actions={editorActions} />
 </div>
 
 <CommandList {store} {selectedIndex} />

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { FloatingMenu } from 'svelte-tiptap'
-	import { createActions } from './lib/utils'
+	import type { createActions } from './lib/utils'
 	import type { Editor } from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import cx from 'classnames'
 
 	export let editor: Readable<Editor>
-	const { toggleBold, toggleItalic, toggleHeading, isActive } =
-		createActions(editor)
+	export let actions: ReturnType<typeof createActions>
+	$: ({ toggleBold, toggleItalic, isActive, toggleHeading } = actions)
 </script>
 
 {#if $editor}
