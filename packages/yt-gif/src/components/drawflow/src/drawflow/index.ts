@@ -2128,14 +2128,28 @@ export default class Drawflow extends DrawFlowDefault {
 		this.noderegister[name] = { html, props, options }
 	}
 
+	getNodeReferenceFromId(id: ID) {
+		var moduleName = this.getModuleFromNodeId(id)
+
+		try {
+			return this.drawflow.drawflow[moduleName!].data[id] as DrawflowNode
+		} catch (error) {
+			console.error(error)
+		}
+	}
 	getNodeFromId(id: ID) {
 		var moduleName = this.getModuleFromNodeId(id)
-		return JSON.parse(
-			JSON.stringify(this.drawflow.drawflow[moduleName].data[id])
-		)
+
+		try {
+			return JSON.parse(
+				JSON.stringify(this.drawflow.drawflow[moduleName!].data[id])
+			) as DrawflowNode
+		} catch (error) {
+			console.error(error)
+		}
 	}
 	getNodesFromName(name: s) {
-		var nodes: n[] = []
+		var nodes: ID[] = []
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			for (var node in editor[moduleName].data) {
@@ -2147,7 +2161,7 @@ export default class Drawflow extends DrawFlowDefault {
 		return nodes
 	}
 
-	addNode(params: AddNodeProps) {
+	async addNode(params: AddNodeProps) {
 		let { id: name, data } = params
 		let { html, typenode, class: classoverride } = params
 		let { inputs: num_in, outputs: num_out } = params
@@ -2799,7 +2813,7 @@ export default class Drawflow extends DrawFlowDefault {
 
 	//#region Modules
 	getModuleFromNodeId(id: ID) {
-		var nameModule: ID | undefined
+		var nameModule: s | undefined
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			Object.keys(editor[moduleName].data).map(function (node, index2) {

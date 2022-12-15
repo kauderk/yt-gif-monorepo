@@ -20,49 +20,34 @@ let actions: Actions = {
  * @param flush Svelte Components' destroy() method
  * @returns An overridden addNode function, bound to "this".
  */
-export function createAddNode(this: Drawflow, actions: Actions) {
-	function addNode(this: Drawflow, params: AddNodeProps) {
+export function createAddNode(this: Drawflow) {
+	async function addNode(this: Drawflow, dataNode: AddNodeProps) {
+		const task = Task()
 		const id = getUUID.bind(this)()
 
-		const node = new Node({
+		const node = { ...dataNode, id }
+		const nodeComp = new Node({
 			target: this.container,
 			props: {
-				actions,
-				// @ts-expect-error the types say this is an Element?
-				GraphNodeID: params.node.html,
-				GraphNodeProps: params.data.props ?? {},
-
-				id,
-				className: params.class,
-
-				left: params.pos_x,
-				top: params.pos_y,
-
-				inputs: {
-					length: params.inputs,
-					json: {},
-					type: 'input',
-				},
-				outputs: {
-					length: params.outputs,
-					json: {},
-					type: 'output',
-				},
-				content: params.data.content,
-
-				drawflowContentNode: <HTMLElement>{},
-				drawflowParentNode: <HTMLElement>{},
+				actions: CreateActions(node),
+				node,
+				task,
+				content: dataNode.data.content,
 			},
 		})
+		await task.promise
 
 		const jsonNode = {
-			...params,
+			...dataNode,
 			id,
-			inputs: node.inputs.json as any,
-			outputs: node.outputs.json as any,
+			inputs: nodeComp.out?.inputs as any,
+			outputs: nodeComp.out?.outputs as any,
 		}
 
-		return injectNodeCycle.bind(this)(node.drawflowParentNode, jsonNode)
+		return injectNodeCycle.bind(this)(
+			nodeComp.drawflowParentNode!,
+			jsonNode
+		)
 	}
 
 	async function addNodeImport(
@@ -70,42 +55,29 @@ export function createAddNode(this: Drawflow, actions: Actions) {
 		dataNode: DrawflowNode,
 		precanvas: HTMLElement
 	) {
-		let task = Task()
+		const task = Task()
 
 		const node = new Node({
 			target: precanvas,
 
 			props: {
-				actions,
-				// @ts-expect-error the types say this is an Element?
-				GraphNodeID: dataNode.html,
-				id: dataNode.id,
-
-				className: dataNode.class,
-				top: dataNode.pos_y,
-				left: dataNode.pos_x,
-				inputs: {
-					length: Object.keys(dataNode.inputs).length,
-					json: {},
-					type: 'input',
+				actions: CreateActions(dataNode),
+				node: {
+					...dataNode,
+					inputs: Object.keys(dataNode.inputs).length,
+					outputs: Object.keys(dataNode.outputs).length,
 				},
-				outputs: {
-					length: Object.keys(dataNode.outputs).length,
-					offset: 0, // man...
-					json: {},
-					type: 'output',
-				},
-
-				dataNode: { ...dataNode, precanvas, task },
+				task,
+				dataNode: { ...dataNode, precanvas },
 			},
 		})
 		await task.promise
 
-		addInputs(dataNode.data, node.drawflowContentNode)
+		// @ts-ignore
+		addInputs(dataNode.data, node.out.drawflowContentNode!)
 	}
 	return { addNode, addNodeImport }
 }
 export type DataNode = Pick<DrawflowNode, 'inputs' | 'outputs' | 'id'> & {
 	precanvas: HTMLElement
-	task: ReturnType<typeof Task>
 }

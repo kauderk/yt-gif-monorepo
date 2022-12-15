@@ -518,11 +518,11 @@ export interface DrawflowModuleData {
 		[nodeKey: ID]: DrawflowNode
 	}
 }
-type InputConnection = {
+export type InputConnection = {
 	input: string
 	node: string
 }
-type OutputConnection = {
+export type OutputConnection = {
 	output: string
 	node: string
 }
@@ -542,9 +542,9 @@ export interface DrawflowNodeBase {
 	html: string
 	name: string
 	typenode: boolean | 'svelte' | 'vue' | string
+	id: ID
 }
 export interface DrawflowNode extends DrawflowNodeBase {
-	id: ID
 	inputs: Record<string, { connections: InputConnection[] }>
 	outputs: Record<string, { connections: OutputConnection[] }>
 }

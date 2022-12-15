@@ -1,28 +1,19 @@
-<script lang="ts" context="module">
-	export type Tconection = {
-		length: number
-		offset?: number
-		type: 'input' | 'output'
-		json: { [key: string]: { [key: string]: any[] } }
-	}
-</script>
-
 <script lang="ts">
-	export let offset = 0
-	export let length = 0
-	export let type: Tconection['type']
+	import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
 
-	export let json: Tconection['json'] = {}
+	export let type: 'input' | 'output'
+	export let rows: n
+	export let json: DrawflowNode['inputs'] | DrawflowNode['outputs']
 
 	const range = (N: number) => [...Array(N).keys()]
 	const conection = (sfx: string, N: number) => {
-		const idx = sfx + '_' + (N + offset) // FUCK!
+		const idx = sfx + '_' + (N + 0) // FUCK!
 		json![idx] = { connections: [] }
 		return idx
 	}
 </script>
 
-{#each range(length) as i}
+{#each range(rows) as i}
 	<div class="{type}s">
 		<div class="{type} {conection(type, i)}" />
 	</div>
