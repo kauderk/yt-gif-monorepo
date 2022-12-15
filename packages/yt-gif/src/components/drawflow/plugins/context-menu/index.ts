@@ -4,6 +4,8 @@
 */
 
 import type Drawflow from '$cmp/drawflow/src/drawflow'
+import { zIndex } from '../add-node-svelte/store'
+import { get } from 'svelte/store'
 import './style.scss'
 
 export function contextMenu(editor: Drawflow) {
@@ -41,7 +43,7 @@ export function contextMenu(editor: Drawflow) {
 
 		contextmenu.style.left = pos_x + 'px'
 		contextmenu.style.top = pos_y + 'px'
-		contextmenu.style.zIndex = `calc(var(z-index,1) + 10)`
+		contextmenu.style.zIndex = `${get(zIndex) + 10}`
 
 		editor.precanvas.appendChild(contextmenu)
 	}

@@ -1,9 +1,5 @@
 <svelte:options accessors />
 
-<script lang="ts" context="module">
-	let zIndex = 1
-</script>
-
 <script lang="ts">
 	//#region imports
 	import Connection from './Connection.svelte'
@@ -17,6 +13,7 @@
 	import type { DrawflowNode } from '$cmp/drawflow/src/drawflow/types'
 	import type { Actions, DataNode } from '.'
 	import type { Task } from '$cmp/drawflow/lib/task'
+	import { zIndex } from './store'
 	//#endregion
 
 	export let actions: Actions
@@ -50,9 +47,9 @@
 		content = createTiptapContent(GraphNodeID, node.data.props ?? {})
 	}
 
-	let _zIndex = (zIndex += 1)
+	let _zIndex = ($zIndex += 1)
 	const position = () => {
-		_zIndex = zIndex += 1
+		_zIndex = $zIndex += 1
 	}
 </script>
 
