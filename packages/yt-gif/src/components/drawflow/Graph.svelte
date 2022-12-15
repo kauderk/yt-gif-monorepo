@@ -18,6 +18,7 @@
 	import { onMount, setContext } from 'svelte'
 	import { DefaultProps, DrawflowStore as ctx } from './cmp/store'
 	import { writable } from 'svelte/store'
+	import { contextMenu } from './plugins/context-menu'
 
 	// REACTIVE Definitions
 	setContext('DrawflowStore', ctx)
@@ -57,6 +58,9 @@
 
 		// zoom
 		zoomToPointer($ctx.editor)
+
+		// zoom
+		contextMenu($ctx.editor)
 
 		// kickstart API
 		await $ctx.editor.start()

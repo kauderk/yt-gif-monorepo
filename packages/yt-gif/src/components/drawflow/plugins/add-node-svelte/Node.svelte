@@ -64,6 +64,7 @@
 	<div
 		id="node-{id}"
 		class="drawflow-node template selected {node.class}"
+		style:z-index={_zIndex}
 		style="top: {node.pos_y}px; left: {node.pos_x}px; background-color: {$nodeBG}; z-index: {_zIndex};"
 		on:click={position}>
 		{#if dataNode}
