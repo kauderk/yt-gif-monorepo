@@ -16,3 +16,5 @@ export function lockToggle(editor: Drawflow) {
 export function nodeEl(indexId: n | s) {
 	return document.getElementById('node-' + indexId)!
 }
+
+export const range = (N: number) => [...Array(N).keys()]

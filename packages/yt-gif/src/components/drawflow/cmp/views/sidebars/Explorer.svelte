@@ -10,13 +10,14 @@
 
 	let CopyModules: DrawflowExport
 	onMount(() => {
-		const unsub = ctx.subscribe(o => {
+		let unsub: Function
+		unsub = ctx.subscribe(o => {
 			if ($ctx.editor?.drawflow) {
 				listenAndRefreshEditor(
 					ctx,
 					() => (CopyModules = $ctx.editor?.drawflow)
 				)
-				unsub()
+				unsub?.()
 			}
 		})
 	})

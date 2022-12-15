@@ -26,6 +26,12 @@ type LifeCycle = {
 	 * @param callback
 	 */
 	(eventName: 'nodeMoved', callback: (event: object) => void): void
+	/**
+	 *
+	 * @param eventName
+	 * @param callback
+	 */
+	(eventName: 'nodeUpdatedData', callback: (event: object) => void): void
 }
 type Selection = {
 	/**

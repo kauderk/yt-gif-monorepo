@@ -1,16 +1,29 @@
 import Node from './Node.svelte'
 import { addInputs } from './add-inputs'
-import { AssertContentElement, getUUID, injectNodeCycle } from './query'
+import { getUUID, injectNodeCycle } from './query'
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type {
 	AddNodeProps,
 	DrawflowNode,
+	DrawflowNodeBase,
 } from '$cmp/drawflow/src/drawflow/types'
 import { Task } from '$cmp/drawflow/lib/task'
+import { DrawflowStore } from '$cmp/drawflow/cmp/store'
+import { get } from 'svelte/store'
 
-export type Actions = { onUpdate: (html: s) => void }
-let actions: Actions = {
-	onUpdate(html: s) {},
+export type Actions = { onUpdate: (htmlContent: s) => void }
+const CreateActions = (baseNode: DrawflowNodeBase) => {
+	return <Actions>{
+		onUpdate(htmlContent: s) {
+			const store = get(DrawflowStore)
+			const node = store.editor.getNodeReferenceFromId(baseNode.id)
+			if (node) {
+				// crazy how svelte maintains the reference to the same object!
+				node.data.content = htmlContent
+				//store.editor.dispatch('nodeUpdatedData', node)
+			}
+		},
+	}
 }
 /**
  * It seems to work after "editor.start()", the registration and the method itself.

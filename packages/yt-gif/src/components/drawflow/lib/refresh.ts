@@ -10,6 +10,7 @@ export function listenAndRefreshEditor(
 	const events: EventNames[] = [
 		'nodeCreated',
 		'nodeRemoved',
+		'nodeUpdatedData',
 		'nodeMoved',
 		'connectionCreated',
 		'connectionRemoved',
