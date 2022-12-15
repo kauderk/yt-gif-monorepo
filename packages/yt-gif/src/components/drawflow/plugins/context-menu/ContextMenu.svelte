@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { DrawflowBlocks } from '$cmp/drawflow/cmp/blocks'
 	import { DrawflowStore } from '$cmp/drawflow/cmp/store'
+
 	const addNode = () => {
 		$DrawflowStore.editor
 			.addNode({
@@ -16,11 +16,12 @@
 				// node
 				name: 'graph-node',
 				class: 'graph-node',
-				html: DrawflowBlocks.SimpleBlock.GraphNodeID,
+				html: '',
 				typenode: 'svelte',
 			})
 			.catch(console.log)
 	}
+
 	export let left: s
 	export let top: s
 	export let zIndex: n

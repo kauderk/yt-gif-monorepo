@@ -37,7 +37,7 @@ export function contextMenu(editor: Drawflow) {
 				(editor.precanvas.clientHeight /
 					(editor.precanvas.clientHeight * editor.zoom))
 
-		//contextMenu?.$destroy?.()
+		contextMenu?.$destroy?.()
 		contextMenu = new ContextMenu({
 			target: editor.precanvas!,
 			props: {
@@ -49,10 +49,7 @@ export function contextMenu(editor: Drawflow) {
 	}
 
 	function unShowConextMenu() {
-		var contextmenu = document.getElementById('contextmenu')
-		if (contextmenu != null) {
-			contextmenu.remove()
-		}
+		contextMenu?.$destroy?.()
 	}
 
 	editor.on('click', function (event) {

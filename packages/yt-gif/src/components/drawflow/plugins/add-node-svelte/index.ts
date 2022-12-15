@@ -58,7 +58,7 @@ export function createAddNode(this: Drawflow) {
 		}
 
 		return injectNodeCycle.bind(this)(
-			nodeComp.drawflowParentNode!,
+			nodeComp.out?.drawflowParentNode as any,
 			jsonNode
 		)
 	}

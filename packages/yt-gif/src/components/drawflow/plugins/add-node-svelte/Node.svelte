@@ -14,6 +14,7 @@
 	import type { Actions, DataNode } from '.'
 	import type { Task } from '$cmp/drawflow/lib/task'
 	import { zIndex } from './store'
+	import InlineProcess from '$cmp/providers/InlineProcess.svelte'
 	//#endregion
 
 	export let actions: Actions
@@ -51,6 +52,7 @@
 	const position = () => {
 		_zIndex = $zIndex += 1
 	}
+	let asyncSubComponent = Slot?.provider && !!content
 </script>
 
 <div
@@ -92,9 +94,9 @@
 			<div class="drawflow_node_body">
 				{#if $nodeTransition.id != id && Slot?.cmp}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
-						<SvelteQueryProvider async={Slot.provider && !!content}>
+						<SvelteQueryProvider async={asyncSubComponent}>
 							<Editor {content} {actions} />
-							{@const _ = task?.resolve('EditorLoaded')}
+							{@const _ = task?.resolve('LoadedSubComponent')}
 						</SvelteQueryProvider>
 					</div>
 				{/if}
@@ -103,6 +105,8 @@
 		<Connection type="output" rows={node.outputs} bind:json={out.outputs} />
 	</div>
 </div>
+<!-- svelte-ignore empty-block -->
+{#if !asyncSubComponent}{@const _ = task?.resolve('EditorLoaded')}{/if}
 
 <style lang="scss" global>
 	// node

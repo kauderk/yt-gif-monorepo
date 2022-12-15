@@ -50,7 +50,7 @@
 			link.click()
 			URL.revokeObjectURL(url) // Object URLs should be revoked after use
 		} catch (error) {
-			console.error(error)
+			console.log(error)
 			console.log(data)
 		}
 	}
@@ -64,7 +64,7 @@
 					const drawflow = JSON.parse(text)
 					$ctx.editor.import(drawflow, true)
 				} catch (error) {
-					console.error(error)
+					console.log(error)
 				}
 			}
 			text = undefined

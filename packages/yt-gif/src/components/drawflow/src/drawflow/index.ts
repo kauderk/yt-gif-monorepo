@@ -2134,7 +2134,7 @@ export default class Drawflow extends DrawFlowDefault {
 		try {
 			return this.drawflow.drawflow[moduleName!].data[id] as DrawflowNode
 		} catch (error) {
-			console.error(error)
+			console.log(error)
 		}
 	}
 	getNodeFromId(id: ID) {
@@ -2145,7 +2145,7 @@ export default class Drawflow extends DrawFlowDefault {
 				JSON.stringify(this.drawflow.drawflow[moduleName!].data[id])
 			) as DrawflowNode
 		} catch (error) {
-			console.error(error)
+			console.log(error)
 		}
 	}
 	getNodesFromName(name: s) {
