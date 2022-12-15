@@ -92,7 +92,7 @@
 			<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 			<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
 			<div class="drawflow_node_body">
-				{#if $nodeTransition.id != id && Slot?.cmp}
+				{#if $nodeTransition.id != id}
 					<div in:receive={{ key: id }} out:send={{ key: id }}>
 						<SvelteQueryProvider async={asyncSubComponent}>
 							<Editor {content} {actions} />
@@ -105,8 +105,6 @@
 		<Connection type="output" rows={node.outputs} bind:json={out.outputs} />
 	</div>
 </div>
-<!-- svelte-ignore empty-block -->
-{#if !asyncSubComponent}{@const _ = task?.resolve('EditorLoaded')}{/if}
 
 <style lang="scss" global>
 	// node

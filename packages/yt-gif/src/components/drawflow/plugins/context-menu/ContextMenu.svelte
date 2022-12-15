@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { DrawflowStore } from '$cmp/drawflow/cmp/store'
+	import type { Content } from '@tiptap/core'
 
-	const addNode = () => {
+	const addNode = (content?: Content) => {
 		$DrawflowStore.editor
 			.addNode({
 				// connections
@@ -12,7 +13,9 @@
 				pos_y: 150,
 				pos_x: 600,
 
-				data: {},
+				data: {
+					content,
+				},
 				// node
 				name: 'graph-node',
 				class: 'graph-node',
@@ -25,20 +28,34 @@
 	export let left: s
 	export let top: s
 	export let zIndex: n
+	export let placement: 'node' | 'canvas'
 </script>
 
 <div id="contextmenu" style:left style:top style:z-index={zIndex}>
 	<ul class="menu bg-base-100 w-56 p-2 rounded-box">
-		<li class="menu-title">
-			<span>Nodes</span>
-		</li>
-		<li><button on:click={addNode}><span>Add Empty Node</span></button></li>
-		<li><span>Item 2</span></li>
-		<li class="menu-title">
-			<span>Category</span>
-		</li>
-		<li><span>Item 1</span></li>
-		<li><span>Item 2</span></li>
+		{#if placement == 'node'}
+			<li class="menu-title">
+				<span>Nodes</span>
+			</li>
+			<li>
+				<button on:click={() => addNode()}
+					><span>Add Empty Node</span></button>
+			</li>
+			<li><span>Generate content</span></li>
+		{/if}
+		{#if placement == 'canvas'}
+			<li class="menu-title">
+				<span>Canvas</span>
+			</li>
+			<li>
+				<button
+					on:click={async () => {
+						const content = await navigator.clipboard.readText()
+						addNode(content)
+					}}>Add Node from Clipboard</button>
+			</li>
+			<li><span>Search</span></li>
+		{/if}
 	</ul>
 </div>
 
