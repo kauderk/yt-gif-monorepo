@@ -5,14 +5,14 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
 import type {
 	AddNodeProps,
 	DrawflowNode,
-	DrawflowNodeBase,
+	DrawflowNodeObject,
 } from '$cmp/drawflow/src/drawflow/types'
 import { Task } from '$cmp/drawflow/lib/task'
 import { DrawflowStore } from '$cmp/drawflow/cmp/store'
 import { get } from 'svelte/store'
 
 export type Actions = { onUpdate: (htmlContent: s) => void }
-const CreateActions = (baseNode: DrawflowNodeBase) => {
+const CreateActions = (baseNode: DrawflowNodeObject) => {
 	return <Actions>{
 		onUpdate(htmlContent: s) {
 			const store = get(DrawflowStore)

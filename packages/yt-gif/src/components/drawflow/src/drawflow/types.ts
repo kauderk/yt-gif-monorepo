@@ -542,9 +542,11 @@ export interface DrawflowNodeBase {
 	html: string
 	name: string
 	typenode: boolean | 'svelte' | 'vue' | string
+}
+export interface DrawflowNodeObject extends DrawflowNodeBase {
 	id: ID
 }
-export interface DrawflowNode extends DrawflowNodeBase {
+export interface DrawflowNode extends DrawflowNodeObject {
 	inputs: Record<string, { connections: InputConnection[] }>
 	outputs: Record<string, { connections: OutputConnection[] }>
 }

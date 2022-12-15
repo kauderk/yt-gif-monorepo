@@ -6,9 +6,10 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 import { zIndex } from '../add-node-svelte/store'
 import { get } from 'svelte/store'
-import './style.scss'
+import ContextMenu from './ContextMenu.svelte'
 
 export function contextMenu(editor: Drawflow) {
+	let contextMenu: ContextMenu
 	editor.on('contextmenu', function (event) {
 		if (
 			event.target.closest('.drawflow_content_node') != null ||
@@ -36,16 +37,15 @@ export function contextMenu(editor: Drawflow) {
 				(editor.precanvas.clientHeight /
 					(editor.precanvas.clientHeight * editor.zoom))
 
-		var contextmenu = document.createElement('div')
-		contextmenu.id = 'contextmenu'
-		contextmenu.innerHTML = '<ul><li>Option 1</li><li>Option 2</li></ul>'
-		contextmenu.style.display = 'block'
-
-		contextmenu.style.left = pos_x + 'px'
-		contextmenu.style.top = pos_y + 'px'
-		contextmenu.style.zIndex = `${get(zIndex) + 10}`
-
-		editor.precanvas.appendChild(contextmenu)
+		//contextMenu?.$destroy?.()
+		contextMenu = new ContextMenu({
+			target: editor.precanvas!,
+			props: {
+				left: pos_x + 'px',
+				top: pos_y + 'px',
+				zIndex: get(zIndex) + 10,
+			},
+		})
 	}
 
 	function unShowConextMenu() {
