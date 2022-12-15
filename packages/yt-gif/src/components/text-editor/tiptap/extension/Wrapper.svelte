@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { NodeViewProps } from '@tiptap/core'
 	import cx from 'classnames'
-	import { NodeViewWrapper } from 'svelte-tiptap'
+	import { draggable, NodeViewWrapper } from 'svelte-tiptap'
 
 	import SvelteQueryProvider from '$lib/api/svelte-query/SvelteQueryProvider.svelte'
 	import type { TDrawflowBlocks } from '$cmp/drawflow/cmp/blocks'
@@ -19,7 +19,9 @@
 	const props = tryAttributeToProps(node.attrs.props)
 </script>
 
-<NodeViewWrapper class={cx('svelte-component', { selected })}>
+<NodeViewWrapper
+	class={cx('svelte-component', { selected })}
+	action={draggable}>
 	<!-- https://github.com/sveltejs/svelte/issues/6037#issuecomment-789286616 -->
 	<!-- https://svelte.dev/repl/f9cc573c14a943098f68964dc5496fd7?version=3.31.2 -->
 	<div class="tiptap-extension-wrapper">

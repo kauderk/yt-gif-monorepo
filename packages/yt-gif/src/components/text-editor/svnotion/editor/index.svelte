@@ -77,7 +77,12 @@
 			item.command({ editor: $editor, range })
 		}
 	}
-	import { createEditor, type Editor } from 'svelte-tiptap'
+	import {
+		BubbleMenu,
+		createEditor,
+		FloatingMenu,
+		type Editor,
+	} from 'svelte-tiptap'
 	import type { Readable } from 'svelte/store'
 	import Element from './Element.svelte'
 	import type { Actions } from '$cmp/drawflow/plugins/add-node-svelte'
@@ -123,10 +128,73 @@
 			$editor.destroy()
 		}
 	})
+	// extensions
+	import cx from 'classnames'
+	const toggleBold = () => {
+		$editor.chain().focus().toggleBold().run()
+	}
+	const toggleItalic = () => {
+		$editor.chain().focus().toggleItalic().run()
+	}
+	const toggleHeading = (level: any) => {
+		return () => {
+			$editor.chain().focus().toggleHeading({ level }).run()
+		}
+	}
+
+	// extensions ui
+	$: isActive = (name: string, attrs = {}) => $editor.isActive(name, attrs)
 </script>
 
-<div class="prose prose-slate sm:prose-xl lg:prose-3xl" bind:clientWidth={w}>
+<div class="prose prose-slate sm:prose-sm lg:prose-lg" bind:clientWidth={w}>
 	<Element editor={$editor} bind:element on:keydownCapture={handleKeydown} />
+	{#if $editor}
+		<FloatingMenu editor={$editor}>
+			<div data-test-id="floating-menu">
+				<button
+					class={cx(
+						'border border-black rounded px-2 hover:bg-black hover:text-white',
+						{
+							'bg-black text-white': isActive('heading', {
+								level: 1,
+							}),
+						}
+					)}
+					on:click={toggleHeading(1)}>h1</button>
+				<button
+					class={cx(
+						'border border-black rounded px-2 hover:bg-black hover:text-white',
+						{
+							'bg-black text-white': isActive('bold'),
+						}
+					)}
+					on:click={toggleBold}>bold</button>
+				<button
+					class={cx(
+						'border border-black rounded px-2 hover:bg-black hover:text-white',
+						{
+							'bg-black text-white': isActive('italic'),
+						}
+					)}
+					on:click={toggleItalic}>italic</button>
+			</div>
+		</FloatingMenu>
+
+		<BubbleMenu editor={$editor}>
+			<div data-test-id="bubble-menu" class="flex">
+				<button
+					class={cx('px-2 bg-black text-white/90 hover:text-white', {
+						'!text-white': isActive('bold'),
+					})}
+					on:click={toggleBold}>bold</button>
+				<button
+					class={cx('px-2 bg-black text-white/90 hover:text-white', {
+						'!text-white': isActive('italic'),
+					})}
+					on:click={toggleItalic}>italic</button>
+			</div>
+		</BubbleMenu>
+	{/if}
 </div>
 
 <CommandList {store} {selectedIndex} />
