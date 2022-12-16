@@ -173,6 +173,17 @@
 		padding: 10px;
 	}
 
+    .drawflow_node_body h1 {
+        margin-top: 8px;
+        margin-bottom: 10px;
+        font-size: 35px;
+    }
+    
+    .drawflow_node_body p {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
 	.drawflow_content_node {
 		width: -webkit-fill-available;
 	}
