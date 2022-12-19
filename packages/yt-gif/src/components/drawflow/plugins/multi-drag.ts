@@ -4,9 +4,7 @@ import './selectables/index.css'
 import { nodeEl } from '../lib/utils'
 
 // https://github.com/jerosoler/Drawflow/issues/322#issuecomment-993469501
-export function multiDrag(
-	editor: Drawflow & { nodeId: n; editor_selected: b }
-) {
+export function multiDrag(editor: Drawflow) {
 	let is_multiselect = false
 	let mult_arr: n[] = []
 
@@ -129,12 +127,12 @@ export function multiDrag(
 	}
 
 	editor.on('nodeCreated', function (id) {
-		console.log('Node created ' + id)
+		//console.log('Node created ' + id)
 		toggle()
 	})
 
 	editor.on('nodeRemoved', function (id) {
-		console.log('Node removed ' + id)
+		//console.log('Node removed ' + id)
 		toggle()
 	})
 

@@ -115,16 +115,24 @@ export class DrawflowMinimap {
 			this.minimap.nodeId = this.nodeId = this.editor.nodeId
 			const node = this.editor.getNodeFromId(id)
 
-			this.minimap.addNode.bind(this.minimap)(
-				node.name,
-				Object.keys(node.inputs).length,
-				Object.keys(node.outputs).length,
-				node.pos_x,
-				node.pos_y,
-				node.class,
+			// FIXME: might not work
+			this.minimap.addNode.bind(this.minimap)({
+				name: node.name,
+				connections: {
+					inputs: Object.keys(node.inputs).length,
+					outputs: Object.keys(node.outputs).length,
+				},
+				cords: {
+					x: node.pos_x,
+					y: node.pos_y,
+				},
 				data,
-				node.html
-			)
+				node: {
+					// classoverride: key,
+					html: node.html,
+					// typenode: 'svelte',
+				},
+			})
 		})
 
 		this.editor.on('nodeMoved', id => {

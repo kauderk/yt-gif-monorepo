@@ -28,7 +28,11 @@ const config = {
 			},
 		},
 	},
-	plugins: [require('daisyui')],
+	plugins: [
+		require('daisyui'),
+		require('@tailwindcss/typography'),
+		require('tailwindcss-all'),
+	],
 	daisyui: {
 		darkTheme: 'black',
 		logs: false,

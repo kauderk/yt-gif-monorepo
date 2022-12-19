@@ -1,6 +1,7 @@
 import { getUidFromBlock } from '../../lib/dom/elements-yt-gif-parent'
 import { getLastAnchorCmptInHierarchy } from '../../lib/backend-frontend/xxx-congif'
 import { getCurrentInputBlock } from '../../lib/dom/roam'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export async function getTimestampObj_smart(
 	page: startEnd
@@ -41,6 +42,6 @@ export async function getTimestampObj_smart(
 			: value
 	}
 }
-window.YTGIF = {
+SrrGlobal.YTGIF = {
 	getTimestampObj: getTimestampObj_smart,
 }

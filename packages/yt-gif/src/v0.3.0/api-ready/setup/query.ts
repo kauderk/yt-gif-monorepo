@@ -14,14 +14,15 @@ import {
 import { T_YT_RECORD } from '$v3/lib/types/yt-types'
 import { isInput_selectedValid } from '$v3/lib/dom/select/isInputSelected'
 import { ExtractParamsFromUrl } from '$v3/init/formatter/query/extract'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function SetupTimestampObserver(grandParentBlock: Element, uid: string) {
 	const rm_container = closest_container(grandParentBlock)
-	rm_container?.setAttribute('yt-gif-block-uid', uid)
+	rm_container?.setAttribute('data-yt-gif-block-uid', uid)
 	return rm_container
 }
 export function GetNewID() {
-	return iframeIDprfx + Number(++window.YT_GIF_OBSERVERS.creationCounter)
+	return iframeIDprfx + Number(++SrrGlobal.YT_GIF_OBSERVERS.creationCounter)
 }
 export function CreateRecordID(o: {
 	uid: string
@@ -59,17 +60,22 @@ export function CheckFalsePositive(o: {
 	}
 	return false
 }
-export function CreateYTGIFElement(o: {
-	wrapper: HTMLElement
-	customSpan: s
-
+export interface CreateYTGIF {
 	targetClass: string
 	dataCreation: string
-
 	url: string
 	accUrlIndex: number
-	newId: string
-}) {
+	playerID: string
+	customSpan?: string
+}
+/**
+ * @deprecated
+ */
+export function CreateYTGIFElement(
+	o: {
+		wrapper: HTMLElement
+	} & CreateYTGIF
+) {
 	let wrapper = o.wrapper
 
 	if (wrapper.tagName != 'DIV') {
@@ -90,9 +96,11 @@ export function CreateYTGIFElement(o: {
 	wrapper.setAttribute(attrInfo.creation.name, o.dataCreation)
 	wrapper.setAttribute(attrInfo.url.path, o.url)
 	wrapper.setAttribute(attrInfo.url.index, o.accUrlIndex.toString())
-	wrapper.innerHTML = ''
-	wrapper.insertAdjacentHTML('afterbegin', links.html.fetched.playerControls)
-	wrapper.querySelector('.yt-gif-player')!.id = o.newId
+	// FIXME: window
+	//wrapper.innerHTML = ''
+	//wrapper.insertAdjacentHTML('afterbegin', links.html.fetched.playerControls)
+	debugger
+	wrapper.querySelector('.yt-gif-player')!.id = o.playerID
 	return wrapper
 }
 export function AsyncDeployment(dataCreation: string) {

@@ -103,7 +103,7 @@ export const attrData = {
 	ms_options: '',
 	fmt_options: '',
 }
-export const attrInfo = {
+export const attrInfo = <const>{
 	url: {
 		path: 'data-video-url',
 		index: 'data-video-index',

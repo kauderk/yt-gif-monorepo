@@ -1,6 +1,7 @@
 import { inViewportElsHard } from '$lib/utils'
 import { Mutation_cb_raw_rm_cmpts } from '../../../lib/backend-frontend/mutation'
 import { Local, DeployPlayer, PlayerOnIntersection } from './query'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function ObserveIframesAndDelployYTPlayers(targetClass: string) {
 	// set up all visible YT GIFs
@@ -13,7 +14,7 @@ export function ObserveIframesAndDelployYTPlayers(targetClass: string) {
 
 	// to deploy when visible
 	local.validTemplates().forEach(wrapper =>
-		window.YT_GIF_OBSERVERS.masterIntersectionObservers.push(
+		SrrGlobal.YT_GIF_OBSERVERS.masterIntersectionObservers.push(
 			PlayerOnIntersection({
 				wrapper,
 				message: 'second wave',

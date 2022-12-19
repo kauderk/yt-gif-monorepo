@@ -11,6 +11,7 @@ import {
 	grandParentBlock,
 } from './composition'
 import type { TAlias, TBase } from './composition'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function GetUidResultObj(el: Element) {
 	const uidResults = {
@@ -35,13 +36,15 @@ export function GetUidResultObj(el: Element) {
 
 function GetPreSelector() {
 	return [
-		[...window.AvoidCircularDependency.getCurrentClassesToObserver()].map(
-			s => '.' + s
-		),
+		[
+			...SrrGlobal.AvoidCircularDependency.getCurrentClassesToObserver(),
+		].map(s => '.' + s),
 		'.yt-gif-wrapper',
 	]
+		.flat(Infinity)
+		.filter(s => !!s) as s[]
 }
-function GetIsDmmTutorial(el: Element) {
+export function GetIsDmmTutorial(el: Element) {
 	return (<const>{
 		uid: 'irrelevant-uid',
 		url: '',

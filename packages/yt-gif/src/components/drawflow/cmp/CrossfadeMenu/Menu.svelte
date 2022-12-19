@@ -4,7 +4,7 @@
 	import Expanded from './Expanded.svelte'
 	import { itemHistory, opened } from './store'
 	import { onMount } from 'svelte'
-	import { items } from '../ctx'
+	import { items, type Scroller } from '../ctx'
 
 	const [send, receive] = crossfade({ duration: 500 })
 
@@ -20,19 +20,60 @@
 			localUnSub()
 		}
 	})
+
+	import { writable } from 'svelte/store'
+
+	function chunk<T, N extends number>(array: T[], chunkSize: N): T[][] {
+		const R = []
+		for (let i = 0, len = array.length; i < len; i += chunkSize)
+			R.push(array.slice(i, i + chunkSize))
+		return R
+	}
+
+	let LevelsOfItems = chunk(items, items.length / 3)
+	let scrollValues = writable(
+		LevelsOfItems.map(
+			() =>
+				<Scroller>{
+					scrollLeft: 0,
+					scrollTop: 0,
+					deltaY: 0,
+				}
+		)
+	)
 </script>
 
-{#key $opened}
-	{#if !$opened}
+{#if !$opened}
+	<div class="layout">
 		<Grid
 			{send}
 			{receive}
 			on:click={event => ($opened = event.detail.item)} />
-	{:else}
+	</div>
+{:else}
+	<div class="layout">
 		<Expanded
+			bind:LevelsOfItems
+			bind:scrollValues
 			{send}
 			{receive}
 			opened={$opened}
 			on:click={event => ($opened = event.detail.item)} />
-	{/if}
-{/key}
+	</div>
+{/if}
+
+<style lang="scss">
+	.layout {
+		width: 100%;
+		position: absolute;
+		// horizontal scrollable component won't work with flex
+		// display: flex;
+		justify-content: start;
+		// padding: 0.5rem;
+
+		// horizontal
+		flex-direction: column;
+		align-items: center;
+		align-content: center;
+	}
+</style>

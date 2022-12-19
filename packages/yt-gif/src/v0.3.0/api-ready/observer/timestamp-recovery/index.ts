@@ -1,5 +1,5 @@
 import { getOption } from '$v3/lib/backend-frontend/option'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { DeactivateTimestampsInHierarchy } from '$v3/init/timestamp/hierarchy'
 import { closest_anchor_container } from '$v3/lib/dom/elements-yt-gif-parent'
 import { TryToRecoverTimestamps } from './flow'
@@ -10,7 +10,10 @@ export function TrySetUpTimestampRecovery(
 	that: ILocalWrapper,
 	rm_container: El
 ) {
-	if (!rm_container || rm_container?.hasAttribute('timestamp-observer')) {
+	if (
+		!rm_container ||
+		rm_container?.hasAttribute('data-timestamp-observer')
+	) {
 		return <const>{
 			getCrrContainer: () => rm_container!,
 			switchTimestampObsOnAchor: (e: Event) => {},
@@ -18,7 +21,7 @@ export function TrySetUpTimestampRecovery(
 	}
 	const { delObsTimestmp, getTargetWrapper, getObsTimestamp } = that
 
-	rm_container.setAttribute('timestamp-observer', '')
+	rm_container.setAttribute('data-timestamp-observer', '')
 	rm_container.addEventListener('customDelObsTimestmp', delObsTimestmp)
 
 	// @ts-ignore
@@ -28,7 +31,10 @@ export function TrySetUpTimestampRecovery(
 	let awaiting = false
 
 	const observer = new MutationObserver(async mutationsList => {
-		if (awaiting || !UI.display.simulate_roam_research_timestamps.checked)
+		if (
+			awaiting ||
+			!UIStore.get().display.simulate_roam_research_timestamps.checked
+		)
 			return
 
 		awaiting = true
@@ -39,7 +45,7 @@ export function TrySetUpTimestampRecovery(
 	})
 
 	const config = { attributes: true, childList: true, subtree: true }
-	const anchor_opt = getOption(UI.timestamps.tm_options, 'anchor')
+	const anchor_opt = getOption(UIStore.get().timestamps.tm_options, 'anchor')
 	const target = getTarget2Observer(anchor_opt.selected)
 
 	let getCrrContainer = () => target

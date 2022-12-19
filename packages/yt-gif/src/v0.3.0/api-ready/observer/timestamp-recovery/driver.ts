@@ -1,5 +1,5 @@
 import { observedParameters } from '$v3/lib/types/config'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { getBlockID } from '$v3/lib/dom/roam'
 import { TrySetUpTimestampRecovery } from '.'
 
@@ -30,7 +30,7 @@ export function TimestampRecovery(o: {
 				that.getLocalBlockID()
 			)?.lastActiveTimestamp
 
-			if (lastActive && UI.timestamps.tm_recovery.checked) {
+			if (lastActive && UIStore.get().timestamps.tm_recovery.checked) {
 				return lastActive
 			}
 			return null

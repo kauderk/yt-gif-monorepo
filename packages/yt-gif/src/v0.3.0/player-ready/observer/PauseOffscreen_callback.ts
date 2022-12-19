@@ -1,5 +1,5 @@
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { isSelected } from '$v3/lib/backend-frontend/option'
 import { playIs } from '../lib/IFR'
 import type { TQueryResult } from '$v3/player-ready/setup/GetQuery'
@@ -40,7 +40,10 @@ export function GetFuncPauseOffscreen(
 function stopIfInactive(q: TQueryResult) {
 	if (
 		!q.parent.isActive() ||
-		!isSelected(UI.playerSettings.ps_options, 'mantain_last_active_player')
+		!isSelected(
+			UIStore.get().playerSettings.ps_options,
+			'mantain_last_active_player'
+		)
 	) {
 		return q.togglePlay(false)
 	}

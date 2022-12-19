@@ -29,6 +29,7 @@
 									<i class="fa-solid fa-list" />
 								</button>
 								<a
+									rel="noreferrer"
 									href="https://youtube.com/shorts/smicZwXD5GI"
 									target="_blank"
 									class="header-option-choice"
@@ -96,6 +97,7 @@
 					<div class="listing">
 						<div class="listing-images">
 							<img
+								alt="don't know"
 								class="listing-image"
 								src="https://images.unsplash.com/photo-1662313708911-06070ec5b383?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" />
 						</div>
@@ -141,29 +143,10 @@
 		--theme-primary: var(--purple);
 	}
 
-	body {
-		background-color: var(--body-color);
-		margin: 0px;
-	}
-
-	body::-webkit-scrollbar {
-		width: 4px;
-	}
-
-	body::-webkit-scrollbar-track {
-		background-color: var(--body-color);
-	}
-
-	body::-webkit-scrollbar-thumb {
-		background: rgba(255, 255, 255, 0.15);
-	}
-
 	* {
 		box-sizing: border-box;
 	}
 
-	h1,
-	h2,
 	h3,
 	input,
 	select,
@@ -175,10 +158,6 @@
 		font-size: 1rem;
 		font-weight: 400;
 		margin: 0px;
-	}
-
-	.highlight {
-		color: var(--highlight-color);
 	}
 
 	.fancy-scrollbar::-webkit-scrollbar {
@@ -205,94 +184,6 @@
 	#main-wrapper {
 		height: 100%;
 		overflow: auto;
-	}
-
-	#nav {
-		display: flex;
-		align-items: center;
-		padding: 1rem;
-	}
-
-	#nav .nav-logo {
-		background-color: transparent;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 3rem;
-		width: 3rem;
-		border-bottom-left-radius: 0.25rem;
-		border-top-left-radius: 0.25rem;
-		outline: none;
-		text-decoration: none;
-	}
-
-	#nav .nav-logo:hover,
-	#nav .nav-logo:focus {
-		background-color: rgba(255, 255, 255, 0.1);
-	}
-
-	#nav .nav-logo > i {
-		color: white;
-		font-size: 1.75rem;
-	}
-
-	#nav .nav-info {
-		flex-grow: 1;
-	}
-
-	#nav .nav-info > .nav-info-selection-button {
-		background-color: transparent;
-		border: none;
-		border-left: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 0rem;
-		outline: none;
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		padding: 0.435rem 0.75rem;
-		cursor: pointer;
-	}
-
-	#nav .nav-info > .nav-info-selection-button:hover,
-	#nav .nav-info > .nav-info-selection-button:focus {
-		background-color: rgba(255, 255, 255, 0.1);
-		border-left-color: transparent;
-		border-bottom-right-radius: 0.25rem;
-		border-top-right-radius: 0.25rem;
-	}
-
-	#nav .nav-info > .nav-info-selection-button > .nav-location-label {
-		color: white;
-		font-weight: 500;
-	}
-
-	#nav .nav-info > .nav-info-selection-button > .nav-category-label {
-		color: rgba(255, 255, 255, 0.7);
-		font-size: 0.8rem;
-	}
-
-	#nav .nav-sign-in-button {
-		background-color: rgba(255, 255, 255, 0.1);
-		color: white;
-		display: flex;
-		padding: 0.25rem;
-		border-radius: 5rem;
-		flex-shrink: 0;
-		border: none;
-		outline: none;
-		cursor: pointer;
-	}
-
-	#nav .nav-sign-in-button:hover,
-	#nav .nav-sign-in-button:focus {
-		background-color: rgba(255, 255, 255, 0.15);
-	}
-
-	#nav .nav-sign-in-button > .profile-pic {
-		height: 2.5rem;
-		width: 2.5rem;
-		object-fit: cover;
-		border-radius: inherit;
 	}
 
 	#header {
@@ -711,48 +602,6 @@
 		> span {
 		color: rgba(255, 255, 255, 0.8);
 		font-size: 0.8rem;
-	}
-
-	#content-listings > .listing > .listing-price-wrapper {
-		background-color: var(--theme-background);
-		bottom: 1.5rem;
-		left: 1.2rem;
-		border-radius: 0.5rem;
-		padding: 0.3rem;
-		position: absolute;
-		z-index: 2;
-		transform: translateY(40%);
-	}
-
-	#content-listings > .listing > .listing-price-wrapper > .listing-price {
-		background-color: var(--theme-primary);
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-		padding: 0.25rem 0.5rem;
-		border-radius: 0.25rem;
-	}
-
-	#content-listings > .listing > .listing-price-wrapper > .listing-price > i,
-	#content-listings
-		> .listing
-		> .listing-price-wrapper
-		> .listing-price
-		> span {
-		color: white;
-	}
-
-	#content-listings > .listing > .listing-price-wrapper > .listing-price > i {
-		font-size: 0.75rem;
-	}
-
-	#content-listings
-		> .listing
-		> .listing-price-wrapper
-		> .listing-price
-		> .listing-price-value {
-		font-size: 1.25rem;
-		font-weight: 500;
 	}
 
 	#content-listings > .listing > .listing-favorite-button {

@@ -68,7 +68,6 @@ dist/**
 
 # ignore pnpm files
 .pnpm-debug.log
-pnpm-lock.yaml
 
 # misc
 .DS_Store
@@ -142,3 +141,12 @@ yarn-error.log*
 **/admin.json
 # any kind of database
 **/*.dump
+
+# python
+# Byte-compiled / optimized / DLL files 
+__pycache__/
+*.py[cod]
+*$py.class
+venv
+# packages
+.deta

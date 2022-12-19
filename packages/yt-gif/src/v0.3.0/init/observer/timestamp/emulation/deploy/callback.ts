@@ -1,6 +1,6 @@
 import { toggleAttribute } from '$lib/utils'
 import { isSelected } from '../../../../../lib/backend-frontend/option'
-import { UI } from '../../../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { fmtTimestamp } from '../../../../timestamp/utils'
 import { valid_url_formatter } from '$v3/init/formatter/button/validation'
 import { appendVerticalUrlBtns } from '$v3/init/formatter/button/creation'
@@ -52,7 +52,7 @@ export function Callbacks(
 					'.yt-gif-url-btns-wrapper'
 				) as El // shouldn't be null
 				const valid = isSelected(
-					UI.display.fmt_options,
+					UIStore.get().display.fmt_options,
 					'rely_on_hierarchy'
 				)
 				toggleAttribute(!valid, 'style', wrp, 'display: none')

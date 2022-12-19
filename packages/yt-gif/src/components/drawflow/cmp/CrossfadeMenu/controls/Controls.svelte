@@ -1,6 +1,7 @@
 <script>
 	import MultiTags from './MultiTags.svelte'
 	import Close from './Close.svelte'
+	import { opened } from '../store'
 </script>
 
 <div id="header">
@@ -45,12 +46,19 @@
 					<span class=""> Options </span>
 				</button>
 			</div>
+			<div class="header-option ">
+				<button
+					on:click={() => ($opened = null)}
+					class="header-option-toggle header-button "
+					type="button">
+					<i class="fa-sharp fa-solid fa-xmark" />
+				</button>
+			</div>
 		</div>
 	</div>
 	<div class="multi-tags">
 		<MultiTags />
 	</div>
-	<Close />
 </div>
 
 <style lang="scss">
@@ -68,6 +76,7 @@
 		gap: 0.75rem;
 		border-radius: 0.75em;
 		padding: 0.5em;
+		user-select: none;
 		> .header-row {
 			display: flex;
 			align-items: center;

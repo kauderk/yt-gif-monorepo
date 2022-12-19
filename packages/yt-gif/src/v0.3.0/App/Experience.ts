@@ -1,11 +1,11 @@
-export const awaiting_input_type = {
+export const awaiting_input_type = <const>{
 	label: {
 		name: 'Input Type',
 		'data-tooltip': "Don't load until interaction",
 		id: 'awaiting_input_type',
 	},
 	options: {
-		mousedown: { name: 'Clicks' },
+		mousedown: { name: 'Clicks', selected: true },
 		mouseenter: { name: 'Hovering' },
 	},
 }
@@ -29,7 +29,7 @@ export const initialize_mode = <const>{
 			name: 'Handle Overflow',
 			'data-tooltip':
 				'Set Automatically - To gain access to the buffer, either increase the limit or manually unload videos',
-			//disabled: true,
+			disabled: true,
 		},
 		disabled: {
 			name: 'Everything',

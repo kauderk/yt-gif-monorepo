@@ -150,9 +150,11 @@ declare global {
 		uid: s
 	}
 	interface TBlockInfoRec extends TBlockInfo {
-		children: TBlockInfoRec[]
-		title: s
-		overrideKey: s
+		parents?: TBlockInfoRec[]
+		children?: TBlockInfoRec[]
+		// useful when reading recursive data
+		title?: s
+		overrideKey?: s
 	}
 	type TActiveTm = { index: number }
 	interface TlastActiveTm {

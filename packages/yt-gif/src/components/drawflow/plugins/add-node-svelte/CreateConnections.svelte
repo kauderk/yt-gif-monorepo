@@ -1,28 +1,28 @@
 <script lang="ts">
+	import type { DataNode } from '.'
+
 	import Path from './Path.svelte'
 
-	export let dataNode: any
+	export let dataNode: DataNode
 
-	const mapInputToCb = (_: HTMLElement, input_item: string) => {
-		Object.keys(dataNode.inputs[input_item].connections).forEach(
-			output_item => {
+	const mapInputToCb = (_: HTMLElement, input_row: string) => {
+		Object.keys(dataNode.inputs[input_row].connections).forEach(
+			output_row => {
 				new Path({
 					target: dataNode.precanvas,
 					props: {
-						input_item,
-						output_item,
+						input_row,
+						output_row,
 						dataNode,
 					},
 				})
-				// I think this is not necesary... since it happens once the parent dicatates "onDestroy" ritht?
-				// flush.push(() => path.$destroy)
 			}
 		)
 	}
 </script>
 
 <div class="inputs">
-	{#each Object.keys(dataNode.inputs) as input_item}
-		<div class="input {input_item}" use:mapInputToCb={input_item} />
+	{#each Object.keys(dataNode.inputs) as input_row}
+		<div class="input {input_row}" use:mapInputToCb={input_row} />
 	{/each}
 </div>

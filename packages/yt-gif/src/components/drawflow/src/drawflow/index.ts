@@ -1,56 +1,11 @@
 /* eslint-disable */
-// @ts-nocheck
-export default class Drawflow {
-	constructor(container, render = null, parent = null) {
-		this.events = {}
-		this.container = container
-		this.precanvas = null
-		this.nodeId = 1
-		this.ele_selected = null
-		this.node_selected = null
-		this.drag = false
-		this.reroute = false
-		this.reroute_fix_curvature = false
-		this.curvature = 0.5
-		this.reroute_curvature_start_end = 0.5
-		this.reroute_curvature = 0.5
-		this.reroute_width = 6
-		this.drag_point = false
-		this.editor_selected = false
-		this.connection = false
-		this.connection_ele = null
-		this.connection_selected = null
-		this.canvas_x = 0
-		this.canvas_y = 0
-		this.pos_x = 0
-		this.pos_x_start = 0
-		this.pos_y = 0
-		this.pos_y_start = 0
-		this.mouse_x = 0
-		this.mouse_y = 0
-		this.line_path = 5
-		this.first_click = null
-		this.force_first_input = false
-		this.draggable_inputs = true
-		this.useuuid = false
-		this.parent = parent
+import type { AddNodeProps, DrawflowExport, DrawflowNode, ID } from './types'
+import type { EventNames, OnEvents } from './events'
+import { DrawFlowDefault, type ET } from './properties'
+import { ObjectKeys } from '$lib/utils'
 
-		this.noderegister = {}
-		this.render = render
-		this.drawflow = { drawflow: { Home: { data: {} } } }
-		// Configurable options
-		this.module = 'Home'
-		this.editor_mode = 'edit'
-		this.zoom = 1
-		this.zoom_max = 1.6
-		this.zoom_min = 0.5
-		this.zoom_value = 0.1
-		this.zoom_last_value = 1
-
-		// Mobile
-		this.evCache = new Array()
-		this.prevDiff = -1
-	}
+export default class Drawflow extends DrawFlowDefault {
+	//#region LifeCycle
 
 	async start() {
 		// console.info("Start Drawflow!!");
@@ -93,11 +48,50 @@ export default class Drawflow {
 		this.container.onpointercancel = this.pointerup_handler.bind(this)
 		this.container.onpointerout = this.pointerup_handler.bind(this)
 		this.container.onpointerleave = this.pointerup_handler.bind(this)
+	}
+	async load() {
+		let promises = []
+		for (let key in this.drawflow.drawflow[this.module].data) {
+			promises.push(
+				this.addNodeImport(
+					this.drawflow.drawflow[this.module].data[key],
+					this.precanvas
+				)
+			)
+		}
+		await Promise.all(promises)
 
-		await this.load()
+		if (this.reroute) {
+			for (var key in this.drawflow.drawflow[this.module].data) {
+				this.addRerouteImport(
+					this.drawflow.drawflow[this.module].data[key]
+				)
+			}
+		}
+
+		for (var key in this.drawflow.drawflow[this.module].data) {
+			try {
+				this.updateConnectionNodes('node-' + key)
+			} catch (error) {
+				debugger
+			}
+		}
+
+		const editor = this.drawflow.drawflow
+		let number = 1
+		Object.keys(editor).map(function (moduleName, index) {
+			Object.keys(editor[moduleName].data).map(function (id, index2) {
+				if (parseInt(id) >= number) {
+					number = parseInt(id) + 1
+				}
+			})
+		})
+		this.nodeId = number
 	}
 
-	/* Mobile zoom */
+	//#endregion
+
+	//#region Mobile zoom
 	pointerdown_handler(ev) {
 		this.evCache.push(ev)
 	}
@@ -146,59 +140,388 @@ export default class Drawflow {
 			}
 		}
 	}
-	/* End Mobile Zoom */
-	async load() {
-		let promises = []
-		for (let key in this.drawflow.drawflow[this.module].data) {
-			promises.push(
-				this.addNodeImport(
-					this.drawflow.drawflow[this.module].data[key],
-					this.precanvas
-				)
-			)
-		}
-		await Promise.all(promises)
+	//#endregion End Mobile Zoom
 
-		if (this.reroute) {
-			for (var key in this.drawflow.drawflow[this.module].data) {
-				this.addRerouteImport(
-					this.drawflow.drawflow[this.module].data[key]
-				)
-			}
+	//#region Transform
+	position(e: ET<PointerEvent> | ET<MouseEvent>) {
+		if (e.type === 'touchmove') {
+			var e_pos_x = e.touches[0].clientX
+			var e_pos_y = e.touches[0].clientY
+		} else {
+			var e_pos_x = e.clientX
+			var e_pos_y = e.clientY
 		}
 
-		for (var key in this.drawflow.drawflow[this.module].data) {
-			try {
-				this.updateConnectionNodes('node-' + key)
-			} catch (error) {
-				debugger
-			}
+		if (this.connection) {
+			this.updateConnection(e_pos_x, e_pos_y)
+		}
+		if (this.editor_selected) {
+			x = this.canvas_x + -(this.pos_x - e_pos_x)
+			y = this.canvas_y + -(this.pos_y - e_pos_y)
+			this.dispatch('translate', { x: x, y: y })
+			this.precanvas.style.transform =
+				'translate(' + x + 'px, ' + y + 'px) scale(' + this.zoom + ')'
+		}
+		if (this.drag) {
+			e.preventDefault()
+			var x =
+				((this.pos_x - e_pos_x) * this.precanvas.clientWidth) /
+				(this.precanvas.clientWidth * this.zoom)
+			var y =
+				((this.pos_y - e_pos_y) * this.precanvas.clientHeight) /
+				(this.precanvas.clientHeight * this.zoom)
+			this.pos_x = e_pos_x
+			this.pos_y = e_pos_y
+
+			this.ele_selected.style.top = this.ele_selected.offsetTop - y + 'px'
+			this.ele_selected.style.left =
+				this.ele_selected.offsetLeft - x + 'px'
+
+			this.drawflow.drawflow[this.module].data[
+				this.ele_selected.id.slice(5)
+			].pos_x = this.ele_selected.offsetLeft - x
+			this.drawflow.drawflow[this.module].data[
+				this.ele_selected.id.slice(5)
+			].pos_y = this.ele_selected.offsetTop - y
+
+			this.updateConnectionNodes(this.ele_selected.id)
 		}
 
-		const editor = this.drawflow.drawflow
-		let number = 1
-		Object.keys(editor).map(function (moduleName, index) {
-			Object.keys(editor[moduleName].data).map(function (id, index2) {
-				if (parseInt(id) >= number) {
-					number = parseInt(id) + 1
+		if (this.drag_point) {
+			var x =
+				((this.pos_x - e_pos_x) * this.precanvas.clientWidth) /
+				(this.precanvas.clientWidth * this.zoom)
+			var y =
+				((this.pos_y - e_pos_y) * this.precanvas.clientHeight) /
+				(this.precanvas.clientHeight * this.zoom)
+			this.pos_x = e_pos_x
+			this.pos_y = e_pos_y
+
+			var pos_x =
+				this.pos_x *
+					(this.precanvas.clientWidth /
+						(this.precanvas.clientWidth * this.zoom)) -
+				this.precanvas.getBoundingClientRect().x *
+					(this.precanvas.clientWidth /
+						(this.precanvas.clientWidth * this.zoom))
+			var pos_y =
+				this.pos_y *
+					(this.precanvas.clientHeight /
+						(this.precanvas.clientHeight * this.zoom)) -
+				this.precanvas.getBoundingClientRect().y *
+					(this.precanvas.clientHeight /
+						(this.precanvas.clientHeight * this.zoom))
+
+			this.ele_selected.setAttributeNS(null, 'cx', pos_x)
+			this.ele_selected.setAttributeNS(null, 'cy', pos_y)
+
+			const nodeUpdate =
+				this.ele_selected.parentElement.classList[2].slice(9)
+			const nodeUpdateIn =
+				this.ele_selected.parentElement.classList[1].slice(13)
+			const output_class = this.ele_selected.parentElement.classList[3]
+			const input_class = this.ele_selected.parentElement.classList[4]
+
+			let numberPointPosition =
+				Array.from(this.ele_selected.parentElement.children).indexOf(
+					this.ele_selected
+				) - 1
+
+			if (this.reroute_fix_curvature) {
+				const numberMainPath =
+					this.ele_selected.parentElement.querySelectorAll(
+						'.main-path'
+					).length - 1
+				numberPointPosition -= numberMainPath
+				if (numberPointPosition < 0) {
+					numberPointPosition = 0
 				}
+			}
+
+			const nodeId = nodeUpdate.slice(5)
+			const searchConnection = this.drawflow.drawflow[this.module].data[
+				nodeId
+			].outputs[output_class].connections.findIndex(function (item, i) {
+				return item.node === nodeUpdateIn && item.output === input_class
 			})
-		})
-		this.nodeId = number
+
+			this.drawflow.drawflow[this.module].data[nodeId].outputs[
+				output_class
+			].connections[searchConnection].points[numberPointPosition] = {
+				pos_x: pos_x,
+				pos_y: pos_y,
+			}
+
+			const parentSelected =
+				this.ele_selected.parentElement.classList[2].slice(9)
+
+			this.updateConnectionNodes(parentSelected)
+		}
+
+		if (e.type === 'touchmove') {
+			this.mouse_x = e_pos_x
+			this.mouse_y = e_pos_y
+		}
+		this.dispatch('mouseMove', { x: e_pos_x, y: e_pos_y })
 	}
 
-	removeReouteConnectionSelected() {
-		this.dispatch('connectionUnselected', true)
-		if (this.reroute_fix_curvature) {
-			this.connection_selected.parentElement
-				.querySelectorAll('.main-path')
-				.forEach((item, i) => {
-					item.classList.remove('selected')
-				})
+	dragEnd(e: ET<TouchEvent> | ET<MouseEvent>) {
+		if (e.type === 'touchend') {
+			var e_pos_x = this.mouse_x
+			var e_pos_y = this.mouse_y
+			var ele_last = document.elementFromPoint(e_pos_x, e_pos_y)
+		} else {
+			var e_pos_x = e.clientX
+			var e_pos_y = e.clientY
+			var ele_last = e.target
+		}
+
+		if (this.drag) {
+			if (this.pos_x_start != e_pos_x || this.pos_y_start != e_pos_y) {
+				this.dispatch('nodeMoved', this.ele_selected.id.slice(5))
+			}
+		}
+
+		if (this.drag_point) {
+			this.ele_selected.classList.remove('selected')
+			if (this.pos_x_start != e_pos_x || this.pos_y_start != e_pos_y) {
+				this.dispatch(
+					'rerouteMoved',
+					this.ele_selected.parentElement.classList[2].slice(14)
+				)
+			}
+		}
+
+		if (this.editor_selected) {
+			this.canvas_x = this.canvas_x + -(this.pos_x - e_pos_x)
+			this.canvas_y = this.canvas_y + -(this.pos_y - e_pos_y)
+			this.editor_selected = false
+		}
+		if (this.connection === true) {
+			if (
+				ele_last.classList[0] === 'input' ||
+				(this.force_first_input &&
+					(ele_last.closest('.drawflow_content_node') != null ||
+						ele_last.classList[0] === 'drawflow-node'))
+			) {
+				if (
+					this.force_first_input &&
+					(ele_last.closest('.drawflow_content_node') != null ||
+						ele_last.classList[0] === 'drawflow-node')
+				) {
+					if (ele_last.closest('.drawflow_content_node') != null) {
+						var input_id = ele_last.closest(
+							'.drawflow_content_node'
+						).parentElement.id
+					} else {
+						var input_id = ele_last.id
+					}
+					if (
+						Object.keys(
+							this.getNodeFromId(input_id.slice(5)).inputs
+						).length === 0
+					) {
+						var input_class = false
+					} else {
+						var input_class = 'input_1'
+					}
+				} else {
+					// Fix connection;
+					var input_id = ele_last.parentElement.parentElement.id
+					var input_class = ele_last.classList[1]
+				}
+				var output_id = this.ele_selected.parentElement.parentElement.id
+				var output_class = this.ele_selected.classList[1]
+
+				if (output_id !== input_id && input_class !== false) {
+					if (
+						this.container.querySelectorAll(
+							'.connection.node_in_' +
+								input_id +
+								'.node_out_' +
+								output_id +
+								'.' +
+								output_class +
+								'.' +
+								input_class
+						).length === 0
+					) {
+						// Conection no exist save connection
+
+						this.connection_ele.classList.add('node_in_' + input_id)
+						this.connection_ele.classList.add(
+							'node_out_' + output_id
+						)
+						this.connection_ele.classList.add(output_class)
+						this.connection_ele.classList.add(input_class)
+						var id_input = input_id.slice(5)
+						var id_output = output_id.slice(5)
+
+						this.drawflow.drawflow[this.module].data[
+							id_output
+						].outputs[output_class].connections.push({
+							node: id_input,
+							output: input_class,
+						})
+						this.drawflow.drawflow[this.module].data[
+							id_input
+						].inputs[input_class].connections.push({
+							node: id_output,
+							input: output_class,
+						})
+						this.updateConnectionNodes('node-' + id_output)
+						this.updateConnectionNodes('node-' + id_input)
+						this.dispatch('connectionCreated', {
+							output_id: id_output,
+							input_id: id_input,
+							output_class: output_class,
+							input_class: input_class,
+						})
+					} else {
+						this.dispatch('connectionCancel', true)
+						this.connection_ele.remove()
+					}
+
+					this.connection_ele = null
+				} else {
+					// Connection exists Remove Connection;
+					this.dispatch('connectionCancel', true)
+					this.connection_ele.remove()
+					this.connection_ele = null
+				}
+			} else {
+				// Remove Connection;
+				this.dispatch('connectionCancel', true)
+				this.connection_ele.remove()
+				this.connection_ele = null
+			}
+		}
+
+		this.drag = false
+		this.drag_point = false
+		this.connection = false
+		this.ele_selected = null
+		this.editor_selected = false
+
+		this.dispatch('mouseUp', e)
+	}
+	//#endregion
+
+	//#region Actions
+	contextmenu(e: ET<Event>) {
+		this.dispatch('contextmenu', e)
+		e.preventDefault()
+		if (this.editor_mode === 'fixed' || this.editor_mode === 'view') {
+			return false
+		}
+		if (this.precanvas.getElementsByClassName('drawflow-delete').length) {
+			this.precanvas.getElementsByClassName('drawflow-delete')[0].remove()
+		}
+		if (this.node_selected || this.connection_selected) {
+			var deletebox = document.createElement('div')
+			deletebox.classList.add('drawflow-delete')
+			deletebox.innerHTML = 'x'
+			if (this.node_selected) {
+				this.node_selected.appendChild(deletebox)
+			}
+			if (
+				this.connection_selected &&
+				this.connection_selected.parentElement.classList.length > 1
+			) {
+				deletebox.style.top =
+					e.clientY *
+						(this.precanvas.clientHeight /
+							(this.precanvas.clientHeight * this.zoom)) -
+					this.precanvas.getBoundingClientRect().y *
+						(this.precanvas.clientHeight /
+							(this.precanvas.clientHeight * this.zoom)) +
+					'px'
+				deletebox.style.left =
+					e.clientX *
+						(this.precanvas.clientWidth /
+							(this.precanvas.clientWidth * this.zoom)) -
+					this.precanvas.getBoundingClientRect().x *
+						(this.precanvas.clientWidth /
+							(this.precanvas.clientWidth * this.zoom)) +
+					'px'
+
+				this.precanvas.appendChild(deletebox)
+			}
+		}
+	}
+	contextmenuDel() {
+		if (this.precanvas.getElementsByClassName('drawflow-delete').length) {
+			this.precanvas.getElementsByClassName('drawflow-delete')[0].remove()
 		}
 	}
 
-	click(e) {
+	key(e) {
+		this.dispatch('keydown', e)
+		if (this.editor_mode === 'fixed' || this.editor_mode === 'view') {
+			return false
+		}
+		if (e.key === 'Delete' || (e.key === 'Backspace' && e.metaKey)) {
+			if (this.node_selected != null) {
+				if (
+					this.first_click.tagName !== 'INPUT' &&
+					this.first_click.tagName !== 'TEXTAREA' &&
+					this.first_click.hasAttribute('contenteditable') !== true
+				) {
+					this.removeNodeId(this.node_selected.id)
+				}
+			}
+			if (this.connection_selected != null) {
+				this.removeConnection()
+			}
+		}
+	}
+
+	zoom_enter(event) {
+		if (event.ctrlKey) {
+			event.preventDefault()
+			if (event.deltaY > 0) {
+				// Zoom Out
+				this.zoom_out()
+			} else {
+				// Zoom In
+				this.zoom_in()
+			}
+		}
+	}
+	zoom_refresh() {
+		this.dispatch('zoom', this.zoom)
+		this.canvas_x = (this.canvas_x / this.zoom_last_value) * this.zoom
+		this.canvas_y = (this.canvas_y / this.zoom_last_value) * this.zoom
+		this.zoom_last_value = this.zoom
+		this.precanvas.style.transform =
+			'translate(' +
+			this.canvas_x +
+			'px, ' +
+			this.canvas_y +
+			'px) scale(' +
+			this.zoom +
+			')'
+	}
+	zoom_in() {
+		if (this.zoom < this.zoom_max) {
+			this.zoom += this.zoom_value
+			this.zoom_refresh()
+		}
+	}
+	zoom_out() {
+		if (this.zoom > this.zoom_min) {
+			this.zoom -= this.zoom_value
+			this.zoom_refresh()
+		}
+	}
+	zoom_reset() {
+		if (this.zoom != 1) {
+			this.zoom = 1
+			this.zoom_refresh()
+		}
+	}
+
+	click(e: ET<TouchEvent> | ET<MouseEvent>) {
 		this.dispatch('click', e)
 		if (this.editor_mode === 'fixed') {
 			//return false;
@@ -385,505 +708,30 @@ export default class Drawflow {
 		}
 		this.dispatch('clickEnd', e)
 	}
-
-	position(e) {
-		if (e.type === 'touchmove') {
-			var e_pos_x = e.touches[0].clientX
-			var e_pos_y = e.touches[0].clientY
-		} else {
-			var e_pos_x = e.clientX
-			var e_pos_y = e.clientY
+	dblclick(e: ET<MouseEvent>) {
+		if (this.connection_selected != null && this.reroute) {
+			this.createReroutePoint(this.connection_selected)
 		}
 
-		if (this.connection) {
-			this.updateConnection(e_pos_x, e_pos_y)
-		}
-		if (this.editor_selected) {
-			x = this.canvas_x + -(this.pos_x - e_pos_x)
-			y = this.canvas_y + -(this.pos_y - e_pos_y)
-			this.dispatch('translate', { x: x, y: y })
-			this.precanvas.style.transform =
-				'translate(' + x + 'px, ' + y + 'px) scale(' + this.zoom + ')'
-		}
-		if (this.drag) {
-			e.preventDefault()
-			var x =
-				((this.pos_x - e_pos_x) * this.precanvas.clientWidth) /
-				(this.precanvas.clientWidth * this.zoom)
-			var y =
-				((this.pos_y - e_pos_y) * this.precanvas.clientHeight) /
-				(this.precanvas.clientHeight * this.zoom)
-			this.pos_x = e_pos_x
-			this.pos_y = e_pos_y
-
-			this.ele_selected.style.top = this.ele_selected.offsetTop - y + 'px'
-			this.ele_selected.style.left =
-				this.ele_selected.offsetLeft - x + 'px'
-
-			this.drawflow.drawflow[this.module].data[
-				this.ele_selected.id.slice(5)
-			].pos_x = this.ele_selected.offsetLeft - x
-			this.drawflow.drawflow[this.module].data[
-				this.ele_selected.id.slice(5)
-			].pos_y = this.ele_selected.offsetTop - y
-
-			this.updateConnectionNodes(this.ele_selected.id)
-		}
-
-		if (this.drag_point) {
-			var x =
-				((this.pos_x - e_pos_x) * this.precanvas.clientWidth) /
-				(this.precanvas.clientWidth * this.zoom)
-			var y =
-				((this.pos_y - e_pos_y) * this.precanvas.clientHeight) /
-				(this.precanvas.clientHeight * this.zoom)
-			this.pos_x = e_pos_x
-			this.pos_y = e_pos_y
-
-			var pos_x =
-				this.pos_x *
-					(this.precanvas.clientWidth /
-						(this.precanvas.clientWidth * this.zoom)) -
-				this.precanvas.getBoundingClientRect().x *
-					(this.precanvas.clientWidth /
-						(this.precanvas.clientWidth * this.zoom))
-			var pos_y =
-				this.pos_y *
-					(this.precanvas.clientHeight /
-						(this.precanvas.clientHeight * this.zoom)) -
-				this.precanvas.getBoundingClientRect().y *
-					(this.precanvas.clientHeight /
-						(this.precanvas.clientHeight * this.zoom))
-
-			this.ele_selected.setAttributeNS(null, 'cx', pos_x)
-			this.ele_selected.setAttributeNS(null, 'cy', pos_y)
-
-			const nodeUpdate =
-				this.ele_selected.parentElement.classList[2].slice(9)
-			const nodeUpdateIn =
-				this.ele_selected.parentElement.classList[1].slice(13)
-			const output_class = this.ele_selected.parentElement.classList[3]
-			const input_class = this.ele_selected.parentElement.classList[4]
-
-			let numberPointPosition =
-				Array.from(this.ele_selected.parentElement.children).indexOf(
-					this.ele_selected
-				) - 1
-
-			if (this.reroute_fix_curvature) {
-				const numberMainPath =
-					this.ele_selected.parentElement.querySelectorAll(
-						'.main-path'
-					).length - 1
-				numberPointPosition -= numberMainPath
-				if (numberPointPosition < 0) {
-					numberPointPosition = 0
-				}
-			}
-
-			const nodeId = nodeUpdate.slice(5)
-			const searchConnection = this.drawflow.drawflow[this.module].data[
-				nodeId
-			].outputs[output_class].connections.findIndex(function (item, i) {
-				return item.node === nodeUpdateIn && item.output === input_class
-			})
-
-			this.drawflow.drawflow[this.module].data[nodeId].outputs[
-				output_class
-			].connections[searchConnection].points[numberPointPosition] = {
-				pos_x: pos_x,
-				pos_y: pos_y,
-			}
-
-			const parentSelected =
-				this.ele_selected.parentElement.classList[2].slice(9)
-
-			this.updateConnectionNodes(parentSelected)
-		}
-
-		if (e.type === 'touchmove') {
-			this.mouse_x = e_pos_x
-			this.mouse_y = e_pos_y
-		}
-		this.dispatch('mouseMove', { x: e_pos_x, y: e_pos_y })
-	}
-
-	dragEnd(e) {
-		if (e.type === 'touchend') {
-			var e_pos_x = this.mouse_x
-			var e_pos_y = this.mouse_y
-			var ele_last = document.elementFromPoint(e_pos_x, e_pos_y)
-		} else {
-			var e_pos_x = e.clientX
-			var e_pos_y = e.clientY
-			var ele_last = e.target
-		}
-
-		if (this.drag) {
-			if (this.pos_x_start != e_pos_x || this.pos_y_start != e_pos_y) {
-				this.dispatch('nodeMoved', this.ele_selected.id.slice(5))
-			}
-		}
-
-		if (this.drag_point) {
-			this.ele_selected.classList.remove('selected')
-			if (this.pos_x_start != e_pos_x || this.pos_y_start != e_pos_y) {
-				this.dispatch(
-					'rerouteMoved',
-					this.ele_selected.parentElement.classList[2].slice(14)
-				)
-			}
-		}
-
-		if (this.editor_selected) {
-			this.canvas_x = this.canvas_x + -(this.pos_x - e_pos_x)
-			this.canvas_y = this.canvas_y + -(this.pos_y - e_pos_y)
-			this.editor_selected = false
-		}
-		if (this.connection === true) {
-			if (
-				ele_last.classList[0] === 'input' ||
-				(this.force_first_input &&
-					(ele_last.closest('.drawflow_content_node') != null ||
-						ele_last.classList[0] === 'drawflow-node'))
-			) {
-				if (
-					this.force_first_input &&
-					(ele_last.closest('.drawflow_content_node') != null ||
-						ele_last.classList[0] === 'drawflow-node')
-				) {
-					if (ele_last.closest('.drawflow_content_node') != null) {
-						var input_id = ele_last.closest(
-							'.drawflow_content_node'
-						).parentElement.id
-					} else {
-						var input_id = ele_last.id
-					}
-					if (
-						Object.keys(
-							this.getNodeFromId(input_id.slice(5)).inputs
-						).length === 0
-					) {
-						var input_class = false
-					} else {
-						var input_class = 'input_1'
-					}
-				} else {
-					// Fix connection;
-					var input_id = ele_last.parentElement.parentElement.id
-					var input_class = ele_last.classList[1]
-				}
-				var output_id = this.ele_selected.parentElement.parentElement.id
-				var output_class = this.ele_selected.classList[1]
-
-				if (output_id !== input_id && input_class !== false) {
-					if (
-						this.container.querySelectorAll(
-							'.connection.node_in_' +
-								input_id +
-								'.node_out_' +
-								output_id +
-								'.' +
-								output_class +
-								'.' +
-								input_class
-						).length === 0
-					) {
-						// Conection no exist save connection
-
-						this.connection_ele.classList.add('node_in_' + input_id)
-						this.connection_ele.classList.add(
-							'node_out_' + output_id
-						)
-						this.connection_ele.classList.add(output_class)
-						this.connection_ele.classList.add(input_class)
-						var id_input = input_id.slice(5)
-						var id_output = output_id.slice(5)
-
-						this.drawflow.drawflow[this.module].data[
-							id_output
-						].outputs[output_class].connections.push({
-							node: id_input,
-							output: input_class,
-						})
-						this.drawflow.drawflow[this.module].data[
-							id_input
-						].inputs[input_class].connections.push({
-							node: id_output,
-							input: output_class,
-						})
-						this.updateConnectionNodes('node-' + id_output)
-						this.updateConnectionNodes('node-' + id_input)
-						this.dispatch('connectionCreated', {
-							output_id: id_output,
-							input_id: id_input,
-							output_class: output_class,
-							input_class: input_class,
-						})
-					} else {
-						this.dispatch('connectionCancel', true)
-						this.connection_ele.remove()
-					}
-
-					this.connection_ele = null
-				} else {
-					// Connection exists Remove Connection;
-					this.dispatch('connectionCancel', true)
-					this.connection_ele.remove()
-					this.connection_ele = null
-				}
-			} else {
-				// Remove Connection;
-				this.dispatch('connectionCancel', true)
-				this.connection_ele.remove()
-				this.connection_ele = null
-			}
-		}
-
-		this.drag = false
-		this.drag_point = false
-		this.connection = false
-		this.ele_selected = null
-		this.editor_selected = false
-
-		this.dispatch('mouseUp', e)
-	}
-	contextmenu(e) {
-		this.dispatch('contextmenu', e)
-		e.preventDefault()
-		if (this.editor_mode === 'fixed' || this.editor_mode === 'view') {
-			return false
-		}
-		if (this.precanvas.getElementsByClassName('drawflow-delete').length) {
-			this.precanvas.getElementsByClassName('drawflow-delete')[0].remove()
-		}
-		if (this.node_selected || this.connection_selected) {
-			var deletebox = document.createElement('div')
-			deletebox.classList.add('drawflow-delete')
-			deletebox.innerHTML = 'x'
-			if (this.node_selected) {
-				this.node_selected.appendChild(deletebox)
-			}
-			if (
-				this.connection_selected &&
-				this.connection_selected.parentElement.classList.length > 1
-			) {
-				deletebox.style.top =
-					e.clientY *
-						(this.precanvas.clientHeight /
-							(this.precanvas.clientHeight * this.zoom)) -
-					this.precanvas.getBoundingClientRect().y *
-						(this.precanvas.clientHeight /
-							(this.precanvas.clientHeight * this.zoom)) +
-					'px'
-				deletebox.style.left =
-					e.clientX *
-						(this.precanvas.clientWidth /
-							(this.precanvas.clientWidth * this.zoom)) -
-					this.precanvas.getBoundingClientRect().x *
-						(this.precanvas.clientWidth /
-							(this.precanvas.clientWidth * this.zoom)) +
-					'px'
-
-				this.precanvas.appendChild(deletebox)
-			}
+		if (e.target.classList[0] === 'point') {
+			this.removeReroutePoint(e.target)
 		}
 	}
-	contextmenuDel() {
-		if (this.precanvas.getElementsByClassName('drawflow-delete').length) {
-			this.precanvas.getElementsByClassName('drawflow-delete')[0].remove()
+	//#endregion
+
+	//#region Connections
+	removeReouteConnectionSelected() {
+		this.dispatch('connectionUnselected', true)
+		if (this.reroute_fix_curvature) {
+			this.connection_selected.parentElement
+				.querySelectorAll('.main-path')
+				.forEach((item, i) => {
+					item.classList.remove('selected')
+				})
 		}
 	}
 
-	key(e) {
-		this.dispatch('keydown', e)
-		if (this.editor_mode === 'fixed' || this.editor_mode === 'view') {
-			return false
-		}
-		if (e.key === 'Delete' || (e.key === 'Backspace' && e.metaKey)) {
-			if (this.node_selected != null) {
-				if (
-					this.first_click.tagName !== 'INPUT' &&
-					this.first_click.tagName !== 'TEXTAREA' &&
-					this.first_click.hasAttribute('contenteditable') !== true
-				) {
-					this.removeNodeId(this.node_selected.id)
-				}
-			}
-			if (this.connection_selected != null) {
-				this.removeConnection()
-			}
-		}
-	}
-
-	zoom_enter(event, delta) {
-		if (event.ctrlKey) {
-			event.preventDefault()
-			if (event.deltaY > 0) {
-				// Zoom Out
-				this.zoom_out()
-			} else {
-				// Zoom In
-				this.zoom_in()
-			}
-		}
-	}
-	zoom_refresh() {
-		this.dispatch('zoom', this.zoom)
-		this.canvas_x = (this.canvas_x / this.zoom_last_value) * this.zoom
-		this.canvas_y = (this.canvas_y / this.zoom_last_value) * this.zoom
-		this.zoom_last_value = this.zoom
-		this.precanvas.style.transform =
-			'translate(' +
-			this.canvas_x +
-			'px, ' +
-			this.canvas_y +
-			'px) scale(' +
-			this.zoom +
-			')'
-	}
-	zoom_in() {
-		if (this.zoom < this.zoom_max) {
-			this.zoom += this.zoom_value
-			this.zoom_refresh()
-		}
-	}
-	zoom_out() {
-		if (this.zoom > this.zoom_min) {
-			this.zoom -= this.zoom_value
-			this.zoom_refresh()
-		}
-	}
-	zoom_reset() {
-		if (this.zoom != 1) {
-			this.zoom = 1
-			this.zoom_refresh()
-		}
-	}
-
-	createCurvature(
-		start_pos_x,
-		start_pos_y,
-		end_pos_x,
-		end_pos_y,
-		curvature_value,
-		type
-	) {
-		var line_x = start_pos_x
-		var line_y = start_pos_y
-		var x = end_pos_x
-		var y = end_pos_y
-		var curvature = curvature_value
-		//type openclose open close other
-		switch (type) {
-			case 'open':
-				if (start_pos_x >= end_pos_x) {
-					var hx1 = line_x + Math.abs(x - line_x) * curvature
-					var hx2 = x - Math.abs(x - line_x) * (curvature * -1)
-				} else {
-					var hx1 = line_x + Math.abs(x - line_x) * curvature
-					var hx2 = x - Math.abs(x - line_x) * curvature
-				}
-				return (
-					' M ' +
-					line_x +
-					' ' +
-					line_y +
-					' C ' +
-					hx1 +
-					' ' +
-					line_y +
-					' ' +
-					hx2 +
-					' ' +
-					y +
-					' ' +
-					x +
-					'  ' +
-					y
-				)
-
-				break
-			case 'close':
-				if (start_pos_x >= end_pos_x) {
-					var hx1 = line_x + Math.abs(x - line_x) * (curvature * -1)
-					var hx2 = x - Math.abs(x - line_x) * curvature
-				} else {
-					var hx1 = line_x + Math.abs(x - line_x) * curvature
-					var hx2 = x - Math.abs(x - line_x) * curvature
-				}
-				return (
-					' M ' +
-					line_x +
-					' ' +
-					line_y +
-					' C ' +
-					hx1 +
-					' ' +
-					line_y +
-					' ' +
-					hx2 +
-					' ' +
-					y +
-					' ' +
-					x +
-					'  ' +
-					y
-				)
-				break
-			case 'other':
-				if (start_pos_x >= end_pos_x) {
-					var hx1 = line_x + Math.abs(x - line_x) * (curvature * -1)
-					var hx2 = x - Math.abs(x - line_x) * (curvature * -1)
-				} else {
-					var hx1 = line_x + Math.abs(x - line_x) * curvature
-					var hx2 = x - Math.abs(x - line_x) * curvature
-				}
-				return (
-					' M ' +
-					line_x +
-					' ' +
-					line_y +
-					' C ' +
-					hx1 +
-					' ' +
-					line_y +
-					' ' +
-					hx2 +
-					' ' +
-					y +
-					' ' +
-					x +
-					'  ' +
-					y
-				)
-				break
-			default:
-				var hx1 = line_x + Math.abs(x - line_x) * curvature
-				var hx2 = x - Math.abs(x - line_x) * curvature
-
-				return (
-					' M ' +
-					line_x +
-					' ' +
-					line_y +
-					' C ' +
-					hx1 +
-					' ' +
-					line_y +
-					' ' +
-					hx2 +
-					' ' +
-					y +
-					' ' +
-					x +
-					'  ' +
-					y
-				)
-		}
-	}
-
-	drawConnection(ele) {
+	drawConnection(ele: HTMLElement) {
 		var connection = document.createElementNS(
 			'http://www.w3.org/2000/svg',
 			'svg'
@@ -907,9 +755,19 @@ export default class Drawflow {
 		})
 	}
 
-	updateConnection(eX, eY) {
+	updateConnection(eX: number, eY: number) {
 		const precanvas = this.precanvas
 		const zoom = this.zoom
+		if (!this.precanvas || !precanvas) {
+			return console.error(
+				'Drawflow: at method updateConnection, canvas is undefined'
+			)
+		}
+		if (!this.connection_ele || !this.ele_selected) {
+			return console.error(
+				'Drawflow: at method updateConnection, connections are undefined'
+			)
+		}
 		let precanvasWitdhZoom =
 			precanvas.clientWidth / (precanvas.clientWidth * zoom)
 		precanvasWitdhZoom = precanvasWitdhZoom || 0
@@ -956,7 +814,12 @@ export default class Drawflow {
 		path.setAttributeNS(null, 'd', lineCurve)
 	}
 
-	addConnection(id_output, id_input, output_class, input_class) {
+	addConnection(
+		id_output: string,
+		id_input: string,
+		output_class: string,
+		input_class: string
+	) {
 		var nodeOneModule = this.getModuleFromNodeId(id_output)
 		var nodeTwoModule = this.getModuleFromNodeId(id_input)
 		if (nodeOneModule === nodeTwoModule) {
@@ -1023,7 +886,7 @@ export default class Drawflow {
 		}
 	}
 
-	updateConnectionNodes(id) {
+	updateConnectionNodes(id: string) {
 		// Aquí nos quedamos;
 		const idSearch = 'node_in_' + id
 		const idSearchOut = 'node_out_' + id
@@ -1037,6 +900,13 @@ export default class Drawflow {
 		const reroute_fix_curvature = this.reroute_fix_curvature
 		const rerouteWidth = this.reroute_width
 		const zoom = this.zoom
+
+		if (!precanvas) {
+			return console.error(
+				'Drawflow: at method updateConnectionNodes, canvas is undefined'
+			)
+		}
+
 		let precanvasWitdhZoom =
 			precanvas.clientWidth / (precanvas.clientWidth * zoom)
 		precanvasWitdhZoom = precanvasWitdhZoom || 0
@@ -1046,18 +916,18 @@ export default class Drawflow {
 
 		const elemsOut = container.querySelectorAll(`.${idSearchOut}`)
 
-		Object.keys(elemsOut).map(function (item, index) {
-			if (elemsOut[item].querySelector('.point') === null) {
+		ObjectKeys(elemsOut).map(function (_, index) {
+			if (elemsOut[index].querySelector('.point') === null) {
 				var elemtsearchId_out = container.querySelector(`#${id}`)
 
-				var id_search = elemsOut[item].classList[1].replace(
+				var id_search = elemsOut[index].classList[1].replace(
 					'node_in_',
 					''
 				)
 				var elemtsearchId = container.querySelector(`#${id_search}`)
 
 				var elemtsearch = elemtsearchId.querySelectorAll(
-					'.' + elemsOut[item].classList[4]
+					'.' + elemsOut[index].classList[4]
 				)[0]
 
 				var eX =
@@ -1072,7 +942,7 @@ export default class Drawflow {
 						precanvasHeightZoom
 
 				var elemtsearchOut = elemtsearchId_out.querySelectorAll(
-					'.' + elemsOut[item].classList[3]
+					'.' + elemsOut[index].classList[3]
 				)[0]
 
 				var line_x =
@@ -1097,11 +967,11 @@ export default class Drawflow {
 					curvature,
 					'openclose'
 				)
-				elemsOut[item].children[0].setAttributeNS(null, 'd', lineCurve)
+				elemsOut[index].children[0].setAttributeNS(null, 'd', lineCurve)
 			} else {
-				const points = elemsOut[item].querySelectorAll('.point')
+				const points = elemsOut[index].querySelectorAll('.point')
 				let linecurve = ''
-				const reoute_fix = []
+				const reoute_fix: s[] = []
 				points.forEach((item, i) => {
 					if (i === 0 && points.length - 1 === 0) {
 						var elemtsearchId_out = container.querySelector(
@@ -1147,6 +1017,7 @@ export default class Drawflow {
 						linecurve += lineCurveSearch
 						reoute_fix.push(lineCurveSearch)
 
+						// FIXME:
 						var elemtsearchId_out = item
 						var id_search = item.parentElement.classList[1].replace(
 							'node_in_',
@@ -1375,14 +1246,14 @@ export default class Drawflow {
 				})
 				if (reroute_fix_curvature) {
 					reoute_fix.forEach((itempath, i) => {
-						elemsOut[item].children[i].setAttributeNS(
+						elemsOut[index].children[i].setAttributeNS(
 							null,
 							'd',
 							itempath
 						)
 					})
 				} else {
-					elemsOut[item].children[0].setAttributeNS(
+					elemsOut[index].children[0].setAttributeNS(
 						null,
 						'd',
 						linecurve
@@ -1392,17 +1263,17 @@ export default class Drawflow {
 		})
 
 		const elems = container.querySelectorAll(`.${idSearch}`)
-		Object.keys(elems).map(function (item, index) {
-			if (elems[item].querySelector('.point') === null) {
+		Object.keys(elems).map(function (_, index) {
+			if (elems[index].querySelector('.point') === null) {
 				var elemtsearchId_in = container.querySelector(`#${id}`)
 
-				var id_search = elems[item].classList[2].replace(
+				var id_search = elems[index].classList[2].replace(
 					'node_out_',
 					''
 				)
 				var elemtsearchId = container.querySelector(`#${id_search}`)
 				var elemtsearch = elemtsearchId.querySelectorAll(
-					'.' + elems[item].classList[3]
+					'.' + elems[index].classList[3]
 				)[0]
 
 				var line_x =
@@ -1417,7 +1288,7 @@ export default class Drawflow {
 						precanvasHeightZoom
 
 				var elemtsearchId_in = elemtsearchId_in.querySelectorAll(
-					'.' + elems[item].classList[4]
+					'.' + elems[index].classList[4]
 				)[0]
 				var x =
 					elemtsearchId_in.offsetWidth / 2 +
@@ -1438,11 +1309,11 @@ export default class Drawflow {
 					curvature,
 					'openclose'
 				)
-				elems[item].children[0].setAttributeNS(null, 'd', lineCurve)
+				elems[index].children[0].setAttributeNS(null, 'd', lineCurve)
 			} else {
-				const points = elems[item].querySelectorAll('.point')
+				const points = elems[index].querySelectorAll('.point')
 				let linecurve = ''
-				const reoute_fix = []
+				const reoute_fix: s[] = []
 				points.forEach((item, i) => {
 					if (i === 0 && points.length - 1 === 0) {
 						var elemtsearchId_out = container.querySelector(
@@ -1718,30 +1589,214 @@ export default class Drawflow {
 				})
 				if (reroute_fix_curvature) {
 					reoute_fix.forEach((itempath, i) => {
-						elems[item].children[i].setAttributeNS(
+						elems[index].children[i].setAttributeNS(
 							null,
 							'd',
 							itempath
 						)
 					})
 				} else {
-					elems[item].children[0].setAttributeNS(null, 'd', linecurve)
+					elems[index].children[0].setAttributeNS(
+						null,
+						'd',
+						linecurve
+					)
 				}
 			}
 		})
 	}
+	removeConnection() {
+		if (this.connection_selected != null) {
+			var listclass = this.connection_selected.parentElement.classList
+			this.connection_selected.parentElement.remove()
+			//console.log(listclass);
+			var index_out = this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[1].slice(13) &&
+					item.output === listclass[4]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.splice(index_out, 1)
 
-	dblclick(e) {
-		if (this.connection_selected != null && this.reroute) {
-			this.createReroutePoint(this.connection_selected)
-		}
-
-		if (e.target.classList[0] === 'point') {
-			this.removeReroutePoint(e.target)
+			var index_in = this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[2].slice(14) &&
+					item.input === listclass[3]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.splice(index_in, 1)
+			this.dispatch('connectionRemoved', {
+				output_id: listclass[2].slice(14),
+				input_id: listclass[1].slice(13),
+				output_class: listclass[3],
+				input_class: listclass[4],
+			})
+			this.connection_selected = null
 		}
 	}
 
-	createReroutePoint(ele) {
+	removeSingleConnection(
+		id_output: s,
+		id_input: s,
+		output_class: s,
+		input_class: s
+	) {
+		var nodeOneModule = this.getModuleFromNodeId(id_output)
+		var nodeTwoModule = this.getModuleFromNodeId(id_input)
+		if (nodeOneModule === nodeTwoModule) {
+			// Check nodes in same module.
+
+			// Check connection exist
+			var exists = this.drawflow.drawflow[nodeOneModule].data[
+				id_output
+			].outputs[output_class].connections.findIndex(function (item, i) {
+				return item.node == id_input && item.output === input_class
+			})
+			if (exists > -1) {
+				if (this.module === nodeOneModule) {
+					// In same module with view.
+					this.container
+						.querySelector(
+							'.connection.node_in_node-' +
+								id_input +
+								'.node_out_node-' +
+								id_output +
+								'.' +
+								output_class +
+								'.' +
+								input_class
+						)
+						.remove()
+				}
+
+				var index_out = this.drawflow.drawflow[nodeOneModule].data[
+					id_output
+				].outputs[output_class].connections.findIndex(function (
+					item,
+					i
+				) {
+					return item.node == id_input && item.output === input_class
+				})
+				this.drawflow.drawflow[nodeOneModule].data[id_output].outputs[
+					output_class
+				].connections.splice(index_out, 1)
+
+				var index_in = this.drawflow.drawflow[nodeOneModule].data[
+					id_input
+				].inputs[input_class].connections.findIndex(function (item, i) {
+					return item.node == id_output && item.input === output_class
+				})
+				this.drawflow.drawflow[nodeOneModule].data[id_input].inputs[
+					input_class
+				].connections.splice(index_in, 1)
+
+				this.dispatch('connectionRemoved', {
+					output_id: id_output,
+					input_id: id_input,
+					output_class: output_class,
+					input_class: input_class,
+				})
+				return true
+			} else {
+				return false
+			}
+		} else {
+			return false
+		}
+	}
+
+	removeConnectionNodeId(id: s) {
+		const idSearchIn = 'node_in_' + id
+		const idSearchOut = 'node_out_' + id
+
+		const elemsOut = this.container.querySelectorAll(`.${idSearchOut}`)
+		for (var i = elemsOut.length - 1; i >= 0; i--) {
+			var listclass = elemsOut[i].classList
+
+			var index_in = this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[2].slice(14) &&
+					item.input === listclass[3]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.splice(index_in, 1)
+
+			var index_out = this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[1].slice(13) &&
+					item.output === listclass[4]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.splice(index_out, 1)
+
+			elemsOut[i].remove()
+
+			this.dispatch('connectionRemoved', {
+				output_id: listclass[2].slice(14),
+				input_id: listclass[1].slice(13),
+				output_class: listclass[3],
+				input_class: listclass[4],
+			})
+		}
+
+		const elemsIn = this.container.querySelectorAll(`.${idSearchIn}`)
+		for (var i = elemsIn.length - 1; i >= 0; i--) {
+			var listclass = elemsIn[i].classList
+
+			var index_out = this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[1].slice(13) &&
+					item.output === listclass[4]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[2].slice(14)
+			].outputs[listclass[3]].connections.splice(index_out, 1)
+
+			var index_in = this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.findIndex(function (item, i) {
+				return (
+					item.node === listclass[2].slice(14) &&
+					item.input === listclass[3]
+				)
+			})
+			this.drawflow.drawflow[this.module].data[
+				listclass[1].slice(13)
+			].inputs[listclass[4]].connections.splice(index_in, 1)
+
+			elemsIn[i].remove()
+
+			this.dispatch('connectionRemoved', {
+				output_id: listclass[2].slice(14),
+				input_id: listclass[1].slice(13),
+				output_class: listclass[3],
+				input_class: listclass[4],
+			})
+		}
+	}
+	//#endregion
+
+	//#region Routes
+	createReroutePoint(ele: HTMLElement) {
 		this.connection_selected.classList.remove('selected')
 		const nodeUpdate =
 			this.connection_selected.parentElement.classList[2].slice(9)
@@ -1823,27 +1878,14 @@ export default class Drawflow {
 		}
 
 		if (this.reroute_fix_curvature) {
-			if (
-				position_add_array_point > 0 ||
-				this.drawflow.drawflow[this.module].data[nodeId].outputs[
-					output_class
-				].connections[searchConnection].points !== []
-			) {
-				this.drawflow.drawflow[this.module].data[nodeId].outputs[
-					output_class
-				].connections[searchConnection].points.splice(
-					position_add_array_point,
-					0,
-					{ pos_x: pos_x, pos_y: pos_y }
-				)
-			} else {
-				this.drawflow.drawflow[this.module].data[nodeId].outputs[
-					output_class
-				].connections[searchConnection].points.push({
-					pos_x: pos_x,
-					pos_y: pos_y,
-				})
-			}
+			// used to be ... Comparison using the "!==" operator here is always true
+			this.drawflow.drawflow[this.module].data[nodeId].outputs[
+				output_class
+			].connections[searchConnection].points.splice(
+				position_add_array_point,
+				0,
+				{ pos_x: pos_x, pos_y: pos_y }
+			)
 
 			ele.parentElement
 				.querySelectorAll('.main-path')
@@ -1862,8 +1904,7 @@ export default class Drawflow {
 		this.dispatch('addReroute', nodeId)
 		this.updateConnectionNodes(nodeUpdate)
 	}
-
-	removeReroutePoint(ele) {
+	removeReroutePoint(ele: HTMLElement) {
 		const nodeUpdate = ele.parentElement.classList[2].slice(9)
 		const nodeUpdateIn = ele.parentElement.classList[1].slice(13)
 		const output_class = ele.parentElement.classList[3]
@@ -1898,19 +1939,217 @@ export default class Drawflow {
 		this.dispatch('removeReroute', nodeId)
 		this.updateConnectionNodes(nodeUpdate)
 	}
+	addRerouteImport(dataNode: DrawflowNode) {
+		const reroute_width = this.reroute_width
+		const reroute_fix_curvature = this.reroute_fix_curvature
+		const container = this.container
+		Object.keys(dataNode.outputs).map(function (output_item, index) {
+			Object.keys(dataNode.outputs[output_item].connections).map(
+				function (_, index) {
+					const points =
+						dataNode.outputs[output_item].connections[index].points
+					if (points !== undefined) {
+						points.forEach((item, i) => {
+							const input_id =
+								dataNode.outputs[output_item].connections[index]
+									.node
+							const input_class =
+								dataNode.outputs[output_item].connections[index]
+									.output
+							const ele = container.querySelector(
+								'.connection.node_in_node-' +
+									input_id +
+									'.node_out_node-' +
+									dataNode.id +
+									'.' +
+									output_item +
+									'.' +
+									input_class
+							)
 
-	registerNode(name, html, props = null, options = null) {
-		this.noderegister[name] = { html: html, props: props, options: options }
+							if (reroute_fix_curvature) {
+								if (i === 0) {
+									for (var z = 0; z < points.length; z++) {
+										var path = document.createElementNS(
+											'http://www.w3.org/2000/svg',
+											'path'
+										)
+										path.classList.add('main-path')
+										path.setAttributeNS(null, 'd', '')
+										ele.appendChild(path)
+									}
+								}
+							}
+
+							const point = document.createElementNS(
+								'http://www.w3.org/2000/svg',
+								'circle'
+							)
+							point.classList.add('point')
+							var pos_x = item.pos_x
+							var pos_y = item.pos_y
+
+							point.setAttributeNS(null, 'cx', pos_x)
+							point.setAttributeNS(null, 'cy', pos_y)
+							point.setAttributeNS(null, 'r', reroute_width)
+
+							ele.appendChild(point)
+						})
+					}
+				}
+			)
+		})
+	}
+	createCurvature(
+		start_pos_x: number,
+		start_pos_y: number,
+		end_pos_x: number,
+		end_pos_y: number,
+		curvature_value: number,
+		type: 'open' | 'close' | 'other' | 'openclose'
+	) {
+		var line_x = start_pos_x
+		var line_y = start_pos_y
+		var x = end_pos_x
+		var y = end_pos_y
+		var curvature = curvature_value
+		//type openclose open close other
+		switch (type) {
+			case 'open':
+				if (start_pos_x >= end_pos_x) {
+					var hx1 = line_x + Math.abs(x - line_x) * curvature
+					var hx2 = x - Math.abs(x - line_x) * (curvature * -1)
+				} else {
+					var hx1 = line_x + Math.abs(x - line_x) * curvature
+					var hx2 = x - Math.abs(x - line_x) * curvature
+				}
+				return (
+					' M ' +
+					line_x +
+					' ' +
+					line_y +
+					' C ' +
+					hx1 +
+					' ' +
+					line_y +
+					' ' +
+					hx2 +
+					' ' +
+					y +
+					' ' +
+					x +
+					'  ' +
+					y
+				)
+
+				break
+			case 'close':
+				if (start_pos_x >= end_pos_x) {
+					var hx1 = line_x + Math.abs(x - line_x) * (curvature * -1)
+					var hx2 = x - Math.abs(x - line_x) * curvature
+				} else {
+					var hx1 = line_x + Math.abs(x - line_x) * curvature
+					var hx2 = x - Math.abs(x - line_x) * curvature
+				}
+				return (
+					' M ' +
+					line_x +
+					' ' +
+					line_y +
+					' C ' +
+					hx1 +
+					' ' +
+					line_y +
+					' ' +
+					hx2 +
+					' ' +
+					y +
+					' ' +
+					x +
+					'  ' +
+					y
+				)
+				break
+			case 'other':
+				if (start_pos_x >= end_pos_x) {
+					var hx1 = line_x + Math.abs(x - line_x) * (curvature * -1)
+					var hx2 = x - Math.abs(x - line_x) * (curvature * -1)
+				} else {
+					var hx1 = line_x + Math.abs(x - line_x) * curvature
+					var hx2 = x - Math.abs(x - line_x) * curvature
+				}
+				return (
+					' M ' +
+					line_x +
+					' ' +
+					line_y +
+					' C ' +
+					hx1 +
+					' ' +
+					line_y +
+					' ' +
+					hx2 +
+					' ' +
+					y +
+					' ' +
+					x +
+					'  ' +
+					y
+				)
+				break
+			default:
+				var hx1 = line_x + Math.abs(x - line_x) * curvature
+				var hx2 = x - Math.abs(x - line_x) * curvature
+
+				return (
+					' M ' +
+					line_x +
+					' ' +
+					line_y +
+					' C ' +
+					hx1 +
+					' ' +
+					line_y +
+					' ' +
+					hx2 +
+					' ' +
+					y +
+					' ' +
+					x +
+					'  ' +
+					y
+				)
+		}
+	}
+	//#endregion
+
+	//#region Node Manipulation
+	registerNode(name: s, html: s | object, props = null, options = null) {
+		this.noderegister[name] = { html, props, options }
 	}
 
-	getNodeFromId(id) {
+	getNodeReferenceFromId(id: ID) {
 		var moduleName = this.getModuleFromNodeId(id)
-		return JSON.parse(
-			JSON.stringify(this.drawflow.drawflow[moduleName].data[id])
-		)
+
+		try {
+			return this.drawflow.drawflow[moduleName!].data[id] as DrawflowNode
+		} catch (error) {
+			console.log(error)
+		}
 	}
-	getNodesFromName(name) {
-		var nodes = []
+	getNodeFromId(id: ID) {
+		var moduleName = this.getModuleFromNodeId(id)
+
+		try {
+			return JSON.parse(
+				JSON.stringify(this.drawflow.drawflow[moduleName!].data[id])
+			) as DrawflowNode
+		} catch (error) {
+			console.log(error)
+		}
+	}
+	getNodesFromName(name: s) {
+		var nodes: ID[] = []
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			for (var node in editor[moduleName].data) {
@@ -1922,21 +2161,17 @@ export default class Drawflow {
 		return nodes
 	}
 
-	addNode(
-		name,
-		num_in,
-		num_out,
-		ele_pos_x,
-		ele_pos_y,
-		classoverride,
-		data,
-		html,
-		typenode = false
-	) {
+	async addNode(params: AddNodeProps) {
+		let { id: name, data } = params
+		let { html, typenode, class: classoverride } = params
+		let { inputs: num_in, outputs: num_out } = params
+		let { pos_x: ele_pos_x, pos_y: ele_pos_y } = params
+
+		let newNodeId: ID
 		if (this.useuuid) {
-			var newNodeId = this.getUuid()
+			newNodeId = this.getUuid()
 		} else {
-			var newNodeId = this.nodeId
+			newNodeId = this.nodeId
 		}
 		const parent = document.createElement('div')
 		parent.classList.add('parent-node')
@@ -1955,7 +2190,8 @@ export default class Drawflow {
 		const outputs = document.createElement('div')
 		outputs.classList.add('outputs')
 
-		const json_inputs = {}
+		type json = { [key: s]: { connections: [] } }
+		const json_inputs: json = {}
 		for (var x = 0; x < num_in; x++) {
 			const input = document.createElement('div')
 			input.classList.add('input')
@@ -1964,7 +2200,7 @@ export default class Drawflow {
 			inputs.appendChild(input)
 		}
 
-		const json_outputs = {}
+		const json_outputs: json = {}
 		for (var x = 0; x < num_out; x++) {
 			const output = document.createElement('div')
 			output.classList.add('output')
@@ -2018,7 +2254,7 @@ export default class Drawflow {
 			}
 		})
 
-		function insertObjectkeys(object, name, completname) {
+		function insertObjectkeys(object: any, name: s, completname: s) {
 			if (object === null) {
 				var object = data[name]
 			} else {
@@ -2055,11 +2291,11 @@ export default class Drawflow {
 		this.precanvas.appendChild(parent)
 		var json = {
 			id: newNodeId,
-			name: name,
-			data: data,
+			name,
+			data,
 			class: classoverride,
-			html: html,
-			typenode: typenode,
+			html,
+			typenode,
 			inputs: json_inputs,
 			outputs: json_outputs,
 			pos_x: ele_pos_x,
@@ -2073,7 +2309,7 @@ export default class Drawflow {
 		return newNodeId
 	}
 
-	async addNodeImport(dataNode, precanvas) {
+	async addNodeImport(dataNode: DrawflowNode, precanvas: HTMLElement) {
 		const parent = document.createElement('div')
 		parent.classList.add('parent-node')
 
@@ -2219,72 +2455,7 @@ export default class Drawflow {
 		this.precanvas.appendChild(parent)
 	}
 
-	addRerouteImport(dataNode) {
-		const reroute_width = this.reroute_width
-		const reroute_fix_curvature = this.reroute_fix_curvature
-		const container = this.container
-		Object.keys(dataNode.outputs).map(function (output_item, index) {
-			Object.keys(dataNode.outputs[output_item].connections).map(
-				function (input_item, index) {
-					const points =
-						dataNode.outputs[output_item].connections[input_item]
-							.points
-					if (points !== undefined) {
-						points.forEach((item, i) => {
-							const input_id =
-								dataNode.outputs[output_item].connections[
-									input_item
-								].node
-							const input_class =
-								dataNode.outputs[output_item].connections[
-									input_item
-								].output
-							const ele = container.querySelector(
-								'.connection.node_in_node-' +
-									input_id +
-									'.node_out_node-' +
-									dataNode.id +
-									'.' +
-									output_item +
-									'.' +
-									input_class
-							)
-
-							if (reroute_fix_curvature) {
-								if (i === 0) {
-									for (var z = 0; z < points.length; z++) {
-										var path = document.createElementNS(
-											'http://www.w3.org/2000/svg',
-											'path'
-										)
-										path.classList.add('main-path')
-										path.setAttributeNS(null, 'd', '')
-										ele.appendChild(path)
-									}
-								}
-							}
-
-							const point = document.createElementNS(
-								'http://www.w3.org/2000/svg',
-								'circle'
-							)
-							point.classList.add('point')
-							var pos_x = item.pos_x
-							var pos_y = item.pos_y
-
-							point.setAttributeNS(null, 'cx', pos_x)
-							point.setAttributeNS(null, 'cy', pos_y)
-							point.setAttributeNS(null, 'r', reroute_width)
-
-							ele.appendChild(point)
-						})
-					}
-				}
-			)
-		})
-	}
-
-	updateNodeValue(event) {
+	updateNodeValue(event: ET<InputEvent>) {
 		var attr = event.target.attributes
 		for (var i = 0; i < attr.length; i++) {
 			if (attr[i].nodeName.startsWith('df-')) {
@@ -2315,7 +2486,7 @@ export default class Drawflow {
 		}
 	}
 
-	updateNodeDataFromId(id, data) {
+	updateNodeDataFromId(id: s, data: object) {
 		var moduleName = this.getModuleFromNodeId(id)
 		this.drawflow.drawflow[moduleName].data[id].data = data
 		if (this.module === moduleName) {
@@ -2335,7 +2506,7 @@ export default class Drawflow {
 				}
 			})
 
-			function insertObjectkeys(object, name, completname) {
+			function insertObjectkeys(object: any, name: s, completname: s) {
 				if (object === null) {
 					var object = data[name]
 				} else {
@@ -2366,7 +2537,7 @@ export default class Drawflow {
 		}
 	}
 
-	addNodeInput(id) {
+	addNodeInput(id: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		const numInputs = Object.keys(infoNode.inputs).length
@@ -2386,7 +2557,7 @@ export default class Drawflow {
 		] = { connections: [] }
 	}
 
-	addNodeOutput(id) {
+	addNodeOutput(id: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		const numOutputs = Object.keys(infoNode.outputs).length
@@ -2406,7 +2577,7 @@ export default class Drawflow {
 		] = { connections: [] }
 	}
 
-	removeNodeInput(id, input_class) {
+	removeNodeInput(id: s, input_class: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		if (this.module === moduleName) {
@@ -2515,7 +2686,7 @@ export default class Drawflow {
 		this.updateConnectionNodes('node-' + id)
 	}
 
-	removeNodeOutput(id, output_class) {
+	removeNodeOutput(id: s, output_class: s) {
 		var moduleName = this.getModuleFromNodeId(id)
 		const infoNode = this.getNodeFromId(id)
 		if (this.module === moduleName) {
@@ -2629,7 +2800,7 @@ export default class Drawflow {
 		this.updateConnectionNodes('node-' + id)
 	}
 
-	removeNodeId(id) {
+	removeNodeId(id: s) {
 		this.removeConnectionNodeId(id)
 		var moduleName = this.getModuleFromNodeId(id.slice(5))
 		if (this.module === moduleName) {
@@ -2638,193 +2809,11 @@ export default class Drawflow {
 		delete this.drawflow.drawflow[moduleName].data[id.slice(5)]
 		this.dispatch('nodeRemoved', id.slice(5))
 	}
+	//#endregion
 
-	removeConnection() {
-		if (this.connection_selected != null) {
-			var listclass = this.connection_selected.parentElement.classList
-			this.connection_selected.parentElement.remove()
-			//console.log(listclass);
-			var index_out = this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[1].slice(13) &&
-					item.output === listclass[4]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.splice(index_out, 1)
-
-			var index_in = this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[2].slice(14) &&
-					item.input === listclass[3]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.splice(index_in, 1)
-			this.dispatch('connectionRemoved', {
-				output_id: listclass[2].slice(14),
-				input_id: listclass[1].slice(13),
-				output_class: listclass[3],
-				input_class: listclass[4],
-			})
-			this.connection_selected = null
-		}
-	}
-
-	removeSingleConnection(id_output, id_input, output_class, input_class) {
-		var nodeOneModule = this.getModuleFromNodeId(id_output)
-		var nodeTwoModule = this.getModuleFromNodeId(id_input)
-		if (nodeOneModule === nodeTwoModule) {
-			// Check nodes in same module.
-
-			// Check connection exist
-			var exists = this.drawflow.drawflow[nodeOneModule].data[
-				id_output
-			].outputs[output_class].connections.findIndex(function (item, i) {
-				return item.node == id_input && item.output === input_class
-			})
-			if (exists > -1) {
-				if (this.module === nodeOneModule) {
-					// In same module with view.
-					this.container
-						.querySelector(
-							'.connection.node_in_node-' +
-								id_input +
-								'.node_out_node-' +
-								id_output +
-								'.' +
-								output_class +
-								'.' +
-								input_class
-						)
-						.remove()
-				}
-
-				var index_out = this.drawflow.drawflow[nodeOneModule].data[
-					id_output
-				].outputs[output_class].connections.findIndex(function (
-					item,
-					i
-				) {
-					return item.node == id_input && item.output === input_class
-				})
-				this.drawflow.drawflow[nodeOneModule].data[id_output].outputs[
-					output_class
-				].connections.splice(index_out, 1)
-
-				var index_in = this.drawflow.drawflow[nodeOneModule].data[
-					id_input
-				].inputs[input_class].connections.findIndex(function (item, i) {
-					return item.node == id_output && item.input === output_class
-				})
-				this.drawflow.drawflow[nodeOneModule].data[id_input].inputs[
-					input_class
-				].connections.splice(index_in, 1)
-
-				this.dispatch('connectionRemoved', {
-					output_id: id_output,
-					input_id: id_input,
-					output_class: output_class,
-					input_class: input_class,
-				})
-				return true
-			} else {
-				return false
-			}
-		} else {
-			return false
-		}
-	}
-
-	removeConnectionNodeId(id) {
-		const idSearchIn = 'node_in_' + id
-		const idSearchOut = 'node_out_' + id
-
-		const elemsOut = this.container.querySelectorAll(`.${idSearchOut}`)
-		for (var i = elemsOut.length - 1; i >= 0; i--) {
-			var listclass = elemsOut[i].classList
-
-			var index_in = this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[2].slice(14) &&
-					item.input === listclass[3]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.splice(index_in, 1)
-
-			var index_out = this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[1].slice(13) &&
-					item.output === listclass[4]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.splice(index_out, 1)
-
-			elemsOut[i].remove()
-
-			this.dispatch('connectionRemoved', {
-				output_id: listclass[2].slice(14),
-				input_id: listclass[1].slice(13),
-				output_class: listclass[3],
-				input_class: listclass[4],
-			})
-		}
-
-		const elemsIn = this.container.querySelectorAll(`.${idSearchIn}`)
-		for (var i = elemsIn.length - 1; i >= 0; i--) {
-			var listclass = elemsIn[i].classList
-
-			var index_out = this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[1].slice(13) &&
-					item.output === listclass[4]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[2].slice(14)
-			].outputs[listclass[3]].connections.splice(index_out, 1)
-
-			var index_in = this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.findIndex(function (item, i) {
-				return (
-					item.node === listclass[2].slice(14) &&
-					item.input === listclass[3]
-				)
-			})
-			this.drawflow.drawflow[this.module].data[
-				listclass[1].slice(13)
-			].inputs[listclass[4]].connections.splice(index_in, 1)
-
-			elemsIn[i].remove()
-
-			this.dispatch('connectionRemoved', {
-				output_id: listclass[2].slice(14),
-				input_id: listclass[1].slice(13),
-				output_class: listclass[3],
-				input_class: listclass[4],
-			})
-		}
-	}
-
-	getModuleFromNodeId(id) {
-		var nameModule
+	//#region Modules
+	getModuleFromNodeId(id: ID) {
+		var nameModule: s | undefined
 		const editor = this.drawflow.drawflow
 		Object.keys(editor).map(function (moduleName, index) {
 			Object.keys(editor[moduleName].data).map(function (node, index2) {
@@ -2836,11 +2825,17 @@ export default class Drawflow {
 		return nameModule
 	}
 
-	addModule(name) {
+	addModule(name: s) {
+		//FIXME: should be renamed to 'tryAddModule'
+		if (typeof this.drawflow.drawflow[name]?.data == 'object') {
+			this.dispatch('moduleAlreadyExist', name)
+			return
+		}
+
 		this.drawflow.drawflow[name] = { data: {} }
 		this.dispatch('moduleCreated', name)
 	}
-	async changeModule(name) {
+	async changeModule(name: s) {
 		this.dispatch('moduleChanged', name)
 		this.module = name
 		this.precanvas.innerHTML = ''
@@ -2856,7 +2851,7 @@ export default class Drawflow {
 		await this.import(this.drawflow, false)
 	}
 
-	async removeModule(name) {
+	async removeModule(name: s) {
 		if (this.module === name) {
 			await this.changeModule('Home')
 		}
@@ -2879,7 +2874,7 @@ export default class Drawflow {
 		return dataExport
 	}
 
-	async import(data, notifi = true) {
+	async import(data: DrawflowExport, notifi = true) {
 		this.clear()
 		this.drawflow = JSON.parse(JSON.stringify(data))
 		await this.load()
@@ -2887,33 +2882,34 @@ export default class Drawflow {
 			this.dispatch('import', 'import')
 		}
 	}
+	//#endregion
 
-	/* Events */
-	on(event, callback) {
+	//#region Events
+	on: OnEvents = (eventName, callback) => {
 		// Check if the callback is not a function
 		if (typeof callback !== 'function') {
 			console.error(
 				`The listener callback must be a function, the given type is ${typeof callback}`
 			)
-			return false
+			return
 		}
 		// Check if the event is not a string
-		if (typeof event !== 'string') {
+		if (typeof eventName !== 'string') {
 			console.error(
-				`The event name must be a string, the given type is ${typeof event}`
+				`The event name must be a string, the given type is ${typeof eventName}`
 			)
-			return false
+			return
 		}
 		// Check if this event not exists
-		if (this.events[event] === undefined) {
-			this.events[event] = {
+		if (this.events[eventName] === undefined) {
+			this.events[eventName] = {
 				listeners: [],
 			}
 		}
-		this.events[event].listeners.push(callback)
+		this.events[eventName].listeners.push(callback)
 	}
 
-	removeListener(event, callback) {
+	removeListener: OnEvents = (event, callback) => {
 		// Check if this event not exists
 
 		if (!this.events[event]) return false
@@ -2924,7 +2920,7 @@ export default class Drawflow {
 		if (hasListener) listeners.splice(listenerIndex, 1)
 	}
 
-	dispatch(event, details) {
+	dispatch(event: EventNames, details: any) {
 		// Check if this event not exists
 		if (this.events[event] === undefined) {
 			// console.error(`This event: ${event} does not exist`);
@@ -2934,7 +2930,9 @@ export default class Drawflow {
 			listener(details)
 		})
 	}
+	//#endregion
 
+	//#region Utils
 	getUuid() {
 		// http://www.ietf.org/rfc/rfc4122.txt
 		var s = []
@@ -2949,4 +2947,5 @@ export default class Drawflow {
 		var uuid = s.join('')
 		return uuid
 	}
+	//#endregion
 }

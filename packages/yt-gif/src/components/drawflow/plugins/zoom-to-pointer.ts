@@ -9,7 +9,7 @@
 */
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 
-export function zoomToPointer(editor: Params) {
+export function zoomToPointer(editor: Drawflow) {
 	let position = { x: 0, y: 0 }
 	BGSize(editor)
 
@@ -22,7 +22,7 @@ export function zoomToPointer(editor: Params) {
 			CanvasWheel(e, editor)
 		}
 	}
-	editor.on('translate', (pos: pos) => {
+	editor.on('translate', pos => {
 		position = {
 			x: pos.x - position.x,
 			y: pos.y - position.y,
@@ -31,7 +31,7 @@ export function zoomToPointer(editor: Params) {
 	})
 }
 
-function zoom(e: WheelEvent, editor: Params) {
+function zoom(e: WheelEvent, editor: Drawflow) {
 	if (e.deltaY > 0) {
 		// Zoom Out
 		editor.zoom_out()
@@ -41,14 +41,21 @@ function zoom(e: WheelEvent, editor: Params) {
 	}
 }
 
-function BGSize(editor: Params) {
-	const cord = editor.zoom * 6.5
-	const square = cord + 'em'
+function BGSize(editor: Drawflow) {
+	const cord = editor.zoom * 100
+	const big = cord + 'px'
+	const smoll = cord / 4 + 'px'
 
-	editor.container.style.setProperty('background-size', `${square} ${square}`)
+	const bigCord = `${big} ${big}`
+	const smollCord = `${smoll} ${smoll}`
+
+	editor.container.style.setProperty(
+		'background-size',
+		`${smollCord}, ${smollCord}, ${bigCord}, ${bigCord}`
+	)
 }
 
-function CanvasWheel(e: WheelEvent, editor: Params) {
+function CanvasWheel(e: WheelEvent, editor: Drawflow) {
 	if (e.deltaY > 0) {
 		var moveAm = -40
 		//Scroll up
@@ -70,12 +77,4 @@ function CanvasWheel(e: WheelEvent, editor: Params) {
 		'px) scale(' +
 		editor.zoom +
 		')'
-}
-
-type pos = { x: n; y: n }
-interface Params extends Drawflow {
-	container: HTMLElement
-	zoom_enter: (e: WheelEvent) => void
-	precanvas: HTMLElement
-	dispatch: Function
 }

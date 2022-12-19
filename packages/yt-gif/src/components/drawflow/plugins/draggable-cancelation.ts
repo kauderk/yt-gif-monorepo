@@ -1,12 +1,7 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
 
 // https://github.com/jerosoler/Drawflow/issues/530
-export function draggableCancelation(
-	editor: Drawflow & {
-		container: HTMLElement
-		position: (this: Drawflow, ev: PointerEvent) => any
-	}
-) {
+export function draggableCancelation(editor: Drawflow) {
 	function pointerdown(e: PointerEvent) {
 		// @ts-ignore alright...
 		if (!e.target?.matches('.parent-drawflow, .drawflow')) {

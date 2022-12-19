@@ -49,13 +49,7 @@
 	// https://codepen.io/lufutu/pen/gogPbG
 	// https://codepen.io/oliviale/pen/aPwaXm
 	@import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
-	body {
-		font-family: Roboto, sans-serif;
-		font-size: 13px;
-		line-height: 1.42857143;
-		color: #8a9ba1;
-		background-color: #22313a;
-	}
+
 	small {
 		display: block;
 	}
@@ -108,10 +102,6 @@
 		.card__body,
 		.card__header {
 			padding: 25px 27px;
-		}
-
-		#messages {
-			overflow: hidden;
 		}
 	}
 	.col-6 {

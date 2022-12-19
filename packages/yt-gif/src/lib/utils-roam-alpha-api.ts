@@ -1,10 +1,16 @@
+import { SrrGlobal } from '$lib/global/SrrGlobal'
+
 const mouseOverEvents = ['mouseover']
 type THierarchy = [
 	{ uid: string; string: string },
 	{ title: string; uid: string }
 ]
 export const getPageUidSync = (pageTitle: s): s => {
-	const res = window.roamAlphaAPI.q(
+	// FIXME: window
+	// @ts-ignore
+	return null as s
+
+	const res = SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?page [:block/uid])
 	:where [?page :node/title \"${pageTitle}\"]]`
 	)
@@ -22,7 +28,7 @@ export const getOrCreatePageUid = async (pageTitle: s, initString?: s) => {
 export const SetNumberedViewWithUid = async (uid: s) => {
 	//https://github.com/dvargas92495/roam-js-extensions/blob/c7092e40f6602a97fb555ae9d0cda8d2780ba0f2/src/entries/mouseless.ts#:~:text=%60%5B%3Afind%20(pull%20%3Fb%20%5B%3Achildren/view-type%5D)%20%3Awhere%20%5B%3Fb%20%3Ablock/uid%20%22%24%7Buid%7D%22%5D%5D%60
 	const newViewType = 'numbered'
-	await window.roamAlphaAPI.updateBlock({
+	await SrrGlobal.roamAlphaAPI.updateBlock({
 		block: { uid, 'children-view-type': newViewType },
 	})
 }
@@ -51,7 +57,7 @@ export const getBlockInfoByUIDM = async (
 					  ${withParents ? '{:block/parents ...}' : ''}
 					 ])
 				  :where [?page :block/uid "${uid}"]  ]`
-		const results = await window.roamAlphaAPI.q(q)
+		const results = await SrrGlobal.roamAlphaAPI.q(q)
 		if (results.length == 0) return null
 		return results
 	} catch (e) {
@@ -60,7 +66,7 @@ export const getBlockInfoByUIDM = async (
 }
 export const getBlockParentUids = async (uid: s) => {
 	try {
-		const parentUIDs = await window.roamAlphaAPI.q(
+		const parentUIDs = await SrrGlobal.roamAlphaAPI.q(
 			`[:find (pull ?block [{:block/parents [:block/uid]}]) :in $ [?block-uid ...] :where [?block :block/uid ?block-uid]]`,
 			[uid]
 		)[0][0]
@@ -77,7 +83,7 @@ export const updateBlock = async (
 	block_expanded = true
 ) => {
 	block_uid = block_uid.replace('((', '').replace('))', '')
-	return await window.roamAlphaAPI.updateBlock({
+	return await SrrGlobal.roamAlphaAPI.updateBlock({
 		block: {
 			uid: block_uid,
 			string: block_string.toString(),
@@ -91,7 +97,7 @@ export const moveBlock = async (
 	block_order: n,
 	block_to_move_uid: s
 ) => {
-	return window.roamAlphaAPI.moveBlock({
+	return SrrGlobal.roamAlphaAPI.moveBlock({
 		location: { 'parent-uid': parent_uid, order: block_order },
 		block: { uid: block_to_move_uid },
 	})
@@ -104,10 +110,10 @@ export const createBlock = async (
 ) => {
 	parent_uid = parent_uid.replace('((', '').replace('))', '')
 	let newUid = !manualUID
-		? await window.roamAlphaAPI.util.generateUID()
+		? await SrrGlobal.roamAlphaAPI.util.generateUID()
 		: manualUID // polymorphism man...
 
-	await window.roamAlphaAPI.createBlock({
+	await SrrGlobal.roamAlphaAPI.createBlock({
 		location: {
 			'parent-uid': parent_uid,
 			order: block_order,
@@ -126,10 +132,10 @@ export const createBlock = async (
 	}
 }
 export const createUid = () => {
-	return window.roamAlphaAPI.util.generateUID()
+	return SrrGlobal.roamAlphaAPI.util.generateUID()
 }
 export const getPageUid = async (pageTitle: s): Promise<s> => {
-	const res = await window.roamAlphaAPI.q(
+	const res = await SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?page [:block/uid])
 	:where [?page :node/title \"${pageTitle}\"]]`
 	)
@@ -137,7 +143,7 @@ export const getPageUid = async (pageTitle: s): Promise<s> => {
 }
 export const createPage = async (pageTitle: s) => {
 	let pageUid = createUid()
-	await window.roamAlphaAPI.createPage({
+	await SrrGlobal.roamAlphaAPI.createPage({
 		page: { title: pageTitle, uid: pageUid },
 	})
 	return pageUid
@@ -148,13 +154,13 @@ export const createChildBlock = async (
 	childString: s,
 	childUid: s
 ) => {
-	return await window.roamAlphaAPI.createBlock({
+	return await SrrGlobal.roamAlphaAPI.createBlock({
 		location: { 'parent-uid': parentUid, order: order },
 		block: { string: childString.toString(), uid: childUid },
 	})
 }
 export const allChildrenInfo = async (blockUid: s) => {
-	let results = await window.roamAlphaAPI.q(
+	let results = await SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?parent [* {:block/children [:block/string :block/uid :block/order]}]) :where [?parent :block/uid \"${blockUid}\"]]`
 	)
 	return results.length == 0 ? undefined : results
@@ -164,7 +170,7 @@ export const sortObjectsByOrder = (o: any) => {
 	return o.sort((a, b) => a.order - b.order)
 }
 export const ExpandBlock = async (block_uid: s, block_expanded: b) => {
-	return await window.roamAlphaAPI.updateBlock({
+	return await SrrGlobal.roamAlphaAPI.updateBlock({
 		block: { uid: block_uid, open: block_expanded },
 	})
 }
@@ -179,7 +185,7 @@ export const getPageNamesFromBlockUidList = async (blockUidList: string[]) => {
 									 [?page :node/title]
 									 (ancestor ?block ?page)]`
 
-	const results: THierarchy[] = await window.roamAlphaAPI.q(
+	const results: THierarchy[] = await SrrGlobal.roamAlphaAPI.q(
 		query,
 		blockUidList,
 		rule
@@ -194,7 +200,7 @@ export const isBlockRef = async (uid: s) => {
 			uid = uid.slice(0, -2)
 		}
 
-		const block_ref = await window.roamAlphaAPI.q(`
+		const block_ref = await SrrGlobal.roamAlphaAPI.q(`
 		  [:find (pull ?e [:block/string])
 			  :where [?e :block/uid "${uid}"]]`)
 
@@ -204,7 +210,7 @@ export const isBlockRef = async (uid: s) => {
 	}
 }
 export const getBlockByPhrase = async (search_phrase: s) => {
-	return await window.roamAlphaAPI.q(
+	return await SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?e [:block/uid :block/string] ) :where [?e :block/string ?contents][(clojure.string/includes? ?contents "${search_phrase}")]]`
 	)
 }
@@ -251,15 +257,15 @@ export const setSideBarState = async (state: 1 | 2 | 3 | 4) => {
 			}
 			break
 		case 3: //open right
-			await window.roamAlphaAPI.ui.rightSidebar.open()
+			await SrrGlobal.roamAlphaAPI.ui.rightSidebar.open()
 			break
 		case 4: //close right
-			await window.roamAlphaAPI.ui.rightSidebar.close()
+			await SrrGlobal.roamAlphaAPI.ui.rightSidebar.close()
 			break
 	}
 }
 export const getBlockOrPageInfo = async (blockUid: s) => {
-	const results = await window.roamAlphaAPI.q(
+	const results = await SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?e [ :node/title :block/string :block/children :block/uid :block/order { :block/children ... } ] ) :where [ ?e :block/uid \"${blockUid}\" ] ]`
 	)
 
@@ -268,7 +274,7 @@ export const getBlockOrPageInfo = async (blockUid: s) => {
 export const getBlockStringByUID = async (
 	blockUid: string
 ): Promise<string> => {
-	const info = await window.roamAlphaAPI.q(
+	const info = await SrrGlobal.roamAlphaAPI.q(
 		`[:find (pull ?b [:block/string]):where [?b :block/uid "${blockUid}"]]`
 	)
 	return info[0]?.[0]?.string
@@ -277,7 +283,7 @@ export const getBlockParentUids_custom = async (
 	uid: string
 ): Promise<THierarchy[]> => {
 	try {
-		const parentUIDs = await window.roamAlphaAPI.q(
+		const parentUIDs = await SrrGlobal.roamAlphaAPI.q(
 			`[:find (pull ?block [{:block/parents [:block/uid]}]) :in $ [?block-uid ...] :where [?block :block/uid ?block-uid]]`,
 			[uid]
 		)[0][0]
@@ -337,7 +343,7 @@ export const navigateToUiOrCreate = async (
 	if (openInSideBar == false) {
 		document.location.href = baseUrl().href + '/' + uid
 	} else {
-		await window.roamAlphaAPI.ui.rightSidebar.addWindow({
+		await SrrGlobal.roamAlphaAPI.ui.rightSidebar.addWindow({
 			window: {
 				'block-uid': uid,
 				type: sSidebarType,
@@ -358,7 +364,7 @@ export const navigateToUiOrCreate = async (
 	}
 
 	async function getNodePageInfo(uid: s) {
-		const results = await window.roamAlphaAPI.q(
+		const results = await SrrGlobal.roamAlphaAPI.q(
 			`[:find (pull ?e [ :node/title :block/string :block/children :block/uid :block/order { :block/children ... } ] ) :where [ ?e :block/uid \"${uid}\" ] ]`
 		)
 		return results.length == 0 ? undefined : results
@@ -367,12 +373,12 @@ export const navigateToUiOrCreate = async (
 /* -------------------------------------------------------------------- */
 export const openBlockInSidebar = (blockUid: s, windowType = 'outline') => {
 	//windowType = block, outline, graph
-	return window.roamAlphaAPI.ui.rightSidebar.addWindow({
+	return SrrGlobal.roamAlphaAPI.ui.rightSidebar.addWindow({
 		window: { type: windowType, 'block-uid': blockUid },
 	})
 }
 export const deleteBlock = (blockUid: s) => {
-	return window.roamAlphaAPI.deleteBlock({ block: { uid: blockUid } })
+	return SrrGlobal.roamAlphaAPI.deleteBlock({ block: { uid: blockUid } })
 }
 export const rap = {
 	/* DISCLAIMER - THE MAJORITY OF THIS FUNCTIONS I TOOK THEM FROM ...

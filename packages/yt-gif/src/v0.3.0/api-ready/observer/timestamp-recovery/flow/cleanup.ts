@@ -1,9 +1,9 @@
-import { UI } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import type { TMutationObj, TMutIdx, T_tmRecord } from '../mutation'
 
 export function CleanupGarbage(added: T_tmRecord[], MutationObj: TMutationObj) {
 	if (
-		!UI.timestamps.tm_recovery.checked ||
+		!UIStore.get().timestamps.tm_recovery.checked ||
 		added.length > 0 ||
 		MutationObj.removed.length > 0
 	) {

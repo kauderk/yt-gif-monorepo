@@ -1,4 +1,5 @@
-import { UI, setCurrentFullscreenPlayer } from '$v3/init/config/yt-gif-init'
+import { setCurrentFullscreenPlayer } from '$v3/init/config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 import { playIs } from '../../lib/IFR'
 import type { TQueryResult } from '$v3/player-ready/setup/GetQuery'
 import type { YT_TargetWrapper } from '$v3/lib/types/yt-types'
@@ -13,14 +14,20 @@ export function GetFullscreenCallbacks(q: TQueryResult, t: YT_TargetWrapper) {
 				return
 			}
 			if (q.parent.Hover()) {
-				if ('mute' == UI.playerSettings.fullscreen_style.value) {
+				if (
+					'mute' ==
+					UIStore.get().playerSettings.fullscreen_style.value
+				) {
 					q.isSoundingFine(false)
 				} else if (
-					'pause' == UI.playerSettings.fullscreen_style.value
+					'pause' ==
+					UIStore.get().playerSettings.fullscreen_style.value
 				) {
 					q.togglePlay(false)
 				}
-			} else if ('play' == UI.playerSettings.fullscreen_style.value) {
+			} else if (
+				'play' == UIStore.get().playerSettings.fullscreen_style.value
+			) {
 				q.togglePlay(true)
 			}
 		},
@@ -28,7 +35,9 @@ export function GetFullscreenCallbacks(q: TQueryResult, t: YT_TargetWrapper) {
 			if (document.fullscreenElement) {
 				q.parent.others.toggleActive()
 			} else if (playIs('all_visible')) {
-				UI.playerSettings.play_style.dispatchEvent(new Event('change'))
+				UIStore.get().playerSettings.play_style.dispatchEvent(
+					new CustomEvent('change')
+				)
 			}
 		},
 	}

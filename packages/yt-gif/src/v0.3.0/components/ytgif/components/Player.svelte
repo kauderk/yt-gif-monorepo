@@ -1,126 +1,112 @@
-<script context="module">
-	let count = -1
-	let available = [
-		'oBM4Ip3ibjo',
-		'qTgPSKKjfVg',
-		'fuDbpn8aZr8',
-		'eGJ2an8_ujU',
-		'I2ziPw1SlH4',
-		'XNpqNXN8KL8',
-		'kYdOljz7NPg',
-		'B7ecyNfJOwo',
-	]
+<script context="module" lang="ts">
+	// prettier-ignore
+	let available = ['oBM4Ip3ibjo','qTgPSKKjfVg','fuDbpn8aZr8','eGJ2an8_ujU','I2ziPw1SlH4','XNpqNXN8KL8','kYdOljz7NPg','B7ecyNfJOwo',]
 </script>
 
-<div class="outter">
-	<div class="wrapper dont-focus-block" data-anim="pulse input thumbnail">
-		<!-- @ts-ignore -->
-		<div class="iframe-wrapper" />
-		<div class="controls">
-			<slot />
-		</div>
+<script lang="ts">
+	//#region imports
+	import { CreateXload } from '$lib/dom'
+	import { onMount } from 'svelte'
+	import {
+		CheckFalsePositive,
+		CreateConfigParams,
+		CreateRecordID,
+		GetNewID,
+	} from '$v3/api-ready/setup/query'
+	import { playerConfig } from '$v3/api-ready/deploy/config'
+	import F from './F.svelte'
+	import { createState } from './store'
+	onMount(async () => {
+		if (!window.YT) {
+			await CreateXload('https://www.youtube.com/iframe_api')
+		}
+	})
+	//#endregion
+
+	export let uid = ''
+	export let videoId = ''
+
+	if (!videoId) {
+		newVideoId()
+	}
+
+	export let idPrefix = 'player'
+	const state = createState(idPrefix)
+
+	const Fire = async () => {
+		const search = {
+			uid: 'irrelvant-uid',
+			preUrlIndex: 0,
+			accUrlIndex: 0,
+			url: atributes.url,
+			grandParentBlock,
+			nestedComponentMap: <Trm_map>{},
+			earlyReturnKey: '',
+		}
+
+		// don't add up false positives
+		if (CheckFalsePositive({ ...search, wrapper })) {
+			state.setPartial({ state: 'invalid' })
+			return
+		}
+
+		deploy()
+
+		function deploy() {
+			// YT API player
+			const { playerID } = atributes
+			const { record } = CreateRecordID(search)
+			// OnPlayerReady video params point of reference
+			const config = CreateConfigParams(playerID, search.url)
+
+			record.wTarget = new window.YT.Player(
+				playerID,
+				playerConfig(config)
+			)
+			state.setPartial({ state: 'loading' })
+		}
+	}
+
+	let grandParentBlock: HTMLDivElement
+	let wrapper: HTMLDivElement
+	let repaint = 0
+
+	function newVideoId() {
+		return (videoId =
+			available[Math.floor(Math.random() * available.length)])
+	}
+
+	let atributes = {
+		targetClass: 'rm-xparser-default-yt-gif',
+		dataCreation: 'null',
+		url: `https://youtu.be/${newVideoId()}`,
+		accUrlIndex: 0,
+		playerID: GetNewID(),
+		customSpan: undefined,
+	}
+	function newAttributes() {
+		atributes.url = `https://youtu.be/${newVideoId()}`
+		atributes.playerID = GetNewID()
+
+		return atributes
+	}
+</script>
+
+<div class="dwn-yt-gif-player-container" id="F">
+	<div class="dropdown-content" bind:this={grandParentBlock} id="F">
+		{#key repaint}
+			<F bind:wrapper attr={newAttributes()} />
+		{/key}
 	</div>
 </div>
 
-<style lang="scss">
-	@import 'https://unpkg.com/open-props';
+<button on:click={Fire}>Fire</button>
+<button on:click={() => (repaint += 1)}>Repaint</button>
 
-	.outter {
-		--brand1-light: var(--orange-6);
-		--brand2-light: var(--orange-7);
-		--brand3-light: var(--orange-8);
-		--text1-light: var(--gray-8);
-		--text2-light: var(--gray-7);
-		--surface1-light: var(--gray-0);
-		--surface2-light: var(--gray-1);
-		--surface3-light: var(--gray-2);
-		--surface4-light: var(--gray-3);
-		--surface5-light: var(--gray-4);
-	}
-
-	.outter > .wrapper {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-	// IFRAME
-	.iframe-wrapper :global(iframe) {
-		width: 100%;
-		height: 100%;
-	}
-	// location: mid center
-	.controls {
-		height: fit-content;
-		width: 100%;
-		display: flex;
-		gap: var(--size-3);
-		position: absolute;
-		bottom: 20%; // Y axis
-		//transform: translateY(15px);
-
-		justify-content: center;
-		align-items: center;
-
-		cursor: initial;
-
-		z-index: var(--layer-4);
-	}
-	// ---------------------------------------------
-	.wrapper,
-	.iframe-wrapper {
-		display: -webkit-inline-box;
-	}
-	// supported target components
-	.outter > :is(.rm-xparser-default-yt-gif,.rm-video-player__spacing-wrapper),
-	// video size
-	.wrapper,
-	.iframe-wrapper {
-		height: 100%;
-		aspect-ratio: var(--ratio-widescreen);
-	}
-	// Hmmm yes go on
-	.wrapper {
-		// multiple videos are annoying and too bright
-		filter: brightness(0.75);
-		position: relative;
-		// &.dont-focus-block {
-		// 	margin: 2px;
-		// }
-	}
-	.outter {
-		height: 100%;
-		aspect-ratio: var(--ratio-widescreen);
-		cursor: initial;
-	}
-	// ----------------------
-	// initialize_yt_gif_on_mouseenter feature
-	[data-anim*='input'] {
-		background: var(--surface4);
-		border-radius: var(--radius-2);
-	}
-	[data-anim*='thumbnail'] {
-		background-image: url();
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-	}
-	[data-anim*='pulse'] {
-		cursor: pointer;
-		animation: pulse 6s infinite;
-		transition: 0.5s all ease;
-		&:hover {
-			animation: none;
-		}
-	}
-	@keyframes pulse {
-		0% {
-			box-shadow: inset 0 0 2px 1px var(--surface3);
-		}
-		50% {
-			box-shadow: inset 0 0 8px 4px var(--surface3);
-		}
-		100% {
-			box-shadow: inset 0 0 2px 1px var(--surface3);
-		}
+<style>
+	button {
+		border: 1px dotted black;
+		padding: 0.25em 0.5em;
+		background: rgba(128, 128, 128, 0.238);
 	}
 </style>

@@ -1,8 +1,30 @@
 import Node from './Node.svelte'
 import { addInputs } from './add-inputs'
-import { AssertContentElement, getUUID, injectNodeCycle } from './query'
+import { getUUID, injectNodeCycle } from './query'
 import type Drawflow from '$cmp/drawflow/src/drawflow'
+import type {
+	AddNodeProps,
+	DrawflowNode,
+	DrawflowNodeObject,
+} from '$cmp/drawflow/src/drawflow/types'
+import { Task } from '$cmp/drawflow/lib/task'
+import { DrawflowStore } from '$cmp/drawflow/cmp/store'
+import { get } from 'svelte/store'
 
+export type Actions = { onUpdate: (htmlContent: s) => void }
+const CreateActions = (baseNode: DrawflowNodeObject) => {
+	return <Actions>{
+		onUpdate(htmlContent: s) {
+			const store = get(DrawflowStore)
+			const node = store.editor.getNodeReferenceFromId(baseNode.id)
+			if (node) {
+				// crazy how svelte maintains the reference to the same object!
+				node.data.content = htmlContent
+				//store.editor.dispatch('nodeUpdatedData', node)
+			}
+		},
+	}
+}
 /**
  * It seems to work after "editor.start()", the registration and the method itself.
  * Don't forget to register and add nodes using the same name/html.
@@ -11,97 +33,64 @@ import type Drawflow from '$cmp/drawflow/src/drawflow'
  * @param flush Svelte Components' destroy() method
  * @returns An overridden addNode function, bound to "this".
  */
-export function createAddNode(this: Drawflow, flush: (() => void)[]) {
-	function addNode(
-		name: string,
-		inputs: number,
-		outputs: number,
-		pos_x: number,
-		pos_y: number,
-		className: string,
-		data: any,
-		htmlOrGraphNodeID: string,
-		typenode: boolean | string = false
-	) {
-		const newId = getUUID.bind(this)()
+export function createAddNode(this: Drawflow) {
+	async function addNode(this: Drawflow, dataNode: AddNodeProps) {
+		const task = Task()
+		const id = getUUID.bind(this)()
 
-		const SvelteComponentSlot = this.noderegister[htmlOrGraphNodeID]?.html
-		const node = new Node({
+		const node = { ...dataNode, id }
+		const nodeComp = new Node({
 			target: this.container,
 			props: {
-				SvelteComponentSlot,
-				GraphNodeID: htmlOrGraphNodeID,
-				id: newId,
-				className,
-				top: pos_y,
-				left: pos_x,
-				inputs: { length: inputs, json: {}, type: 'input' },
-				outputs: { length: outputs, json: {}, type: 'output' },
-				content: <HTMLElement>{},
-				parent: <HTMLElement>{},
-			},
-		})
-		// flush.push(() => node.$destroy)
-
-		const json = {
-			name,
-			data,
-			html: htmlOrGraphNodeID,
-			typenode,
-
-			id: newId,
-			class: className,
-			inputs: node.inputs.json,
-			outputs: node.outputs.json,
-			pos_x: pos_x,
-			pos_y: pos_y,
-		}
-
-		return injectNodeCycle.bind(this)(node.parent, json)
-	}
-	// TODO: unify API parameters
-	async function addNodeImport(dataNode: any, precanvas: any) {
-		let task = Task()
-
-		const node = new Node({
-			target: precanvas,
-			props: {
-				id: dataNode.id,
-				className: dataNode.class,
-				top: dataNode.pos_y,
-				left: dataNode.pos_x,
-				inputs: { length: dataNode.inputs, json: {}, type: 'input' },
-				outputs: {
-					length: Object.keys(dataNode.outputs).length,
-					offset: 1, // man...
-					json: {},
-					type: 'output',
-				},
-				content: <HTMLElement>{},
-				parent: <HTMLElement>{},
-				dataNode: { ...dataNode, precanvas, task },
+				actions: CreateActions(node),
+				node,
+				task,
+				content: dataNode.data.content,
 			},
 		})
 		await task.promise
-		// flush.push(() => node.$destroy)
 
-		AssertContentElement.bind(this)(
-			node.content,
-			dataNode.html,
-			dataNode.typenode
+		const jsonNode = {
+			...dataNode,
+			id,
+			inputs: nodeComp.out?.inputs as any,
+			outputs: nodeComp.out?.outputs as any,
+		}
+
+		return injectNodeCycle.bind(this)(
+			nodeComp.out?.drawflowParentNode as any,
+			jsonNode
 		)
+	}
 
-		addInputs(dataNode.data, node.content)
+	async function addNodeImport(
+		this: Drawflow,
+		dataNode: DrawflowNode,
+		precanvas: HTMLElement
+	) {
+		const task = Task()
+
+		const node = new Node({
+			target: precanvas,
+
+			props: {
+				actions: CreateActions(dataNode),
+				node: {
+					...dataNode,
+					inputs: Object.keys(dataNode.inputs).length,
+					outputs: Object.keys(dataNode.outputs).length,
+				},
+				task,
+				dataNode: { ...dataNode, precanvas },
+			},
+		})
+		await task.promise
+
+		// @ts-ignore
+		addInputs(dataNode.data, node.out.drawflowContentNode!)
 	}
 	return { addNode, addNodeImport }
 }
-function Task<T>() {
-	let resolve = (v: T) => {},
-		reject = () => {}
-
-	const promise = new Promise<T>(function (_resolve, _reject) {
-		resolve = _resolve
-		reject = _reject
-	})
-	return { resolve, reject, promise }
+export type DataNode = Pick<DrawflowNode, 'inputs' | 'outputs' | 'id'> & {
+	precanvas: HTMLElement
 }

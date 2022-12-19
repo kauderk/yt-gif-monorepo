@@ -12,10 +12,12 @@
 	style:height={$props.canvas.height}
 	bind:this={$ctx.drawflowRoot}
 	id="drawflow"
+	class="parent-drawflow"
 	on:drop={$ctx.dnd.drop}
 	on:dblclick={$ctx.mul.clear_selection}
 	on:dragover={$ctx.dnd.allowDrop}>
 	<slot />
+	<div class="vignette" style="position: absolute" draggable="false" />
 </div>
 
 <style lang="scss" global>
@@ -27,22 +29,43 @@
 
 		top: 0;
 		left: 0;
+	}
+	// style
+	#drawflow {
+		--bg: #180032;
+		--o: #121313 1.5px;
+		--i: rgb(31, 31, 31) 1px;
 
-		background-color: rgb(28, 30, 32) !important;
-		// background-size: 6.5rem 6.5rem !important;
+		background-color: var(--bg) !important;
+		background:
+			//
+			linear-gradient(90deg, var(--i), transparent 0),
+			linear-gradient(180deg, var(--i), transparent 0),
+			//
+			linear-gradient(90deg, var(--o), transparent 0),
+			linear-gradient(180deg, var(--o), transparent 0);
 
-		background-position: 0px 0px;
-		background-image: linear-gradient(
-				rgb(72, 78, 80) 0.1rem,
-				rgba(6, 6, 6, 0) 0.1rem
-			),
-			linear-gradient(
-				90deg,
-				rgb(72, 78, 80) 0.1rem,
-				rgba(6, 6, 6, 0) 0.1rem
-			) !important;
+		background-size:
+			//
+			25px 25px, 25px 25px,
+			//
+			125px 125px,
+			125px 125px;
+	}
+	#drawflow .vignette {
+		display: block;
+		position: absolute;
+		pointer-events: none;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
 
-		box-shadow: rgba(0, 0, 0, 0.5) 15px 15px 25px 0px;
+		background-image: radial-gradient(
+			ellipse,
+			transparent 50%,
+			rgba(33, 34, 38, 1)
+		);
 	}
 	// hability to drag around
 	.drawflow {
@@ -51,7 +74,7 @@
 		user-select: none;
 		border: 1px rgba(0, 183, 255, 0.63) dotted;
 		// paths
-		svg {
+		svg.connection {
 			z-index: 0;
 			position: absolute;
 			overflow: visible !important;
@@ -60,8 +83,12 @@
 		.connection .main-path {
 			cursor: pointer;
 			fill: none;
-			stroke-width: 5px;
-			stroke: #838383bb;
+			stroke-width: 2.5px;
+			stroke-dasharray: 10px;
+			stroke-dashoffset: 20px;
+			animation: stroke 0.4s linear infinite;
+
+			stroke: #c0c0c0bb;
 			&:hover {
 				stroke: #46b0b4;
 			}
@@ -73,6 +100,11 @@
 				stroke: #4d46b4;
 				stroke-width: 2px;
 				fill: rgba(156, 152, 152, 1);
+			}
+		}
+		@keyframes stroke {
+			to {
+				stroke-dashoffset: 0;
 			}
 		}
 	}

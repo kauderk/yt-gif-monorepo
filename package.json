@@ -48,6 +48,9 @@
 		"turbo": "latest",
 		"vite": "^3.1.0-beta.1"
 	},
+	"resolutions": {
+		"prosemirror-model": "^1.8.1"
+	},
 	"type": "module",
 	"dependencies": {
 		"svelte-preprocess": "^4.10.6"

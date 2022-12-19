@@ -2,11 +2,9 @@ import { GetPlayerState } from '$v3/init/config/yt-gif-init'
 import { isRendered } from '$v3/lib/dom/elements-yt-gif-parent'
 import { allVideoParameters } from '$v3/lib/types/config'
 import { TryReloadVideo } from '$v3/lib/event/TryReloadVideo'
-import type { YT_IFRAME} from '$v3/lib/types/yt-types';
+import type { YT_IFRAME } from '$v3/lib/types/yt-types'
 import { YT_TargetWrapper } from '$v3/lib/types/yt-types'
 import { HandleEndState } from './HandleEndState'
-
-window.AvoidCircularDependency.getOnStateChange = () => onStateChange
 
 export async function onStateChange(state: YT_IFRAME) {
 	const t = new YT_TargetWrapper(state.target)

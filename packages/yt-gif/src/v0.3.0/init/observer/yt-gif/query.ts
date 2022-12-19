@@ -1,12 +1,13 @@
 import { isNotZoomPath } from '$lib/utils'
 import { attrInfo } from '../../config/paths'
 import { onYouTubePlayerAPIReady } from '$v3/api-ready'
+import { SrrGlobal } from '$lib/global/SrrGlobal'
 
 export function Local(targetClass: s) {
 	// ObserveIntersectToSetUpPlayer when cssClass is added to the DOM
 	return {
 		async OnRendered(wrapper: Element) {
-			window.YT_GIF_OBSERVERS.masterIntersectionObservers.push(
+			SrrGlobal.YT_GIF_OBSERVERS.masterIntersectionObservers.push(
 				PlayerOnIntersection({
 					wrapper,
 					message: 'valid entries MutationObserver',

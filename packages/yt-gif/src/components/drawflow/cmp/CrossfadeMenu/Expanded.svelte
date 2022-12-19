@@ -4,89 +4,83 @@
 	import { flip } from 'svelte/animate'
 	import { type TItem, getContext, defCrossfade } from './store'
 	import Item from './Item.svelte'
-	import { createEventDispatcher } from 'svelte'
+	import { createEventDispatcher, onMount } from 'svelte'
+	import { fade } from 'svelte/transition'
+	import type { TItemCtx, Scroller } from '../ctx'
+	import type { Writable } from 'svelte/store'
 
-	const items = getContext()
 	const dispatch = createEventDispatcher()
 
 	export let opened: TItem
 	export let [send, receive] = defCrossfade
+
+	export let LevelsOfItems: TItemCtx[][]
+	export let scrollValues: Writable<Scroller[]>
 </script>
 
-<!-- {#key opened.id} -->
-{#each [opened] as _ (opened.id)}
-	<div class="layout-2">
-		<HorizontalScroller>
-			<div class="s-menu">
-				{#each items.filter( ({ id }) => (opened ? opened.id !== id : true) ) as item (item.id)}
+<!-- Note: a wrapper should have position:absolute if the sender/receiver is right next to it -->
+<aside class="scrollers">
+	{#each LevelsOfItems as items, i}
+		<HorizontalScroller bind:scrollValues={$scrollValues[i]}>
+			{#each items as item}
+				{#if opened.id !== item.id}
 					<div
 						class="item"
 						class:selected={opened.id == item.id}
 						in:receive={{ key: item.id }}
-						out:send={{ key: item.id }}
-						animate:flip>
+						out:send={{ key: item.id }}>
 						<Item
 							hue={item.id * 35}
-							icon={item.icon}
-							cmp={item.cmp}
+							{...item}
+							type={['label', 'draggable']}
 							on:click={() => dispatch('click', { item })} />
 					</div>
-				{/each}
-			</div>
+				{:else if opened.id === item.id}
+					<div class="item" transition:fade>
+						<Item
+							hue={item.id * 35}
+							{...opened}
+							type={['label', 'draggable', 'expanded']} />
+					</div>
+				{/if}
+			{/each}
 		</HorizontalScroller>
-
-		<div class="content">
+	{/each}
+</aside>
+<!-- Note: both this element will work just fine, since this container is position:absolute -->
+<div class="crossfade-container">
+	<main class="relative">
+		{#key opened}
 			<div
-				class="item"
+				class="crossfade"
 				in:receive={{ key: opened.id }}
 				out:send={{ key: opened.id }}>
 				<Item
 					hue={opened.id * 35}
-					icon={opened.icon}
-					expanded
-					cmp={opened.cmp}
-					GraphNodeID={opened.GraphNodeID}>
+					{...opened}
+					type={['component', 'draggable', 'expanded']}>
 					{opened.title}
 				</Item>
 			</div>
-		</div>
-	</div>
-{/each}
+		{/key}
+	</main>
+</div>
 
 <style lang="scss">
-	.layout-2 {
-		position: absolute;
-		width: 100%;
-		// horizontal scrollable component won't work with flex
-		// display: flex;
-		justify-content: start;
-		// padding: 0.5rem;
-
-		// horizontal
+	.scrollers {
+		display: flex;
 		flex-direction: column;
-		align-items: center;
-		align-content: center;
-
-		.s-menu {
-			display: flex;
-			gap: 0.5em;
-			> .item:not(:last-child) {
-				margin-bottom: 0.5rem;
-			}
-		}
-
-		> .content {
-			flex-grow: 1;
-			margin: auto;
-			// nice offset when vertical
-			// padding-left: 0.5rem;
-
-			// fit horizontally
-			width: inherit;
-
-			> .item {
-				width: 100%;
-				height: 100%;
+		gap: 0.5em;
+		padding: 0.5em;
+	}
+	.crossfade-container {
+		position: absolute;
+		width: auto;
+		padding: 0.5em;
+		> main.relative {
+			> .crossfade {
+				position: absolute;
+				height: auto;
 			}
 		}
 	}

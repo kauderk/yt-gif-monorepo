@@ -1,5 +1,6 @@
 // "youtube-search-api": "^1.1.1"
 import axios from 'axios'
+import type { RootObject } from './types'
 const youtubeEndpoint = `https://www.youtube.com`
 const _locale_ = 'hl=en&gl=us'
 let eneabledLog = false
@@ -30,8 +31,11 @@ const GetYoutubeInitData = async url => {
 				)
 			}
 
-			initdata = await JSON.parse(data)
-			return await Promise.resolve({ initdata, apiToken, context })
+			return await Promise.resolve({
+				initdata: (await JSON.parse(data)) as RootObject,
+				apiToken,
+				context,
+			})
 		} else {
 			console.error('cannot_get_init_data')
 			return await Promise.reject('cannot_get_init_data')
@@ -280,18 +284,27 @@ const GetVideoDetails = async videoId => {
 			.videoPrimaryInfoRenderer
 		const secondContent = await result.results.results.contents[1]
 			.videoSecondaryInfoRenderer
+
+		const relativeContent = tryGetChapters(page.initdata)
+
 		const res = await {
-			title: firstContent.title.runs[0].text,
+			title: firstContent.title.runs[0].text as s,
 			isLive: firstContent.viewCount.videoViewCountRenderer.hasOwnProperty(
 				'isLive'
 			)
-				? firstContent.viewCount.videoViewCountRenderer.isLive
+				? (firstContent.viewCount.videoViewCountRenderer.isLive as b)
 				: false,
-			channel: secondContent.owner.videoOwnerRenderer.title.runs[0].text,
-			description: secondContent.description.runs
-				.map(x => x.text)
-				.join()
-				.toString(),
+			channel: secondContent.owner.videoOwnerRenderer.title.runs[0]
+				.text as s,
+			chapters: relativeContent.find(e => e.key == 'AUTO_CHAPTERS')?.value
+				.chapters,
+			heatmapRenderer: relativeContent.find(e => e.key == 'HEATSEEKER')
+				?.value.heatmap.heatmapRenderer,
+			description:
+				(secondContent.description?.runs
+					.map(x => x.text)
+					.join()
+					.toString() as s) ?? '',
 			suggestion: result.secondaryResults.secondaryResults.results
 				.filter(y => y.hasOwnProperty('compactVideoRenderer'))
 				.map(x => compactVideoRenderer(x)),
@@ -300,6 +313,16 @@ const GetVideoDetails = async videoId => {
 		return await Promise.resolve(res)
 	} catch (ex) {
 		return await Promise.reject(ex)
+	}
+}
+
+function tryGetChapters(initdata: RootObject) {
+	try {
+		return initdata.playerOverlays.playerOverlayRenderer
+			.decoratedPlayerBarRenderer.decoratedPlayerBarRenderer.playerBar
+			.multiMarkersPlayerBarRenderer.markersMap
+	} catch (error) {
+		return []
 	}
 }
 

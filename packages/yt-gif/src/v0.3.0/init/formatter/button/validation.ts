@@ -1,7 +1,7 @@
 import { isSelected } from '../../../lib/backend-frontend/option'
 import { s_u_f_key } from '../../../lib/types/config'
 import { isTrue } from '$lib/utils'
-import { UI } from '../../config/yt-gif-init'
+import { UIStore } from '$v3/init/config/UIStore'
 
 /* ***************** */
 
@@ -23,6 +23,8 @@ export function ValidUrlBtnUsage() {
 	return usageKey && binarySessionVal(key)
 }
 export function valid_url_formatter() {
-	// @ts-ignore //TODO:
-	return isSelected(UI.display.ms_options, s_u_f_key) && ValidUrlBtnUsage()
+	return (
+		isSelected(UIStore.get().display.ms_options, s_u_f_key)!! &&
+		ValidUrlBtnUsage()
+	)
 }

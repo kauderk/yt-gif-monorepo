@@ -1,14 +1,15 @@
 import type Drawflow from '$cmp/drawflow/src/drawflow'
+import type { DrawflowNode, ID } from '$cmp/drawflow/src/drawflow/types'
 import { toast } from '@zerodevx/svelte-toast'
 
-export function getUUID(this: Drawflow): number {
+export function getUUID(this: Drawflow): ID {
 	if (this.useuuid) {
 		var newNodeId = this.getUuid()
 	} else {
 		var newNodeId = this.nodeId
 	}
 	// @ts-ignore
-	return newNodeId as number
+	return newNodeId as ID
 }
 
 export function AssertContentElement(
@@ -17,7 +18,7 @@ export function AssertContentElement(
 	htmlOrGraphNodeID: string,
 	typenode: boolean | unknown
 ) {
-	let asldfkj = null
+	let ok = null
 	if (typenode === false) {
 		content.innerHTML = htmlOrGraphNodeID
 	} else if (typenode === true) {
@@ -27,7 +28,7 @@ export function AssertContentElement(
 	} else {
 		// SVELTE CODE | new SvelteComponent(props:{target})
 		try {
-			asldfkj = new this.noderegister[htmlOrGraphNodeID].html({
+			ok = new this.noderegister[htmlOrGraphNodeID].html({
 				target: content,
 			})
 		} catch (error) {
@@ -35,36 +36,23 @@ export function AssertContentElement(
 				`The previous Node won't load. Internal Drawflow Error.`,
 				{ pausable: true }
 			)
-			asldfkj = false
+			ok = false
 		}
 		// SVELTE CODE
 	}
-	return { ok: asldfkj }
+	return { ok: ok }
 }
 
 export function injectNodeCycle(
 	this: Drawflow,
 	parent: HTMLElement,
-	json: addNodeJson
+	node: DrawflowNode
 ) {
 	this.precanvas.appendChild(parent)
-	this.drawflow.drawflow[this.module].data[json.id] = json
-	this.dispatch('nodeCreated', json.id)
+	this.drawflow.drawflow[this.module].data[node.id] = node
+	this.dispatch('nodeCreated', node.id)
 	if (!this.useuuid) {
 		this.nodeId++
 	}
-	return json.id
-}
-
-interface addNodeJson {
-	name: string
-	data: any
-	html: string
-	typenode: string | boolean
-	id: number
-	class: string
-	inputs: any
-	outputs: any
-	pos_x: number
-	pos_y: number
+	return node.id
 }

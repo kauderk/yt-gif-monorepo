@@ -63,7 +63,7 @@ export function getMutationNodes(
 		const rmAt = (el: El, attr: s) => closest_attr(el, attr).found
 		return (el: El) =>
 			[
-				rmAt(el, 'yt-gif-block-uid'),
+				rmAt(el, 'data-yt-gif-block-uid'),
 				rmAt(el, 'yt-gif-anchor-container'),
 			].some(v => v == rm_container)
 	}

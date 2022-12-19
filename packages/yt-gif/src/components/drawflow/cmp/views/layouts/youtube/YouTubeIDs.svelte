@@ -120,7 +120,6 @@
 		color: white;
 	}
 
-	header,
 	section {
 		text-align: center;
 		width: 560px;
@@ -128,11 +127,6 @@
 
 	section {
 		top: 50px;
-	}
-
-	.logo {
-		width: 120px;
-		padding: 10px;
 	}
 
 	.thumb {

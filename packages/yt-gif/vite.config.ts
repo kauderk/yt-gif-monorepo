@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import { sveltekit } from '@sveltejs/kit/vite'
 import { resolve } from 'path'
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
+import { esbuildCommonjs } from '@originjs/vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,12 +12,30 @@ export default defineConfig({
 			'dayjs',
 			'@popperjs+core',
 			'@sveltestack/svelte-query',
+			'popper.js',
 		],
 	},
 	optimizeDeps: {
-		include: ['svelvet'],
+		include: [
+			'svelvet',
+			'tippy.js',
+			'@popperjs/core',
+			'@popperjs+core',
+			'popper.js',
+		],
+		esbuildOptions: {
+			plugins: [
+				esbuildCommonjs([
+					'@tiptap/extension-bubble-menu',
+					'tippy.js',
+					'popper.js',
+					'@popperjs/core',
+					'@popperjs+core',
+				]),
+			],
+		},
 	},
-	plugins: [sveltekit()],
+	plugins: [viteCommonjs(), sveltekit()],
 	build: {
 		target: ['es2020'],
 		sourcemap: true,
